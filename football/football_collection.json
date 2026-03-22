@@ -25,7 +25,7 @@
     "Patch": "African Teams and Biodiversity",
     "Packaging": "In Box",
     "Signature": "-",
-    "Notes": "\"Has patches of Algeria"
+    "Notes": "Has patches of Algeria, Ivory Coast, Ghana, Cameroon (x2), and 2010 International Year of Biodiversity. Crestless version"
   },
   {
     "ID": "01JE-05CL-UEF-GER-KOL-2025-045SP-000",
@@ -977,7 +977,7 @@
     "Patch": "11th and 12th League Titles",
     "Packaging": "Bundle Box",
     "Signature": "-",
-    "Notes": "-"
+    "Notes": "Presale bundle (with bottle, in box)"
   },
   {
     "ID": "01JE-05CL-CCF-MEX-TOL-2024-005HO-000",
@@ -1425,7 +1425,7 @@
     "Patch": "-",
     "Packaging": "In Box",
     "Signature": "-",
-    "Notes": "\"\"\"Kohle und Stahl\"\" edition\""
+    "Notes": "\"Kohle und Stahl\" edition"
   },
   {
     "ID": "01JE-05CL-UEF-GER-DOR-2020-045SP-000",
@@ -1453,7 +1453,7 @@
     "Patch": "-",
     "Packaging": "In Box",
     "Signature": "-",
-    "Notes": "\"\"\"Null Ne90n\"\" edition\""
+    "Notes": "\"Null Ne90n\" edition"
   },
   {
     "ID": "01JE-05CL-UEF-GER-DOR-2024-015TH-000",
@@ -2881,7 +2881,7 @@
     "Patch": "-",
     "Packaging": "-",
     "Signature": "-",
-    "Notes": "\"\"\"Thames Ironworks FC\"\" Commemorative\""
+    "Notes": "\"Thames Ironworks FC\" Commemorative"
   },
   {
     "ID": "01JE-05CL-UEF-ENG-BUR-2018-010AW-000",
@@ -3658,42 +3658,14 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "\"Christian Pulisic",
-    "Number": "",
-    "Print": "",
-    "Nameset": "",
-    "Patch": "",
-    "Packaging": "",
-    "Signature": "",
-    "Notes": ""
-  },
-  {
-    "ID": "\"",
-    "Display Name": "10",
-    "Category": "Pulisic #10",
-    "Product": "Official",
-    "Entity": "-",
-    "Team": "-",
-    "Season": "-",
-    "Style": "-",
-    "Variant": "",
-    "Release": "",
-    "Competition": "",
-    "Country": "",
-    "Confederation": "",
-    "Technology": "",
-    "Brand": "",
-    "Collaboration": "",
-    "Size": "",
-    "Sleeves": "",
-    "Name": "",
-    "Number": "",
-    "Print": "",
-    "Nameset": "",
-    "Patch": "",
-    "Packaging": "",
-    "Signature": "",
-    "Notes": ""
+    "Name": "Christian Pulisic",
+    "Number": "10",
+    "Print": "Pulisic #10",
+    "Nameset": "Official",
+    "Patch": "-",
+    "Packaging": "-",
+    "Signature": "-",
+    "Notes": "-"
   },
   {
     "ID": "01JE-01NA-CCF-USA-USA-2018-005HO-000",
@@ -4393,7 +4365,7 @@
     "Patch": "-",
     "Packaging": "-",
     "Signature": "-",
-    "Notes": "\"\"\"2006-2016 Tribute\"\" edition\""
+    "Notes": "\"2006-2016 Tribute\" edition"
   },
   {
     "ID": "01JE-01NA-UEF-ITA-ITA-2016-010AW-001",
@@ -5516,7 +5488,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-UEF-SPA-PIO-2024-005HO-000",
+    "ID": "01JE-05CL-XXX-SPA-PIO-2024-005HO-000",
     "Display Name": "2024 PIO FC Home Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -5528,7 +5500,7 @@
     "Release": "Regular",
     "Competition": "Kings League",
     "Country": "Spain",
-    "Confederation": "UEFA",
+    "Confederation": "-",
     "Technology": "Replica",
     "Brand": "Adidas",
     "Collaboration": "-",
@@ -5653,7 +5625,7 @@
     "Patch": "-",
     "Packaging": "Bundle Box",
     "Signature": "-",
-    "Notes": "-"
+    "Notes": "Adrenalin-Trip bundle"
   },
   {
     "ID": "25SC-05CL-UEF-GER-DOR-0000-065LF-002",
@@ -5825,7 +5797,7 @@
   },
   {
     "ID": "05HO-05CL-UEF-GER-DOR-2025-065LF-000",
-    "Display Name": "\"2025 Borussia Dortmund \"\"Chinese New Year\"\" Hoddie\"",
+    "Display Name": "2025 Borussia Dortmund \"Chinese New Year\" Hoddie",
     "Category": "Apparel",
     "Product": "Hoddie",
     "Entity": "Club",
@@ -6077,7 +6049,7 @@
   },
   {
     "ID": "35BA-15EV-FIF-XXX-CON-2017-070RB-000",
-    "Display Name": "\"2017 FIFA Confederations Cup \"\"Krasava\"\" Match Ball\"",
+    "Display Name": "2017 FIFA Confederations Cup \"Krasava\" Match Ball",
     "Category": "Equipment",
     "Product": "Ball",
     "Entity": "Event",
@@ -6105,7 +6077,7 @@
   },
   {
     "ID": "35BA-15EV-FIF-XXX-WOR-2014-075KB-000",
-    "Display Name": "\"2014 FIFA World Cup \"\"Brazuca Final Rio\"\" Match Ball\"",
+    "Display Name": "2014 FIFA World Cup \"Brazuca Final Rio\" Match Ball",
     "Category": "Equipment",
     "Product": "Ball",
     "Entity": "Event",
@@ -6133,7 +6105,7 @@
   },
   {
     "ID": "35BA-15EV-FIF-XXX-WOR-2018-070RB-000",
-    "Display Name": "\"2018 FIFA World Cup \"\"Telstar 18\"\" Match Ball\"",
+    "Display Name": "2018 FIFA World Cup \"Telstar 18\" Match Ball",
     "Category": "Equipment",
     "Product": "Ball",
     "Entity": "Event",
@@ -6161,7 +6133,7 @@
   },
   {
     "ID": "35BA-15EV-FIF-XXX-WOR-2022-070RB-000",
-    "Display Name": "\"2022 FIFA World Cup \"\"Al Rihla\"\" Match Ball\"",
+    "Display Name": "2022 FIFA World Cup \"Al Rihla\" Match Ball",
     "Category": "Equipment",
     "Product": "Ball",
     "Entity": "Event",
@@ -6189,7 +6161,7 @@
   },
   {
     "ID": "35BA-15EV-FIF-XXX-WOR-2026-070RB-000",
-    "Display Name": "\"2026 FIFA World Cup \"\"Trionda\"\" Match Ball\"",
+    "Display Name": "2026 FIFA World Cup \"Trionda\" Match Ball",
     "Category": "Equipment",
     "Product": "Ball",
     "Entity": "Event",
@@ -6217,7 +6189,7 @@
   },
   {
     "ID": "35BA-15EV-UEF-XXX-CHA-2015-075KB-000",
-    "Display Name": "\"2015-16 UEFA Champions League \"\"Finale Milano\"\" Match Ball\"",
+    "Display Name": "2015-16 UEFA Champions League \"Finale Milano\" Match Ball",
     "Category": "Equipment",
     "Product": "Ball",
     "Entity": "Event",
@@ -6245,7 +6217,7 @@
   },
   {
     "ID": "35BA-15EV-UEF-XXX-CHA-2016-070RB-000",
-    "Display Name": "\"2016-17 UEFA Champions League \"\"Finale 16\"\" Match Ball\"",
+    "Display Name": "2016-17 UEFA Champions League \"Finale 16\" Match Ball",
     "Category": "Equipment",
     "Product": "Ball",
     "Entity": "Event",
@@ -6273,7 +6245,7 @@
   },
   {
     "ID": "35BA-15EV-UEF-XXX-CHA-2016-075KB-000",
-    "Display Name": "\"2017-18 UEFA Champions League \"\"Finale Cardiff\"\" Match Ball\"",
+    "Display Name": "2017-18 UEFA Champions League \"Finale Cardiff\" Match Ball",
     "Category": "Equipment",
     "Product": "Ball",
     "Entity": "Event",
@@ -6301,7 +6273,7 @@
   },
   {
     "ID": "30BO-20BR-XXX-XXX-ADI-2018-115TB-000",
-    "Display Name": "\"Nemeziz Tango 18.1 TR \"\"White/Core Black/Shock Pink\"\"\"",
+    "Display Name": "Nemeziz Tango 18.1 TR \"White/Core Black/Shock Pink\"",
     "Category": "Equipment",
     "Product": "Boots",
     "Entity": "Brand",
@@ -6329,7 +6301,7 @@
   },
   {
     "ID": "30BO-20BR-XXX-XXX-ADI-2016-095FG-000",
-    "Display Name": "\"Messi 16.1 FG \"\"Space Dust\"\"\"",
+    "Display Name": "Messi 16.1 FG \"Space Dust\"",
     "Category": "Equipment",
     "Product": "Boots",
     "Entity": "Brand",
@@ -6357,7 +6329,7 @@
   },
   {
     "ID": "30BO-20BR-XXX-XXX-ADI-2018-095FG-000",
-    "Display Name": "\"Predator 18.1 \"\"Nite Crawler\"\"\"",
+    "Display Name": "Predator 18.1 \"Nite Crawler\"",
     "Category": "Equipment",
     "Product": "Boots",
     "Entity": "Brand",
@@ -6385,7 +6357,7 @@
   },
   {
     "ID": "30BO-20BR-XXX-XXX-NIK-2016-105TU-000",
-    "Display Name": "\"TiempoX Proximo \"\"Dark Lightning\"\"\"",
+    "Display Name": "TiempoX Proximo \"Dark Lightning\"",
     "Category": "Equipment",
     "Product": "Boots",
     "Entity": "Brand",
@@ -6413,7 +6385,7 @@
   },
   {
     "ID": "30BO-20BR-XXX-XXX-NIK-2015-110IC-000",
-    "Display Name": "\"MercurialX Proximo \"\"Metallic Gold\"\"\"",
+    "Display Name": "MercurialX Proximo \"Metallic Gold\"",
     "Category": "Equipment",
     "Product": "Boots",
     "Entity": "Brand",
@@ -6441,7 +6413,7 @@
   },
   {
     "ID": "30BO-20BR-XXX-XXX-NIK-2017-110IC-000",
-    "Display Name": "\"HypervenomX Proximo II DF \"\"Strike Night\"\"\"",
+    "Display Name": "HypervenomX Proximo II DF \"Strike Night\"",
     "Category": "Equipment",
     "Product": "Boots",
     "Entity": "Brand",
@@ -6497,7 +6469,7 @@
   },
   {
     "ID": "40DR-05CL-UEF-GER-DOR-2024-000XX-000",
-    "Display Name": "\"2024 Borussia Dortmund \"\"Marco Reus Farewell\"\" Stadium Cup\"",
+    "Display Name": "2024 Borussia Dortmund \"Marco Reus Farewell\" Stadium Cup",
     "Category": "Memorabilia",
     "Product": "Drinkware",
     "Entity": "Club",
@@ -6525,7 +6497,7 @@
   },
   {
     "ID": "40DR-05CL-UEF-GER-DOR-2024-000XX-001",
-    "Display Name": "\"2024 Borussia Dortmund \"\"Abschiedszczspiel\"\" Stadium Cup\"",
+    "Display Name": "2024 Borussia Dortmund \"Abschiedszczspiel\" Stadium Cup",
     "Category": "Memorabilia",
     "Product": "Drinkware",
     "Entity": "Club",
@@ -6553,7 +6525,7 @@
   },
   {
     "ID": "40DR-05CL-UEF-GER-DOR-0000-000XX-000",
-    "Display Name": "\"Borussia Dortmund \"\"Borussia Dortmund\"\" Stadium Cup\"",
+    "Display Name": "Borussia Dortmund \"Borussia Dortmund\" Stadium Cup",
     "Category": "Memorabilia",
     "Product": "Drinkware",
     "Entity": "Club",
@@ -6581,7 +6553,7 @@
   },
   {
     "ID": "40DR-05CL-UEF-GER-DOR-0000-000XX-001",
-    "Display Name": "\"Borussia Dortmund \"\"Heja BVB\"\" Stadium Cup\"",
+    "Display Name": "Borussia Dortmund \"Heja BVB\" Stadium Cup",
     "Category": "Memorabilia",
     "Product": "Drinkware",
     "Entity": "Club",
@@ -6717,7 +6689,7 @@
     "Patch": "-",
     "Packaging": "Bundle Box",
     "Signature": "-",
-    "Notes": "-"
+    "Notes": "Presale bundle (with jersey, in box)"
   },
   {
     "ID": "40DR-05CL-CCF-MEX-TOL-2025-000XX-001",
@@ -6941,7 +6913,7 @@
     "Patch": "-",
     "Packaging": "Bundle Box",
     "Signature": "-",
-    "Notes": "-"
+    "Notes": "Adrenalin-Trip bundle"
   },
   {
     "ID": "60PA-15EV-CCF-MEX-LMX-2018-000XX-000",
@@ -7281,7 +7253,7 @@
   },
   {
     "ID": "50AC-20BR-UEF-GER-DEU-0000-000XX-000",
-    "Display Name": "\"Deutsches Fußballmuseum \"\"Trikot 1954\"\" Magnet\"",
+    "Display Name": "Deutsches Fußballmuseum \"Trikot 1954\" Magnet",
     "Category": "Memorabilia",
     "Product": "Accessory",
     "Entity": "Brand",
@@ -7361,7 +7333,7 @@
     "Patch": "-",
     "Packaging": "Bundle Box",
     "Signature": "-",
-    "Notes": "-"
+    "Notes": "Adrenalin-Trip bundle"
   },
   {
     "ID": "55ST-05CL-UEF-GER-DOR-0000-000XX-000",
@@ -7393,7 +7365,7 @@
   },
   {
     "ID": "55ST-05CL-UEF-GER-DOR-2024-000XX-001",
-    "Display Name": "\"2024 Borussia Dortmund Borusseum \"\"Marco Reus Farewell\"\" Postcard\"",
+    "Display Name": "2024 Borussia Dortmund Borusseum \"Marco Reus Farewell\" Postcard",
     "Category": "Memorabilia",
     "Product": "Stationery",
     "Entity": "Club",
@@ -7421,7 +7393,7 @@
   },
   {
     "ID": "55ST-05CL-UEF-GER-DOR-1913-000XX-000",
-    "Display Name": "\"1913 Borussia Dortmund Borusseum \"\"Jung-Borussen\"\" Postcard\"",
+    "Display Name": "1913 Borussia Dortmund Borusseum \"Jung-Borussen\" Postcard",
     "Category": "Memorabilia",
     "Product": "Stationery",
     "Entity": "Club",
@@ -7449,7 +7421,7 @@
   },
   {
     "ID": "55ST-05CL-UEF-GER-DOR-0000-000XX-001",
-    "Display Name": "\"Borussia Dortmund Borusseum \"\"Drei Borussen im Widerstand\"\" Magazine\"",
+    "Display Name": "Borussia Dortmund Borusseum \"Drei Borussen im Widerstand\" Magazine",
     "Category": "Memorabilia",
     "Product": "Stationery",
     "Entity": "Club",
@@ -7701,7 +7673,7 @@
   },
   {
     "ID": "05HO-05CL-CCF-MEX-TOL-0000-065LF-000",
-    "Display Name": "\"Deportivo Toluca \"\"Devil\"\" Third-Party Hoddie\"",
+    "Display Name": "Deportivo Toluca \"Devil\" Third-Party Hoddie",
     "Category": "Apparel",
     "Product": "Hoddie",
     "Entity": "Club",
@@ -8419,6 +8391,34 @@
     "Size": "-",
     "Sleeves": "-",
     "Name": "Marcel Ruiz",
+    "Number": "-",
+    "Print": "-",
+    "Nameset": "-",
+    "Patch": "-",
+    "Packaging": "-",
+    "Signature": "-",
+    "Notes": "-"
+  },
+  {
+    "ID": "40DR-05CL-XXX-MEX-CUE-2019-000XX-000",
+    "Display Name": "2019 Club de Cuervos Winners Beer Can",
+    "Category": "Memorabilia",
+    "Product": "Drinkware",
+    "Entity": "Club",
+    "Team": "Club de Cuervos",
+    "Season": "2019",
+    "Style": "-",
+    "Variant": "000",
+    "Release": "Winners",
+    "Competition": "-",
+    "Country": "Mexico",
+    "Confederation": "-",
+    "Technology": "-",
+    "Brand": "Corona",
+    "Collaboration": "-",
+    "Size": "-",
+    "Sleeves": "-",
+    "Name": "-",
     "Number": "-",
     "Print": "-",
     "Nameset": "-",

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Item Details</title>
+</head>
+<body>
+
+  <h1 id="title"></h1>
+  <ul id="details"></ul>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get("id");
+
+  console.log("ID from URL:", id);
+
+  fetch("./football_collection.json")
+    .then(response => {
+      console.log("Fetch status:", response.status);
+      return response.json();
+    })
+    .then(data => {
+
+      console.log("Total items loaded:", data.length);
+      console.log("First item example:", data[0]);
+
+      const item = data.find(i => i.ID && i.ID.trim() === id.trim());
+
+      if (!item) {
+        document.body.innerHTML = "<p>Item not found</p>";
+        console.log("Item not found");
+        return;
+      }
+
+      document.getElementById("title").textContent = item["Display Name"];
+
+      const details = document.getElementById("details");
+
+      Object.entries(item).forEach(([key, value]) => {
+
+        // Skip unwanted fields
+        if (key === "ID" || key === "Display Name" || key === "Variant") return;
+
+        // Skip empty or placeholder values
+        if (!value || value.trim() === "-" || value.trim() === "") return;
+
+        const li = document.createElement("li");
+        li.textContent = `${key}: ${value}`;
+        details.appendChild(li);
+        });
+
+    });
+</script>
+
+</body>
+</html>

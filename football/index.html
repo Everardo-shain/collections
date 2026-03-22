@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <style>
+    a {
+        color: inherit;
+        text-decoration: none;
+    }
+
+    a:visited {
+        color: inherit;
+    }
+    </style>
+    <meta charset="UTF-8">
+    <title>Football Collection</title>
+</head>
+<body>
+
+  <h1>Football Collection</h1>
+
+  <ul id="list"></ul>
+
+  <script>
+    fetch("./football_collection.json")
+      .then(response => response.json())
+      .then(data => {
+
+        // Sort by ID
+        data.sort((a, b) => a.ID.localeCompare(b.ID));
+
+        const list = document.getElementById("list");
+
+        data.forEach(item => {
+          const li = document.createElement("li");
+
+          const link = document.createElement("a");
+          link.textContent = item["Display Name"];
+
+          // Pass ID in URL
+          link.href = `item.html?id=${encodeURIComponent(item.ID)}`;
+
+          li.appendChild(link);
+          list.appendChild(li);
+        });
+
+      });
+  </script>
+
+</body>
+</html>

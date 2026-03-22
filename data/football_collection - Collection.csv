@@ -33,7 +33,7 @@ ID,Display Name,Category,Product,Entity,Team,Season,Style,Variant,Release,Compet
 01JE-05CL-CCF-MEX-TOL-2018-010AW-000,2018-19 Deportivo Toluca Away Jersey (Signed by Team),Apparel,Jersey,Club,Deportivo Toluca,2018-19,Away,000,Regular,Liga MX,Mexico,CONCACAF,Replica,Under Armour,-,S,Short,-,-,-,-,-,-,Team,-
 01JE-05CL-CCF-MEX-TOL-2016-010AW-000,2016-17 Deportivo Toluca Authentic Away Jersey,Apparel,Jersey,Club,Deportivo Toluca,2016-17,Away,000,Regular,Liga MX,Mexico,CONCACAF,Authentic,Under Armour,-,S,Short,-,-,-,-,100th Anniversary,-,-,-
 01JE-05CL-CCF-MEX-TOL-2014-010AW-000,2014-15 Deportivo Toluca Away Jersey (Signed by Team),Apparel,Jersey,Club,Deportivo Toluca,2014-15,Away,000,Regular,Liga MX,Mexico,CONCACAF,Replica,Under Armour,-,S,Short,-,-,-,-,Liga Mx,-,Team,Framed
-01JE-05CL-CCF-MEX-TOL-2025-005HO-000,2025-26 Deportivo Toluca Authentic Home Jersey - Bundle Box,Apparel,Jersey,Club,Deportivo Toluca,2025-26,Home,000,Regular,Liga MX,Mexico,CONCACAF,Authentic,New Balance,-,S,Short,-,-,-,-,11th and 12th League Titles,Bundle Box,-,-
+01JE-05CL-CCF-MEX-TOL-2025-005HO-000,2025-26 Deportivo Toluca Authentic Home Jersey - Bundle Box,Apparel,Jersey,Club,Deportivo Toluca,2025-26,Home,000,Regular,Liga MX,Mexico,CONCACAF,Authentic,New Balance,-,S,Short,-,-,-,-,11th and 12th League Titles,Bundle Box,-,"Presale bundle (with bottle, in box)"
 01JE-05CL-CCF-MEX-TOL-2024-005HO-000,2024-25 Deportivo Toluca Home Jersey,Apparel,Jersey,Club,Deportivo Toluca,2024-25,Home,000,Regular,Liga MX,Mexico,CONCACAF,Replica,New Balance,-,S,Short,-,-,-,-,-,-,-,-
 01JE-05CL-CCF-MEX-TOL-2023-005HO-000,2023-24 Deportivo Toluca Home Jersey,Apparel,Jersey,Club,Deportivo Toluca,2023-24,Home,000,Regular,Liga MX,Mexico,CONCACAF,Replica,New Balance,-,S,Short,-,-,-,-,-,-,-,-
 01JE-05CL-CCF-MEX-TOL-2020-005HO-000,2020-21 Deportivo Toluca Home Jersey,Apparel,Jersey,Club,Deportivo Toluca,2020-21,Home,000,Regular,Liga MX,Mexico,CONCACAF,Replica,Under Armour,-,S,Short,-,-,-,-,-,-,-,-
@@ -129,8 +129,7 @@ ID,Display Name,Category,Product,Entity,Team,Season,Style,Variant,Release,Compet
 01JE-01NA-CCF-MEX-MEX-2018-005HO-000,2018 Mexico Home Jersey Chicharito #14,Apparel,Jersey,National Team,Mexico,2018,Home,000,Regular,-,Mexico,CONCACAF,Replica,Adidas,-,S,Short,Javier Hernández,14,Chicharito #14,Official,-,-,-,-
 01JE-01NA-CCF-MEX-MEX-2010-005HO-000,2010 Mexico Home Jersey,Apparel,Jersey,National Team,Mexico,2010,Home,000,Regular,-,Mexico,CONCACAF,Replica,Adidas,-,9-10Y,Short,-,-,-,-,-,-,-,-
 01JE-01NA-CCF-USA-USA-2019-010AW-000,2019 USA Authentic Away Jersey,Apparel,Jersey,National Team,USA,2019,Away,000,Regular,-,USA,CONCACAF,Authentic,Nike,-,S,Short,-,-,-,-,-,-,-,-
-01JE-01NA-CCF-USA-USA-2018-010AW-000,2018 USA Away Jersey Pulisic #10,Apparel,Jersey,National Team,USA,2018,Away,000,Regular,-,USA,CONCACAF,Replica,Nike,-,S,Short,"Christian Pulisic
-",10,Pulisic #10,Official,-,-,-,-
+01JE-01NA-CCF-USA-USA-2018-010AW-000,2018 USA Away Jersey Pulisic #10,Apparel,Jersey,National Team,USA,2018,Away,000,Regular,-,USA,CONCACAF,Replica,Nike,-,S,Short,Christian Pulisic,10,Pulisic #10,Official,-,-,-,-
 01JE-01NA-CCF-USA-USA-2018-005HO-000,2018 USA Home Jersey,Apparel,Jersey,National Team,USA,2018,Home,000,Regular,-,USA,CONCACAF,Replica,Nike,-,S,Short,-,-,-,-,-,-,-,-
 01JE-01NA-CCF-JAM-JAM-2023-010AW-000,2023 Jamaica Away Jersey,Apparel,Jersey,National Team,Jamaica,2023,Away,000,Regular,-,Jamaica,CONCACAF,Replica,Adidas,-,S,Short,-,-,-,-,-,-,-,-
 01JE-01NA-CCF-JAM-JAM-2023-005HO-000,2023 Jamaica Home Jersey,Apparel,Jersey,National Team,Jamaica,2023,Home,000,Regular,-,Jamaica,CONCACAF,Replica,Adidas,-,S,Short,-,-,-,-,-,-,-,-
@@ -196,11 +195,11 @@ ID,Display Name,Category,Product,Entity,Team,Season,Style,Variant,Release,Compet
 01JE-01NA-CAF-NIG-NIG-2018-005HO-000,2018 Nigeria Home Jersey,Apparel,Jersey,National Team,Nigeria,2018,Home,000,Regular,-,Nigeria,CAF,Replica,Nike,-,S,Short,-,-,-,-,-,-,-,-
 01JE-01NA-OFC-NZE-NZE-2018-010AW-000,2018 New Zealand Away Jersey,Apparel,Jersey,National Team,New Zealand,2018,Away,000,Regular,-,New Zealand,OFC,Replica,Nike,-,S,Short,-,-,-,-,-,-,-,-
 01JE-10CO-XXX-XXX-SOC-2018-005HO-000,2018 Soccer Aid World XI Home Jersey Bolt #9.58,Apparel,Jersey,Collective,Soccer Aid World XI,2018,Home,000,Regular,Soccer Aid,-,-,Replica,Puma,-,S,Short,Usain Bolt,9.58,Bolt #9.58,Official,-,-,-,-
-01JE-05CL-UEF-SPA-PIO-2024-005HO-000,2024 PIO FC Home Jersey,Apparel,Jersey,Club,PIO FC,2024,Home,000,Regular,Kings League,Spain,UEFA,Replica,Adidas,-,S,Short,-,-,-,-,-,-,-,-
+01JE-05CL-XXX-SPA-PIO-2024-005HO-000,2024 PIO FC Home Jersey,Apparel,Jersey,Club,PIO FC,2024,Home,000,Regular,Kings League,Spain,-,Replica,Adidas,-,S,Short,-,-,-,-,-,-,-,-
 25SC-15EV-UEF-GER-BUN-2024-065LF-000,2024-25 Bundesliga Borussia Dortmund vs. Union Berlin Scarf,Apparel,Scarf,Event,Borussia Dortmund/Union Berlin,2024-25,Lifestyle,000,Matchday,Bundesliga,Germany,UEFA,-,In-House,-,-,-,-,-,-,-,-,-,-,-
 25SC-15EV-UEF-XXX-EUR-2015-065LF-000,2015-16 UEFA Europa League Liverpool FC vs. Borussia Dortmund Scarf,Apparel,Scarf,Event,Liverpool FC/Borussia Dortmund,2015-16,Lifestyle,000,Matchday,UEFA Europa League,-,UEFA,-,In-House,-,-,-,-,-,-,-,-,-,-,-
 25SC-05CL-UEF-GER-DOR-0000-065LF-000,Borussia Dortmund Striped Name Scarf,Apparel,Scarf,Club,Borussia Dortmund,-,Lifestyle,000,Regular,Bundesliga,Germany,UEFA,-,In-House,-,-,-,-,-,-,-,-,-,-,-
-25SC-05CL-UEF-GER-DOR-0000-065LF-001,Borussia Dortmund Striped Scarf Black/Yellow - Bundle Box,Apparel,Scarf,Club,Borussia Dortmund,-,Lifestyle,001,Regular,Bundesliga,Germany,UEFA,-,In-House,-,-,-,-,-,-,-,-,Bundle Box,-,-
+25SC-05CL-UEF-GER-DOR-0000-065LF-001,Borussia Dortmund Striped Scarf Black/Yellow - Bundle Box,Apparel,Scarf,Club,Borussia Dortmund,-,Lifestyle,001,Regular,Bundesliga,Germany,UEFA,-,In-House,-,-,-,-,-,-,-,-,Bundle Box,-,Adrenalin-Trip bundle
 25SC-05CL-UEF-GER-DOR-0000-065LF-002,Borussia Dortmund Striped Scarf Black/Grey,Apparel,Scarf,Club,Borussia Dortmund,-,Lifestyle,002,Regular,Bundesliga,Germany,UEFA,-,In-House,-,-,-,-,-,-,-,-,-,-,-
 25SC-05CL-UEF-GER-DOR-0000-065LF-003,Borussia Dortmund Stadium Scarf,Apparel,Scarf,Club,Borussia Dortmund,-,Lifestyle,003,Regular,Bundesliga,Germany,UEFA,-,In-House,-,-,-,-,-,-,-,-,-,-,-
 25SC-05CL-CCF-MEX-TOL-2017-065LF-000,2017 Deportivo Toluca 100th Anniversary Scarf,Apparel,Scarf,Club,Deportivo Toluca,2017,Lifestyle,000,100th Anniversary,Liga MX,Mexico,CONCACAF,-,In-House,-,-,-,-,-,-,-,-,-,-,-
@@ -238,7 +237,7 @@ ID,Display Name,Category,Product,Entity,Team,Season,Style,Variant,Release,Compet
 40DR-05CL-UEF-GER-DOR-0000-000XX-002,Borussia Dortmund Magic Mug,Memorabilia,Drinkware,Club,Borussia Dortmund,-,-,002,Regular,Bundesliga,Germany,UEFA,-,In-House,-,-,-,-,-,-,-,-,-,-,-
 40DR-05CL-CCF-MEX-TOL-0000-000XX-000,Deportivo Toluca Christmas Third-Party Mug (Custom Name),Memorabilia,Drinkware,Club,Deportivo Toluca,-,-,000,Regular,Liga MX,Mexico,CONCACAF,-,Third-Party,-,-,-,-,-,-,-,-,-,-,-
 40DR-05CL-CCF-MEX-TOL-2017-000XX-000,2017 Deportivo Toluca 100th Anniversary Mug,Memorabilia,Drinkware,Club,Deportivo Toluca,2017,-,000,100th Anniversary,Liga MX,Mexico,CONCACAF,-,In-House,-,-,-,-,-,-,-,-,-,-,-
-40DR-05CL-CCF-MEX-TOL-2025-000XX-000,2025-26 Deportivo Toluca Bottle - Bundle Box,Memorabilia,Drinkware,Club,Deportivo Toluca,2025-26,-,000,Regular,Liga MX,Mexico,CONCACAF,-,In-House,-,-,-,-,-,-,-,-,Bundle Box,-,-
+40DR-05CL-CCF-MEX-TOL-2025-000XX-000,2025-26 Deportivo Toluca Bottle - Bundle Box,Memorabilia,Drinkware,Club,Deportivo Toluca,2025-26,-,000,Regular,Liga MX,Mexico,CONCACAF,-,In-House,-,-,-,-,-,-,-,-,Bundle Box,-,"Presale bundle (with jersey, in box)"
 40DR-05CL-CCF-MEX-TOL-2025-000XX-001,Clausura 2025 Deportivo Toluca Winners Tumbler,Memorabilia,Drinkware,Club,Deportivo Toluca,Clausura 2025,-,001,Winners,Liga MX,Mexico,CONCACAF,-,Norday,-,-,-,-,-,-,-,-,-,-,-
 40DR-05CL-CCF-MEX-TOL-2025-000XX-002,Clausura 2025 Deportivo Toluca Winners Beer Can,Memorabilia,Drinkware,Club,Deportivo Toluca,Clausura 2025,-,002,Winners,Liga MX,Mexico,CONCACAF,-,Corona,-,-,-,-,-,-,-,-,-,-,-
 40DR-05CL-CCF-MEX-TOL-2017-000XX-001,2017 Deportivo Toluca 100th Anniversary Beer Can,Memorabilia,Drinkware,Club,Deportivo Toluca,2017,-,001,100th Anniversary,Liga MX,Mexico,CONCACAF,-,Corona,-,-,-,-,-,-,-,-,-,-,-
@@ -246,7 +245,7 @@ ID,Display Name,Category,Product,Entity,Team,Season,Style,Variant,Release,Compet
 40DR-05CL-CCF-MEX-TOL-0000-000XX-001,Deportivo Toluca Stadium Cup,Memorabilia,Drinkware,Club,Deportivo Toluca,-,-,001,Regular,Liga MX,Mexico,CONCACAF,-,In-House,-,-,-,-,-,-,-,-,-,-,-
 60PA-05CL-CCF-MEX-TOL-2020-000XX-000,Clausura 2020 Deportivo Toluca Season Pass,Memorabilia,Pass,Club,Deportivo Toluca,Clausura 2020,-,000,Regular,Liga MX,Mexico,CONCACAF,-,-,-,-,-,-,-,-,-,-,-,-,-
 60PA-05CL-CCF-MEX-TOL-2018-000XX-000,Apertura 2018 Deportivo Toluca Season Pass,Memorabilia,Pass,Club,Deportivo Toluca,Apertura 2018,-,000,Regular,Liga MX,Mexico,CONCACAF,-,-,-,-,-,-,-,-,-,-,-,-,-
-60PA-05CL-UEF-GER-DOR-2024-000XX-000,2024-25 Borussia Dortmund Stadiondeckel - Bundle Box,Memorabilia,Pass,Club,Borussia Dortmund,2024-25,-,000,Regular,Bundesliga,Germany,UEFA,-,-,-,-,-,-,-,-,-,-,Bundle Box,-,-
+60PA-05CL-UEF-GER-DOR-2024-000XX-000,2024-25 Borussia Dortmund Stadiondeckel - Bundle Box,Memorabilia,Pass,Club,Borussia Dortmund,2024-25,-,000,Regular,Bundesliga,Germany,UEFA,-,-,-,-,-,-,-,-,-,-,Bundle Box,-,Adrenalin-Trip bundle
 60PA-15EV-CCF-MEX-LMX-2018-000XX-000,Clausura 2018 Liga MX Final Deportivo Toluca vs. Santos Laguna Ticket,Memorabilia,Pass,Event,Deportivo Toluca/Santos Laguna,Clausura 2018,-,000,Matchday,Liga MX,Mexico,CONCACAF,-,-,-,-,-,-,-,-,-,-,-,-,-
 60PA-15EV-CCF-MEX-LMX-2017-000XX-000,Clausura 2017 Liga MX Deportivo Toluca vs. Club Puebla Ticket,Memorabilia,Pass,Event,Deportivo Toluca/Club Puebla,Clausura 2017,-,000,Matchday,Liga MX,Mexico,CONCACAF,-,-,-,-,-,-,-,-,-,-,-,-,-
 60PA-15EV-CCF-MEX-CMX-2017-000XX-000,Clausura 2017 Copa MX Deportivo Toluca vs. CD Veracruz Ticket,Memorabilia,Pass,Event,Deportivo Toluca/CD Veracruz,Clausura 2017,-,000,Matchday,Copa MX,Mexico,CONCACAF,-,-,-,-,-,-,-,-,-,-,-,-,-
@@ -261,7 +260,7 @@ ID,Display Name,Category,Product,Entity,Team,Season,Style,Variant,Release,Compet
 50AC-05CL-UEF-GER-DOR-2016-000XX-000,2016-17 Borussia Dortmund DBF-Pokal Winners Pin,Memorabilia,Accessory,Club,Borussia Dortmund,2016-17,-,000,Winners,DFB-Pokal,Germany,UEFA,-,In-House,-,-,-,-,-,-,-,-,-,-,-
 50AC-20BR-UEF-GER-DEU-0000-000XX-000,"Deutsches Fußballmuseum ""Trikot 1954"" Magnet",Memorabilia,Accessory,Brand,-,-,-,000,Regular,-,Germany,UEFA,-,Deutsches Fußballmuseum,-,-,-,-,-,-,-,-,-,-,-
 50AC-20BR-UEF-GER-DEU-0000-000XX-001,Deutsches Fußballmuseum Shoe Keychain,Memorabilia,Accessory,Brand,-,-,-,001,Regular,-,Germany,UEFA,-,Deutsches Fußballmuseum,-,-,-,-,-,-,-,-,-,-,-
-55ST-05CL-UEF-GER-DOR-2024-000XX-000,2024-25 Borussia Dortmund Mitgliedermagazin (February 2025) - Bundle Box,Memorabilia,Stationery,Club,Borussia Dortmund,2024-25,-,000,Regular,Bundesliga,Germany,UEFA,-,In-House,-,-,-,-,-,-,-,-,Bundle Box,-,-
+55ST-05CL-UEF-GER-DOR-2024-000XX-000,2024-25 Borussia Dortmund Mitgliedermagazin (February 2025) - Bundle Box,Memorabilia,Stationery,Club,Borussia Dortmund,2024-25,-,000,Regular,Bundesliga,Germany,UEFA,-,In-House,-,-,-,-,-,-,-,-,Bundle Box,-,Adrenalin-Trip bundle
 55ST-05CL-UEF-GER-DOR-0000-000XX-000,Borussia Dortmund Postcard (Signed by Kevin Großkreutz),Memorabilia,Stationery,Club,Borussia Dortmund,-,-,000,Regular,Bundesliga,Germany,UEFA,-,In-House,-,-,-,-,-,-,-,-,-,Kevin Großkreutz,-
 55ST-05CL-UEF-GER-DOR-2024-000XX-001,"2024 Borussia Dortmund Borusseum ""Marco Reus Farewell"" Postcard",Memorabilia,Stationery,Club,Borussia Dortmund,2024,-,001,Regular,Bundesliga,Germany,UEFA,-,Borusseum,-,-,-,Marco Reus,-,-,-,-,-,-,-
 55ST-05CL-UEF-GER-DOR-1913-000XX-000,"1913 Borussia Dortmund Borusseum ""Jung-Borussen"" Postcard",Memorabilia,Stationery,Club,Borussia Dortmund,1913,-,000,Regular,Bundesliga,Germany,UEFA,-,Borusseum,-,-,-,-,-,-,-,-,-,-,-
@@ -300,3 +299,4 @@ ID,Display Name,Category,Product,Entity,Team,Season,Style,Variant,Release,Compet
 65PH-25PE-UEF-GER-LEV-2022-120DP-000,2022 Bayer 04 Leverkusen Jonathan Tah Digital Photo,Memorabilia,Photo,Person,Bayer 04 Leverkusen,2022,Digital Photo,000,-,Bundesliga,Germany,UEFA,-,-,-,-,-,Jonathan Tah,-,-,-,-,-,-,-
 65PH-25PE-UEF-GER-LEV-2022-120DP-001,2022 Bayer 04 Leverkusen Stefan Kießling Digital Photo,Memorabilia,Photo,Person,Bayer 04 Leverkusen,2022,Digital Photo,001,-,Bundesliga,Germany,UEFA,-,-,-,-,-,Stefan Kießling,-,-,-,-,-,-,-
 65PH-25PE-CCF-MEX-TOL-2025-120DP-000,2025 Deportivo Toluca Marcel Ruiz Digital Photo,Memorabilia,Photo,Person,Deportivo Toluca,2025,Digital Photo,000,-,Liga MX,Mexico,CONCACAF,-,-,-,-,-,Marcel Ruiz,-,-,-,-,-,-,-
+40DR-05CL-XXX-MEX-CUE-2019-000XX-000,2019 Club de Cuervos Winners Beer Can,Memorabilia,Drinkware,Club,Club de Cuervos,2019,-,000,Winners,-,Mexico,-,-,Corona,-,-,-,-,-,-,-,-,-,-,-
