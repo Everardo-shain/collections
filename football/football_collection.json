@@ -1,6 +1,6 @@
 [
   {
-    "ID": "01JE-10CO-CAF-XXX-UNI-2010-015TH-000",
+    "ID": "01JE-10CO-CAF-XXX-UNI-015TH-2010-000",
     "Display Name": "2010 Africa Unity Authentic Third Jersey - In Box",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -18,8 +18,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "African Teams and Biodiversity",
@@ -28,7 +27,7 @@
     "Notes": "Has patches of Algeria, Ivory Coast, Ghana, Cameroon (x2), and 2010 International Year of Biodiversity. Crestless version"
   },
   {
-    "ID": "01JE-05CL-UEF-GER-KOL-2025-045SP-000",
+    "ID": "01JE-05CL-UEF-GER-KOL-045SP-2025-000",
     "Display Name": "2025-26 1. FC Köln Carnival Special L/S Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -46,8 +45,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Long",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -56,7 +54,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-UEF-NOR-NOR-2024-010AW-000",
+    "ID": "01JE-01NA-UEF-NOR-NOR-010AW-2024-000",
     "Display Name": "2024 Norway Away Jersey Haaland #9",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -74,8 +72,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "Erling Haaland",
-    "Number": "9",
+    "Person": "Erling Haaland",
     "Print": "Haaland #9",
     "Nameset": "Official",
     "Patch": "-",
@@ -84,7 +81,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-UEF-GER-GER-2026-005HO-000",
+    "ID": "01JE-01NA-UEF-GER-GER-005HO-2026-000",
     "Display Name": "2026 Germany Home Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -102,8 +99,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -112,7 +108,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-AFC-JAP-JAP-2026-005HO-000",
+    "ID": "01JE-01NA-AFC-JAP-JAP-005HO-2026-000",
     "Display Name": "2026 Japan Home Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -130,8 +126,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -140,7 +135,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-UEF-BEL-BEL-2026-005HO-000",
+    "ID": "01JE-01NA-UEF-BEL-BEL-005HO-2026-000",
     "Display Name": "2026 Belgium Home Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -158,8 +153,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -168,7 +162,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-UEF-ENG-MCI-2025-015TH-000",
+    "ID": "01JE-05CL-UEF-ENG-MCI-015TH-2025-000",
     "Display Name": "2025-26 Manchester City Third Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -186,8 +180,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -196,7 +189,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-UEF-ENG-MUN-2025-015TH-000",
+    "ID": "01JE-05CL-UEF-ENG-MUN-015TH-2025-000",
     "Display Name": "2025-26 Manchester United Third Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -214,8 +207,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -224,7 +216,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-UEF-ENG-LIV-2025-015TH-000",
+    "ID": "01JE-05CL-UEF-ENG-LIV-015TH-2025-000",
     "Display Name": "2025-26 Liverpool FC Third Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -242,8 +234,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -252,7 +243,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-UEF-FRA-PSG-2025-015TH-000",
+    "ID": "01JE-05CL-UEF-FRA-PSG-015TH-2025-000",
     "Display Name": "2025-26 Paris Saint-Germain Third Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -270,8 +261,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -280,7 +270,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-CCF-MEX-OAX-2017-015TH-000",
+    "ID": "01JE-05CL-CCF-MEX-OAX-015TH-2017-000",
     "Display Name": "2017-18 Alebrijes de Oaxaca Third Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -298,8 +288,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -308,7 +297,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-CCF-MEX-LOB-2017-005HO-000",
+    "ID": "01JE-05CL-CCF-MEX-LOB-005HO-2017-000",
     "Display Name": "2017-18 Lobos BUAP Home Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -326,8 +315,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -336,7 +324,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-CCF-MEX-QUE-2017-015TH-000",
+    "ID": "01JE-05CL-CCF-MEX-QUE-015TH-2017-000",
     "Display Name": "2017-18 Querétaro Third Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -354,8 +342,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -364,7 +351,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-CCF-MEX-QUE-2016-015TH-000",
+    "ID": "01JE-05CL-CCF-MEX-QUE-015TH-2016-000",
     "Display Name": "2016-17 Querétaro Third Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -382,8 +369,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -392,7 +378,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-CCF-MEX-QUE-2017-010AW-000",
+    "ID": "01JE-05CL-CCF-MEX-QUE-010AW-2017-000",
     "Display Name": "2017-18 Querétaro Away Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -410,8 +396,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -420,7 +405,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-CCF-MEX-QUE-2016-005HO-000",
+    "ID": "01JE-05CL-CCF-MEX-QUE-005HO-2016-000",
     "Display Name": "2016-17 Querétaro Authentic Home Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -438,8 +423,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -448,7 +432,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-CCF-MEX-SAN-2017-010AW-000",
+    "ID": "01JE-05CL-CCF-MEX-SAN-010AW-2017-000",
     "Display Name": "2017-18 Santos Laguna Away Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -466,8 +450,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -476,7 +459,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-CCF-MEX-MON-2017-010AW-000",
+    "ID": "01JE-05CL-CCF-MEX-MON-010AW-2017-000",
     "Display Name": "2017-18 Rayados Monterrey Away Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -494,8 +477,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -504,7 +486,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-CCF-MEX-ATL-2016-015TH-000",
+    "ID": "01JE-05CL-CCF-MEX-ATL-015TH-2016-000",
     "Display Name": "2016-17 Atlas FC Third Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -522,8 +504,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -532,7 +513,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-CCF-MEX-VER-2016-015TH-000",
+    "ID": "01JE-05CL-CCF-MEX-VER-015TH-2016-000",
     "Display Name": "2016-17 CD Veracruz Third Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -550,8 +531,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -560,7 +540,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-CCF-MEX-JAG-2016-010AW-000",
+    "ID": "01JE-05CL-CCF-MEX-JAG-010AW-2016-000",
     "Display Name": "2016-17 Jaguares de Chiapas Away Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -578,8 +558,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -588,7 +567,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-CCF-MEX-TOL-2023-015TH-000",
+    "ID": "01JE-05CL-CCF-MEX-TOL-015TH-2023-000",
     "Display Name": "2023-24 Deportivo Toluca Third Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -606,8 +585,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -616,7 +594,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-CCF-MEX-TOL-2022-015TH-000",
+    "ID": "01JE-05CL-CCF-MEX-TOL-015TH-2022-000",
     "Display Name": "2022-23 Deportivo Toluca Third Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -634,8 +612,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -644,7 +621,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-CCF-MEX-TOL-2021-015TH-000",
+    "ID": "01JE-05CL-CCF-MEX-TOL-015TH-2021-000",
     "Display Name": "2021-22 Deportivo Toluca Third Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -662,8 +639,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -672,7 +648,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-CCF-MEX-TOL-2020-015TH-000",
+    "ID": "01JE-05CL-CCF-MEX-TOL-015TH-2020-000",
     "Display Name": "2020-21 Deportivo Toluca Third Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -690,8 +666,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -700,7 +675,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-CCF-MEX-TOL-2017-015TH-000",
+    "ID": "01JE-05CL-CCF-MEX-TOL-015TH-2017-000",
     "Display Name": "2017-18 Deportivo Toluca Third Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -718,8 +693,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -728,7 +702,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-CCF-MEX-TOL-2016-015TH-000",
+    "ID": "01JE-05CL-CCF-MEX-TOL-015TH-2016-000",
     "Display Name": "2016-17 Deportivo Toluca Third Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -746,8 +720,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "100th Anniversary",
@@ -756,7 +729,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-CCF-MEX-TOL-2014-015TH-000",
+    "ID": "01JE-05CL-CCF-MEX-TOL-015TH-2014-000",
     "Display Name": "2014-15 Deportivo Toluca Third Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -774,8 +747,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "Liga Mx",
@@ -784,7 +756,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-CCF-MEX-TOL-2024-010AW-000",
+    "ID": "01JE-05CL-CCF-MEX-TOL-010AW-2024-000",
     "Display Name": "2024-25 Deportivo Toluca Authentic Away Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -802,8 +774,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -812,7 +783,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-CCF-MEX-TOL-2021-010AW-000",
+    "ID": "01JE-05CL-CCF-MEX-TOL-010AW-2021-000",
     "Display Name": "2021-22 Deportivo Toluca Away Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -830,8 +801,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -840,7 +810,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-CCF-MEX-TOL-2019-010AW-000",
+    "ID": "01JE-05CL-CCF-MEX-TOL-010AW-2019-000",
     "Display Name": "2019-20 Deportivo Toluca Away Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -858,8 +828,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -868,7 +837,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-CCF-MEX-TOL-2018-010AW-000",
+    "ID": "01JE-05CL-CCF-MEX-TOL-010AW-2018-000",
     "Display Name": "2018-19 Deportivo Toluca Away Jersey (Signed by Team)",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -886,8 +855,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -896,7 +864,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-CCF-MEX-TOL-2016-010AW-000",
+    "ID": "01JE-05CL-CCF-MEX-TOL-010AW-2016-000",
     "Display Name": "2016-17 Deportivo Toluca Authentic Away Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -914,8 +882,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "100th Anniversary",
@@ -924,7 +891,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-CCF-MEX-TOL-2014-010AW-000",
+    "ID": "01JE-05CL-CCF-MEX-TOL-010AW-2014-000",
     "Display Name": "2014-15 Deportivo Toluca Away Jersey (Signed by Team)",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -942,8 +909,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "Liga Mx",
@@ -952,7 +918,7 @@
     "Notes": "Framed"
   },
   {
-    "ID": "01JE-05CL-CCF-MEX-TOL-2025-005HO-000",
+    "ID": "01JE-05CL-CCF-MEX-TOL-005HO-2025-000",
     "Display Name": "2025-26 Deportivo Toluca Authentic Home Jersey - Bundle Box",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -970,8 +936,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "11th and 12th League Titles",
@@ -980,7 +945,7 @@
     "Notes": "Presale bundle (with bottle, in box)"
   },
   {
-    "ID": "01JE-05CL-CCF-MEX-TOL-2024-005HO-000",
+    "ID": "01JE-05CL-CCF-MEX-TOL-005HO-2024-000",
     "Display Name": "2024-25 Deportivo Toluca Home Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -998,8 +963,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -1008,7 +972,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-CCF-MEX-TOL-2023-005HO-000",
+    "ID": "01JE-05CL-CCF-MEX-TOL-005HO-2023-000",
     "Display Name": "2023-24 Deportivo Toluca Home Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -1026,8 +990,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -1036,7 +999,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-CCF-MEX-TOL-2020-005HO-000",
+    "ID": "01JE-05CL-CCF-MEX-TOL-005HO-2020-000",
     "Display Name": "2020-21 Deportivo Toluca Home Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -1054,8 +1017,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -1064,7 +1026,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-CCF-MEX-TOL-2019-005HO-000",
+    "ID": "01JE-05CL-CCF-MEX-TOL-005HO-2019-000",
     "Display Name": "2019-20 Deportivo Toluca Authentic Home Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -1082,8 +1044,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -1092,7 +1053,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-CCF-MEX-TOL-2018-005HO-000",
+    "ID": "01JE-05CL-CCF-MEX-TOL-005HO-2018-000",
     "Display Name": "2018-19 Deportivo Toluca Home Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -1110,8 +1071,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -1120,7 +1080,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-CCF-MEX-TOL-2016-045SP-000",
+    "ID": "01JE-05CL-CCF-MEX-TOL-045SP-2016-000",
     "Display Name": "2016-17 Deportivo Toluca 100th Anniversary Authentic Special Jersey - In Box",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -1138,8 +1098,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -1148,7 +1107,7 @@
     "Notes": "No. 2778/3000"
   },
   {
-    "ID": "01JE-05CL-CCF-MEX-TOL-2016-005HO-000",
+    "ID": "01JE-05CL-CCF-MEX-TOL-005HO-2016-000",
     "Display Name": "2016-17 Deportivo Toluca Home Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -1166,8 +1125,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "100th Anniversary",
@@ -1176,7 +1134,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-CCF-MEX-TOL-2014-005HO-000",
+    "ID": "01JE-05CL-CCF-MEX-TOL-005HO-2014-000",
     "Display Name": "2014-15 Deportivo Toluca Home Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -1194,8 +1152,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "Liga Mx",
@@ -1204,7 +1161,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-CCF-CAN-OTT-2020-010AW-000",
+    "ID": "01JE-05CL-CCF-CAN-OTT-010AW-2020-000",
     "Display Name": "2020 Atlético Ottawa Away Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -1222,8 +1179,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -1232,7 +1188,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-10CO-CCF-USA-ALL-2021-005HO-000",
+    "ID": "01JE-10CO-CCF-USA-ALL-005HO-2021-000",
     "Display Name": "2021 MLS All-Stars Home Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -1250,8 +1206,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -1260,7 +1215,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-CCF-USA-MIA-2021-010AW-000",
+    "ID": "01JE-05CL-CCF-USA-MIA-010AW-2021-000",
     "Display Name": "2021 Inter Miami Away Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -1278,8 +1233,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -1288,7 +1242,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-CCF-USA-ATL-2017-010AW-000",
+    "ID": "01JE-05CL-CCF-USA-ATL-010AW-2017-000",
     "Display Name": "2017 Atlanta United Authentic Away Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -1306,8 +1260,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "MLS",
@@ -1316,7 +1269,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-CCF-USA-LAF-2018-005HO-000",
+    "ID": "01JE-05CL-CCF-USA-LAF-005HO-2018-000",
     "Display Name": "2018 Los Angeles FC Home Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -1334,8 +1287,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "MLS",
@@ -1344,7 +1296,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-UEF-GER-DOR-2025-065LF-000",
+    "ID": "01JE-05CL-UEF-GER-DOR-065LF-2025-000",
     "Display Name": "2025 Borussia Dortmund Lifestyle L/S Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -1362,8 +1314,7 @@
     "Collaboration": "KidSuper",
     "Size": "S",
     "Sleeves": "Long",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -1372,7 +1323,7 @@
     "Notes": "KidSuper collaboration (lifestyle) for Club World Cup"
   },
   {
-    "ID": "01JE-05CL-UEF-GER-DOR-2024-045SP-000",
+    "ID": "01JE-05CL-UEF-GER-DOR-045SP-2024-000",
     "Display Name": "2024-25 Borussia Dortmund Special L/S Jersey - In Box",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -1390,8 +1341,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Long",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -1400,7 +1350,7 @@
     "Notes": "Inspired by 1994 neon kit"
   },
   {
-    "ID": "01JE-05CL-UEF-GER-DOR-2022-045SP-000",
+    "ID": "01JE-05CL-UEF-GER-DOR-045SP-2022-000",
     "Display Name": "2022-23 Borussia Dortmund Special Jersey - In Box",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -1418,8 +1368,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -1428,7 +1377,7 @@
     "Notes": "\"Kohle und Stahl\" edition"
   },
   {
-    "ID": "01JE-05CL-UEF-GER-DOR-2020-045SP-000",
+    "ID": "01JE-05CL-UEF-GER-DOR-045SP-2020-000",
     "Display Name": "2020-21 Borussia Dortmund Special Jersey - In Box",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -1446,8 +1395,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -1456,7 +1404,7 @@
     "Notes": "\"Null Ne90n\" edition"
   },
   {
-    "ID": "01JE-05CL-UEF-GER-DOR-2024-015TH-000",
+    "ID": "01JE-05CL-UEF-GER-DOR-015TH-2024-000",
     "Display Name": "2024-25 Borussia Dortmund Third Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -1474,8 +1422,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -1484,7 +1431,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-UEF-GER-DOR-2024-010AW-000",
+    "ID": "01JE-05CL-UEF-GER-DOR-010AW-2024-000",
     "Display Name": "2024-25 Borussia Dortmund Away Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -1502,8 +1449,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -1512,7 +1458,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-UEF-GER-DOR-2019-010AW-000",
+    "ID": "01JE-05CL-UEF-GER-DOR-010AW-2019-000",
     "Display Name": "2019-20 Borussia Dortmund Away Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -1530,8 +1476,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -1540,7 +1485,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-UEF-GER-DOR-2016-010AW-000",
+    "ID": "01JE-05CL-UEF-GER-DOR-010AW-2016-000",
     "Display Name": "2016-17 Borussia Dortmund Away Jersey Reus #11",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -1558,8 +1503,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "Marco Reus",
-    "Number": "11",
+    "Person": "Marco Reus",
     "Print": "Reus #11",
     "Nameset": "Generic",
     "Patch": "-",
@@ -1568,7 +1512,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-UEF-GER-DOR-2011-010AW-000",
+    "ID": "01JE-05CL-UEF-GER-DOR-010AW-2011-000",
     "Display Name": "2011-12 Borussia Dortmund Away Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -1586,8 +1530,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -1596,7 +1539,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-UEF-GER-DOR-2025-025CH-000",
+    "ID": "01JE-05CL-UEF-GER-DOR-025CH-2025-000",
     "Display Name": "2025-26 Borussia Dortmund Cup Home Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -1614,8 +1557,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -1624,7 +1566,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-UEF-GER-DOR-2023-025CH-000",
+    "ID": "01JE-05CL-UEF-GER-DOR-025CH-2023-000",
     "Display Name": "2023-24 Borussia Dortmund Cup Home Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -1642,8 +1584,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -1652,7 +1593,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-UEF-GER-DOR-2021-025CH-000",
+    "ID": "01JE-05CL-UEF-GER-DOR-025CH-2021-000",
     "Display Name": "2021-22 Borussia Dortmund Cup Home Jersey Haaland #9",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -1670,8 +1611,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "Erling Haaland",
-    "Number": "9",
+    "Person": "Erling Haaland",
     "Print": "Haaland #9",
     "Nameset": "Official",
     "Patch": "-",
@@ -1680,7 +1620,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-UEF-GER-DOR-2019-025CH-000",
+    "ID": "01JE-05CL-UEF-GER-DOR-025CH-2019-000",
     "Display Name": "2019-20 Borussia Dortmund Cup Home Jersey Witsel #28",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -1698,8 +1638,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "Axel Witsel",
-    "Number": "28",
+    "Person": "Axel Witsel",
     "Print": "Witsel #28",
     "Nameset": "Official",
     "Patch": "-",
@@ -1708,7 +1647,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-UEF-GER-DOR-2018-025CH-000",
+    "ID": "01JE-05CL-UEF-GER-DOR-025CH-2018-000",
     "Display Name": "2018-19 Borussia Dortmund Cup Home Jersey M.Götze #10",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -1726,8 +1665,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "Mario Götze",
-    "Number": "10",
+    "Person": "Mario Götze",
     "Print": "M.Götze #10",
     "Nameset": "Official",
     "Patch": "Champions League",
@@ -1736,7 +1674,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-UEF-GER-DOR-2017-025CH-000",
+    "ID": "01JE-05CL-UEF-GER-DOR-025CH-2017-000",
     "Display Name": "2017-18 Borussia Dortmund Cup Home Jersey Weigl #33",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -1754,8 +1692,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "Julian Weigl",
-    "Number": "33",
+    "Person": "Julian Weigl",
     "Print": "Weigl #33",
     "Nameset": "Official",
     "Patch": "Champions League",
@@ -1764,7 +1701,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-UEF-GER-DOR-2016-025CH-000",
+    "ID": "01JE-05CL-UEF-GER-DOR-025CH-2016-000",
     "Display Name": "2016-17 Borussia Dortmund Cup Home Jersey Shain #15",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -1782,8 +1719,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "Everardo Shain",
-    "Number": "15",
+    "Person": "Everardo Shain",
     "Print": "Shain #15",
     "Nameset": "Official",
     "Patch": "Champions League",
@@ -1792,7 +1728,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-UEF-GER-DOR-2025-005HO-000",
+    "ID": "01JE-05CL-UEF-GER-DOR-005HO-2025-000",
     "Display Name": "2025-26 Borussia Dortmund Home Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -1810,8 +1746,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -1820,7 +1755,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-UEF-GER-DOR-2024-005HO-000",
+    "ID": "01JE-05CL-UEF-GER-DOR-005HO-2024-000",
     "Display Name": "2024-25 Borussia Dortmund Home Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -1838,8 +1773,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -1848,7 +1782,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-UEF-GER-DOR-2020-005HO-000",
+    "ID": "01JE-05CL-UEF-GER-DOR-005HO-2020-000",
     "Display Name": "2020-21 Borussia Dortmund Home Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -1866,8 +1800,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -1876,7 +1809,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-UEF-GER-DOR-2019-005HO-000",
+    "ID": "01JE-05CL-UEF-GER-DOR-005HO-2019-000",
     "Display Name": "2019-20 Borussia Dortmund Home Jersey Brandt #19",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -1894,8 +1827,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "Julian Brandt",
-    "Number": "19",
+    "Person": "Julian Brandt",
     "Print": "Brandt #19",
     "Nameset": "Official",
     "Patch": "-",
@@ -1904,7 +1836,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-UEF-GER-DOR-2018-005HO-000",
+    "ID": "01JE-05CL-UEF-GER-DOR-005HO-2018-000",
     "Display Name": "2018-19 Borussia Dortmund Home Jersey Schmelzer #29",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -1922,8 +1854,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "Marcel Schmelzer",
-    "Number": "29",
+    "Person": "Marcel Schmelzer",
     "Print": "Schmelzer #29",
     "Nameset": "Official",
     "Patch": "-",
@@ -1932,7 +1863,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-UEF-GER-DOR-2018-005HO-002",
+    "ID": "01JE-05CL-UEF-GER-DOR-005HO-2018-002",
     "Display Name": "2018-19 Borussia Dortmund Home Jersey Schmelzer #29 (Misprint)",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -1950,8 +1881,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "Marcel Schmelzer",
-    "Number": "29",
+    "Person": "Marcel Schmelzer",
     "Print": "Schmelzer #29",
     "Nameset": "Official",
     "Patch": "-",
@@ -1960,7 +1890,7 @@
     "Notes": "Nameset misprint. With tags"
   },
   {
-    "ID": "01JE-05CL-UEF-GER-DOR-2017-005HO-000",
+    "ID": "01JE-05CL-UEF-GER-DOR-005HO-2017-000",
     "Display Name": "2017-18 Borussia Dortmund Home Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -1978,8 +1908,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -1988,7 +1917,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-UEF-GER-DOR-2016-005HO-000",
+    "ID": "01JE-05CL-UEF-GER-DOR-005HO-2016-000",
     "Display Name": "2016-17 Borussia Dortmund Home Jersey Shain #15",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -2006,8 +1935,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "Everardo Shain",
-    "Number": "15",
+    "Person": "Everardo Shain",
     "Print": "Shain #15",
     "Nameset": "Generic",
     "Patch": "-",
@@ -2016,7 +1944,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-UEF-GER-DOR-2015-005HO-000",
+    "ID": "01JE-05CL-UEF-GER-DOR-005HO-2015-000",
     "Display Name": "2015-16 Borussia Dortmund Home Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -2034,8 +1962,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -2044,7 +1971,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-UEF-GER-DOR-2013-005HO-000",
+    "ID": "01JE-05CL-UEF-GER-DOR-005HO-2013-000",
     "Display Name": "2013-14 Borussia Dortmund Home Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -2062,8 +1989,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -2072,7 +1998,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-UEF-GER-DOR-1996-005HO-000",
+    "ID": "01JE-05CL-UEF-GER-DOR-005HO-1996-000",
     "Display Name": "1996-97 Borussia Dortmund Home Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -2090,8 +2016,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -2100,7 +2025,7 @@
     "Notes": "Framed"
   },
   {
-    "ID": "01JE-05CL-UEF-GER-LEI-2017-005HO-000",
+    "ID": "01JE-05CL-UEF-GER-LEI-005HO-2017-000",
     "Display Name": "2017-18 RB Leipzig Home Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -2118,8 +2043,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -2128,7 +2052,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-UEF-GER-LEV-2015-005HO-000",
+    "ID": "01JE-05CL-UEF-GER-LEV-005HO-2015-000",
     "Display Name": "2015-16 Bayer 04 Leverkusen Home Jersey Chicharito #7",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -2146,8 +2070,7 @@
     "Collaboration": "-",
     "Size": "M",
     "Sleeves": "Short",
-    "Name": "Javier Hernández",
-    "Number": "7",
+    "Person": "Javier Hernández",
     "Print": "Chicharito #7",
     "Nameset": "Generic",
     "Patch": "-",
@@ -2156,7 +2079,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-UEF-GER-PAU-2016-015TH-000",
+    "ID": "01JE-05CL-UEF-GER-PAU-015TH-2016-000",
     "Display Name": "2016-17 FC St. Pauli Third Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -2174,8 +2097,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -2184,7 +2106,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-UEF-GER-PAU-2017-010AW-000",
+    "ID": "01JE-05CL-UEF-GER-PAU-010AW-2017-000",
     "Display Name": "2017-18 FC St. Pauli Away Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -2202,8 +2124,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -2212,7 +2133,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-UEF-SPA-BET-2018-010AW-000",
+    "ID": "01JE-05CL-UEF-SPA-BET-010AW-2018-000",
     "Display Name": "2018-19 Real Betis Authentic Away Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -2230,8 +2151,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -2240,7 +2160,7 @@
     "Notes": "Retail sponsorless version"
   },
   {
-    "ID": "01JE-05CL-UEF-BEL-BRU-2017-045SP-000",
+    "ID": "01JE-05CL-UEF-BEL-BRU-045SP-2017-000",
     "Display Name": "2017-18 Club Brugge Special Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -2258,8 +2178,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -2268,7 +2187,7 @@
     "Notes": "Play-off edition. Retail sponsorless version"
   },
   {
-    "ID": "01JE-05CL-UEF-ITA-PAR-2013-045SP-000",
+    "ID": "01JE-05CL-UEF-ITA-PAR-045SP-2013-000",
     "Display Name": "2013-14 Parma Calcio 100th Anniversary Special L/S Jersey - In Box",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -2286,8 +2205,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Long",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -2296,7 +2214,7 @@
     "Notes": "No. 768"
   },
   {
-    "ID": "01JE-05CL-UEF-ITA-LAZ-2020-025CH-000",
+    "ID": "01JE-05CL-UEF-ITA-LAZ-025CH-2020-000",
     "Display Name": "2020-21 SS Lazio Cup Home Jersey - In Box",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -2314,8 +2232,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -2324,7 +2241,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-UEF-ITA-NAP-2018-030CA-000",
+    "ID": "01JE-05CL-UEF-ITA-NAP-030CA-2018-000",
     "Display Name": "2018-19 SSC Napoli Authentic Cup Away Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -2342,8 +2259,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -2352,7 +2268,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-UEF-ITA-NAP-2019-025CH-000",
+    "ID": "01JE-05CL-UEF-ITA-NAP-025CH-2019-000",
     "Display Name": "2019-20 SSC Napoli Authentic Cup Home Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -2370,8 +2286,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -2380,7 +2295,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-UEF-ITA-VEN-2021-005HO-000",
+    "ID": "01JE-05CL-UEF-ITA-VEN-005HO-2021-000",
     "Display Name": "2021-22 Venezia FC Home Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -2398,8 +2313,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -2408,7 +2322,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-UEF-ITA-GEN-2019-005HO-000",
+    "ID": "01JE-05CL-UEF-ITA-GEN-005HO-2019-000",
     "Display Name": "2019-20 Genoa CFC Authentic Home Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -2426,8 +2340,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -2436,7 +2349,7 @@
     "Notes": "Retail sponsorless version"
   },
   {
-    "ID": "01JE-05CL-UEF-ITA-CAG-2019-045SP-000",
+    "ID": "01JE-05CL-UEF-ITA-CAG-045SP-2019-000",
     "Display Name": "2019-20 Cagliari Calcio 100th Anniversary Special Jersey - In Box",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -2454,8 +2367,7 @@
     "Collaboration": "Antonio Marras",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -2464,7 +2376,7 @@
     "Notes": "No. 0669/2020"
   },
   {
-    "ID": "01JE-05CL-UEF-ITA-FIO-2017-005HO-000",
+    "ID": "01JE-05CL-UEF-ITA-FIO-005HO-2017-000",
     "Display Name": "2017-18 ACF Fiorentina Home Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -2482,8 +2394,7 @@
     "Collaboration": "-",
     "Size": "M",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -2492,7 +2403,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-UEF-ITA-ROM-2025-015TH-000",
+    "ID": "01JE-05CL-UEF-ITA-ROM-015TH-2025-000",
     "Display Name": "2025-26 AS Roma Third Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -2510,8 +2421,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -2520,7 +2430,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-UEF-ITA-ROM-2020-015TH-000",
+    "ID": "01JE-05CL-UEF-ITA-ROM-015TH-2020-000",
     "Display Name": "2020-21 AS Roma Third Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -2538,8 +2448,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -2548,7 +2457,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-UEF-ITA-ROM-2017-015TH-000",
+    "ID": "01JE-05CL-UEF-ITA-ROM-015TH-2017-000",
     "Display Name": "2017-18 AS Roma Third Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -2566,8 +2475,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -2576,7 +2484,7 @@
     "Notes": "Retail sponsorless version"
   },
   {
-    "ID": "01JE-05CL-UEF-ITA-ROM-2016-010AW-000",
+    "ID": "01JE-05CL-UEF-ITA-ROM-010AW-2016-000",
     "Display Name": "2016-17 AS Roma Away Jersey Totti Aeterno #X",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -2594,8 +2502,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "Francesco Totti",
-    "Number": "X",
+    "Person": "Francesco Totti",
     "Print": "Totti Aeterno #X",
     "Nameset": "Commemorative",
     "Patch": "Totti Farewell",
@@ -2604,7 +2511,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-UEF-ITA-ROM-2015-015TH-000",
+    "ID": "01JE-05CL-UEF-ITA-ROM-015TH-2015-000",
     "Display Name": "2015-16 AS Roma Third Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -2622,8 +2529,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -2632,7 +2538,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-UEF-ITA-MIL-2024-020FO-000",
+    "ID": "01JE-05CL-UEF-ITA-MIL-020FO-2024-000",
     "Display Name": "2024-25 AC Milan Fourth Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -2650,8 +2556,7 @@
     "Collaboration": "Off-White",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -2660,7 +2565,7 @@
     "Notes": "Off-White collaboration. Includes Off-White plastic tag"
   },
   {
-    "ID": "01JE-05CL-UEF-ITA-MIL-2024-045SP-000",
+    "ID": "01JE-05CL-UEF-ITA-MIL-045SP-2024-000",
     "Display Name": "2024-25 AC Milan 125th Anniversary Special L/S Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -2678,8 +2583,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Long",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -2688,7 +2592,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-UEF-ITA-INT-2018-015TH-000",
+    "ID": "01JE-05CL-UEF-ITA-INT-015TH-2018-000",
     "Display Name": "2018-19 Inter Milan Third Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -2706,8 +2610,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -2716,7 +2619,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-UEF-ITA-JUV-2024-015TH-000",
+    "ID": "01JE-05CL-UEF-ITA-JUV-015TH-2024-000",
     "Display Name": "2024-25 Juventus FC Third Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -2734,8 +2637,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -2744,7 +2646,7 @@
     "Notes": "Retail sponsorless version"
   },
   {
-    "ID": "01JE-05CL-UEF-ITA-JUV-2017-005HO-000",
+    "ID": "01JE-05CL-UEF-ITA-JUV-005HO-2017-000",
     "Display Name": "2017-18 Juventus FC Home Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -2762,8 +2664,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -2772,7 +2673,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-UEF-FRA-LYO-2025-045SP-000",
+    "ID": "01JE-05CL-UEF-FRA-LYO-045SP-2025-000",
     "Display Name": "2025-26 Olympique Lyonnais 75th Anniversary Special Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -2790,8 +2691,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -2800,7 +2700,7 @@
     "Notes": "Retail sponsorless version"
   },
   {
-    "ID": "01JE-05CL-UEF-FRA-PSG-2017-015TH-000",
+    "ID": "01JE-05CL-UEF-FRA-PSG-015TH-2017-000",
     "Display Name": "2017-18 Paris Saint-Germain Third Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -2818,8 +2718,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -2828,7 +2727,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-UEF-FRA-BAS-2015-015TH-000",
+    "ID": "01JE-05CL-UEF-FRA-BAS-015TH-2015-000",
     "Display Name": "2015-16 SC Bastia Authentic Third Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -2846,8 +2745,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -2856,7 +2754,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-UEF-ENG-WHU-2016-045SP-000",
+    "ID": "01JE-05CL-UEF-ENG-WHU-045SP-2016-000",
     "Display Name": "2016-17 West Ham United Special Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -2874,8 +2772,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -2884,7 +2781,7 @@
     "Notes": "\"Thames Ironworks FC\" Commemorative"
   },
   {
-    "ID": "01JE-05CL-UEF-ENG-BUR-2018-010AW-000",
+    "ID": "01JE-05CL-UEF-ENG-BUR-010AW-2018-000",
     "Display Name": "2018-19 Burnley FC Away Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -2902,8 +2799,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -2912,7 +2808,7 @@
     "Notes": "Retail sponsorless version"
   },
   {
-    "ID": "01JE-05CL-UEF-ENG-MUN-2017-010AW-000",
+    "ID": "01JE-05CL-UEF-ENG-MUN-010AW-2017-000",
     "Display Name": "2017-18 Manchester United Away Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -2930,8 +2826,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -2940,7 +2835,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-UEF-ENG-ARS-2018-015TH-000",
+    "ID": "01JE-05CL-UEF-ENG-ARS-015TH-2018-000",
     "Display Name": "2018-19 Arsenal FC Third Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -2958,8 +2853,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -2968,7 +2862,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-UEF-ENG-LEI-2016-010AW-000",
+    "ID": "01JE-05CL-UEF-ENG-LEI-010AW-2016-000",
     "Display Name": "2016-17 Leicester City Away Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -2986,8 +2880,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -2996,7 +2889,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-UEF-ENG-LEI-2017-010AW-000",
+    "ID": "01JE-05CL-UEF-ENG-LEI-010AW-2017-000",
     "Display Name": "2017-18 Leicester City Away Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -3014,8 +2907,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -3024,7 +2916,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-UEF-ENG-LEI-2017-015TH-000",
+    "ID": "01JE-05CL-UEF-ENG-LEI-015TH-2017-000",
     "Display Name": "2017-18 Leicester City Third Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -3042,8 +2934,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -3052,7 +2943,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-UEF-ENG-MCI-2019-010AW-000",
+    "ID": "01JE-05CL-UEF-ENG-MCI-010AW-2019-000",
     "Display Name": "2019-20 Manchester City Away Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -3070,8 +2961,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -3080,7 +2970,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-UEF-ENG-LIV-2019-045SP-000",
+    "ID": "01JE-05CL-UEF-ENG-LIV-045SP-2019-000",
     "Display Name": "2019-20 Liverpool FC Special Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -3098,8 +2988,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -3108,7 +2997,7 @@
     "Notes": "“Six Times” edition commemorating the club’s six Champions League titles"
   },
   {
-    "ID": "01JE-05CL-UEF-ENG-LIV-2018-015TH-000",
+    "ID": "01JE-05CL-UEF-ENG-LIV-015TH-2018-000",
     "Display Name": "2018-19 Liverpool FC Third Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -3126,8 +3015,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -3136,7 +3024,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-UEF-ENG-LIV-2018-005HO-000",
+    "ID": "01JE-05CL-UEF-ENG-LIV-005HO-2018-000",
     "Display Name": "2018-19 Liverpool FC Home L/S Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -3154,8 +3042,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Long",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -3164,7 +3051,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-UEF-NET-PSV-2017-010AW-000",
+    "ID": "01JE-05CL-UEF-NET-PSV-010AW-2017-000",
     "Display Name": "2017-18 PSV Away Jersey H. Lozano #11",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -3182,8 +3069,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "Hirving Lozano",
-    "Number": "11",
+    "Person": "Hirving Lozano",
     "Print": "H. Lozano #11",
     "Nameset": "Official",
     "Patch": "Philips Founder of PSV",
@@ -3192,7 +3078,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-UEF-NET-PSV-2018-005HO-000",
+    "ID": "01JE-05CL-UEF-NET-PSV-005HO-2018-000",
     "Display Name": "2018-19 PSV Home Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -3210,8 +3096,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -3220,7 +3105,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-UEF-NET-AJA-2024-045SP-000",
+    "ID": "01JE-05CL-UEF-NET-AJA-045SP-2024-000",
     "Display Name": "2024-25 Ajax Amsterdam 125th Anniversary Special L/S Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -3238,8 +3123,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Long",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -3248,7 +3132,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-UEF-POR-PCP-2016-005HO-000",
+    "ID": "01JE-05CL-UEF-POR-PCP-005HO-2016-000",
     "Display Name": "2016-17 FC Porto Authentic Home Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -3266,8 +3150,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -3276,7 +3159,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-UEF-TUR-GAL-2018-015TH-000",
+    "ID": "01JE-05CL-UEF-TUR-GAL-015TH-2018-000",
     "Display Name": "2018-19 Galatasaray Third Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -3294,8 +3177,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -3304,7 +3186,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-CCF-MEX-MEX-2024-010AW-000",
+    "ID": "01JE-01NA-CCF-MEX-MEX-010AW-2024-000",
     "Display Name": "2024 Mexico Away L/S Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -3322,8 +3204,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Long",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -3332,7 +3213,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-CCF-MEX-MEX-2022-010AW-000",
+    "ID": "01JE-01NA-CCF-MEX-MEX-010AW-2022-000",
     "Display Name": "2022 Mexico Away Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -3350,8 +3231,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -3360,7 +3240,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-CCF-MEX-MEX-2020-010AW-000",
+    "ID": "01JE-01NA-CCF-MEX-MEX-010AW-2020-000",
     "Display Name": "2020 Mexico Away Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -3378,8 +3258,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -3388,7 +3267,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-CCF-MEX-MEX-2018-010AW-000",
+    "ID": "01JE-01NA-CCF-MEX-MEX-010AW-2018-000",
     "Display Name": "2018 Mexico Away Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -3406,8 +3285,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -3416,7 +3294,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-CCF-MEX-MEX-2025-005HO-000",
+    "ID": "01JE-01NA-CCF-MEX-MEX-005HO-2025-000",
     "Display Name": "2025 Mexico Authentic Home L/S Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -3434,8 +3312,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Long",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -3444,7 +3321,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-CCF-MEX-MEX-2024-005HO-000",
+    "ID": "01JE-01NA-CCF-MEX-MEX-005HO-2024-000",
     "Display Name": "2024 Mexico Home Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -3462,8 +3339,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -3472,7 +3348,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-CCF-MEX-MEX-2022-005HO-000",
+    "ID": "01JE-01NA-CCF-MEX-MEX-005HO-2022-000",
     "Display Name": "2022 Mexico Home Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -3490,8 +3366,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -3500,7 +3375,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-CCF-MEX-MEX-2021-005HO-000",
+    "ID": "01JE-01NA-CCF-MEX-MEX-005HO-2021-000",
     "Display Name": "2021 Mexico Home Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -3518,8 +3393,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -3528,7 +3402,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-CCF-MEX-MEX-2019-005HO-000",
+    "ID": "01JE-01NA-CCF-MEX-MEX-005HO-2019-000",
     "Display Name": "2019 Mexico Home Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -3546,8 +3420,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -3556,7 +3429,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-CCF-MEX-MEX-2018-005HO-000",
+    "ID": "01JE-01NA-CCF-MEX-MEX-005HO-2018-000",
     "Display Name": "2018 Mexico Home Jersey Chicharito #14",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -3574,8 +3447,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "Javier Hernández",
-    "Number": "14",
+    "Person": "Javier Hernández",
     "Print": "Chicharito #14",
     "Nameset": "Official",
     "Patch": "-",
@@ -3584,7 +3456,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-CCF-MEX-MEX-2010-005HO-000",
+    "ID": "01JE-01NA-CCF-MEX-MEX-005HO-2010-000",
     "Display Name": "2010 Mexico Home Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -3602,8 +3474,7 @@
     "Collaboration": "-",
     "Size": "9-10Y",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -3612,7 +3483,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-CCF-USA-USA-2019-010AW-000",
+    "ID": "01JE-01NA-CCF-USA-USA-010AW-2019-000",
     "Display Name": "2019 USA Authentic Away Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -3630,8 +3501,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -3640,7 +3510,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-CCF-USA-USA-2018-010AW-000",
+    "ID": "01JE-01NA-CCF-USA-USA-010AW-2018-000",
     "Display Name": "2018 USA Away Jersey Pulisic #10",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -3658,8 +3528,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "Christian Pulisic",
-    "Number": "10",
+    "Person": "Christian Pulisic",
     "Print": "Pulisic #10",
     "Nameset": "Official",
     "Patch": "-",
@@ -3668,7 +3537,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-CCF-USA-USA-2018-005HO-000",
+    "ID": "01JE-01NA-CCF-USA-USA-005HO-2018-000",
     "Display Name": "2018 USA Home Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -3686,8 +3555,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -3696,7 +3564,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-CCF-JAM-JAM-2023-010AW-000",
+    "ID": "01JE-01NA-CCF-JAM-JAM-010AW-2023-000",
     "Display Name": "2023 Jamaica Away Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -3714,8 +3582,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -3724,7 +3591,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-CCF-JAM-JAM-2023-005HO-000",
+    "ID": "01JE-01NA-CCF-JAM-JAM-005HO-2023-000",
     "Display Name": "2023 Jamaica Home Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -3742,8 +3609,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -3752,7 +3618,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-CCF-JAM-JAM-2016-010AW-000",
+    "ID": "01JE-01NA-CCF-JAM-JAM-010AW-2016-000",
     "Display Name": "2016 Jamaica Away Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -3770,8 +3636,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -3780,7 +3645,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-CMB-BRA-BRA-2018-010AW-000",
+    "ID": "01JE-01NA-CMB-BRA-BRA-010AW-2018-000",
     "Display Name": "2018 Brazil Away Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -3798,8 +3663,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -3808,7 +3672,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-UEF-GER-GER-2024-010AW-000",
+    "ID": "01JE-01NA-UEF-GER-GER-010AW-2024-000",
     "Display Name": "2024 Germany Away Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -3826,8 +3690,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -3836,7 +3699,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-UEF-GER-GER-2020-010AW-000",
+    "ID": "01JE-01NA-UEF-GER-GER-010AW-2020-000",
     "Display Name": "2020 Germany Away Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -3854,8 +3717,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -3864,7 +3726,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-UEF-GER-GER-2018-010AW-000",
+    "ID": "01JE-01NA-UEF-GER-GER-010AW-2018-000",
     "Display Name": "2018 Germany Away Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -3882,8 +3744,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "FIFA World Champions 2014",
@@ -3892,7 +3753,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-UEF-GER-GER-2016-010AW-000",
+    "ID": "01JE-01NA-UEF-GER-GER-010AW-2016-000",
     "Display Name": "2016 Germany Away Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -3910,8 +3771,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "FIFA World Champions 2014",
@@ -3920,7 +3780,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-UEF-GER-GER-1996-010AW-000",
+    "ID": "01JE-01NA-UEF-GER-GER-010AW-1996-000",
     "Display Name": "1996 Germany Reissue Away Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -3938,8 +3798,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -3948,7 +3807,7 @@
     "Notes": "Reissued in 2023"
   },
   {
-    "ID": "01JE-01NA-UEF-GER-GER-2025-045SP-000",
+    "ID": "01JE-01NA-UEF-GER-GER-045SP-2025-000",
     "Display Name": "2025 Germany 125th Anniversary Special L/S Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -3966,8 +3825,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Long",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -3976,7 +3834,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-UEF-GER-GER-2024-005HO-000",
+    "ID": "01JE-01NA-UEF-GER-GER-005HO-2024-000",
     "Display Name": "2024 Germany Home Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -3994,8 +3852,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -4004,7 +3861,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-UEF-GER-GER-2022-005HO-000",
+    "ID": "01JE-01NA-UEF-GER-GER-005HO-2022-000",
     "Display Name": "2022 Germany Home Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -4022,8 +3879,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -4032,7 +3888,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-UEF-GER-GER-2020-005HO-000",
+    "ID": "01JE-01NA-UEF-GER-GER-005HO-2020-000",
     "Display Name": "2020 Germany Home Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -4050,8 +3906,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -4060,7 +3915,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-UEF-GER-GER-2018-005HO-000",
+    "ID": "01JE-01NA-UEF-GER-GER-005HO-2018-000",
     "Display Name": "2018 Germany Home Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -4078,8 +3933,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "FIFA World Champions 2014",
@@ -4088,7 +3942,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-UEF-BEL-BEL-2022-010AW-000",
+    "ID": "01JE-01NA-UEF-BEL-BEL-010AW-2022-000",
     "Display Name": "2022 Belgium Away Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -4106,8 +3960,7 @@
     "Collaboration": "Tomorrowland",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -4116,7 +3969,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-UEF-BEL-BEL-2020-005HO-000",
+    "ID": "01JE-01NA-UEF-BEL-BEL-005HO-2020-000",
     "Display Name": "2020 Belgium Home Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -4134,8 +3987,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -4144,7 +3996,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-UEF-BEL-BEL-2016-005HO-000",
+    "ID": "01JE-01NA-UEF-BEL-BEL-005HO-2016-000",
     "Display Name": "2016 Belgium Home Jersey Shain #15",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -4162,8 +4014,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "Everardo Shain",
-    "Number": "15",
+    "Person": "Everardo Shain",
     "Print": "Shain #15",
     "Nameset": "Generic",
     "Patch": "-",
@@ -4172,7 +4023,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-UEF-SPA-SPA-2018-010AW-000",
+    "ID": "01JE-01NA-UEF-SPA-SPA-010AW-2018-000",
     "Display Name": "2018 Spain Away Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -4190,8 +4041,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -4200,7 +4050,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-UEF-SPA-SPA-2016-010AW-000",
+    "ID": "01JE-01NA-UEF-SPA-SPA-010AW-2016-000",
     "Display Name": "2016 Spain Away Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -4218,8 +4068,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -4228,7 +4077,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-UEF-SPA-SPA-2013-005HO-000",
+    "ID": "01JE-01NA-UEF-SPA-SPA-005HO-2013-000",
     "Display Name": "2013 Spain Home Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -4246,8 +4095,7 @@
     "Collaboration": "-",
     "Size": "13-14Y",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "FIFA World Champions 2010",
@@ -4256,7 +4104,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-UEF-FRA-FRA-2018-010AW-000",
+    "ID": "01JE-01NA-UEF-FRA-FRA-010AW-2018-000",
     "Display Name": "2018 France Away Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -4274,8 +4122,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -4284,7 +4131,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-UEF-ITA-ITA-2019-015TH-000",
+    "ID": "01JE-01NA-UEF-ITA-ITA-015TH-2019-000",
     "Display Name": "2019-20 Italy Third Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -4302,8 +4149,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -4312,7 +4158,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-UEF-ITA-ITA-2020-010AW-000",
+    "ID": "01JE-01NA-UEF-ITA-ITA-010AW-2020-000",
     "Display Name": "2020 Italy Away Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -4330,8 +4176,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -4340,7 +4185,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-UEF-ITA-ITA-2016-010AW-000",
+    "ID": "01JE-01NA-UEF-ITA-ITA-010AW-2016-000",
     "Display Name": "2016-17 Italy Away Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -4358,8 +4203,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -4368,7 +4212,7 @@
     "Notes": "\"2006-2016 Tribute\" edition"
   },
   {
-    "ID": "01JE-01NA-UEF-ITA-ITA-2016-010AW-001",
+    "ID": "01JE-01NA-UEF-ITA-ITA-010AW-2016-001",
     "Display Name": "2016 Italy Away Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -4386,8 +4230,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -4396,7 +4239,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-UEF-SCO-SCO-2018-005HO-000",
+    "ID": "01JE-01NA-UEF-SCO-SCO-005HO-2018-000",
     "Display Name": "2018 Scotland Home Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -4414,8 +4257,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -4424,7 +4266,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-UEF-SCO-SCO-2014-005HO-000",
+    "ID": "01JE-01NA-UEF-SCO-SCO-005HO-2014-000",
     "Display Name": "2014 Scotland Authentic Home Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -4442,8 +4284,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -4452,7 +4293,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-UEF-WAL-WAL-2018-005HO-000",
+    "ID": "01JE-01NA-UEF-WAL-WAL-005HO-2018-000",
     "Display Name": "2018 Wales Home Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -4470,8 +4311,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -4480,7 +4320,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-UEF-ENG-ENG-2018-010AW-000",
+    "ID": "01JE-01NA-UEF-ENG-ENG-010AW-2018-000",
     "Display Name": "2018 England Away Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -4498,8 +4338,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -4508,7 +4347,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-UEF-GRE-GRE-2025-010AW-000",
+    "ID": "01JE-01NA-UEF-GRE-GRE-010AW-2025-000",
     "Display Name": "2025 Greenland Away Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -4526,8 +4365,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -4536,7 +4374,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-UEF-ICE-ICE-2018-005HO-000",
+    "ID": "01JE-01NA-UEF-ICE-ICE-005HO-2018-000",
     "Display Name": "2018 Iceland Home Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -4554,8 +4392,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -4564,7 +4401,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-UEF-SWE-SWE-2016-010AW-000",
+    "ID": "01JE-01NA-UEF-SWE-SWE-010AW-2016-000",
     "Display Name": "2016 Sweden Away Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -4582,8 +4419,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -4592,7 +4428,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-UEF-NOR-NOR-2020-010AW-000",
+    "ID": "01JE-01NA-UEF-NOR-NOR-010AW-2020-000",
     "Display Name": "2020 Norway Away Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -4610,8 +4446,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -4620,7 +4455,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-UEF-DEN-DEN-2016-010AW-000",
+    "ID": "01JE-01NA-UEF-DEN-DEN-010AW-2016-000",
     "Display Name": "2016-17 Denmark Away Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -4638,8 +4473,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -4648,7 +4482,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-UEF-DEN-DEN-2018-005HO-000",
+    "ID": "01JE-01NA-UEF-DEN-DEN-005HO-2018-000",
     "Display Name": "2018 Denmark Home Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -4666,8 +4500,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -4676,7 +4509,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-UEF-SWI-SWI-2018-005HO-000",
+    "ID": "01JE-01NA-UEF-SWI-SWI-005HO-2018-000",
     "Display Name": "2018 Switzerland Home Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -4694,8 +4527,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -4704,7 +4536,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-UEF-AUS-AUS-2020-005HO-000",
+    "ID": "01JE-01NA-UEF-AUS-AUS-005HO-2020-000",
     "Display Name": "2020 Austria Home Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -4722,8 +4554,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -4732,7 +4563,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-UEF-AUS-AUS-2018-005HO-000",
+    "ID": "01JE-01NA-UEF-AUS-AUS-005HO-2018-000",
     "Display Name": "2018 Austria Home Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -4750,8 +4581,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -4760,7 +4590,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-UEF-ALB-ALB-2017-015TH-000",
+    "ID": "01JE-01NA-UEF-ALB-ALB-015TH-2017-000",
     "Display Name": "2017 Albania Third Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -4778,8 +4608,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -4788,7 +4617,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-UEF-ALB-ALB-2016-005HO-000",
+    "ID": "01JE-01NA-UEF-ALB-ALB-005HO-2016-000",
     "Display Name": "2016 Albania Home Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -4806,8 +4635,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -4816,7 +4644,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-UEF-CZE-CZE-2018-005HO-000",
+    "ID": "01JE-01NA-UEF-CZE-CZE-005HO-2018-000",
     "Display Name": "2018 Czech Republic Home Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -4834,8 +4662,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -4844,7 +4671,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-UEF-CZE-CZE-2016-005HO-000",
+    "ID": "01JE-01NA-UEF-CZE-CZE-005HO-2016-000",
     "Display Name": "2016 Czech Republic Home Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -4862,8 +4689,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -4872,7 +4698,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-UEF-CRO-CRO-2018-010AW-000",
+    "ID": "01JE-01NA-UEF-CRO-CRO-010AW-2018-000",
     "Display Name": "2018 Croatia Away Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -4890,8 +4716,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -4900,7 +4725,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-UEF-SER-SER-2020-010AW-000",
+    "ID": "01JE-01NA-UEF-SER-SER-010AW-2020-000",
     "Display Name": "2020 Serbia Away Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -4918,8 +4743,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -4928,7 +4752,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-UEF-SER-SER-2020-005HO-000",
+    "ID": "01JE-01NA-UEF-SER-SER-005HO-2020-000",
     "Display Name": "2020 Serbia Home Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -4946,8 +4770,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -4956,7 +4779,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-UEF-SLO-SLO-2016-010AW-000",
+    "ID": "01JE-01NA-UEF-SLO-SLO-010AW-2016-000",
     "Display Name": "2016 Slovenia Away Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -4974,8 +4797,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -4984,7 +4806,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-UEF-RUS-RUS-2018-010AW-000",
+    "ID": "01JE-01NA-UEF-RUS-RUS-010AW-2018-000",
     "Display Name": "2018 Russia Away Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -5002,8 +4824,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -5012,7 +4833,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-UEF-RUS-RUS-2016-010AW-000",
+    "ID": "01JE-01NA-UEF-RUS-RUS-010AW-2016-000",
     "Display Name": "2016 Russia Away Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -5030,8 +4851,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -5040,7 +4860,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-UEF-RUS-RUS-2018-005HO-000",
+    "ID": "01JE-01NA-UEF-RUS-RUS-005HO-2018-000",
     "Display Name": "2018 Russia Home Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -5058,8 +4878,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -5068,7 +4887,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-AFC-SKO-SKO-2020-010AW-000",
+    "ID": "01JE-01NA-AFC-SKO-SKO-010AW-2020-000",
     "Display Name": "2020 South Korea Away Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -5086,8 +4905,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -5096,7 +4914,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-AFC-JAP-JAP-2024-010AW-000",
+    "ID": "01JE-01NA-AFC-JAP-JAP-010AW-2024-000",
     "Display Name": "2024 Japan Away Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -5114,8 +4932,7 @@
     "Collaboration": "Y-3",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -5124,7 +4941,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-AFC-JAP-JAP-2016-010AW-000",
+    "ID": "01JE-01NA-AFC-JAP-JAP-010AW-2016-000",
     "Display Name": "2016 Japan Away Jersey Okazaki #9",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -5142,8 +4959,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "Shinji Okazaki",
-    "Number": "9",
+    "Person": "Shinji Okazaki",
     "Print": "Okazaki #9",
     "Nameset": "Official",
     "Patch": "-",
@@ -5152,7 +4968,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-AFC-JAP-JAP-2024-005HO-000",
+    "ID": "01JE-01NA-AFC-JAP-JAP-005HO-2024-000",
     "Display Name": "2024 Japan Home Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -5170,8 +4986,7 @@
     "Collaboration": "Y-3",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -5180,7 +4995,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-AFC-JAP-JAP-2020-005HO-000",
+    "ID": "01JE-01NA-AFC-JAP-JAP-005HO-2020-000",
     "Display Name": "2020 Japan Home Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -5198,8 +5013,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -5208,7 +5022,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-CAF-IVO-IVO-2019-005HO-000",
+    "ID": "01JE-01NA-CAF-IVO-IVO-005HO-2019-000",
     "Display Name": "2019 Ivory Coast Home Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -5226,8 +5040,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -5236,7 +5049,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-CAF-GHA-GHA-2019-010AW-000",
+    "ID": "01JE-01NA-CAF-GHA-GHA-010AW-2019-000",
     "Display Name": "2019 Ghana Away Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -5254,8 +5067,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -5264,7 +5076,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-CAF-GHA-GHA-2012-005HO-000",
+    "ID": "01JE-01NA-CAF-GHA-GHA-005HO-2012-000",
     "Display Name": "2012 Ghana Home Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -5282,8 +5094,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -5292,7 +5103,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-CAF-CAM-CAM-2018-010AW-000",
+    "ID": "01JE-01NA-CAF-CAM-CAM-010AW-2018-000",
     "Display Name": "2018 Cameroon Away Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -5310,8 +5121,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -5320,7 +5130,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-CAF-CAM-CAM-2018-005HO-000",
+    "ID": "01JE-01NA-CAF-CAM-CAM-005HO-2018-000",
     "Display Name": "2018 Cameroon Authentic Home Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -5338,8 +5148,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -5348,7 +5157,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-CAF-SEN-SEN-2017-005HO-000",
+    "ID": "01JE-01NA-CAF-SEN-SEN-005HO-2017-000",
     "Display Name": "2017 Senegal Home Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -5366,8 +5175,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -5376,7 +5184,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-CAF-NIG-NIG-2020-005HO-000",
+    "ID": "01JE-01NA-CAF-NIG-NIG-005HO-2020-000",
     "Display Name": "2020 Nigeria Home Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -5394,8 +5202,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -5404,7 +5211,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-CAF-NIG-NIG-2018-005HO-000",
+    "ID": "01JE-01NA-CAF-NIG-NIG-005HO-2018-000",
     "Display Name": "2018 Nigeria Home Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -5422,8 +5229,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -5432,7 +5238,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-01NA-OFC-NZE-NZE-2018-010AW-000",
+    "ID": "01JE-01NA-OFC-NZE-NZE-010AW-2018-000",
     "Display Name": "2018 New Zealand Away Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -5450,8 +5256,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -5460,7 +5265,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-10CO-XXX-XXX-SOC-2018-005HO-000",
+    "ID": "01JE-10CO-XXX-XXX-SOC-005HO-2018-000",
     "Display Name": "2018 Soccer Aid World XI Home Jersey Bolt #9.58",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -5478,8 +5283,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "Usain Bolt",
-    "Number": "9.58",
+    "Person": "Usain Bolt",
     "Print": "Bolt #9.58",
     "Nameset": "Official",
     "Patch": "-",
@@ -5488,7 +5292,7 @@
     "Notes": "-"
   },
   {
-    "ID": "01JE-05CL-XXX-SPA-PIO-2024-005HO-000",
+    "ID": "01JE-05CL-XXX-SPA-PIO-005HO-2024-000",
     "Display Name": "2024 PIO FC Home Jersey",
     "Category": "Apparel",
     "Product": "Jersey",
@@ -5506,8 +5310,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "Short",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -5516,7 +5319,7 @@
     "Notes": "-"
   },
   {
-    "ID": "25SC-15EV-UEF-GER-BUN-2024-065LF-000",
+    "ID": "25SC-15EV-UEF-GER-BUN-065LF-2024-000",
     "Display Name": "2024-25 Bundesliga Borussia Dortmund vs. Union Berlin Scarf",
     "Category": "Apparel",
     "Product": "Scarf",
@@ -5534,8 +5337,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -5544,7 +5346,7 @@
     "Notes": "-"
   },
   {
-    "ID": "25SC-15EV-UEF-XXX-EUR-2015-065LF-000",
+    "ID": "25SC-15EV-UEF-XXX-EUR-065LF-2015-000",
     "Display Name": "2015-16 UEFA Europa League Liverpool FC vs. Borussia Dortmund Scarf",
     "Category": "Apparel",
     "Product": "Scarf",
@@ -5562,8 +5364,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -5572,7 +5373,7 @@
     "Notes": "-"
   },
   {
-    "ID": "25SC-05CL-UEF-GER-DOR-0000-065LF-000",
+    "ID": "25SC-05CL-UEF-GER-DOR-065LF-0000-000",
     "Display Name": "Borussia Dortmund Striped Name Scarf",
     "Category": "Apparel",
     "Product": "Scarf",
@@ -5590,8 +5391,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -5600,7 +5400,7 @@
     "Notes": "-"
   },
   {
-    "ID": "25SC-05CL-UEF-GER-DOR-0000-065LF-001",
+    "ID": "25SC-05CL-UEF-GER-DOR-065LF-0000-001",
     "Display Name": "Borussia Dortmund Striped Scarf Black/Yellow - Bundle Box",
     "Category": "Apparel",
     "Product": "Scarf",
@@ -5618,8 +5418,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -5628,7 +5427,7 @@
     "Notes": "Adrenalin-Trip bundle"
   },
   {
-    "ID": "25SC-05CL-UEF-GER-DOR-0000-065LF-002",
+    "ID": "25SC-05CL-UEF-GER-DOR-065LF-0000-002",
     "Display Name": "Borussia Dortmund Striped Scarf Black/Grey",
     "Category": "Apparel",
     "Product": "Scarf",
@@ -5646,8 +5445,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -5656,7 +5454,7 @@
     "Notes": "-"
   },
   {
-    "ID": "25SC-05CL-UEF-GER-DOR-0000-065LF-003",
+    "ID": "25SC-05CL-UEF-GER-DOR-065LF-0000-003",
     "Display Name": "Borussia Dortmund Stadium Scarf",
     "Category": "Apparel",
     "Product": "Scarf",
@@ -5674,8 +5472,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -5684,7 +5481,7 @@
     "Notes": "-"
   },
   {
-    "ID": "25SC-05CL-CCF-MEX-TOL-2017-065LF-000",
+    "ID": "25SC-05CL-CCF-MEX-TOL-065LF-2017-000",
     "Display Name": "2017 Deportivo Toluca 100th Anniversary Scarf",
     "Category": "Apparel",
     "Product": "Scarf",
@@ -5702,8 +5499,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -5712,7 +5508,7 @@
     "Notes": "-"
   },
   {
-    "ID": "25SC-01NA-UEF-AUS-AUS-2016-065LF-000",
+    "ID": "25SC-01NA-UEF-AUS-AUS-065LF-2016-000",
     "Display Name": "2016-17 Austria Scarf",
     "Category": "Apparel",
     "Product": "Scarf",
@@ -5730,8 +5526,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -5740,7 +5535,7 @@
     "Notes": "-"
   },
   {
-    "ID": "25SC-01NA-UEF-GER-GER-2018-065LF-000",
+    "ID": "25SC-01NA-UEF-GER-GER-065LF-2018-000",
     "Display Name": "2018-19 Germany Scarf",
     "Category": "Apparel",
     "Product": "Scarf",
@@ -5758,8 +5553,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -5768,7 +5562,7 @@
     "Notes": "-"
   },
   {
-    "ID": "25SC-15EV-UEF-XXX-CHA-2012-065LF-000",
+    "ID": "25SC-15EV-UEF-XXX-CHA-065LF-2012-000",
     "Display Name": "2012-13 UEFA Champions League Final Scarf",
     "Category": "Apparel",
     "Product": "Scarf",
@@ -5786,8 +5580,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -5796,7 +5589,7 @@
     "Notes": "-"
   },
   {
-    "ID": "05HO-05CL-UEF-GER-DOR-2025-065LF-000",
+    "ID": "05HO-05CL-UEF-GER-DOR-065LF-2025-000",
     "Display Name": "2025 Borussia Dortmund \"Chinese New Year\" Hoddie",
     "Category": "Apparel",
     "Product": "Hoddie",
@@ -5814,8 +5607,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -5824,7 +5616,7 @@
     "Notes": "-"
   },
   {
-    "ID": "05HO-05CL-UEF-GER-DOR-2020-065LF-000",
+    "ID": "05HO-05CL-UEF-GER-DOR-065LF-2020-000",
     "Display Name": "2020-21 Borussia Dortmund Hoddie",
     "Category": "Apparel",
     "Product": "Hoddie",
@@ -5842,8 +5634,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -5852,7 +5643,7 @@
     "Notes": "-"
   },
   {
-    "ID": "05HO-05CL-UEF-GER-DOR-2018-065LF-000",
+    "ID": "05HO-05CL-UEF-GER-DOR-065LF-2018-000",
     "Display Name": "2018-19 Borussia Dortmund Hoddie",
     "Category": "Apparel",
     "Product": "Hoddie",
@@ -5870,8 +5661,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -5880,7 +5670,7 @@
     "Notes": "-"
   },
   {
-    "ID": "10JA-05CL-UEF-GER-DOR-2017-065LF-000",
+    "ID": "10JA-05CL-UEF-GER-DOR-065LF-2017-000",
     "Display Name": "2017-18 Borussia Dortmund Jacket",
     "Category": "Apparel",
     "Product": "Jacket",
@@ -5898,8 +5688,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -5908,7 +5697,7 @@
     "Notes": "-"
   },
   {
-    "ID": "10JA-05CL-UEF-GER-DOR-2024-055AW-000",
+    "ID": "10JA-05CL-UEF-GER-DOR-055AW-2024-000",
     "Display Name": "2024-25 Borussia Dortmund Jacket",
     "Category": "Apparel",
     "Product": "Jacket",
@@ -5926,8 +5715,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -5936,7 +5724,7 @@
     "Notes": "-"
   },
   {
-    "ID": "15PA-05CL-UEF-GER-DOR-2024-055AW-000",
+    "ID": "15PA-05CL-UEF-GER-DOR-055AW-2024-000",
     "Display Name": "2024-25 Borussia Dortmund Pants",
     "Category": "Apparel",
     "Product": "Pants",
@@ -5954,8 +5742,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -5964,7 +5751,7 @@
     "Notes": "-"
   },
   {
-    "ID": "20HE-05CL-UEF-GER-DOR-0000-065LF-000",
+    "ID": "20HE-05CL-UEF-GER-DOR-065LF-0000-000",
     "Display Name": "Borussia Dortmund Crest Cap Black",
     "Category": "Apparel",
     "Product": "Headwear",
@@ -5982,8 +5769,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -5992,7 +5778,7 @@
     "Notes": "-"
   },
   {
-    "ID": "10JA-05CL-CCF-MEX-TOL-2016-055AW-000",
+    "ID": "10JA-05CL-CCF-MEX-TOL-055AW-2016-000",
     "Display Name": "2016-17 Deportivo Toluca 100th Anniversary Jacket",
     "Category": "Apparel",
     "Product": "Jacket",
@@ -6010,8 +5796,7 @@
     "Collaboration": "-",
     "Size": "S",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -6020,7 +5805,7 @@
     "Notes": "-"
   },
   {
-    "ID": "35BA-05CL-CCF-MEX-TOL-2017-080CB-000",
+    "ID": "35BA-05CL-CCF-MEX-TOL-080CB-2017-000",
     "Display Name": "2017 Deportivo Toluca 100th Anniversary Ball",
     "Category": "Equipment",
     "Product": "Ball",
@@ -6038,8 +5823,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -6048,7 +5832,7 @@
     "Notes": "-"
   },
   {
-    "ID": "35BA-15EV-FIF-XXX-CON-2017-070RB-000",
+    "ID": "35BA-15EV-FIF-XXX-CON-070RB-2017-000",
     "Display Name": "2017 FIFA Confederations Cup \"Krasava\" Match Ball",
     "Category": "Equipment",
     "Product": "Ball",
@@ -6066,8 +5850,7 @@
     "Collaboration": "-",
     "Size": "5 BALL",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -6076,7 +5859,7 @@
     "Notes": "-"
   },
   {
-    "ID": "35BA-15EV-FIF-XXX-WOR-2014-075KB-000",
+    "ID": "35BA-15EV-FIF-XXX-WOR-075KB-2014-000",
     "Display Name": "2014 FIFA World Cup \"Brazuca Final Rio\" Match Ball",
     "Category": "Equipment",
     "Product": "Ball",
@@ -6094,8 +5877,7 @@
     "Collaboration": "-",
     "Size": "5 BALL",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -6104,7 +5886,7 @@
     "Notes": "-"
   },
   {
-    "ID": "35BA-15EV-FIF-XXX-WOR-2018-070RB-000",
+    "ID": "35BA-15EV-FIF-XXX-WOR-070RB-2018-000",
     "Display Name": "2018 FIFA World Cup \"Telstar 18\" Match Ball",
     "Category": "Equipment",
     "Product": "Ball",
@@ -6122,8 +5904,7 @@
     "Collaboration": "-",
     "Size": "5 BALL",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -6132,7 +5913,7 @@
     "Notes": "-"
   },
   {
-    "ID": "35BA-15EV-FIF-XXX-WOR-2022-070RB-000",
+    "ID": "35BA-15EV-FIF-XXX-WOR-070RB-2022-000",
     "Display Name": "2022 FIFA World Cup \"Al Rihla\" Match Ball",
     "Category": "Equipment",
     "Product": "Ball",
@@ -6150,8 +5931,7 @@
     "Collaboration": "-",
     "Size": "5 BALL",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -6160,7 +5940,7 @@
     "Notes": "-"
   },
   {
-    "ID": "35BA-15EV-FIF-XXX-WOR-2026-070RB-000",
+    "ID": "35BA-15EV-FIF-XXX-WOR-070RB-2026-000",
     "Display Name": "2026 FIFA World Cup \"Trionda\" Match Ball",
     "Category": "Equipment",
     "Product": "Ball",
@@ -6178,8 +5958,7 @@
     "Collaboration": "-",
     "Size": "5 BALL",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -6188,7 +5967,7 @@
     "Notes": "-"
   },
   {
-    "ID": "35BA-15EV-UEF-XXX-CHA-2015-075KB-000",
+    "ID": "35BA-15EV-UEF-XXX-CHA-075KB-2015-000",
     "Display Name": "2015-16 UEFA Champions League \"Finale Milano\" Match Ball",
     "Category": "Equipment",
     "Product": "Ball",
@@ -6206,8 +5985,7 @@
     "Collaboration": "-",
     "Size": "5 BALL",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -6216,7 +5994,7 @@
     "Notes": "-"
   },
   {
-    "ID": "35BA-15EV-UEF-XXX-CHA-2016-070RB-000",
+    "ID": "35BA-15EV-UEF-XXX-CHA-070RB-2016-000",
     "Display Name": "2016-17 UEFA Champions League \"Finale 16\" Match Ball",
     "Category": "Equipment",
     "Product": "Ball",
@@ -6234,8 +6012,7 @@
     "Collaboration": "-",
     "Size": "5 BALL",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -6244,7 +6021,7 @@
     "Notes": "-"
   },
   {
-    "ID": "35BA-15EV-UEF-XXX-CHA-2016-075KB-000",
+    "ID": "35BA-15EV-UEF-XXX-CHA-075KB-2016-000",
     "Display Name": "2017-18 UEFA Champions League \"Finale Cardiff\" Match Ball",
     "Category": "Equipment",
     "Product": "Ball",
@@ -6262,8 +6039,7 @@
     "Collaboration": "-",
     "Size": "5 BALL",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -6272,7 +6048,7 @@
     "Notes": "-"
   },
   {
-    "ID": "30BO-20BR-XXX-XXX-ADI-2018-115TB-000",
+    "ID": "30BO-20BR-XXX-XXX-ADI-115TB-2018-000",
     "Display Name": "Nemeziz Tango 18.1 TR \"White/Core Black/Shock Pink\"",
     "Category": "Equipment",
     "Product": "Boots",
@@ -6290,8 +6066,7 @@
     "Collaboration": "-",
     "Size": "8.5 US",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -6300,7 +6075,7 @@
     "Notes": "-"
   },
   {
-    "ID": "30BO-20BR-XXX-XXX-ADI-2016-095FG-000",
+    "ID": "30BO-20BR-XXX-XXX-ADI-095FG-2016-000",
     "Display Name": "Messi 16.1 FG \"Space Dust\"",
     "Category": "Equipment",
     "Product": "Boots",
@@ -6318,8 +6093,7 @@
     "Collaboration": "-",
     "Size": "8.5 US",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -6328,7 +6102,7 @@
     "Notes": "-"
   },
   {
-    "ID": "30BO-20BR-XXX-XXX-ADI-2018-095FG-000",
+    "ID": "30BO-20BR-XXX-XXX-ADI-095FG-2018-000",
     "Display Name": "Predator 18.1 \"Nite Crawler\"",
     "Category": "Equipment",
     "Product": "Boots",
@@ -6346,8 +6120,7 @@
     "Collaboration": "-",
     "Size": "9 US",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -6356,7 +6129,7 @@
     "Notes": "-"
   },
   {
-    "ID": "30BO-20BR-XXX-XXX-NIK-2016-105TU-000",
+    "ID": "30BO-20BR-XXX-XXX-NIK-105TU-2016-000",
     "Display Name": "TiempoX Proximo \"Dark Lightning\"",
     "Category": "Equipment",
     "Product": "Boots",
@@ -6374,8 +6147,7 @@
     "Collaboration": "-",
     "Size": "9 US",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -6384,7 +6156,7 @@
     "Notes": "-"
   },
   {
-    "ID": "30BO-20BR-XXX-XXX-NIK-2015-110IC-000",
+    "ID": "30BO-20BR-XXX-XXX-NIK-110IC-2015-000",
     "Display Name": "MercurialX Proximo \"Metallic Gold\"",
     "Category": "Equipment",
     "Product": "Boots",
@@ -6402,8 +6174,7 @@
     "Collaboration": "-",
     "Size": "9 US",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -6412,7 +6183,7 @@
     "Notes": "-"
   },
   {
-    "ID": "30BO-20BR-XXX-XXX-NIK-2017-110IC-000",
+    "ID": "30BO-20BR-XXX-XXX-NIK-110IC-2017-000",
     "Display Name": "HypervenomX Proximo II DF \"Strike Night\"",
     "Category": "Equipment",
     "Product": "Boots",
@@ -6430,8 +6201,7 @@
     "Collaboration": "-",
     "Size": "9 US",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -6440,9 +6210,9 @@
     "Notes": "-"
   },
   {
-    "ID": "40DR-05CL-UEF-ENG-LEI-0000-000XX-000",
+    "ID": "40DR-05CL-UEF-ENG-LEI-000XX-0000-000",
     "Display Name": "Leicester City Tumbler",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Drinkware",
     "Entity": "Club",
     "Team": "Leicester City",
@@ -6458,8 +6228,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -6468,9 +6237,9 @@
     "Notes": "-"
   },
   {
-    "ID": "40DR-05CL-UEF-GER-DOR-2024-000XX-000",
+    "ID": "40DR-05CL-UEF-GER-DOR-000XX-2024-000",
     "Display Name": "2024 Borussia Dortmund \"Marco Reus Farewell\" Stadium Cup",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Drinkware",
     "Entity": "Club",
     "Team": "Borussia Dortmund",
@@ -6486,8 +6255,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "Marco Reus",
-    "Number": "-",
+    "Person": "Marco Reus",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -6496,9 +6264,9 @@
     "Notes": "-"
   },
   {
-    "ID": "40DR-05CL-UEF-GER-DOR-2024-000XX-001",
+    "ID": "40DR-05CL-UEF-GER-DOR-000XX-2024-001",
     "Display Name": "2024 Borussia Dortmund \"Abschiedszczspiel\" Stadium Cup",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Drinkware",
     "Entity": "Club",
     "Team": "Borussia Dortmund",
@@ -6514,8 +6282,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "Łukasz Piszczek/Jakub Błaszczykowski",
-    "Number": "-",
+    "Person": "Łukasz Piszczek/Jakub Błaszczykowski",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -6524,9 +6291,9 @@
     "Notes": "-"
   },
   {
-    "ID": "40DR-05CL-UEF-GER-DOR-0000-000XX-000",
+    "ID": "40DR-05CL-UEF-GER-DOR-000XX-0000-000",
     "Display Name": "Borussia Dortmund \"Borussia Dortmund\" Stadium Cup",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Drinkware",
     "Entity": "Club",
     "Team": "Borussia Dortmund",
@@ -6542,8 +6309,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -6552,9 +6318,9 @@
     "Notes": "-"
   },
   {
-    "ID": "40DR-05CL-UEF-GER-DOR-0000-000XX-001",
+    "ID": "40DR-05CL-UEF-GER-DOR-000XX-0000-001",
     "Display Name": "Borussia Dortmund \"Heja BVB\" Stadium Cup",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Drinkware",
     "Entity": "Club",
     "Team": "Borussia Dortmund",
@@ -6570,8 +6336,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -6580,9 +6345,9 @@
     "Notes": "-"
   },
   {
-    "ID": "40DR-05CL-UEF-GER-DOR-0000-000XX-002",
+    "ID": "40DR-05CL-UEF-GER-DOR-000XX-0000-002",
     "Display Name": "Borussia Dortmund Magic Mug",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Drinkware",
     "Entity": "Club",
     "Team": "Borussia Dortmund",
@@ -6598,8 +6363,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -6608,9 +6372,9 @@
     "Notes": "-"
   },
   {
-    "ID": "40DR-05CL-CCF-MEX-TOL-0000-000XX-000",
+    "ID": "40DR-05CL-CCF-MEX-TOL-000XX-0000-000",
     "Display Name": "Deportivo Toluca Christmas Third-Party Mug (Custom Name)",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Drinkware",
     "Entity": "Club",
     "Team": "Deportivo Toluca",
@@ -6626,8 +6390,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -6636,9 +6399,9 @@
     "Notes": "-"
   },
   {
-    "ID": "40DR-05CL-CCF-MEX-TOL-2017-000XX-000",
+    "ID": "40DR-05CL-CCF-MEX-TOL-000XX-2017-000",
     "Display Name": "2017 Deportivo Toluca 100th Anniversary Mug",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Drinkware",
     "Entity": "Club",
     "Team": "Deportivo Toluca",
@@ -6654,8 +6417,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -6664,9 +6426,9 @@
     "Notes": "-"
   },
   {
-    "ID": "40DR-05CL-CCF-MEX-TOL-2025-000XX-000",
+    "ID": "40DR-05CL-CCF-MEX-TOL-000XX-2025-000",
     "Display Name": "2025-26 Deportivo Toluca Bottle - Bundle Box",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Drinkware",
     "Entity": "Club",
     "Team": "Deportivo Toluca",
@@ -6682,8 +6444,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -6692,9 +6453,9 @@
     "Notes": "Presale bundle (with jersey, in box)"
   },
   {
-    "ID": "40DR-05CL-CCF-MEX-TOL-2025-000XX-001",
+    "ID": "40DR-05CL-CCF-MEX-TOL-000XX-2025-001",
     "Display Name": "Clausura 2025 Deportivo Toluca Winners Tumbler",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Drinkware",
     "Entity": "Club",
     "Team": "Deportivo Toluca",
@@ -6710,8 +6471,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -6720,9 +6480,9 @@
     "Notes": "-"
   },
   {
-    "ID": "40DR-05CL-CCF-MEX-TOL-2025-000XX-002",
+    "ID": "40DR-05CL-CCF-MEX-TOL-000XX-2025-002",
     "Display Name": "Clausura 2025 Deportivo Toluca Winners Beer Can",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Drinkware",
     "Entity": "Club",
     "Team": "Deportivo Toluca",
@@ -6738,8 +6498,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -6748,9 +6507,9 @@
     "Notes": "-"
   },
   {
-    "ID": "40DR-05CL-CCF-MEX-TOL-2017-000XX-001",
+    "ID": "40DR-05CL-CCF-MEX-TOL-000XX-2017-001",
     "Display Name": "2017 Deportivo Toluca 100th Anniversary Beer Can",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Drinkware",
     "Entity": "Club",
     "Team": "Deportivo Toluca",
@@ -6766,8 +6525,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -6776,9 +6534,9 @@
     "Notes": "-"
   },
   {
-    "ID": "40DR-05CL-CCF-MEX-TOL-2025-000XX-003",
+    "ID": "40DR-05CL-CCF-MEX-TOL-000XX-2025-003",
     "Display Name": "Clausura 2025 Deportivo Toluca Winners Stadium Cup",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Drinkware",
     "Entity": "Club",
     "Team": "Deportivo Toluca",
@@ -6794,8 +6552,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -6804,9 +6561,9 @@
     "Notes": "-"
   },
   {
-    "ID": "40DR-05CL-CCF-MEX-TOL-0000-000XX-001",
+    "ID": "40DR-05CL-CCF-MEX-TOL-000XX-0000-001",
     "Display Name": "Deportivo Toluca Stadium Cup",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Drinkware",
     "Entity": "Club",
     "Team": "Deportivo Toluca",
@@ -6822,8 +6579,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -6832,9 +6588,9 @@
     "Notes": "-"
   },
   {
-    "ID": "60PA-05CL-CCF-MEX-TOL-2020-000XX-000",
+    "ID": "60PA-05CL-CCF-MEX-TOL-000XX-2020-000",
     "Display Name": "Clausura 2020 Deportivo Toluca Season Pass",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Pass",
     "Entity": "Club",
     "Team": "Deportivo Toluca",
@@ -6850,8 +6606,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -6860,9 +6615,9 @@
     "Notes": "-"
   },
   {
-    "ID": "60PA-05CL-CCF-MEX-TOL-2018-000XX-000",
+    "ID": "60PA-05CL-CCF-MEX-TOL-000XX-2018-000",
     "Display Name": "Apertura 2018 Deportivo Toluca Season Pass",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Pass",
     "Entity": "Club",
     "Team": "Deportivo Toluca",
@@ -6878,8 +6633,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -6888,9 +6642,9 @@
     "Notes": "-"
   },
   {
-    "ID": "60PA-05CL-UEF-GER-DOR-2024-000XX-000",
+    "ID": "60PA-05CL-UEF-GER-DOR-000XX-2024-000",
     "Display Name": "2024-25 Borussia Dortmund Stadiondeckel - Bundle Box",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Pass",
     "Entity": "Club",
     "Team": "Borussia Dortmund",
@@ -6906,8 +6660,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -6916,9 +6669,9 @@
     "Notes": "Adrenalin-Trip bundle"
   },
   {
-    "ID": "60PA-15EV-CCF-MEX-LMX-2018-000XX-000",
+    "ID": "60PA-15EV-CCF-MEX-LMX-000XX-2018-000",
     "Display Name": "Clausura 2018 Liga MX Final Deportivo Toluca vs. Santos Laguna Ticket",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Pass",
     "Entity": "Event",
     "Team": "Deportivo Toluca/Santos Laguna",
@@ -6934,8 +6687,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -6944,9 +6696,9 @@
     "Notes": "-"
   },
   {
-    "ID": "60PA-15EV-CCF-MEX-LMX-2017-000XX-000",
+    "ID": "60PA-15EV-CCF-MEX-LMX-000XX-2017-000",
     "Display Name": "Clausura 2017 Liga MX Deportivo Toluca vs. Club Puebla Ticket",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Pass",
     "Entity": "Event",
     "Team": "Deportivo Toluca/Club Puebla",
@@ -6962,8 +6714,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -6972,9 +6723,9 @@
     "Notes": "-"
   },
   {
-    "ID": "60PA-15EV-CCF-MEX-CMX-2017-000XX-000",
+    "ID": "60PA-15EV-CCF-MEX-CMX-000XX-2017-000",
     "Display Name": "Clausura 2017 Copa MX Deportivo Toluca vs. CD Veracruz Ticket",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Pass",
     "Entity": "Event",
     "Team": "Deportivo Toluca/CD Veracruz",
@@ -6990,8 +6741,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -7000,9 +6750,9 @@
     "Notes": "-"
   },
   {
-    "ID": "60PA-15EV-CMB-MEX-LIB-2016-000XX-000",
+    "ID": "60PA-15EV-CMB-MEX-LIB-000XX-2016-000",
     "Display Name": "2016 Copa CONMEBOL Libertadores Deportivo Toluca vs. CA San Lorenzo Ticket",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Pass",
     "Entity": "Event",
     "Team": "Deportivo Toluca/CA San Lorenzo",
@@ -7018,8 +6768,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -7028,9 +6777,9 @@
     "Notes": "-"
   },
   {
-    "ID": "60PA-15EV-CCF-MEX-CNL-2019-000XX-000",
+    "ID": "60PA-15EV-CCF-MEX-CNL-000XX-2019-000",
     "Display Name": "2019-20 CONCACAF Nations League Mexico vs. Bermuda Matchday Ticket",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Pass",
     "Entity": "Event",
     "Team": "Mexico/Bermuda",
@@ -7046,8 +6795,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -7056,9 +6804,9 @@
     "Notes": "-"
   },
   {
-    "ID": "60PA-15EV-XXX-MEX-XXX-2017-000XX-000",
+    "ID": "60PA-15EV-XXX-MEX-XXX-000XX-2017-000",
     "Display Name": "2017 Deportivo Toluca vs. Atlético Madrid Ticket",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Pass",
     "Entity": "Event",
     "Team": "Deportivo Toluca/Atlético Madrid",
@@ -7074,8 +6822,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -7084,9 +6831,9 @@
     "Notes": "-"
   },
   {
-    "ID": "50AC-05CL-CCF-MEX-TOL-2018-000XX-000",
+    "ID": "50AC-05CL-CCF-MEX-TOL-000XX-2018-000",
     "Display Name": "Apertura 2018 Deportivo Toluca Season Pass Lanyard",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Accessory",
     "Entity": "Club",
     "Team": "Deportivo Toluca",
@@ -7102,8 +6849,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -7112,9 +6858,9 @@
     "Notes": "-"
   },
   {
-    "ID": "50AC-05CL-CCF-MEX-TOL-2020-000XX-000",
+    "ID": "50AC-05CL-CCF-MEX-TOL-000XX-2020-000",
     "Display Name": "Clausura 2020 Deportivo Toluca Season Pass Lanyard",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Accessory",
     "Entity": "Club",
     "Team": "Deportivo Toluca",
@@ -7130,8 +6876,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -7140,9 +6885,9 @@
     "Notes": "-"
   },
   {
-    "ID": "50AC-05CL-CCF-MEX-TOL-2019-000XX-000",
+    "ID": "50AC-05CL-CCF-MEX-TOL-000XX-2019-000",
     "Display Name": "Clausura 2019 Deportivo Toluca Season Pass Lanyard",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Accessory",
     "Entity": "Club",
     "Team": "Deportivo Toluca",
@@ -7158,8 +6903,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -7168,9 +6912,9 @@
     "Notes": "-"
   },
   {
-    "ID": "50AC-05CL-CCF-MEX-TOL-2019-000XX-001",
+    "ID": "50AC-05CL-CCF-MEX-TOL-000XX-2019-001",
     "Display Name": "Apertura 2019 Deportivo Toluca Keychain",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Accessory",
     "Entity": "Club",
     "Team": "Deportivo Toluca",
@@ -7186,8 +6930,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -7196,9 +6939,9 @@
     "Notes": "-"
   },
   {
-    "ID": "50AC-05CL-UEF-GER-DOR-0000-000XX-000",
+    "ID": "50AC-05CL-UEF-GER-DOR-000XX-0000-000",
     "Display Name": "Borussia Dortmund Stadium 4-Pin Set",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Accessory",
     "Entity": "Club",
     "Team": "Borussia Dortmund",
@@ -7214,8 +6957,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -7224,9 +6966,9 @@
     "Notes": "-"
   },
   {
-    "ID": "50AC-05CL-UEF-GER-DOR-2016-000XX-000",
+    "ID": "50AC-05CL-UEF-GER-DOR-000XX-2016-000",
     "Display Name": "2016-17 Borussia Dortmund DBF-Pokal Winners Pin",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Accessory",
     "Entity": "Club",
     "Team": "Borussia Dortmund",
@@ -7242,8 +6984,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -7252,9 +6993,9 @@
     "Notes": "-"
   },
   {
-    "ID": "50AC-20BR-UEF-GER-DEU-0000-000XX-000",
+    "ID": "50AC-20BR-UEF-GER-DEU-000XX-0000-000",
     "Display Name": "Deutsches Fußballmuseum \"Trikot 1954\" Magnet",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Accessory",
     "Entity": "Brand",
     "Team": "-",
@@ -7270,8 +7011,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -7280,9 +7020,9 @@
     "Notes": "-"
   },
   {
-    "ID": "50AC-20BR-UEF-GER-DEU-0000-000XX-001",
+    "ID": "50AC-20BR-UEF-GER-DEU-000XX-0000-001",
     "Display Name": "Deutsches Fußballmuseum Shoe Keychain",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Accessory",
     "Entity": "Brand",
     "Team": "-",
@@ -7298,8 +7038,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -7308,9 +7047,9 @@
     "Notes": "-"
   },
   {
-    "ID": "55ST-05CL-UEF-GER-DOR-2024-000XX-000",
+    "ID": "55ST-05CL-UEF-GER-DOR-000XX-2024-000",
     "Display Name": "2024-25 Borussia Dortmund Mitgliedermagazin (February 2025) - Bundle Box",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Stationery",
     "Entity": "Club",
     "Team": "Borussia Dortmund",
@@ -7326,8 +7065,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -7336,9 +7074,9 @@
     "Notes": "Adrenalin-Trip bundle"
   },
   {
-    "ID": "55ST-05CL-UEF-GER-DOR-0000-000XX-000",
+    "ID": "55ST-05CL-UEF-GER-DOR-000XX-0000-000",
     "Display Name": "Borussia Dortmund Postcard (Signed by Kevin Großkreutz)",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Stationery",
     "Entity": "Club",
     "Team": "Borussia Dortmund",
@@ -7354,8 +7092,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -7364,9 +7101,9 @@
     "Notes": "-"
   },
   {
-    "ID": "55ST-05CL-UEF-GER-DOR-2024-000XX-001",
+    "ID": "55ST-05CL-UEF-GER-DOR-000XX-2024-001",
     "Display Name": "2024 Borussia Dortmund Borusseum \"Marco Reus Farewell\" Postcard",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Stationery",
     "Entity": "Club",
     "Team": "Borussia Dortmund",
@@ -7382,8 +7119,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "Marco Reus",
-    "Number": "-",
+    "Person": "Marco Reus",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -7392,9 +7128,9 @@
     "Notes": "-"
   },
   {
-    "ID": "55ST-05CL-UEF-GER-DOR-1913-000XX-000",
+    "ID": "55ST-05CL-UEF-GER-DOR-000XX-1913-000",
     "Display Name": "1913 Borussia Dortmund Borusseum \"Jung-Borussen\" Postcard",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Stationery",
     "Entity": "Club",
     "Team": "Borussia Dortmund",
@@ -7410,8 +7146,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -7420,9 +7155,9 @@
     "Notes": "-"
   },
   {
-    "ID": "55ST-05CL-UEF-GER-DOR-0000-000XX-001",
+    "ID": "55ST-05CL-UEF-GER-DOR-000XX-0000-001",
     "Display Name": "Borussia Dortmund Borusseum \"Drei Borussen im Widerstand\" Magazine",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Stationery",
     "Entity": "Club",
     "Team": "Borussia Dortmund",
@@ -7438,8 +7173,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -7448,9 +7182,9 @@
     "Notes": "-"
   },
   {
-    "ID": "55ST-15EV-XXX-MEX-XXX-2022-000XX-000",
+    "ID": "55ST-15EV-XXX-MEX-XXX-000XX-2022-000",
     "Display Name": "2022 Deportivo Toluca vs. Bayer 04 Leverkusen Sticker",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Stationery",
     "Entity": "Event",
     "Team": "Deportivo Toluca/Bayer 04 Leverkusen",
@@ -7466,8 +7200,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -7476,9 +7209,9 @@
     "Notes": "Gifted during the Deportivo Toluca vs Bayer Leverkusen commemorative match"
   },
   {
-    "ID": "45DI-15EV-UEF-GER-BUN-0000-000XX-000",
+    "ID": "45DI-15EV-UEF-GER-BUN-000XX-0000-000",
     "Display Name": "DFB Bundesliga Championship Trophy Miniature - 70mm",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Display",
     "Entity": "Event",
     "Team": "-",
@@ -7494,8 +7227,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -7504,9 +7236,9 @@
     "Notes": "-"
   },
   {
-    "ID": "45DI-05CL-UEF-SPA-RMA-0000-000XX-000",
+    "ID": "45DI-05CL-UEF-SPA-RMA-000XX-0000-000",
     "Display Name": "Real Madrid Santiago Bernabéu Stadium Crystal Block",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Display",
     "Entity": "Club",
     "Team": "Real Madrid",
@@ -7522,8 +7254,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -7532,9 +7263,9 @@
     "Notes": "-"
   },
   {
-    "ID": "55ST-15EV-FIF-XXX-WOR-2010-000XX-000",
+    "ID": "55ST-15EV-FIF-XXX-WOR-000XX-2010-000",
     "Display Name": "2010 FIFA World Cup Sticker Album (Complete)",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Stationery",
     "Entity": "Event",
     "Team": "-",
@@ -7550,8 +7281,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -7560,9 +7290,9 @@
     "Notes": "Complete"
   },
   {
-    "ID": "55ST-15EV-FIF-XXX-WOR-2014-000XX-000",
+    "ID": "55ST-15EV-FIF-XXX-WOR-000XX-2014-000",
     "Display Name": "2014 FIFA World Cup Sticker Album (Complete)",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Stationery",
     "Entity": "Event",
     "Team": "-",
@@ -7578,8 +7308,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -7588,9 +7317,9 @@
     "Notes": "Complete"
   },
   {
-    "ID": "55ST-15EV-UEF-XXX-CHA-2010-000XX-000",
+    "ID": "55ST-15EV-UEF-XXX-CHA-000XX-2010-000",
     "Display Name": "2010-11 UEFA Champions League Sticker Album (Incomplete)",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Stationery",
     "Entity": "Event",
     "Team": "-",
@@ -7606,8 +7335,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -7616,9 +7344,9 @@
     "Notes": "Incomplete (Missing X stickers)"
   },
   {
-    "ID": "55ST-15EV-CCF-MEX-LMX-2010-000XX-000",
+    "ID": "55ST-15EV-CCF-MEX-LMX-000XX-2010-000",
     "Display Name": "Apertura 2010 Liga MX Sticker Album (Incomplete)",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Stationery",
     "Entity": "Event",
     "Team": "-",
@@ -7634,8 +7362,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -7644,9 +7371,9 @@
     "Notes": "Incomplete (Missing X stickers)"
   },
   {
-    "ID": "55ST-05CL-CCF-MEX-TOL-2017-000XX-000",
+    "ID": "55ST-05CL-CCF-MEX-TOL-000XX-2017-000",
     "Display Name": "2017 Deportivo Toluca 100th Anniversary Sticker Album (Incomplete)",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Stationery",
     "Entity": "Club",
     "Team": "Deportivo Toluca",
@@ -7662,8 +7389,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -7672,7 +7398,7 @@
     "Notes": "Incomplete (Missing X stickers)"
   },
   {
-    "ID": "05HO-05CL-CCF-MEX-TOL-0000-065LF-000",
+    "ID": "05HO-05CL-CCF-MEX-TOL-065LF-0000-000",
     "Display Name": "Deportivo Toluca \"Devil\" Third-Party Hoddie",
     "Category": "Apparel",
     "Product": "Hoddie",
@@ -7690,8 +7416,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -7700,9 +7425,9 @@
     "Notes": "-"
   },
   {
-    "ID": "65PH-25PE-CCF-MEX-TOL-2020-120DP-000",
+    "ID": "65PH-25PE-CCF-MEX-TOL-120DP-2020-000",
     "Display Name": "2020 Deportivo Toluca Gastón Sauro Digital Photo",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Photo",
     "Entity": "Person",
     "Team": "Deportivo Toluca",
@@ -7718,8 +7443,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "Gastón Sauro",
-    "Number": "-",
+    "Person": "Gastón Sauro",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -7728,9 +7452,9 @@
     "Notes": "-"
   },
   {
-    "ID": "65PH-25PE-CCF-MEX-TOL-2020-120DP-001",
+    "ID": "65PH-25PE-CCF-MEX-TOL-120DP-2020-001",
     "Display Name": "2020 Deportivo Toluca Santiago García Digital Photo",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Photo",
     "Entity": "Person",
     "Team": "Deportivo Toluca",
@@ -7746,8 +7470,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "Santiago García",
-    "Number": "-",
+    "Person": "Santiago García",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -7756,9 +7479,9 @@
     "Notes": "-"
   },
   {
-    "ID": "65PH-25PE-CCF-MEX-TOL-2020-120DP-002",
+    "ID": "65PH-25PE-CCF-MEX-TOL-120DP-2020-002",
     "Display Name": "2020 Deportivo Toluca Leonardo Fernández Digital Photo",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Photo",
     "Entity": "Person",
     "Team": "Deportivo Toluca",
@@ -7774,8 +7497,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "Leonardo Fernández",
-    "Number": "-",
+    "Person": "Leonardo Fernández",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -7784,9 +7506,9 @@
     "Notes": "-"
   },
   {
-    "ID": "65PH-25PE-CCF-MEX-TOL-2020-120DP-003",
+    "ID": "65PH-25PE-CCF-MEX-TOL-120DP-2020-003",
     "Display Name": "2020 Deportivo Toluca Rodrigo Salinas Digital Photo",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Photo",
     "Entity": "Person",
     "Team": "Deportivo Toluca",
@@ -7802,8 +7524,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "Rodrigo Salinas",
-    "Number": "-",
+    "Person": "Rodrigo Salinas",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -7812,9 +7533,9 @@
     "Notes": "-"
   },
   {
-    "ID": "65PH-25PE-CCF-MEX-TOL-2020-120DP-004",
+    "ID": "65PH-25PE-CCF-MEX-TOL-120DP-2020-004",
     "Display Name": "2020 Deportivo Toluca Alexis Canelo Digital Photo",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Photo",
     "Entity": "Person",
     "Team": "Deportivo Toluca",
@@ -7830,8 +7551,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "Alexis Canelo",
-    "Number": "-",
+    "Person": "Alexis Canelo",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -7840,9 +7560,9 @@
     "Notes": "-"
   },
   {
-    "ID": "65PH-25PE-CCF-MEX-TOL-2020-120DP-005",
+    "ID": "65PH-25PE-CCF-MEX-TOL-120DP-2020-005",
     "Display Name": "2020 Deportivo Toluca Luis Garcia Palomera Digital Photo",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Photo",
     "Entity": "Person",
     "Team": "Deportivo Toluca",
@@ -7858,8 +7578,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "Luis Garcia Palomera",
-    "Number": "-",
+    "Person": "Luis Garcia Palomera",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -7868,9 +7587,9 @@
     "Notes": "-"
   },
   {
-    "ID": "65PH-25PE-CCF-MEX-TOL-2020-120DP-006",
+    "ID": "65PH-25PE-CCF-MEX-TOL-120DP-2020-006",
     "Display Name": "2020 Deportivo Toluca Luis Donaldo Hernández Digital Photo",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Photo",
     "Entity": "Person",
     "Team": "Deportivo Toluca",
@@ -7886,8 +7605,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "Luis Donaldo Hernández",
-    "Number": "-",
+    "Person": "Luis Donaldo Hernández",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -7896,9 +7614,9 @@
     "Notes": "-"
   },
   {
-    "ID": "65PH-25PE-CCF-MEX-TOL-2020-120DP-007",
+    "ID": "65PH-25PE-CCF-MEX-TOL-120DP-2020-007",
     "Display Name": "2020 Deportivo Toluca Felipe Pardo Digital Photo",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Photo",
     "Entity": "Person",
     "Team": "Deportivo Toluca",
@@ -7914,8 +7632,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "Felipe Pardo",
-    "Number": "-",
+    "Person": "Felipe Pardo",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -7924,9 +7641,9 @@
     "Notes": "-"
   },
   {
-    "ID": "65PH-25PE-CCF-MEX-TOL-2020-120DP-008",
+    "ID": "65PH-25PE-CCF-MEX-TOL-120DP-2020-008",
     "Display Name": "2020 Deportivo Toluca Adrián Mora Digital Photo",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Photo",
     "Entity": "Person",
     "Team": "Deportivo Toluca",
@@ -7942,8 +7659,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "Adrián Mora",
-    "Number": "-",
+    "Person": "Adrián Mora",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -7952,9 +7668,9 @@
     "Notes": "-"
   },
   {
-    "ID": "65PH-25PE-CCF-MEX-TOL-2020-120DP-009",
+    "ID": "65PH-25PE-CCF-MEX-TOL-120DP-2020-009",
     "Display Name": "2020 Deportivo Toluca Javier Güémez Digital Photo",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Photo",
     "Entity": "Person",
     "Team": "Deportivo Toluca",
@@ -7970,8 +7686,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "Javier Güémez",
-    "Number": "-",
+    "Person": "Javier Güémez",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -7980,9 +7695,9 @@
     "Notes": "-"
   },
   {
-    "ID": "65PH-25PE-CCF-MEX-TOL-2020-120DP-010",
+    "ID": "65PH-25PE-CCF-MEX-TOL-120DP-2020-010",
     "Display Name": "2020 Deportivo Toluca Emmanuel Gigliotti Digital Photo",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Photo",
     "Entity": "Person",
     "Team": "Deportivo Toluca",
@@ -7998,8 +7713,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "Emmanuel Gigliotti",
-    "Number": "-",
+    "Person": "Emmanuel Gigliotti",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -8008,9 +7722,9 @@
     "Notes": "-"
   },
   {
-    "ID": "65PH-25PE-CCF-MEX-TOL-2020-120DP-011",
+    "ID": "65PH-25PE-CCF-MEX-TOL-120DP-2020-011",
     "Display Name": "2020 Deportivo Toluca Richard Ruíz Digital Photo",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Photo",
     "Entity": "Person",
     "Team": "Deportivo Toluca",
@@ -8026,8 +7740,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "Richard Ruíz",
-    "Number": "-",
+    "Person": "Richard Ruíz",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -8036,9 +7749,9 @@
     "Notes": "-"
   },
   {
-    "ID": "65PH-25PE-CCF-MEX-TOL-2020-120DP-012",
+    "ID": "65PH-25PE-CCF-MEX-TOL-120DP-2020-012",
     "Display Name": "2020 Deportivo Toluca Diego Rigonato Digital Photo",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Photo",
     "Entity": "Person",
     "Team": "Deportivo Toluca",
@@ -8054,8 +7767,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "Diego Rigonato",
-    "Number": "-",
+    "Person": "Diego Rigonato",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -8064,9 +7776,9 @@
     "Notes": "-"
   },
   {
-    "ID": "65PH-25PE-CCF-MEX-TOL-2020-120DP-013",
+    "ID": "65PH-25PE-CCF-MEX-TOL-120DP-2020-013",
     "Display Name": "2020 Deportivo Toluca Jonathan Maidana Digital Photo",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Photo",
     "Entity": "Person",
     "Team": "Deportivo Toluca",
@@ -8082,8 +7794,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "Jonathan Maidana",
-    "Number": "-",
+    "Person": "Jonathan Maidana",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -8092,9 +7803,9 @@
     "Notes": "-"
   },
   {
-    "ID": "65PH-25PE-CCF-MEX-TOL-2020-120DP-014",
+    "ID": "65PH-25PE-CCF-MEX-TOL-120DP-2020-014",
     "Display Name": "2020 Deportivo Toluca William Fernando da Silva Digital Photo",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Photo",
     "Entity": "Person",
     "Team": "Deportivo Toluca",
@@ -8110,8 +7821,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "William Fernando da Silva",
-    "Number": "-",
+    "Person": "William Fernando da Silva",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -8120,9 +7830,9 @@
     "Notes": "-"
   },
   {
-    "ID": "65PH-25PE-CCF-MEX-TOL-2020-120DP-015",
+    "ID": "65PH-25PE-CCF-MEX-TOL-120DP-2020-015",
     "Display Name": "2020 Deportivo Toluca Aníbal Chalá Digital Photo",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Photo",
     "Entity": "Person",
     "Team": "Deportivo Toluca",
@@ -8138,8 +7848,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "Aníbal Chalá",
-    "Number": "-",
+    "Person": "Aníbal Chalá",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -8148,9 +7857,9 @@
     "Notes": "-"
   },
   {
-    "ID": "65PH-25PE-CCF-MEX-TOL-2020-120DP-016",
+    "ID": "65PH-25PE-CCF-MEX-TOL-120DP-2020-016",
     "Display Name": "2020 Deportivo Toluca Sinha and Francisco Suinaga Digital Photo",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Photo",
     "Entity": "Person",
     "Team": "Deportivo Toluca",
@@ -8166,8 +7875,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "Sinha/Francisco Suinaga",
-    "Number": "-",
+    "Person": "Sinha/Francisco Suinaga",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -8176,9 +7884,9 @@
     "Notes": "-"
   },
   {
-    "ID": "65PH-25PE-XXX-XXX-XXX-2023-120DP-000",
+    "ID": "65PH-25PE-XXX-XXX-XXX-120DP-2023-000",
     "Display Name": "2023 Jorge Pietrasanta Digital Photo",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Photo",
     "Entity": "Person",
     "Team": "-",
@@ -8194,8 +7902,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "Jorge Pietrasanta",
-    "Number": "-",
+    "Person": "Jorge Pietrasanta",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -8204,9 +7911,9 @@
     "Notes": "-"
   },
   {
-    "ID": "65PH-25PE-XXX-XXX-XXX-2018-120DP-000",
+    "ID": "65PH-25PE-XXX-XXX-XXX-120DP-2018-000",
     "Display Name": "2018 Francisco Fonseca Digital Photo",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Photo",
     "Entity": "Person",
     "Team": "-",
@@ -8222,8 +7929,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "Francisco Fonseca",
-    "Number": "-",
+    "Person": "Francisco Fonseca",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -8232,9 +7938,9 @@
     "Notes": "-"
   },
   {
-    "ID": "65PH-25PE-XXX-XXX-XXX-2018-120DP-001",
+    "ID": "65PH-25PE-XXX-XXX-XXX-120DP-2018-001",
     "Display Name": "2018 Ignacio Alva Digital Photo",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Photo",
     "Entity": "Person",
     "Team": "-",
@@ -8250,8 +7956,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "Ignacio Alva",
-    "Number": "-",
+    "Person": "Ignacio Alva",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -8260,9 +7965,9 @@
     "Notes": "-"
   },
   {
-    "ID": "65PH-25PE-XXX-XXX-XXX-2018-120DP-002",
+    "ID": "65PH-25PE-XXX-XXX-XXX-120DP-2018-002",
     "Display Name": "2018 Juan Dosal Digital Photo",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Photo",
     "Entity": "Person",
     "Team": "-",
@@ -8278,8 +7983,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "Juan Dosal",
-    "Number": "-",
+    "Person": "Juan Dosal",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -8288,9 +7992,9 @@
     "Notes": "-"
   },
   {
-    "ID": "65PH-25PE-UEF-GER-DOR-2025-120DP-000",
+    "ID": "65PH-25PE-UEF-GER-DOR-120DP-2025-000",
     "Display Name": "2025 Borussia Dortmund Kevin Großkreutz Digital Photo",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Photo",
     "Entity": "Person",
     "Team": "Borussia Dortmund",
@@ -8306,8 +8010,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "Kevin Großkreutz",
-    "Number": "-",
+    "Person": "Kevin Großkreutz",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -8316,9 +8019,9 @@
     "Notes": "-"
   },
   {
-    "ID": "65PH-25PE-UEF-GER-LEV-2022-120DP-000",
+    "ID": "65PH-25PE-UEF-GER-LEV-120DP-2022-000",
     "Display Name": "2022 Bayer 04 Leverkusen Jonathan Tah Digital Photo",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Photo",
     "Entity": "Person",
     "Team": "Bayer 04 Leverkusen",
@@ -8334,8 +8037,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "Jonathan Tah",
-    "Number": "-",
+    "Person": "Jonathan Tah",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -8344,9 +8046,9 @@
     "Notes": "-"
   },
   {
-    "ID": "65PH-25PE-UEF-GER-LEV-2022-120DP-001",
+    "ID": "65PH-25PE-UEF-GER-LEV-120DP-2022-001",
     "Display Name": "2022 Bayer 04 Leverkusen Stefan Kießling Digital Photo",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Photo",
     "Entity": "Person",
     "Team": "Bayer 04 Leverkusen",
@@ -8362,8 +8064,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "Stefan Kießling",
-    "Number": "-",
+    "Person": "Stefan Kießling",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -8372,9 +8073,9 @@
     "Notes": "-"
   },
   {
-    "ID": "65PH-25PE-CCF-MEX-TOL-2025-120DP-000",
+    "ID": "65PH-25PE-CCF-MEX-TOL-120DP-2025-000",
     "Display Name": "2025 Deportivo Toluca Marcel Ruiz Digital Photo",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Photo",
     "Entity": "Person",
     "Team": "Deportivo Toluca",
@@ -8390,8 +8091,7 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "Marcel Ruiz",
-    "Number": "-",
+    "Person": "Marcel Ruiz",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",
@@ -8400,9 +8100,9 @@
     "Notes": "-"
   },
   {
-    "ID": "40DR-05CL-XXX-MEX-CUE-2019-000XX-000",
+    "ID": "40DR-05CL-XXX-MEX-CUE-000XX-2019-000",
     "Display Name": "2019 Club de Cuervos Winners Beer Can",
-    "Category": "Memorabilia",
+    "Category": "Merchandise",
     "Product": "Drinkware",
     "Entity": "Club",
     "Team": "Club de Cuervos",
@@ -8418,8 +8118,34 @@
     "Collaboration": "-",
     "Size": "-",
     "Sleeves": "-",
-    "Name": "-",
-    "Number": "-",
+    "Person": "-",
+    "Print": "-",
+    "Nameset": "-",
+    "Patch": "-",
+    "Packaging": "-",
+    "Signature": "-",
+    "Notes": "-"
+  },
+  {
+    "ID": "50AC-05CL-UEF-GER-DOR-000XX-0000-001",
+    "Display Name": "Borussia Dortmund Crocs Jibbitz (pack of 5)",
+    "Category": "Merchandise",
+    "Product": "Accessory",
+    "Entity": "Club",
+    "Team": "Borussia Dortmund",
+    "Season": "-",
+    "Style": "-",
+    "Variant": "001",
+    "Release": "Regular",
+    "Competition": "Bundesliga",
+    "Country": "Germany",
+    "Confederation": "UEFA",
+    "Technology": "-",
+    "Brand": "Crocs",
+    "Collaboration": "-",
+    "Size": "-",
+    "Sleeves": "-",
+    "Person": "-",
     "Print": "-",
     "Nameset": "-",
     "Patch": "-",

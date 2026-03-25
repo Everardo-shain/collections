@@ -3,55 +3,32 @@
 <head>
   <meta charset="UTF-8">
   <title>Item Details</title>
+  <link rel="stylesheet" href="../assets/styles/global.css">
+  <link rel="stylesheet" href="../assets/styles/item.css">
 </head>
 <body>
 
-  <h1 id="title"></h1>
-  <ul id="details"></ul>
+  <div class="container">
+    <div id="content">
+      <div id="gallery"></div>
 
-<script>
-  const params = new URLSearchParams(window.location.search);
-  const id = params.get("id");
+      <div id="details">
+        <div id="breadcrumbs"></div>
+        <h1 id="title"></h1>
+      </div>
+    </div>
 
-  console.log("ID from URL:", id);
+  </div>
 
-  fetch("./football_collection.json")
-    .then(response => {
-      console.log("Fetch status:", response.status);
-      return response.json();
-    })
-    .then(data => {
+  <!-- Lightbox (fuera del container) -->
+  <div id="lightbox">
+    <span id="close">&times;</span>
+    <img id="lightbox-img">
+    <button id="prev">&#10094;</button>
+    <button id="next">&#10095;</button>
+  </div>
 
-      console.log("Total items loaded:", data.length);
-      console.log("First item example:", data[0]);
-
-      const item = data.find(i => i.ID && i.ID.trim() === id.trim());
-
-      if (!item) {
-        document.body.innerHTML = "<p>Item not found</p>";
-        console.log("Item not found");
-        return;
-      }
-
-      document.getElementById("title").textContent = item["Display Name"];
-
-      const details = document.getElementById("details");
-
-      Object.entries(item).forEach(([key, value]) => {
-
-        // Skip unwanted fields
-        if (key === "ID" || key === "Display Name" || key === "Variant") return;
-
-        // Skip empty or placeholder values
-        if (!value || value.trim() === "-" || value.trim() === "") return;
-
-        const li = document.createElement("li");
-        li.textContent = `${key}: ${value}`;
-        details.appendChild(li);
-        });
-
-    });
-</script>
+  <script src="../assets/scripts/item.js" defer></script>
 
 </body>
 </html>
