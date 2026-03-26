@@ -153,7 +153,7 @@ fetch("../football/football_collection.json")
     const hasNameset = item["Nameset"] && item["Nameset"].trim() !== "-" && item["Nameset"].trim() !== "";
     const hasSleeves = item["Sleeves"] && item["Sleeves"].trim() !== "-" && item["Sleeves"].trim() !== "" && item["Sleeves"].trim() !== "Short";
     const hasCollaboration = item["Collaboration"] && item["Collaboration"].trim() !== "-" && item["Collaboration"].trim() !== "";
-
+    const hasRelease = item["Release"] && item["Release"].trim() !== "-" && item["Release"].trim() !== "" && item["Release"].trim() !== "Regular";
     Object.entries(item).forEach(([key, value]) => {
 
       if (
@@ -164,7 +164,8 @@ fetch("../football/football_collection.json")
         key === "Entity" ||
         key === "Nameset" ||
         key === "Sleeves" ||
-        key === "Collaboration"
+        key === "Collaboration" ||
+        (key === "Release" && !hasRelease)
       ) return;
 
       if (!value || value.trim() === "-" || value.trim() === "") return;

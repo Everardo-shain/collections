@@ -1,0 +1,104 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #5b2c83;
+  color: white;
+  padding: 10px 20px;
+}
+
+/* Left */
+.nav-left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.logo {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+/* Dropdown */
+.dropdown {
+  position: relative;
+}
+
+.dropbtn {
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background: white;
+  color: black;
+  min-width: 150px;
+  top: 30px;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.dropdown-content a {
+  display: block;
+  padding: 10px;
+  text-decoration: none;
+  color: black;
+}
+
+.dropdown-content a:hover {
+  background: #eee;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+/* Right */
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#search {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: none;
+}
+
+.logo {
+  font-weight: bold;
+  font-size: 18px;
+  color: white;
+  text-decoration: none;
+}
+
+.logo:visited {
+  color: white;
+}
+
+.logo-main {
+  font-weight: bold;
+  color: white;
+  text-decoration: none;
+}
+
+.logo-sub {
+  color: white;
+  text-decoration: none;
+  opacity: 0.85;
+}
+
+.logo-sub:hover {
+  opacity: 1;
+}
+
+.separator {
+  margin: 0 8px;
+  opacity: 0.6;
+}

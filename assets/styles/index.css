@@ -26,3 +26,25 @@
   color: #555;
   margin-bottom: 20px;
 }
+
+#search-info {
+  font-size: 14px;
+  color: #777;
+  margin-bottom: 10px;
+}
+.container {
+  max-width: 1200px;
+  margin: 0 auto;     /* centra */
+  padding: 0 20px;    /* mismo margen lateral que navbar */
+}
+
+.clear-search {
+  margin-left: 10px;
+  font-size: 14px;
+  color: #888;
+  text-decoration: none;
+}
+
+.clear-search:hover {
+  text-decoration: underline;
+}

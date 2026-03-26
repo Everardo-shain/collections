@@ -2,16 +2,33 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Football Collection</title>
+  <title>Everardo’s Football Collection</title>
 
   <link rel="stylesheet" href="../assets/styles/global.css">
   <link rel="stylesheet" href="../assets/styles/index.css">
 </head>
 <body>
 
-  <h1>Football Collection</h1>
-  <h2 id="filters"></h2>
-  <div id="grid"></div>
+  <div id="navbar"></div>
+
+  <link rel="stylesheet" href="../assets/styles/navbar.css">
+  <script src="../assets/scripts/navbar.js" defer></script>
+
+  <script>
+    fetch("../assets/components/navbar.html")
+      .then(res => res.text())
+      .then(data => {
+        document.getElementById("navbar").innerHTML = data;
+      });
+  </script>
+  <div class="container">
+
+    <h2 id="filters"></h2>
+    <p id="search-info"></p>
+
+    <div id="grid"></div>
+
+  </div>
 
   <script src="../assets/scripts/index.js" defer></script>
 
