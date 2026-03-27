@@ -1,20 +1,23 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("submit", (e) => {
 
-  setTimeout(() => {
+  if (e.target.id !== "search-form") return;
 
-    const searchInput = document.getElementById("search");
-    if (!searchInput) return;
+  e.preventDefault();
 
-    searchInput.addEventListener("keydown", (e) => {
-      if (e.key === "Enter") {
-        const query = e.target.value.trim();
+  const input = e.target.querySelector("#search");
+  if (!input) return;
 
-        if (!query) return;
+  const query = input.value.trim();
+  if (!query) return;
 
-        window.location.href = `/football/index.html?search=${encodeURIComponent(query)}`;
-      }
-    });
+  // 🔥 Siempre construye relativo al proyecto actual
+  const basePath = window.location.pathname.includes("/football/")
+    ? window.location.pathname.split("/football/")[0] + "/football/index.html"
+    : "football/index.html";
 
-  }, 100);
+  const params = new URLSearchParams();
+  params.set("search", query);
+
+  window.location.href = `${basePath}?${params.toString()}`;
 
 });
