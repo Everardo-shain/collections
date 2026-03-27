@@ -15,45 +15,77 @@ fetch("../football/football_collection.json")
     // ===== Breadcrumbs =====
     const breadcrumbs = document.getElementById("breadcrumbs");
 
-    // Helper
     function valid(value) {
-    return value && value.trim() !== "-" && value.trim() !== "";
+      return value && value.trim() !== "-" && value.trim() !== "";
     }
 
-    // Base
-    let breadcrumbParts = [];
+    function getValues(key) {
+      const value = item[key];
+
+      if (!valid(value)) return [];
+
+      // 🔥 soporta valores múltiples tipo "A/B"
+      if (key === "Team" || key === "Person") {
+        return value.split("/").map(v => v.trim());
+      }
+
+      return [value];
+    }
+
+    function buildQuery(params) {
+      const search = new URLSearchParams(params);
+      return `?${search.toString()}`;
+    }
+
+    function link(label, params) {
+      return `<a href="./index.html${buildQuery(params)}">${label}</a>`;
+    }
+
+    // 🔥 CONFIG CENTRAL
+    const breadcrumbConfig = {
+      "National Team": ["Entity", "Season", "Team"],
+      "Collective": ["Entity", "Season", "Team"],
+      "Club": ["Country", "Season", "Team"],
+      "Event": ["Competition", "Season", "Team"],
+      "Brand": ["Brand", "Season"],
+      "Person": ["Team", "Season", "Person"]
+    };
+
+    const entity = item["Entity"];
+    const config = breadcrumbConfig[entity] || ["Entity", "Season", "Team"];
+
+    let parts = [];
 
     // Home
-    breadcrumbParts.push(`<a href="./index.html">Home</a>`);
+    parts.push(`<a href="./index.html">Home</a>`);
 
-    // Entity
-    if (valid(item["Entity"])) {
-    breadcrumbParts.push(
-        `<a href="./index.html?entity=${encodeURIComponent(item["Entity"])}">${item["Entity"]}</a>`
-    );
-    }
+    // 🔥 acumulador de params
+    let currentParams = {};
 
-    // Season
-    if (valid(item["Season"])) {
-    breadcrumbParts.push(
-        `<a href="./index.html?entity=${encodeURIComponent(item["Entity"])}&season=${encodeURIComponent(item["Season"])}">${item["Season"]}</a>`
-    );
-    }
+    config.forEach(key => {
 
-    // Team
-    if (valid(item["Team"])) {
-    breadcrumbParts.push(
-        `<a href="./index.html?entity=${encodeURIComponent(item["Entity"])}&season=${encodeURIComponent(item["Season"])}&team=${encodeURIComponent(item["Team"])}">${item["Team"]}</a>`
-    );
-    }
+      const values = getValues(key);
 
-    // Style (último → sin link)
+      values.forEach((value, index) => {
+
+        // 🔥 evitar duplicar params en múltiples teams
+        const paramKey = key.toLowerCase();
+
+        currentParams[paramKey] = value;
+
+        parts.push(link(value, currentParams));
+
+      });
+
+    });
+
+    // ===== Style (último sin link) =====
     if (valid(item["Style"])) {
-    breadcrumbParts.push(`<span>${item["Style"]}</span>`);
+      parts.push(`<span>${item["Style"]}</span>`);
     }
 
-    // Join with separator
-    breadcrumbs.innerHTML = breadcrumbParts.join(` <span class="breadcrumb-separator">></span> `);
+    // Render
+    breadcrumbs.innerHTML = parts.join(` <span class="breadcrumb-separator">></span> `);
 
     // ===== Title =====
     document.getElementById("title").textContent = item["Display Name"];
@@ -194,7 +226,15 @@ fetch("../football/football_collection.json")
 
       const valueDiv = document.createElement("div");
       valueDiv.className = "detail-value";
-      valueDiv.textContent = finalValue;
+      if ((key === "Team" || key === "Person") && value.includes("/")) {
+
+        const parts = value.split("/").map(v => v.trim());
+
+        valueDiv.innerHTML = parts.join(" · ");
+
+      } else {
+        valueDiv.textContent = finalValue;
+      }
 
       row.appendChild(label);
       row.appendChild(valueDiv);

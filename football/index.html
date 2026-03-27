@@ -26,7 +26,39 @@
     <h2 id="filters"></h2>
     <p id="search-info"></p>
 
-    <div id="grid"></div>
+    <div class="layout">
+
+      <!-- Sidebar -->
+      <aside class="filters">
+        <div class="filter-group">
+          <div class="filter-header">Product</div>
+          <div class="filter-content" id="filter-product"></div>
+        </div>
+
+        <div class="filter-group">
+          <div class="filter-header">Team</div>
+          <div class="filter-content" id="filter-team"></div>
+        </div>
+
+        <div id="active-filters-container">
+          <div class="active-header">
+            <span>Active filters</span>
+            <button id="clear-all">Clear all ⟳</button>
+          </div>
+          <div id="active-filters"></div>
+        </div>
+      </aside>
+
+      <!-- MAIN CONTENT -->
+      <main class="content">
+
+        <h2 id="results-count"></h2> <!-- ✅ aquí -->
+
+        <div id="grid"></div>        <!-- ✅ único -->
+
+      </main>
+
+    </div>
 
   </div>
 
