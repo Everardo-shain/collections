@@ -25,7 +25,7 @@ fetch("../football/football_collection.json")
       if (!valid(value)) return [];
 
       // 🔥 soporta valores múltiples tipo "A/B"
-      if (key === "Team" || key === "Person") {
+      if (!["Display Name", "ID", "Notes"].includes(key)) {
         return value.split("/").map(v => v.trim());
       }
 
@@ -43,12 +43,12 @@ fetch("../football/football_collection.json")
 
     // 🔥 CONFIG CENTRAL
     const breadcrumbConfig = {
-      "National Team": ["Entity", "Season", "Team"],
-      "Collective": ["Entity", "Season", "Team"],
-      "Club": ["Country", "Season", "Team"],
-      "Event": ["Competition", "Season", "Team"],
+      "National Team": ["Entity", "Team", "Season"],
+      "Collective": ["Entity", "Team", "Season"],
+      "Club": ["Country", "Competition", "Team", "Season"],
+      "Event": ["Competition", "Team", "Season"],
       "Brand": ["Brand", "Season"],
-      "Person": ["Team", "Season", "Person"]
+      "Person": ["Team", "Person", "Season"]
     };
 
     const entity = item["Entity"];
@@ -68,7 +68,7 @@ fetch("../football/football_collection.json")
 
       values.forEach((value, index) => {
 
-        // 🔥 evitar duplicar params en múltiples teams
+        // 🔥 evitar duplicar params en múltiples valores
         const paramKey = key.toLowerCase();
 
         currentParams[paramKey] = value;
@@ -79,9 +79,9 @@ fetch("../football/football_collection.json")
 
     });
 
-    // ===== Style (último sin link) =====
-    if (valid(item["Style"])) {
-      parts.push(`<span>${item["Style"]}</span>`);
+    // ===== (último sin link) =====
+    if (valid(item["Display Name"])) {
+      parts.push(`<span>${item["Display Name"]}</span>`);
     }
 
     // Render
@@ -197,7 +197,8 @@ fetch("../football/football_collection.json")
         key === "Nameset" ||
         key === "Sleeves" ||
         key === "Collaboration" ||
-        (key === "Release" && !hasRelease)
+        (key === "Release" && !hasRelease) ||
+        key === "Notes"
       ) return;
 
       if (!value || value.trim() === "-" || value.trim() === "") return;
@@ -226,7 +227,7 @@ fetch("../football/football_collection.json")
 
       const valueDiv = document.createElement("div");
       valueDiv.className = "detail-value";
-      if ((key === "Team" || key === "Person") && value.includes("/")) {
+      if (!["Display Name", "ID", "Notes"].includes(key) && value.includes("/")) {
 
         const parts = value.split("/").map(v => v.trim());
 
@@ -241,5 +242,15 @@ fetch("../football/football_collection.json")
       details.appendChild(row);
 
     });
+    // ===== Notes (al final, sin título) =====
+    const notes = item["Notes"];
 
+    if (notes && notes.trim() !== "-" && notes.trim() !== "") {
+
+      const notesDiv = document.createElement("div");
+      notesDiv.className = "detail-notes";
+      notesDiv.textContent = notes;
+
+      details.appendChild(notesDiv);
+    }
   });

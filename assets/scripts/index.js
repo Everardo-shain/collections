@@ -5,19 +5,76 @@ function getArrayParam(key) {
   return params.get(key)?.split(",").map(v => v.trim()) || [];
 }
 
-// ===== URL params =====
-const urlProducts = getArrayParam("product");
-const urlTeams = getArrayParam("team");
 
-// 🔥 nuevos filtros
-const filterEntity = params.get("entity");
-const filterSeason = params.get("season");
-const filterCountry = params.get("country");
-const filterCompetition = params.get("competition");
-const filterBrand = params.get("brand");
-const filterPerson = params.get("person");
-const filterSearch = params.get("search");
-const filterTeam = params.get("team");
+// filtros breadcrumb
+const FILTER_KEYS = [
+  "entity",
+  "season",
+  "team",
+  "country",
+  "competition",
+  "brand",
+  "person"
+];
+
+const SIDEBAR_KEYS = [
+  "category",
+  "product",
+  "entity",
+  "team",
+  "season",
+  "style",
+  "release",
+  "competition",
+  "country",
+  "confederation",
+  "technology",
+  "brand",
+  "collaboration",
+  "size",
+  "sleeves",
+  "person",
+  "patch",
+  "packaging",
+  "signature"
+];
+
+const SEARCH_KEYS = [
+  "Display Name",
+  "Team",
+  "Person",
+  "Style",
+  "Season",
+  "Competition",
+  "Country",
+  "Confederation",
+  "Brand",
+  "Product",
+  "Entity",
+  "Category",
+  "Release",
+  "Technology",
+  "Collaboration",
+  "Print",
+  "Patch"
+];
+
+function formatKey(key) {
+  return key.charAt(0).toUpperCase() + key.slice(1);
+}
+
+const sidebarState = {};
+
+SIDEBAR_KEYS.forEach(key => {
+  sidebarState[key] = getArrayParam(key);
+});
+
+const filtersState = {};
+
+FILTER_KEYS.forEach(key => {
+  filtersState[key] = getArrayParam(key);
+});
+const filterSearch = params.get("search") || "";
 
 fetch("../football/football_collection.json")
   .then(response => response.json())
@@ -27,7 +84,7 @@ fetch("../football/football_collection.json")
     const filters = document.getElementById("filters");
 
     // ===== Search =====
-    let currentSearch = filterSearch ? normalize(filterSearch) : "";
+    let currentSearch = normalize(filterSearch || "");
     const searchInput = document.getElementById("search");
     if (searchInput && filterSearch) {
       searchInput.value = filterSearch;
@@ -35,12 +92,12 @@ fetch("../football/football_collection.json")
 
     const searchInfo = document.getElementById("search-info");
 
-    function matchField(itemValue, filterValue) {
-      if (!filterValue) return true;
+    function matchField(itemValue, filterArray) {
+      if (!filterArray || filterArray.length === 0) return true;
       if (!itemValue) return false;
 
       const values = itemValue.split("/").map(v => v.trim());
-      return values.includes(filterValue);
+      return filterArray.some(f => values.includes(f));
     }
 
     // ===== Breadcrumbs =====
@@ -52,32 +109,51 @@ fetch("../football/football_collection.json")
 
     parts.push(link("Home", ""));
 
-    if (filterEntity) {
-      parts.push(link(filterEntity, `?entity=${encodeURIComponent(filterEntity)}`));
-    }
+    let query = "";
 
-    if (filterSeason) {
-      parts.push(link(
-        filterSeason,
-        `?entity=${encodeURIComponent(filterEntity)}&season=${encodeURIComponent(filterSeason)}`
-      ));
-    }
+    FILTER_KEYS.forEach(key => {
+      const values = filtersState[key];
+      if (!values.length) return;
 
-    if (filterTeam) {
-      parts.push(link(
-        filterTeam,
-        `?entity=${encodeURIComponent(filterEntity)}&season=${encodeURIComponent(filterSeason)}&team=${encodeURIComponent(filterTeam)}`
-      ));
-    }
+      query += `${query ? "&" : "?"}${key}=${encodeURIComponent(values.join(","))}`;
+
+      parts.push(link(values[0], query));
+    });
 
     filters.innerHTML = parts.length > 1
       ? parts.join(` <span class="breadcrumb-separator">></span> `)
       : "";
 
-    // ===== Create Filters (NEW) =====
-    const productContainer = document.getElementById("filter-product");
-    const teamContainer = document.getElementById("filter-team");
+    function renderSidebar() {
+      const sidebar = document.getElementById("filters-sidebar");
 
+      // 🔥 limpiar (pero conservar active filters)
+      const activeFilters = document.getElementById("active-filters-container");
+      sidebar.innerHTML = "";
+
+      SIDEBAR_KEYS.forEach(key => {
+        const group = document.createElement("div");
+        group.className = "filter-group";
+
+        const header = document.createElement("div");
+        header.className = "filter-header";
+        header.textContent = formatKey(key);
+
+        const content = document.createElement("div");
+        content.className = "filter-content";
+        content.id = `filter-${key}`;
+
+        group.appendChild(header);
+        group.appendChild(content);
+        sidebar.appendChild(group);
+      });
+
+      // 🔥 volver a agregar active filters al final
+      if (activeFilters) {
+        sidebar.appendChild(activeFilters);
+      }
+    }
+    // ===== Create Filters (NEW) =====
     function createFilterOptions(container, key) {
       if (!container) return;
 
@@ -91,40 +167,38 @@ fetch("../football/football_collection.json")
 
       const selectedValues = getSelectedValues(container.id);
 
-      // 🔥 aplicar filtros EXCEPTO este mismo
-      const selectedProducts = getSelectedValues("filter-product");
-      const selectedTeams = getSelectedValues("filter-team");
-
       const tempFiltered = data.filter(item => {
 
-        function validFilter(filter, value) {
-          return !filter || (value && value.trim() === filter);
-        }
 
-        const matchesFilters =
-          (!filterEntity || item["Entity"] === filterEntity) &&
-          (!filterSeason || item["Season"] === filterSeason) &&
-          matchField(item["Team"], filterTeam) &&
-          (!filterCountry || item["Country"] === filterCountry) &&
-          (!filterCompetition || item["Competition"] === filterCompetition) &&
-          (!filterBrand || item["Brand"] === filterBrand) &&
-          matchField(item["Person"], filterPerson);
+      const matchesFilters = Object.entries(filtersState).every(([key, values]) => {
+        const itemKey = key.charAt(0).toUpperCase() + key.slice(1); // entity → Entity
+        return matchField(item[itemKey], values);
+      });
 
         // 🔥 aplicar sidebar EXCEPTO el actual
-        const itemTeams = item["Team"]?.split("/").map(v => v.trim()) || [];
+        const matchesSidebar = SIDEBAR_KEYS.every(sideKey => {
 
-        const matchesSidebar =
-          (key === "Product" || selectedProducts.length === 0 || selectedProducts.includes(item["Product"])) &&
-          (key === "Team" || selectedTeams.length === 0 || selectedTeams.some(team => itemTeams.includes(team)));
+          // 🔥 excluir el filtro actual
+          if (formatKey(sideKey) === key) return true;
+
+          const selected = getSelectedValues(`filter-${sideKey}`);
+          if (!selected.length) return true;
+
+          const itemValues = item[formatKey(sideKey)]
+            ?.split("/")
+            .map(v => v.trim()) || [];
+
+          return selected.some(v => itemValues.includes(v));
+        });
 
         const words = currentSearch.split(" ").filter(w => w);
 
         const matchesSearch =
           words.length === 0 ||
           words.every(word =>
-            normalize(item["Display Name"])?.includes(word) ||
-            normalize(item["Team"])?.includes(word) ||
-            normalize(item["Name"])?.includes(word)
+            SEARCH_KEYS.some(key =>
+              normalize(item[key])?.includes(word)
+            )
           );
 
         return matchesFilters && matchesSidebar && matchesSearch;
@@ -163,8 +237,7 @@ fetch("../football/football_collection.json")
         checkbox.value = value;
         checkbox.checked =
           selectedValues.includes(value) ||
-          (key === "Product" && urlProducts.includes(value)) ||
-          (key === "Team" && urlTeams.includes(value));
+          sidebarState[key.toLowerCase()]?.includes(value);
 
         checkbox.addEventListener("change", render);
 
@@ -193,8 +266,13 @@ fetch("../football/football_collection.json")
         container.appendChild(toggle);
       }
     }
-    createFilterOptions(productContainer, "Product");
-    createFilterOptions(teamContainer, "Team");
+    
+    renderSidebar();
+    initAccordion();
+    SIDEBAR_KEYS.forEach(key => {
+      const el = document.getElementById(`filter-${key}`);
+      createFilterOptions(el, formatKey(key));
+    });
 
     function getSelectedValues(containerId) {
       return Array.from(
@@ -203,30 +281,30 @@ fetch("../football/football_collection.json")
     }
 
     // ===== Accordion (NEW) =====
-    document.querySelectorAll(".filter-header").forEach(header => {
-      header.addEventListener("click", () => {
+    function initAccordion() {
+      document.querySelectorAll(".filter-header").forEach(header => {
+        header.addEventListener("click", () => {
 
-        const group = header.parentElement;
-        const content = group.querySelector(".filter-content");
-        const key = content.dataset.key; // 🔥 importante
+          const group = header.parentElement;
+          const content = group.querySelector(".filter-content");
+          const key = content.dataset.key;
 
-        const isOpening = !group.classList.contains("active");
+          const isOpening = !group.classList.contains("active");
 
-        group.classList.toggle("active");
+          group.classList.toggle("active");
 
-        // 🔥 si se está cerrando → reset + re-render
-        if (!isOpening) {
-          content.dataset.expanded = "false";
-          content.classList.remove("expanded");
+          if (!isOpening) {
+            content.dataset.expanded = "false";
+            content.classList.remove("expanded");
+            renderFilterOptions(content, key);
+          }
 
-          renderFilterOptions(content, key); // 🔥 ESTO FALTABA
-        }
-
+        });
       });
-    });
+    }
 
     // ===== Active Filters (chips) =====
-    function renderActiveFilters(selectedProducts, selectedTeams) {
+    function renderActiveFilters() {
 
       const container = document.getElementById("active-filters");
       const wrapper = document.getElementById("active-filters-container");
@@ -255,18 +333,23 @@ fetch("../football/football_collection.json")
         container.appendChild(chip);
       }
 
-      selectedProducts.forEach(v => createChip(v, "Product"));
-      selectedTeams.forEach(v => createChip(v, "Team"));
+      SIDEBAR_KEYS.forEach(key => {
+        const selected = getSelectedValues(`filter-${key}`);
+        selected.forEach(v => createChip(v, formatKey(key)));
+      });
 
       // 🔥 ocultar si no hay filtros
-      wrapper.style.display =
-        (selectedProducts.length || selectedTeams.length) ? "block" : "none";
+      const hasActive = SIDEBAR_KEYS.some(key =>
+        getSelectedValues(`filter-${key}`).length > 0
+      );
+
+      wrapper.style.display = hasActive ? "block" : "none";
     }
 
     // ===== Remove single filter =====
     function removeFilter(value, type) {
 
-      const containerId = type === "Product" ? "filter-product" : "filter-team";
+      const containerId = `filter-${type.toLowerCase()}`;
 
       document.querySelectorAll(`#${containerId} input`).forEach(input => {
         if (input.value === value) {
@@ -285,47 +368,43 @@ fetch("../football/football_collection.json")
     // ===== Render =====
     function render() {
 
-      function validFilter(filter, value) {
-        return !filter || (value && value.trim() === filter);
+      updateURL();
+
+      const hasBreadcrumbFilters = Object.values(filtersState)
+        .some(arr => arr.length > 0);
+
+      if (!hasBreadcrumbFilters) {
+        renderActiveFilters();
+      } else {
+        const wrapper = document.getElementById("active-filters-container");
+        if (wrapper) wrapper.style.display = "none";
       }
 
-      const selectedProducts = getSelectedValues("filter-product");
-      const selectedTeams = getSelectedValues("filter-team");
-
-      updateURL(selectedProducts, selectedTeams);
-
-      renderActiveFilters(selectedProducts, selectedTeams);
-
       const filteredData = data.filter(item => {
-      const matchesFilters =
-        (!filterEntity || item["Entity"] === filterEntity) &&
-        (!filterSeason || item["Season"] === filterSeason) &&
-        matchField(item["Team"], filterTeam) &&
-        (!filterCountry || item["Country"] === filterCountry) &&
-        (!filterCompetition || item["Competition"] === filterCompetition) &&
-        (!filterBrand || item["Brand"] === filterBrand) &&
-        matchField(item["Person"], filterPerson);
+      const matchesFilters = Object.entries(filtersState).every(([key, values]) => {
+        const itemKey = key.charAt(0).toUpperCase() + key.slice(1); // entity → Entity
+        return matchField(item[itemKey], values);
+      });
 
-        const itemTeams = item["Team"]?.split("/").map(v => v.trim()) || [];
+        const matchesSidebar = SIDEBAR_KEYS.every(sideKey => {
+          const selected = getSelectedValues(`filter-${sideKey}`);
+          if (!selected.length) return true;
 
-        const matchesSidebar =
-          (selectedProducts.length === 0 || selectedProducts.includes(item["Product"])) &&
-          (selectedTeams.length === 0 || selectedTeams.some(team => itemTeams.includes(team)));
+          const itemValues = item[formatKey(sideKey)]
+            ?.split("/")
+            .map(v => v.trim()) || [];
+
+          return selected.some(v => itemValues.includes(v));
+        });
 
         const words = currentSearch.split(" ").filter(w => w);
 
         const matchesSearch =
           words.length === 0 ||
           words.every(word =>
-            normalize(item["Display Name"])?.includes(word) ||
-            normalize(item["Team"])?.includes(word) ||
-            normalize(item["Name"])?.includes(word) ||
-            normalize(item["Style"])?.includes(word) ||
-            normalize(item["Season"])?.includes(word) ||
-            normalize(item["Competition"])?.includes(word) ||
-            normalize(item["Country"])?.includes(word) ||
-            normalize(item["Confederation"])?.includes(word) ||
-            normalize(item["Brand"])?.includes(word)
+            SEARCH_KEYS.some(key =>
+              normalize(item[key])?.includes(word)
+            )
           );
 
         return matchesFilters && matchesSidebar && matchesSearch;
@@ -386,8 +465,10 @@ fetch("../football/football_collection.json")
       }
 
       // 🔥 actualizar contadores dinámicamente
-      renderFilterOptions(productContainer, "Product");
-      renderFilterOptions(teamContainer, "Team");
+      SIDEBAR_KEYS.forEach(key => {
+        const el = document.getElementById(`filter-${key}`);
+        renderFilterOptions(el, formatKey(key));
+      });
     }
 
     function normalize(text) {
@@ -397,21 +478,19 @@ fetch("../football/football_collection.json")
         .replace(/[\u0300-\u036f]/g, "");
     }
 
-    function updateURL(selectedProducts, selectedTeams) {
+    function updateURL() {
 
       const params = new URLSearchParams(window.location.search);
 
       // limpiar solo sidebar
-      params.delete("product");
-      params.delete("team");
+      SIDEBAR_KEYS.forEach(key => params.delete(key));
 
-      if (selectedProducts.length) {
-        params.set("product", selectedProducts.join(","));
-      }
-
-      if (selectedTeams.length) {
-        params.set("team", selectedTeams.join(","));
-      }
+      SIDEBAR_KEYS.forEach(key => {
+        const selected = getSelectedValues(`filter-${key}`);
+        if (selected.length) {
+          params.set(key, selected.join(","));
+        }
+      });
 
       const newURL = `${window.location.pathname}?${params.toString()}`;
       window.history.replaceState({}, "", newURL);
