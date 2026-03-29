@@ -17,6 +17,15 @@ const FILTER_KEYS = [
   "person"
 ];
 
+const breadcrumbConfig = {
+  "National Team": ["entity", "team", "season"],
+  "Collective": ["entity", "team", "season"],
+  "Club": ["country", "competition", "team", "season"],
+  "Event": ["competition", "team", "season"],
+  "Brand": ["brand", "season"],
+  "Person": ["team", "person", "season"]
+};
+
 const SIDEBAR_KEYS = [
   "category",
   "product",
@@ -103,22 +112,67 @@ fetch("../football/football_collection.json")
     // ===== Breadcrumbs =====
     let parts = [];
 
-    function link(label, query) {
-      return `<a href="./index.html${query}">${label}</a>`;
+    function link(label, paramsObj) {
+      const search = new URLSearchParams(paramsObj);
+      return `<a href="./index.html?${search.toString()}">${label}</a>`;
     }
 
-    parts.push(link("Home", ""));
+    parts.push(`<a href="./index.html">Home</a>`);
 
-    let query = "";
 
-    FILTER_KEYS.forEach(key => {
-      const values = filtersState[key];
-      if (!values.length) return;
+    let entityValue = filtersState.entity[0];
 
-      query += `${query ? "&" : "?"}${key}=${encodeURIComponent(values.join(","))}`;
+    // 🔥 inferir entity de forma segura
+    if (!entityValue) {
 
-      parts.push(link(values[0], query));
-    });
+      const possibleEntities = new Set();
+
+      data.forEach(item => {
+
+        const matches = Object.entries(filtersState).every(([key, values]) => {
+          if (!values.length) return true;
+
+          const itemKey = key.charAt(0).toUpperCase() + key.slice(1);
+          return matchField(item[itemKey], values);
+        });
+
+        if (matches && item["Entity"]) {
+          possibleEntities.add(item["Entity"]);
+        }
+
+      });
+
+      // ✅ solo usar si hay UNA clara
+      if (possibleEntities.size === 1) {
+        entityValue = [...possibleEntities][0];
+      }
+
+    }
+    const config = breadcrumbConfig[entityValue];
+
+    if (config) {
+
+      let currentParams = {};
+
+      config.forEach(key => {
+
+        const values = filtersState[key];
+        if (!values || !values.length) return;
+
+        const value = values[0]; // breadcrumb = 1 valor
+
+        currentParams[key] = value;
+
+        parts.push(link(value, currentParams));
+
+      });
+
+    }
+
+    filters.innerHTML =
+      parts.length > 1
+        ? parts.join(` <span class="breadcrumb-separator">></span> `)
+        : "";
 
     filters.innerHTML = parts.length > 1
       ? parts.join(` <span class="breadcrumb-separator">></span> `)

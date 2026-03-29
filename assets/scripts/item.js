@@ -24,7 +24,7 @@ fetch("../football/football_collection.json")
 
       if (!valid(value)) return [];
 
-      // 🔥 soporta valores múltiples tipo "A/B"
+      // 🔥 multi-values tipo "A/B"
       if (!["Display Name", "ID", "Notes"].includes(key)) {
         return value.split("/").map(v => v.trim());
       }
@@ -41,7 +41,7 @@ fetch("../football/football_collection.json")
       return `<a href="./index.html${buildQuery(params)}">${label}</a>`;
     }
 
-    // 🔥 CONFIG CENTRAL
+    // 🔥 CONFIG CENTRAL (ÚNICA FUENTE DE VERDAD)
     const breadcrumbConfig = {
       "National Team": ["Entity", "Team", "Season"],
       "Collective": ["Entity", "Team", "Season"],
@@ -51,26 +51,30 @@ fetch("../football/football_collection.json")
       "Person": ["Team", "Person", "Season"]
     };
 
-    const entity = item["Entity"];
-    const config = breadcrumbConfig[entity] || ["Entity", "Season", "Team"];
+    // 🔥 SIN fallback viejo
+    const config = breadcrumbConfig[item["Entity"]];
+
+    // ⚠️ seguridad mínima (por si algo viene mal en JSON)
+    if (!config) {
+      breadcrumbs.innerHTML = `<a href="./index.html">Home</a>`;
+      return;
+    }
 
     let parts = [];
 
     // Home
     parts.push(`<a href="./index.html">Home</a>`);
 
-    // 🔥 acumulador de params
+    // 🔥 acumulador limpio
     let currentParams = {};
 
     config.forEach(key => {
 
       const values = getValues(key);
 
-      values.forEach((value, index) => {
+      values.forEach(value => {
 
-        // 🔥 evitar duplicar params en múltiples valores
         const paramKey = key.toLowerCase();
-
         currentParams[paramKey] = value;
 
         parts.push(link(value, currentParams));
@@ -79,13 +83,14 @@ fetch("../football/football_collection.json")
 
     });
 
-    // ===== (último sin link) =====
+    // ===== Último (sin link) =====
     if (valid(item["Display Name"])) {
       parts.push(`<span>${item["Display Name"]}</span>`);
     }
 
     // Render
-    breadcrumbs.innerHTML = parts.join(` <span class="breadcrumb-separator">></span> `);
+    breadcrumbs.innerHTML =
+      parts.join(` <span class="breadcrumb-separator">></span> `);
 
     // ===== Title =====
     document.getElementById("title").textContent = item["Display Name"];
