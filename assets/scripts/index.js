@@ -1,3 +1,14 @@
+import {
+  FILTER_KEYS,
+  SIDEBAR_KEYS,
+  SEARCH_KEYS,
+  breadcrumbConfig,
+  BREADCRUMB_RESOLVER,
+  valid,
+  NO_SPLIT_FIELDS,
+  VALUE_SEPARATOR
+} from "./collections/football/config.js";
+
 const params = new URLSearchParams(window.location.search);
 
 // 🔥 multi-values desde URL
@@ -5,68 +16,6 @@ function getArrayParam(key) {
   return params.get(key)?.split(",").map(v => v.trim()) || [];
 }
 
-
-// filtros breadcrumb
-const FILTER_KEYS = [
-  "entity",
-  "season",
-  "team",
-  "country",
-  "competition",
-  "brand",
-  "person"
-];
-
-const breadcrumbConfig = {
-  "National Team": ["entity", "team", "season"],
-  "Collective": ["entity", "team", "season"],
-  "Club": ["country", "competition", "team", "season"],
-  "Event": ["competition", "team", "season"],
-  "Brand": ["brand", "season"],
-  "Person": ["team", "person", "season"]
-};
-
-const SIDEBAR_KEYS = [
-  "category",
-  "product",
-  "entity",
-  "team",
-  "season",
-  "style",
-  "release",
-  "competition",
-  "country",
-  "confederation",
-  "technology",
-  "brand",
-  "collaboration",
-  "size",
-  "sleeves",
-  "person",
-  "patch",
-  "packaging",
-  "signature"
-];
-
-const SEARCH_KEYS = [
-  "Display Name",
-  "Team",
-  "Person",
-  "Style",
-  "Season",
-  "Competition",
-  "Country",
-  "Confederation",
-  "Brand",
-  "Product",
-  "Entity",
-  "Category",
-  "Release",
-  "Technology",
-  "Collaboration",
-  "Print",
-  "Patch"
-];
 
 function formatKey(key) {
   return key.charAt(0).toUpperCase() + key.slice(1);
@@ -101,11 +50,21 @@ fetch("../data/json_files/football_collection.json")
 
     const searchInfo = document.getElementById("search-info");
 
-    function matchField(itemValue, filterArray) {
+    function getItemValues(key, value) {
+      if (!valid(value)) return [];
+
+      if (NO_SPLIT_FIELDS.includes(key)) {
+        return [value.trim()];
+      }
+
+      return value.split(VALUE_SEPARATOR).map(v => v.trim());
+    }
+
+    function matchField(itemValue, filterArray, key) {
       if (!filterArray || filterArray.length === 0) return true;
       if (!itemValue) return false;
 
-      const values = itemValue.split("/").map(v => v.trim());
+      const values = getItemValues(key, itemValue);
       return filterArray.some(f => values.includes(f));
     }
 
@@ -119,49 +78,29 @@ fetch("../data/json_files/football_collection.json")
 
     parts.push(`<a href="./index.html">Home</a>`);
 
+    // ===== Resolver config dinámicamente =====
+    const config = BREADCRUMB_RESOLVER({
+      filtersState,
+      data,
+      matchField,
+      breadcrumbConfig
+    });
 
-    let entityValue = filtersState.entity[0];
-
-    // 🔥 inferir entity de forma segura
-    if (!entityValue) {
-
-      const possibleEntities = new Set();
-
-      data.forEach(item => {
-
-        const matches = Object.entries(filtersState).every(([key, values]) => {
-          if (!values.length) return true;
-
-          const itemKey = key.charAt(0).toUpperCase() + key.slice(1);
-          return matchField(item[itemKey], values);
-        });
-
-        if (matches && item["Entity"]) {
-          possibleEntities.add(item["Entity"]);
-        }
-
-      });
-
-      // ✅ solo usar si hay UNA clara
-      if (possibleEntities.size === 1) {
-        entityValue = [...possibleEntities][0];
-      }
-
-    }
-    const config = breadcrumbConfig[entityValue];
-
+    // ===== Construcción =====
     if (config) {
 
       let currentParams = {};
 
       config.forEach(key => {
 
-        const values = filtersState[key];
+        const paramKey = key.toLowerCase(); // 🔥 clave
+        const values = filtersState[paramKey];
+
         if (!values || !values.length) return;
 
-        const value = values[0]; // breadcrumb = 1 valor
+        const value = values[0];
 
-        currentParams[key] = value;
+        currentParams[paramKey] = value;
 
         parts.push(link(value, currentParams));
 
@@ -173,10 +112,6 @@ fetch("../data/json_files/football_collection.json")
       parts.length > 1
         ? parts.join(` <span class="breadcrumb-separator">></span> `)
         : "";
-
-    filters.innerHTML = parts.length > 1
-      ? parts.join(` <span class="breadcrumb-separator">></span> `)
-      : "";
 
     function renderSidebar() {
       const sidebar = document.getElementById("filters-sidebar");
@@ -226,7 +161,7 @@ fetch("../data/json_files/football_collection.json")
 
       const matchesFilters = Object.entries(filtersState).every(([key, values]) => {
         const itemKey = key.charAt(0).toUpperCase() + key.slice(1); // entity → Entity
-        return matchField(item[itemKey], values);
+        return matchField(item[itemKey], values, itemKey);
       });
 
         // 🔥 aplicar sidebar EXCEPTO el actual
@@ -239,7 +174,7 @@ fetch("../data/json_files/football_collection.json")
           if (!selected.length) return true;
 
           const itemValues = item[formatKey(sideKey)]
-            ?.split("/")
+            ?.split(VALUE_SEPARATOR)
             .map(v => v.trim()) || [];
 
           return selected.some(v => itemValues.includes(v));
@@ -264,8 +199,8 @@ fetch("../data/json_files/football_collection.json")
         const rawValue = item[key];
         if (!rawValue || rawValue === "-") return;
 
-        // 🔥 dividir por "/"
-        const valuesArray = rawValue.split("/").map(v => v.trim());
+        // 🔥 dividir por VALUE_SEPARATOR
+        const valuesArray = getItemValues(key, rawValue);
 
         valuesArray.forEach(value => {
           counts[value] = (counts[value] || 0) + 1;
@@ -437,16 +372,15 @@ fetch("../data/json_files/football_collection.json")
       const filteredData = data.filter(item => {
       const matchesFilters = Object.entries(filtersState).every(([key, values]) => {
         const itemKey = key.charAt(0).toUpperCase() + key.slice(1); // entity → Entity
-        return matchField(item[itemKey], values);
+        return matchField(item[itemKey], values, itemKey);
       });
 
         const matchesSidebar = SIDEBAR_KEYS.every(sideKey => {
           const selected = getSelectedValues(`filter-${sideKey}`);
           if (!selected.length) return true;
 
-          const itemValues = item[formatKey(sideKey)]
-            ?.split("/")
-            .map(v => v.trim()) || [];
+          const raw = item[formatKey(sideKey)];
+          const itemValues = getItemValues(formatKey(sideKey), raw);
 
           return selected.some(v => itemValues.includes(v));
         });

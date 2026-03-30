@@ -1,5 +1,41 @@
+import {
+  NO_SPLIT_FIELDS,
+  HIDDEN_FIELDS,
+  FIELD_COMBINATIONS,
+  FIELD_VISIBILITY_RULES,
+  breadcrumbConfig,
+  BREADCRUMB_RESOLVER,
+  valid,
+  VALUE_SEPARATOR
+} from "./collections/football/config.js";
+
 const params = new URLSearchParams(window.location.search);
 const id = params.get("id");
+
+// ===== HELPERS =====
+
+function getValues(item, key) {
+  const value = item[key];
+
+  if (!valid(value)) return [];
+
+  if (!NO_SPLIT_FIELDS.includes(key)) {
+    return value.split(VALUE_SEPARATOR).map(v => v.trim());
+  }
+
+  return [value];
+}
+
+function buildQuery(params) {
+  const search = new URLSearchParams(params);
+  return `?${search.toString()}`;
+}
+
+function link(label, params) {
+  return `<a href="./index.html${buildQuery(params)}">${label}</a>`;
+}
+
+// ===== FETCH =====
 
 fetch("../data/json_files/football_collection.json")
   .then(res => res.json())
@@ -15,86 +51,47 @@ fetch("../data/json_files/football_collection.json")
     // ===== Breadcrumbs =====
     const breadcrumbs = document.getElementById("breadcrumbs");
 
-    function valid(value) {
-      return value && value.trim() !== "-" && value.trim() !== "";
-    }
+    const config = BREADCRUMB_RESOLVER({
+      item,
+      breadcrumbConfig
+    });
 
-    function getValues(key) {
-      const value = item[key];
-
-      if (!valid(value)) return [];
-
-      // 🔥 multi-values tipo "A/B"
-      if (!["Display Name", "ID", "Notes"].includes(key)) {
-        return value.split("/").map(v => v.trim());
-      }
-
-      return [value];
-    }
-
-    function buildQuery(params) {
-      const search = new URLSearchParams(params);
-      return `?${search.toString()}`;
-    }
-
-    function link(label, params) {
-      return `<a href="./index.html${buildQuery(params)}">${label}</a>`;
-    }
-
-    // 🔥 CONFIG CENTRAL (ÚNICA FUENTE DE VERDAD)
-    const breadcrumbConfig = {
-      "National Team": ["Entity", "Team", "Season"],
-      "Collective": ["Entity", "Team", "Season"],
-      "Club": ["Country", "Competition", "Team", "Season"],
-      "Event": ["Competition", "Team", "Season"],
-      "Brand": ["Brand", "Season"],
-      "Person": ["Team", "Person", "Season"]
-    };
-
-    // 🔥 SIN fallback viejo
-    const config = breadcrumbConfig[item["Entity"]];
-
-    // ⚠️ seguridad mínima (por si algo viene mal en JSON)
     if (!config) {
       breadcrumbs.innerHTML = `<a href="./index.html">Home</a>`;
-      return;
-    }
+    } else {
 
-    let parts = [];
+      let parts = [];
+      let currentParams = {};
 
-    // Home
-    parts.push(`<a href="./index.html">Home</a>`);
+      parts.push(`<a href="./index.html">Home</a>`);
 
-    // 🔥 acumulador limpio
-    let currentParams = {};
+      config.forEach(key => {
 
-    config.forEach(key => {
+        const values = getValues(item, key);
 
-      const values = getValues(key);
+        values.forEach(value => {
 
-      values.forEach(value => {
+          const paramKey = key.toLowerCase();
+          currentParams[paramKey] = value;
 
-        const paramKey = key.toLowerCase();
-        currentParams[paramKey] = value;
+          parts.push(link(value, currentParams));
 
-        parts.push(link(value, currentParams));
+        });
 
       });
 
-    });
+      if (valid(item["Display Name"])) {
+        parts.push(`<span>${item["Display Name"]}</span>`);
+      }
 
-    // ===== Último (sin link) =====
-    if (valid(item["Display Name"])) {
-      parts.push(`<span>${item["Display Name"]}</span>`);
+      breadcrumbs.innerHTML =
+        parts.join(` <span class="breadcrumb-separator">></span> `);
     }
-
-    // Render
-    breadcrumbs.innerHTML =
-      parts.join(` <span class="breadcrumb-separator">></span> `);
 
     // ===== Title =====
     document.getElementById("title").textContent = item["Display Name"];
     document.title = item["Display Name"];
+
     // ===== Images =====
     const gallery = document.getElementById("gallery");
 
@@ -187,42 +184,20 @@ fetch("../data/json_files/football_collection.json")
     // ===== Details =====
     const details = document.getElementById("details");
 
-    const hasNameset = item["Nameset"] && item["Nameset"].trim() !== "-" && item["Nameset"].trim() !== "";
-    const hasSleeves = item["Sleeves"] && item["Sleeves"].trim() !== "-" && item["Sleeves"].trim() !== "" && item["Sleeves"].trim() !== "Short";
-    const hasCollaboration = item["Collaboration"] && item["Collaboration"].trim() !== "-" && item["Collaboration"].trim() !== "";
-    const hasRelease = item["Release"] && item["Release"].trim() !== "-" && item["Release"].trim() !== "" && item["Release"].trim() !== "Regular";
     Object.entries(item).forEach(([key, value]) => {
 
-      if (
-        key === "ID" ||
-        key === "Display Name" ||
-        key === "Variant" ||
-        key === "Category" ||
-        key === "Entity" ||
-        key === "Nameset" ||
-        key === "Sleeves" ||
-        key === "Collaboration" ||
-        (key === "Release" && !hasRelease) ||
-        key === "Notes"
-      ) return;
+      if (HIDDEN_FIELDS.includes(key)) return;
 
-      if (!value || value.trim() === "-" || value.trim() === "") return;
+      if (FIELD_VISIBILITY_RULES[key] && !FIELD_VISIBILITY_RULES[key](item, value)) return;
+
+      if (!valid(value)) return;
 
       let finalValue = value;
 
-      if (key === "Print") {
-        if (hasNameset) finalValue += ` (${item["Nameset"]} Nameset)`;
+      if (FIELD_COMBINATIONS[key]) {
+        finalValue = FIELD_COMBINATIONS[key](item, value);
       }
 
-      if (key === "Style") {
-        if (hasSleeves) finalValue += ` (${item["Sleeves"]} Sleeves)`;
-      }
-
-      if (key === "Brand") {
-        if (hasCollaboration) finalValue += ` x ${item["Collaboration"]}`;
-      }
-
-      // ===== New layout =====
       const row = document.createElement("div");
       row.className = "detail-row";
 
@@ -232,12 +207,10 @@ fetch("../data/json_files/football_collection.json")
 
       const valueDiv = document.createElement("div");
       valueDiv.className = "detail-value";
-      if (!["Display Name", "ID", "Notes"].includes(key) && value.includes("/")) {
 
-        const parts = value.split("/").map(v => v.trim());
-
+      if (!NO_SPLIT_FIELDS.includes(key) && value.includes(VALUE_SEPARATOR)) {
+        const parts = value.split(VALUE_SEPARATOR).map(v => v.trim());
         valueDiv.innerHTML = parts.join(" · ");
-
       } else {
         valueDiv.textContent = finalValue;
       }
@@ -247,15 +220,15 @@ fetch("../data/json_files/football_collection.json")
       details.appendChild(row);
 
     });
-    // ===== Notes (al final, sin título) =====
+
+    // ===== Notes =====
     const notes = item["Notes"];
 
-    if (notes && notes.trim() !== "-" && notes.trim() !== "") {
-
+    if (valid(notes)) {
       const notesDiv = document.createElement("div");
       notesDiv.className = "detail-notes";
       notesDiv.textContent = notes;
-
       details.appendChild(notesDiv);
     }
+
   });
