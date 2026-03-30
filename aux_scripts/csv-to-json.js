@@ -5,8 +5,8 @@ const collection = process.argv[2];
 
 const config = {
   football: {
-    input: "data/football_collection - Collection.csv",
-    output: "football/football_collection.json"
+    input: "data/csv_files/football_collection - Collection.csv",
+    output: "data/json_files/football_collection.json"
   }
 };
 

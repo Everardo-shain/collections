@@ -1,7 +1,7 @@
 const params = new URLSearchParams(window.location.search);
 const id = params.get("id");
 
-fetch("../football/football_collection.json")
+fetch("../data/json_files/football_collection.json")
   .then(res => res.json())
   .then(data => {
 

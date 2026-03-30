@@ -85,7 +85,7 @@ FILTER_KEYS.forEach(key => {
 });
 const filterSearch = params.get("search") || "";
 
-fetch("../football/football_collection.json")
+fetch("../data/json_files/football_collection.json")
   .then(response => response.json())
   .then(data => {
     const totalItems = data.length;
