@@ -34,6 +34,26 @@ FILTER_KEYS.forEach(key => {
 });
 const filterSearch = params.get("search") || "";
 
+function renderCategoryHeader(parts) {
+  const container = document.getElementById("category-header");
+  if (!container) return;
+
+  if (!parts || parts.length <= 1) {
+    container.innerHTML = `<h1>All Items</h1>`;
+    return;
+  }
+
+  // 🔥 tomar el último elemento del breadcrumb
+  const lastPart = parts[parts.length - 1];
+
+  // 🔥 extraer solo el texto (sin <a>)
+  const temp = document.createElement("div");
+  temp.innerHTML = lastPart;
+  const title = temp.textContent;
+
+  container.innerHTML = `<h1>${title}</h1>`;
+}
+
 fetch("../data/json_files/football_collection.json")
   .then(response => response.json())
   .then(data => {
@@ -47,8 +67,6 @@ fetch("../data/json_files/football_collection.json")
     if (searchInput && filterSearch) {
       searchInput.value = filterSearch;
     }
-
-    const searchInfo = document.getElementById("search-info");
 
     function getItemValues(key, value) {
       if (!valid(value)) return [];
@@ -71,43 +89,79 @@ fetch("../data/json_files/football_collection.json")
     // ===== Breadcrumbs =====
     let parts = [];
 
-    function link(label, paramsObj) {
+    function link(label, paramsObj = {}) {
       const search = new URLSearchParams(paramsObj);
       return `<a href="./index.html?${search.toString()}">${label}</a>`;
     }
 
+    // Home siempre
     parts.push(`<a href="./index.html">Home</a>`);
 
-    // ===== Resolver config dinámicamente =====
-    const config = BREADCRUMB_RESOLVER({
-      filtersState,
-      data,
-      matchField,
-      breadcrumbConfig
+    // ===== MODOS =====
+    const hasSearch = !!filterSearch;
+    const hasCategory = filtersState.category?.length;
+    const hasProduct = filtersState.product?.length;
+
+    // detectar si hay filtros reales (excluyendo category/product/search)
+    const hasOtherFilters = Object.entries(filtersState).some(([key, values]) => {
+      if (["category", "product"].includes(key)) return false;
+      return values.length > 0;
     });
 
-    // ===== Construcción =====
-    if (config) {
+
+    // ===== 1. SEARCH =====
+    if (hasSearch) {
+
+      parts.push(`<span>Search: "${filterSearch}"</span>`);
+
+    // ===== 2. NAVIGATION =====
+    } else if (hasCategory) {
 
       let currentParams = {};
 
-      config.forEach(key => {
+      const category = filtersState.category[0];
+      currentParams.category = category;
+      parts.push(link(category, currentParams));
 
-        const paramKey = key.toLowerCase(); // 🔥 clave
-        const values = filtersState[paramKey];
+      if (hasProduct) {
+        const product = filtersState.product[0];
+        currentParams.product = product;
+        parts.push(link(product, currentParams));
+      }
 
-        if (!values || !values.length) return;
+    // ===== 3. FILTERS =====
+    } else if (hasOtherFilters) {
 
-        const value = values[0];
-
-        currentParams[paramKey] = value;
-
-        parts.push(link(value, currentParams));
-
+      const config = BREADCRUMB_RESOLVER({
+        filtersState,
+        data,
+        matchField,
+        breadcrumbConfig
       });
 
+      if (config) {
+        let currentParams = {};
+
+        config.forEach(key => {
+          const paramKey = key.toLowerCase();
+          const values = filtersState[paramKey];
+
+          if (!values?.length) return;
+
+          const value = values[0];
+          currentParams[paramKey] = value;
+
+          parts.push(link(value, currentParams));
+        });
+      }
+
+    // ===== 4. DEFAULT =====
+    } else {
+      parts.push(`<span>All Items</span>`);
     }
 
+
+    // ===== render =====
     filters.innerHTML =
       parts.length > 1
         ? parts.join(` <span class="breadcrumb-separator">></span> `)
@@ -398,6 +452,8 @@ fetch("../data/json_files/football_collection.json")
         return matchesFilters && matchesSidebar && matchesSearch;
         
       });
+
+      renderCategoryHeader(parts);
       const resultsCount = document.getElementById("results-count");
 
       if (resultsCount) {
@@ -410,16 +466,6 @@ fetch("../data/json_files/football_collection.json")
         } else {
           resultsCount.innerHTML = `<strong>${totalItems}</strong> Items`;
         }
-      }
-
-      // ===== Search info =====
-      if (currentSearch) {
-        searchInfo.innerHTML = `
-          Search results for: "<em>${filterSearch}</em>"
-          <a href="./index.html" class="clear-search" title="Clear search">✕</a>
-        `;
-      } else {
-        searchInfo.textContent = "";
       }
 
       // ===== Sort =====

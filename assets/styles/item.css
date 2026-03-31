@@ -155,10 +155,3 @@ body {
 
 #prev { left: 20px; }
 #next { right: 20px; }
-
-/* ===== Responsive ===== */
-@media (max-width: 768px) {
-  #content {
-    flex-direction: column;
-  }
-}

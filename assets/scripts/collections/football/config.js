@@ -1,3 +1,12 @@
+// ===== CONFIGURACIÓN NAVEGACION =====
+export const NAVIGATION = {
+  categories: {
+    "Apparel": ["Jersey", "Hoodie", "Jacket", "Pants", "Headwear", "Scarf"],
+    "Equipment": ["Boots", "Ball"],
+    "Merchandise": ["Drinkware", "Display", "Accessory", "Stationery", "Currency", "Pass", "Photo"]
+  }
+};
+
 // ===== CONFIGURACIÓN GENERAL ITEM =====
 
 // ===== valores no válidos =====
@@ -53,20 +62,21 @@ export const FIELD_VISIBILITY_RULES = {
 export const BREADCRUMB_KEY = "Entity";
 
 export const breadcrumbConfig = {
-  "National Team": ["Entity", "Team", "Season"],
-  "Collective": ["Entity", "Team", "Season"],
-  "Club": ["Country", "Competition", "Team", "Season"],
-  "Event": ["Competition", "Team", "Season"],
-  "Brand": ["Brand", "Season"],
-  "Person": ["Team", "Person", "Season"]
+  "National Team": ["Team"],
+  "Collective": ["Team"],
+  "Club": ["Team"],
+  "Event": ["Competition"],
+  "Brand": ["Brand"],
+  "Person": ["Person"]
 };
+
+export const NAVIGATION_BREADCRUMB = ["Category", "Product"];
 
 // 🔥 resolver dinámico
 export const BREADCRUMB_RESOLVER = (context) => {
   const { item, filtersState, data, matchField, breadcrumbConfig } = context;
 
-  const keyName = BREADCRUMB_KEY;              // "Entity"
-  const paramKey = keyName.toLowerCase();      // "entity"
+  const keyName = BREADCRUMB_KEY;
 
   // ===== CASO ITEM =====
   if (item) {
@@ -77,13 +87,18 @@ export const BREADCRUMB_RESOLVER = (context) => {
   // ===== CASO INDEX =====
   if (filtersState) {
 
-    // 1. directo
-    if (filtersState[paramKey]?.length) {
-      return breadcrumbConfig[filtersState[paramKey][0]];
+    // 🔥 PRIORIDAD: navegación (category/product)
+    if (filtersState.category?.length) {
+      return NAVIGATION_BREADCRUMB;
+    }
+
+    // 1. entity directo
+    if (filtersState.entity?.length) {
+      return breadcrumbConfig[filtersState.entity[0]];
     }
 
     // 2. inferencia
-    const possibleValues = new Set();
+    const possibleEntities = new Set();
 
     data.forEach(entry => {
 
@@ -94,17 +109,25 @@ export const BREADCRUMB_RESOLVER = (context) => {
         return matchField(entry[itemKey], values, itemKey);
       });
 
-      if (matches && entry[keyName]) {
-        possibleValues.add(entry[keyName]);
+      if (matches && entry["Entity"]) {
+        possibleEntities.add(entry["Entity"]);
       }
 
     });
 
-    if (possibleValues.size === 1) {
-      return breadcrumbConfig[[...possibleValues][0]];
+    if (possibleEntities.size === 1) {
+      return breadcrumbConfig[[...possibleEntities][0]];
     }
   }
+  // 🔥 fallback: usar keys activas directamente
+  const activeKeys = Object.entries(filtersState)
+    .filter(([_, values]) => values.length > 0)
+    .map(([key]) => key.charAt(0).toUpperCase() + key.slice(1));
 
+  if (activeKeys.length) {
+    return activeKeys;
+  }
+  // 🔥 CRÍTICO
   return null;
 };
 
@@ -112,19 +135,20 @@ export const BREADCRUMB_RESOLVER = (context) => {
 // ===== CONFIGURACIÓN GENERAL INDEX =====
 // filtros breadcrumb
 export const FILTER_KEYS = [
+  "category",
+  "product",
   "entity",
   "season",
   "team",
   "country",
   "competition",
   "brand",
-  "person"
+  "person",
+  "confederation"
 ];
 
 
 export const SIDEBAR_KEYS = [
-  "category",
-  "product",
   "entity",
   "team",
   "season",
