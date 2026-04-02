@@ -1,12 +1,88 @@
 import { Link, useSearchParams } from 'react-router-dom';
-import { Menu, X } from 'lucide-react';
-import { categories, products } from '@/data/mockData';
-import { useState } from 'react';
+import { Menu, X, ChevronDown } from 'lucide-react';
+import { navGroups } from '@/data/mockData';
+import { useState, useRef, useEffect } from 'react';
+
+function DropdownMenu({
+  group,
+  activeCategory,
+  activeProduct,
+}: {
+  group: (typeof navGroups)[0];
+  activeCategory: string | null;
+  activeProduct: string | null;
+}) {
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  const timeout = useRef<ReturnType<typeof setTimeout>>();
+
+  const isActive = group.children.some(
+    c => c.category === activeCategory && (!activeProduct || c.product === activeProduct)
+  );
+
+  const handleEnter = () => {
+    clearTimeout(timeout.current);
+    setOpen(true);
+  };
+  const handleLeave = () => {
+    timeout.current = setTimeout(() => setOpen(false), 150);
+  };
+
+  useEffect(() => () => clearTimeout(timeout.current), []);
+
+  return (
+    <div
+      ref={ref}
+      className="relative"
+      onMouseEnter={handleEnter}
+      onMouseLeave={handleLeave}
+    >
+      <button
+        className={`flex items-center gap-1 text-sm font-medium transition-colors hover:text-foreground ${
+          isActive ? 'text-foreground' : 'text-muted-foreground'
+        }`}
+        onClick={() => setOpen(!open)}
+      >
+        {group.label}
+        <ChevronDown className={`w-3.5 h-3.5 transition-transform ${open ? 'rotate-180' : ''}`} />
+      </button>
+
+      {open && (
+        <div className="absolute top-full left-0 mt-2 min-w-[160px] bg-card border border-border rounded-lg shadow-lg py-1.5 z-50">
+          {/* View all in this category */}
+          <Link
+            to={`/?category=${encodeURIComponent(group.label)}`}
+            className="block px-4 py-2 text-sm text-foreground font-medium hover:bg-accent/50 transition-colors"
+            onClick={() => setOpen(false)}
+          >
+            All {group.label}
+          </Link>
+          <div className="h-px bg-border mx-2 my-1" />
+          {group.children.map(child => (
+            <Link
+              key={child.label}
+              to={`/?category=${encodeURIComponent(group.label)}&product=${encodeURIComponent(child.label)}`}
+              className={`block px-4 py-2 text-sm transition-colors hover:bg-accent/50 ${
+                activeCategory === group.label && activeProduct === child.label
+                  ? 'text-foreground font-medium'
+                  : 'text-muted-foreground'
+              }`}
+              onClick={() => setOpen(false)}
+            >
+              {child.label}
+            </Link>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
 
 export function CollectionNavbar() {
   const [searchParams] = useSearchParams();
   const [mobileOpen, setMobileOpen] = useState(false);
   const activeCategory = searchParams.get('category');
+  const activeProduct = searchParams.get('product');
 
   return (
     <nav className="sticky top-0 z-50 bg-card/80 backdrop-blur-lg border-b border-border">
@@ -16,7 +92,7 @@ export function CollectionNavbar() {
             COLLECTION
           </Link>
 
-          <div className="hidden md:flex items-center gap-8">
+          <div className="hidden md:flex items-center gap-6">
             <Link
               to="/"
               className={`text-sm font-medium transition-colors hover:text-foreground ${
@@ -25,28 +101,13 @@ export function CollectionNavbar() {
             >
               All
             </Link>
-            {categories.map(cat => (
-              <Link
-                key={cat}
-                to={`/?category=${encodeURIComponent(cat)}`}
-                className={`text-sm font-medium transition-colors hover:text-foreground ${
-                  activeCategory === cat ? 'text-foreground' : 'text-muted-foreground'
-                }`}
-              >
-                {cat}
-              </Link>
-            ))}
-          </div>
-
-          <div className="hidden md:flex items-center gap-6 text-sm text-muted-foreground">
-            {products.map(p => (
-              <Link
-                key={p}
-                to={`/?product=${encodeURIComponent(p)}`}
-                className="hover:text-foreground transition-colors"
-              >
-                {p}
-              </Link>
+            {navGroups.map(group => (
+              <DropdownMenu
+                key={group.label}
+                group={group}
+                activeCategory={activeCategory}
+                activeProduct={activeProduct}
+              />
             ))}
           </div>
 
@@ -59,21 +120,63 @@ export function CollectionNavbar() {
         </div>
 
         {mobileOpen && (
-          <div className="md:hidden pb-4 border-t border-border pt-3 space-y-2">
-            <Link to="/" className="block py-1.5 text-sm font-medium" onClick={() => setMobileOpen(false)}>All</Link>
-            {categories.map(cat => (
-              <Link
-                key={cat}
-                to={`/?category=${encodeURIComponent(cat)}`}
-                className="block py-1.5 text-sm text-muted-foreground"
-                onClick={() => setMobileOpen(false)}
-              >
-                {cat}
-              </Link>
+          <div className="md:hidden pb-4 border-t border-border pt-3 space-y-1">
+            <Link to="/" className="block py-1.5 text-sm font-medium text-foreground" onClick={() => setMobileOpen(false)}>
+              All
+            </Link>
+            {navGroups.map(group => (
+              <MobileNavGroup
+                key={group.label}
+                group={group}
+                onClose={() => setMobileOpen(false)}
+              />
             ))}
           </div>
         )}
       </div>
     </nav>
+  );
+}
+
+function MobileNavGroup({
+  group,
+  onClose,
+}: {
+  group: (typeof navGroups)[0];
+  onClose: () => void;
+}) {
+  const [expanded, setExpanded] = useState(false);
+
+  return (
+    <div>
+      <button
+        className="w-full flex items-center justify-between py-1.5 text-sm font-medium text-muted-foreground"
+        onClick={() => setExpanded(!expanded)}
+      >
+        {group.label}
+        <ChevronDown className={`w-3.5 h-3.5 transition-transform ${expanded ? 'rotate-180' : ''}`} />
+      </button>
+      {expanded && (
+        <div className="pl-4 space-y-1">
+          <Link
+            to={`/?category=${encodeURIComponent(group.label)}`}
+            className="block py-1 text-sm text-muted-foreground hover:text-foreground"
+            onClick={onClose}
+          >
+            All {group.label}
+          </Link>
+          {group.children.map(child => (
+            <Link
+              key={child.label}
+              to={`/?category=${encodeURIComponent(group.label)}&product=${encodeURIComponent(child.label)}`}
+              className="block py-1 text-sm text-muted-foreground hover:text-foreground"
+              onClick={onClose}
+            >
+              {child.label}
+            </Link>
+          ))}
+        </div>
+      )}
+    </div>
   );
 }

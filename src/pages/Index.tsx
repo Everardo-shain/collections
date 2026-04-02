@@ -63,6 +63,8 @@ const Index = () => {
           )}
         </div>
 
+        </div>
+
         <ActiveFilters
           chips={filters.activeFilterChips}
           onRemove={filters.removeFilter}
