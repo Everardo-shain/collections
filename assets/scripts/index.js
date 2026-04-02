@@ -1,6 +1,9 @@
 import {
+  FIELD_MAP,
   FILTER_KEYS,
   SIDEBAR_KEYS,
+  CUSTOM_FILTERS,
+  DETAILS_FILTERS,
   SEARCH_KEYS,
   breadcrumbConfig,
   BREADCRUMB_RESOLVER,
@@ -11,6 +14,12 @@ import {
 
 const params = new URLSearchParams(window.location.search);
 
+function getFieldValue(item, key) {
+  const field = FIELD_MAP[key];
+  if (!field) return null;
+  return item[field];
+}
+
 // 🔥 multi-values desde URL
 function getArrayParam(key) {
   return params.get(key)?.split(",").map(v => v.trim()) || [];
@@ -19,6 +28,14 @@ function getArrayParam(key) {
 
 function formatKey(key) {
   return key.charAt(0).toUpperCase() + key.slice(1);
+}
+
+function getFilterLabel(key) {
+  return CUSTOM_FILTERS[normalizeKey(key)]?.label || formatKey(key);
+}
+
+function normalizeKey(key) {
+  return key.toLowerCase().replace(/\s+/g, "-");
 }
 
 const sidebarState = {};
@@ -180,7 +197,7 @@ fetch("../data/json_files/football_collection.json")
 
         const header = document.createElement("div");
         header.className = "filter-header";
-        header.textContent = formatKey(key);
+        header.textContent = getFilterLabel(key);
 
         const content = document.createElement("div");
         content.className = "filter-content";
@@ -210,24 +227,34 @@ fetch("../data/json_files/football_collection.json")
 
       const selectedValues = getSelectedValues(container.id);
 
+      // ===== FILTRADO BASE (para counts dinámicos) =====
       const tempFiltered = data.filter(item => {
 
+        const matchesFilters = Object.entries(filtersState).every(([key, values]) => {
+          const itemKey = key.charAt(0).toUpperCase() + key.slice(1);
+          return matchField(item[itemKey], values, itemKey);
+        });
 
-      const matchesFilters = Object.entries(filtersState).every(([key, values]) => {
-        const itemKey = key.charAt(0).toUpperCase() + key.slice(1); // entity → Entity
-        return matchField(item[itemKey], values, itemKey);
-      });
-
-        // 🔥 aplicar sidebar EXCEPTO el actual
         const matchesSidebar = SIDEBAR_KEYS.every(sideKey => {
 
-          // 🔥 excluir el filtro actual
-          if (formatKey(sideKey) === key) return true;
+          if (normalizeKey(sideKey) === normalizeKey(key)) return true;
+
+          // 🔥 CASO DETAILS
+          if (sideKey === "details") {
+            const selectedDetails = getSelectedValues("filter-details");
+            if (!selectedDetails.length) return true;
+
+            return selectedDetails.every(detail => {
+              const fn = DETAILS_FILTERS[detail];
+              return fn ? fn(item) : true;
+            });
+          }
 
           const selected = getSelectedValues(`filter-${sideKey}`);
           if (!selected.length) return true;
 
-          const itemValues = item[formatKey(sideKey)]
+          const raw = getFieldValue(item, sideKey);
+          const itemValues = raw
             ?.split(VALUE_SEPARATOR)
             .map(v => v.trim()) || [];
 
@@ -247,15 +274,101 @@ fetch("../data/json_files/football_collection.json")
         return matchesFilters && matchesSidebar && matchesSearch;
       });
 
-      // 🔥 contar ocurrencias
+      // ===== 🔥 CASO DETAILS =====
+      if (key === "Details") {
+
+        const counts = {};
+
+        Object.entries(DETAILS_FILTERS).forEach(([detail, fn]) => {
+          counts[detail] = tempFiltered.filter(item => fn(item)).length;
+        });
+
+        container.innerHTML = "";
+
+        Object.keys(DETAILS_FILTERS).forEach(detail => {
+
+          const label = document.createElement("label");
+          label.className = "filter-option";
+
+          const checkbox = document.createElement("input");
+          checkbox.type = "checkbox";
+          checkbox.value = detail;
+          checkbox.checked =
+            selectedValues.includes(detail) ||
+            sidebarState["details"]?.includes(detail);
+
+          checkbox.addEventListener("change", render);
+
+          const text = document.createElement("span");
+          text.innerHTML = `
+            ${detail} <span class="filter-count">(${counts[detail]})</span>
+          `;
+
+          label.appendChild(checkbox);
+          label.appendChild(text);
+
+          container.appendChild(label);
+        });
+
+        return; // 🔥 IMPORTANTE: salir aquí
+      }
+      // ===== Custom filters =====
+      const customConfig = CUSTOM_FILTERS[normalizeKey(key)];
+
+      if (customConfig) {
+
+        const config = customConfig;
+
+        const counts = {};
+
+        tempFiltered.forEach(item => {
+          const values = config.getValues(item);
+
+          values.forEach(v => {
+            counts[v] = (counts[v] || 0) + 1;
+          });
+        });
+
+        const values = Object.keys(counts).sort();
+
+        container.innerHTML = "";
+
+        values.forEach(value => {
+
+          const label = document.createElement("label");
+          label.className = "filter-option";
+
+          const checkbox = document.createElement("input");
+          checkbox.type = "checkbox";
+          checkbox.value = value;
+
+          checkbox.checked =
+            selectedValues.includes(value) ||
+            sidebarState[normalizeKey(key)]?.includes(value);
+
+          checkbox.addEventListener("change", render);
+
+          const text = document.createElement("span");
+          text.innerHTML = `
+            ${value} <span class="filter-count">(${counts[value]})</span>
+          `;
+
+          label.appendChild(checkbox);
+          label.appendChild(text);
+
+          container.appendChild(label);
+        });
+
+        return;
+      }
+      // ===== 🔥 NORMAL (resto de filtros) =====
       const counts = {};
+
       tempFiltered.forEach(item => {
-        const rawValue = item[key];
+        const rawValue = getFieldValue(item, normalizeKey(key));
         if (!rawValue || rawValue === "-") return;
 
-        // 🔥 dividir por VALUE_SEPARATOR
         const valuesArray = getItemValues(key, rawValue);
-
         valuesArray.forEach(value => {
           counts[value] = (counts[value] || 0) + 1;
         });
@@ -280,7 +393,7 @@ fetch("../data/json_files/football_collection.json")
         checkbox.value = value;
         checkbox.checked =
           selectedValues.includes(value) ||
-          sidebarState[key.toLowerCase()]?.includes(value);
+          sidebarState[normalizeKey(key)]?.includes(value);
 
         checkbox.addEventListener("change", render);
 
@@ -392,15 +505,20 @@ fetch("../data/json_files/football_collection.json")
     // ===== Remove single filter =====
     function removeFilter(value, type) {
 
-      const containerId = `filter-${type.toLowerCase()}`;
+      const params = new URLSearchParams(window.location.search);
+      const key = type.toLowerCase();
 
-      document.querySelectorAll(`#${containerId} input`).forEach(input => {
-        if (input.value === value) {
-          input.checked = false;
-        }
-      });
+      const values = params.get(key)?.split(",") || [];
 
-      render();
+      const newValues = values.filter(v => v !== value);
+
+      if (newValues.length) {
+        params.set(key, newValues.join(","));
+      } else {
+        params.delete(key);
+      }
+
+      window.location.search = params.toString(); // 🔥 recarga con estado limpio
     }
 
     // ===== Clear all =====
@@ -424,17 +542,43 @@ fetch("../data/json_files/football_collection.json")
       }
 
       const filteredData = data.filter(item => {
-      const matchesFilters = Object.entries(filtersState).every(([key, values]) => {
-        const itemKey = key.charAt(0).toUpperCase() + key.slice(1); // entity → Entity
-        return matchField(item[itemKey], values, itemKey);
-      });
+
+        const matchesFilters = Object.entries(filtersState).every(([key, values]) => {
+          const itemKey = key.charAt(0).toUpperCase() + key.slice(1); // entity → Entity
+          return matchField(item[itemKey], values, itemKey);
+        });
 
         const matchesSidebar = SIDEBAR_KEYS.every(sideKey => {
+
+          // ===== DETAILS =====
+          if (sideKey === "details") {
+            const selected = getSelectedValues("filter-details");
+            if (!selected.length) return true;
+
+            return selected.every(detail => {
+              const fn = DETAILS_FILTERS[detail];
+              return fn ? fn(item) : true;
+            });
+          }
+
+          // ===== CUSTOM =====
+          const custom = CUSTOM_FILTERS[normalizeKey(sideKey)];
+          if (custom) {
+            const selected = getSelectedValues(`filter-${sideKey}`);
+            if (!selected.length) return true;
+
+            const values = custom.getValues(item);
+            return selected.some(v => values.includes(v));
+          }
+
+          // ===== NORMAL =====
           const selected = getSelectedValues(`filter-${sideKey}`);
           if (!selected.length) return true;
 
-          const raw = item[formatKey(sideKey)];
-          const itemValues = getItemValues(formatKey(sideKey), raw);
+          const raw = getFieldValue(item, sideKey);
+          const itemValues = raw
+            ?.split(VALUE_SEPARATOR)
+            .map(v => v.trim()) || [];
 
           return selected.some(v => itemValues.includes(v));
         });
@@ -449,7 +593,7 @@ fetch("../data/json_files/football_collection.json")
             )
           );
 
-        return matchesFilters && matchesSidebar && matchesSearch;
+        return matchesFilters && matchesSidebar && matchesSearch ;
         
       });
 

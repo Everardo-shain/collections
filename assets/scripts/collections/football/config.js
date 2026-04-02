@@ -1,3 +1,38 @@
+export function normalizeKey(key) {
+  return key
+  .toLowerCase()
+  .trim()
+  .replace(/\s+/g, "-");
+}
+
+export const FIELD_MAP = {
+  id: "ID",
+  displayName: "Display Name",
+  category: "Category",
+  product: "Product",
+  entity: "Entity",
+  team: "Team",
+  season: "Season",
+  style: "Style",
+  variant: "Variant",
+  release: "Release",
+  competition: "Competition",
+  country: "Country",
+  confederation: "Confederation",
+  technology: "Technology",
+  brand: "Brand",
+  collaboration: "Collaboration",
+  size: "Size",
+  sleeves: "Sleeves",
+  person: "Person",
+  print: "Print",
+  nameset: "Nameset",
+  patch: "Patch",
+  packaging: "Packaging",
+  signature: "Signature",
+  notes: "Notes"
+};
+
 // ===== CONFIGURACIÓN NAVEGACION =====
 export const NAVIGATION = {
   categories: {
@@ -122,10 +157,10 @@ export const BREADCRUMB_RESOLVER = (context) => {
   // 🔥 fallback: usar keys activas directamente
   const activeKeys = Object.entries(filtersState)
     .filter(([_, values]) => values.length > 0)
-    .map(([key]) => key.charAt(0).toUpperCase() + key.slice(1));
+    .map(([key]) => key);
 
-  if (activeKeys.length) {
-    return activeKeys;
+  if (activeKeys.length === 1) {
+    return [activeKeys[0].charAt(0).toUpperCase() + activeKeys[0].slice(1)];
   }
   // 🔥 CRÍTICO
   return null;
@@ -149,24 +184,43 @@ export const FILTER_KEYS = [
 
 
 export const SIDEBAR_KEYS = [
-  "entity",
+  "team-type",
+  "confederation",
+  "country",
+  "competition",
   "team",
   "season",
   "style",
   "release",
-  "competition",
-  "country",
-  "confederation",
-  "technology",
   "brand",
-  "collaboration",
+  "technology",
   "size",
-  "sleeves",
-  "person",
-  "patch",
-  "packaging",
-  "signature"
+  "details"
 ];
+export const CUSTOM_FILTERS = {
+  "team-type": { // 🔥 key limpia (sin espacios)
+    label: "Team Type", // 👈 lo que se muestra
+    getValues: (item) => {
+      const entity = item["Entity"];
+
+      if (!entity) return [];
+
+      if (["Club"].includes(entity)) return ["Club"];
+      if (["National Team"].includes(entity)) return ["National Team"];
+      if (["Collective"].includes(entity)) return ["Collective"];
+
+      return [];
+    }
+  }
+};
+export const DETAILS_FILTERS = {
+  "Long Sleeves": (item) => valid(item["Sleeves"]) && item["Sleeves"] === "Long",
+  "Printed": (item) => valid(item["Print"]),
+  "With Patches": (item) => valid(item["Patch"]),
+  "Signed": (item) => valid(item["Signature"]),
+  "In Box": (item) => valid(item["Packaging"]),
+  "Collaboration": (item) => valid(item["Collaboration"])
+};
 
 export const SEARCH_KEYS = [
   "Display Name",
