@@ -100,7 +100,7 @@ export default function ItemDetail() {
 
             <div className="divide-y divide-border">
               {DETAIL_FIELDS.map(field => {
-                const value = (item as Record<string, string>)[field.key];
+                const value = (item as unknown as Record<string, string>)[field.key];
                 if (!value || value === 'None') return null;
                 return (
                   <div key={field.key} className="flex justify-between py-3">
