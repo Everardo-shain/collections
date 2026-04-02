@@ -47,7 +47,15 @@ SIDEBAR_KEYS.forEach(key => {
 const filtersState = {};
 
 FILTER_KEYS.forEach(key => {
-  filtersState[key] = getArrayParam(key);
+  // 🔥 Leemos la URL buscando el prefijo nav_
+  let vals = getArrayParam("nav_" + key);
+  
+  // Fallback: por si category/product vienen de algún menú principal sin prefijo
+  if (vals.length === 0 && ["category", "product"].includes(key)) {
+    vals = getArrayParam(key);
+  }
+  
+  filtersState[key] = vals;
 });
 const filterSearch = params.get("search") || "";
 
@@ -133,22 +141,19 @@ fetch("../data/json_files/football_collection.json")
 
     // ===== 2. NAVIGATION =====
     } else if (hasCategory) {
-
       let currentParams = {};
-
       const category = filtersState.category[0];
-      currentParams.category = category;
+      currentParams.nav_category = category; // 🔥 Agregamos prefijo nav_
       parts.push(link(category, currentParams));
 
       if (hasProduct) {
         const product = filtersState.product[0];
-        currentParams.product = product;
+        currentParams.nav_product = product; // 🔥 Agregamos prefijo nav_
         parts.push(link(product, currentParams));
       }
 
     // ===== 3. FILTERS =====
     } else if (hasOtherFilters) {
-
       const config = BREADCRUMB_RESOLVER({
         filtersState,
         data,
@@ -160,8 +165,8 @@ fetch("../data/json_files/football_collection.json")
         let currentParams = {};
 
         config.forEach(key => {
-          const paramKey = key.toLowerCase();
-          const values = filtersState[paramKey];
+          const paramKey = "nav_" + key.toLowerCase(); // 🔥 Agregamos prefijo nav_
+          const values = filtersState[key.toLowerCase()];
 
           if (!values?.length) return;
 

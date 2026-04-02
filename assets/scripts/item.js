@@ -66,18 +66,13 @@ fetch("../data/json_files/football_collection.json")
       parts.push(`<a href="./index.html">Home</a>`);
 
       config.forEach(key => {
-
         const values = getValues(item, key);
-
         values.forEach(value => {
-
-          const paramKey = key.toLowerCase();
+          // 🔥 Agregamos el prefijo nav_ para separarlo del sidebar
+          const paramKey = "nav_" + key.toLowerCase(); 
           currentParams[paramKey] = value;
-
           parts.push(link(value, currentParams));
-
         });
-
       });
 
       if (valid(item["Display Name"])) {

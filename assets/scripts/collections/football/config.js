@@ -97,12 +97,12 @@ export const FIELD_VISIBILITY_RULES = {
 export const BREADCRUMB_KEY = "Entity";
 
 export const breadcrumbConfig = {
-  "National Team": ["Team"],
-  "Collective": ["Team"],
-  "Club": ["Team"],
-  "Event": ["Competition"],
-  "Brand": ["Brand"],
-  "Person": ["Person"]
+  "National Team": ["Entity","Confederation","Team","Season"],
+  "Collective": ["Confederation","Country","Competition","Team","Season"],
+  "Club": ["Confederation","Country","Competition","Team","Season"],
+  "Event": ["Confederation","Country","Competition","Team","Season"],
+  "Brand": ["Brand","Season"],
+  "Person": ["Team","Person","Season"]
 };
 
 export const NAVIGATION_BREADCRUMB = ["Category", "Product"];
@@ -136,10 +136,8 @@ export const BREADCRUMB_RESOLVER = (context) => {
     const possibleEntities = new Set();
 
     data.forEach(entry => {
-
       const matches = Object.entries(filtersState).every(([key, values]) => {
         if (!values.length) return true;
-
         const itemKey = key.charAt(0).toUpperCase() + key.slice(1);
         return matchField(entry[itemKey], values, itemKey);
       });
@@ -147,10 +145,26 @@ export const BREADCRUMB_RESOLVER = (context) => {
       if (matches && entry["Entity"]) {
         possibleEntities.add(entry["Entity"]);
       }
-
     });
 
-    if (possibleEntities.size === 1) {
+    // 🔥 SOLUCIÓN: Si hay al menos una entidad posible, buscar la que mejor encaje
+    if (possibleEntities.size > 0) {
+      
+      // Obtenemos qué filtros están activos en la URL actualmente
+      const activeFilterKeys = Object.entries(filtersState)
+        .filter(([_, values]) => values.length > 0)
+        .map(([key]) => key.toLowerCase());
+
+      // Buscamos la entidad cuyo "breadcrumbConfig" incluya todos los filtros activos
+      const bestMatchEntity = [...possibleEntities].find(entity => {
+        const configKeys = (breadcrumbConfig[entity] || []).map(k => k.toLowerCase());
+        return activeFilterKeys.every(activeKey => configKeys.includes(activeKey));
+      });
+
+      // Retornamos la que hizo match perfecto, o la primera por defecto si no hay match
+      if (bestMatchEntity) {
+        return breadcrumbConfig[bestMatchEntity];
+      }
       return breadcrumbConfig[[...possibleEntities][0]];
     }
   }
