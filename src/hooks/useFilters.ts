@@ -237,6 +237,15 @@ export function useFilters() {
     return chips;
   }, [selectedFilters, selectedDetailFilters]);
 
+  const setSearchQuery = useCallback((q: string) => {
+    setSearchParams(prev => {
+      const params = new URLSearchParams(prev);
+      if (q) params.set('q', q);
+      else params.delete('q');
+      return params;
+    });
+  }, [setSearchParams]);
+
   return {
     filteredItems,
     filterOptions,
@@ -253,6 +262,8 @@ export function useFilters() {
     activeProduct,
     setCategory,
     setProduct,
+    searchQuery,
+    setSearchQuery,
     totalItems: baseItems.length,
     FILTER_KEYS,
     DETAIL_FILTER_KEYS,

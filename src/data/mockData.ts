@@ -405,3 +405,33 @@ export const collectionItems: CollectionItem[] = [
 
 export const categories = [...new Set(collectionItems.map(i => i.category))];
 export const products = [...new Set(collectionItems.map(i => i.product))];
+
+// Two-level navigation structure: top-level groups → categories
+export interface NavGroup {
+  label: string;
+  children: { label: string; category?: string; product?: string }[];
+}
+
+export const navGroups: NavGroup[] = (() => {
+  // Group categories by their products
+  const grouped: Record<string, Set<string>> = {};
+  collectionItems.forEach(item => {
+    if (!grouped[item.category]) grouped[item.category] = new Set();
+    grouped[item.category].add(item.product);
+  });
+
+  // Build nav structure from actual data
+  const groups: NavGroup[] = [];
+  const categoryList = Object.keys(grouped);
+
+  // If we have enough categories, group them; otherwise list flat
+  categoryList.forEach(cat => {
+    const prods = [...grouped[cat]];
+    groups.push({
+      label: cat,
+      children: prods.map(p => ({ label: p, category: cat, product: p })),
+    });
+  });
+
+  return groups;
+})();
