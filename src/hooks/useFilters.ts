@@ -51,12 +51,24 @@ export function useFilters() {
     return result;
   }, [searchParams]);
 
+  const searchQuery = searchParams.get('q') || '';
+
   const baseItems = useMemo(() => {
     let items = collectionItems;
     if (activeCategory) items = items.filter(i => i.category === activeCategory);
     if (activeProduct) items = items.filter(i => i.product === activeProduct);
+    if (searchQuery) {
+      const q = searchQuery.toLowerCase();
+      items = items.filter(i =>
+        i.displayName.toLowerCase().includes(q) ||
+        i.team.toLowerCase().includes(q) ||
+        i.competition.toLowerCase().includes(q) ||
+        i.brand.toLowerCase().includes(q) ||
+        i.country.toLowerCase().includes(q)
+      );
+    }
     return items;
-  }, [activeCategory, activeProduct]);
+  }, [activeCategory, activeProduct, searchQuery]);
 
   const filteredItems = useMemo(() => {
     return baseItems.filter(item => {
@@ -225,6 +237,15 @@ export function useFilters() {
     return chips;
   }, [selectedFilters, selectedDetailFilters]);
 
+  const setSearchQuery = useCallback((q: string) => {
+    setSearchParams(prev => {
+      const params = new URLSearchParams(prev);
+      if (q) params.set('q', q);
+      else params.delete('q');
+      return params;
+    });
+  }, [setSearchParams]);
+
   return {
     filteredItems,
     filterOptions,
@@ -241,6 +262,8 @@ export function useFilters() {
     activeProduct,
     setCategory,
     setProduct,
+    searchQuery,
+    setSearchQuery,
     totalItems: baseItems.length,
     FILTER_KEYS,
     DETAIL_FILTER_KEYS,

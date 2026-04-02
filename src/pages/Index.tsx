@@ -1,11 +1,12 @@
 import { useState } from 'react';
-import { SlidersHorizontal } from 'lucide-react';
+import { SlidersHorizontal, Search, X } from 'lucide-react';
 import { CollectionNavbar } from '@/components/collection/CollectionNavbar';
 import { CollectionBreadcrumb } from '@/components/collection/CollectionBreadcrumb';
 import { FilterSidebar } from '@/components/collection/FilterSidebar';
 import { ActiveFilters } from '@/components/collection/ActiveFilters';
 import { ItemGrid } from '@/components/collection/ItemGrid';
 import { useFilters } from '@/hooks/useFilters';
+import { Input } from '@/components/ui/input';
 
 const Index = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -24,7 +25,7 @@ const Index = () => {
 
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-6">
         {/* Header */}
-        <div className="flex items-end justify-between mb-6">
+        <div className="flex items-end justify-between mb-4">
           <div>
             <h1 className="font-heading text-2xl md:text-3xl font-bold text-foreground tracking-tight">
               {pageTitle}
@@ -40,6 +41,26 @@ const Index = () => {
             <SlidersHorizontal className="w-4 h-4" />
             Filters
           </button>
+        </div>
+
+        {/* Search bar */}
+        <div className="relative mb-4 max-w-md">
+          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
+          <Input
+            type="text"
+            placeholder="Search by name, team, brand, country..."
+            value={filters.searchQuery}
+            onChange={(e) => filters.setSearchQuery(e.target.value)}
+            className="pl-9 pr-9 h-9 text-sm"
+          />
+          {filters.searchQuery && (
+            <button
+              onClick={() => filters.setSearchQuery('')}
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground hover:text-foreground"
+            >
+              <X className="w-4 h-4" />
+            </button>
+          )}
         </div>
 
         <ActiveFilters
