@@ -74,7 +74,7 @@ function FilterSection({
           ))}
           {hasMore && (
             <button
-              className="text-xs text-muted-foreground hover:text-foreground mt-1 transition-colors"
+              className="text-xs text-muted-foreground hover:text-primary mt-1 transition-colors"
               onClick={() => setShowAll(!showAll)}
             >
               {showAll ? 'Show Less' : `Show More (${options.length - SHOW_MORE_THRESHOLD})`}

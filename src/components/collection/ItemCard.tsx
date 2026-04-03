@@ -25,7 +25,7 @@ export function ItemCard({ item }: ItemCardProps) {
           />
         </div>
         <div className="space-y-0.5">
-          <h3 className="text-sm font-medium text-foreground line-clamp-1 group-hover:underline underline-offset-2">
+          <h3 className="text-sm font-medium text-foreground line-clamp-1 group-hover:underline underline-offset-2 group-hover:text-primary transition-colors">
             {item.displayName}
           </h3>
           <p className="text-xs text-muted-foreground">{item.team} · {item.season}</p>

@@ -143,7 +143,7 @@ export function CollectionNavbar() {
                   placeholder="Search..."
                   value={searchQuery}
                   onChange={(e) => handleSearch(e.target.value)}
-                  className="pl-8 pr-8 h-8 w-48 text-sm bg-background"
+                  className="pl-8 pr-8 h-8 w-48 text-sm bg-background focus-visible:ring-primary focus-visible:border-primary"
                 />
                 {searchQuery && (
                   <button

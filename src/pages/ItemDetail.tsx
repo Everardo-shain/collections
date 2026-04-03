@@ -123,8 +123,8 @@ export default function ItemDetail() {
                   <button
                     key={idx}
                     onClick={() => setActiveImageIndex(idx)}
-                    className={`w-16 h-16 rounded-lg overflow-hidden border-2 transition-colors shrink-0 ${
-                      idx === activeImageIndex ? 'border-foreground' : 'border-border hover:border-muted-foreground'
+                     className={`w-16 h-16 rounded-lg overflow-hidden border-2 transition-colors shrink-0 ${
+                      idx === activeImageIndex ? 'border-primary' : 'border-border hover:border-muted-foreground'
                     }`}
                   >
                     <img src={img} alt={`Thumbnail ${idx + 1}`} className="w-full h-full object-cover" />
