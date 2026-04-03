@@ -92,7 +92,7 @@ export default function ItemDetail() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
           {/* Image gallery */}
           <div className="space-y-3">
-            <div className="relative aspect-square overflow-hidden rounded-xl bg-secondary">
+            <div className="relative aspect-square overflow-hidden rounded-xl bg-secondary cursor-pointer" onClick={() => setLightboxOpen(true)}>
               <img
                 src={images[activeImageIndex]}
                 alt={`${item.displayName} - Image ${activeImageIndex + 1}`}
