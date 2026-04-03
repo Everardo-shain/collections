@@ -32,7 +32,7 @@ export function CollectionBreadcrumb({ category, product }: BreadcrumbProps) {
                 {crumb.label}
               </Link>
             ) : (
-              <span className="text-foreground font-medium">{crumb.label}</span>
+              <span className="text-primary font-medium">{crumb.label}</span>
             )}
           </span>
         ))}
