@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { ImageLightbox } from '@/components/collection/ImageLightbox';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, ChevronRight, ChevronLeft, Home } from 'lucide-react';
 import { collectionItems } from '@/data/mockData';
