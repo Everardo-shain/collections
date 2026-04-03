@@ -3,6 +3,7 @@ import { Menu, X, ChevronDown, Search } from 'lucide-react';
 import { navGroups } from '@/data/mockData';
 import { useState, useRef, useEffect } from 'react';
 import { Input } from '@/components/ui/input';
+import { ThemeSelector } from '@/components/ThemeSelector';
 
 function DropdownMenu({
   group,
@@ -153,6 +154,8 @@ export function CollectionNavbar() {
                   </button>
                 )}
               </div>
+
+              <ThemeSelector />
 
               {/* Mobile menu toggle */}
               <button

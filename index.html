@@ -1,5 +1,9 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="light">
+  <!-- Prevent flash: apply saved theme immediately -->
+  <script>
+    (function(){var t=localStorage.getItem('collection-theme')||'system';if(t==='system'){t=window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'}document.documentElement.className=t})();
+  </script>
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
