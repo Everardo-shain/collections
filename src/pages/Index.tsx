@@ -98,7 +98,7 @@ const Index = () => {
           onClearAll={filters.clearAll}
         />
 
-        <div className="flex gap-0 lg:gap-8">
+        <div className="flex items-start gap-0 lg:gap-8">
           <FilterSidebar
             filterOptions={filters.filterOptions}
             selectedFilters={filters.selectedFilters}
