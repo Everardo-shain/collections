@@ -85,6 +85,11 @@ export const collectionItems: CollectionItem[] = [
     signature: 'None',
     collaboration: 'None',
     image: 'https://images.unsplash.com/photo-1551958219-acbc608c6377?w=600&h=600&fit=crop',
+    images: [
+      'https://images.unsplash.com/photo-1551958219-acbc608c6377?w=600&h=600&fit=crop',
+      'https://images.unsplash.com/photo-1508098682722-e99c643e7f0b?w=600&h=600&fit=crop',
+      'https://images.unsplash.com/photo-1518604666860-9ed391f76460?w=600&h=600&fit=crop',
+    ],
   },
   {
     id: '4',
