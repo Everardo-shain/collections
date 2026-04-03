@@ -1,5 +1,6 @@
+import { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { ArrowLeft, ChevronRight, Home } from 'lucide-react';
+import { ArrowLeft, ChevronRight, ChevronLeft, Home } from 'lucide-react';
 import { collectionItems } from '@/data/mockData';
 import { CollectionNavbar } from '@/components/collection/CollectionNavbar';
 import { getTeamType } from '@/types/collection';
@@ -30,6 +31,7 @@ const DETAIL_FIELDS: { label: string; key: string }[] = [
 export default function ItemDetail() {
   const { id } = useParams<{ id: string }>();
   const item = collectionItems.find(i => i.id === id);
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
 
   if (!item) {
     return (
@@ -46,6 +48,12 @@ export default function ItemDetail() {
       </div>
     );
   }
+
+  const images = item.images && item.images.length > 0 ? item.images : [item.image];
+  const hasMultiple = images.length > 1;
+
+  const goToPrev = () => setActiveImageIndex(i => (i - 1 + images.length) % images.length);
+  const goToNext = () => setActiveImageIndex(i => (i + 1) % images.length);
 
   return (
     <div className="min-h-screen bg-background">
@@ -80,13 +88,48 @@ export default function ItemDetail() {
         </Link>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
-          {/* Image */}
-          <div className="aspect-square overflow-hidden rounded-xl bg-secondary">
-            <img
-              src={item.image}
-              alt={item.displayName}
-              className="w-full h-full object-cover"
-            />
+          {/* Image gallery */}
+          <div className="space-y-3">
+            <div className="relative aspect-square overflow-hidden rounded-xl bg-secondary">
+              <img
+                src={images[activeImageIndex]}
+                alt={`${item.displayName} - Image ${activeImageIndex + 1}`}
+                className="w-full h-full object-cover"
+              />
+              {hasMultiple && (
+                <>
+                  <button
+                    onClick={goToPrev}
+                    className="absolute left-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-card/80 backdrop-blur-sm border border-border flex items-center justify-center text-foreground hover:bg-card transition-colors"
+                  >
+                    <ChevronLeft className="w-4 h-4" />
+                  </button>
+                  <button
+                    onClick={goToNext}
+                    className="absolute right-3 top-1/2 -translate-y-1/2 w-8 h-8 rounded-full bg-card/80 backdrop-blur-sm border border-border flex items-center justify-center text-foreground hover:bg-card transition-colors"
+                  >
+                    <ChevronRight className="w-4 h-4" />
+                  </button>
+                </>
+              )}
+            </div>
+
+            {/* Thumbnails */}
+            {hasMultiple && (
+              <div className="flex gap-2 overflow-x-auto">
+                {images.map((img, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setActiveImageIndex(idx)}
+                    className={`w-16 h-16 rounded-lg overflow-hidden border-2 transition-colors shrink-0 ${
+                      idx === activeImageIndex ? 'border-foreground' : 'border-border hover:border-muted-foreground'
+                    }`}
+                  >
+                    <img src={img} alt={`Thumbnail ${idx + 1}`} className="w-full h-full object-cover" />
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Details */}

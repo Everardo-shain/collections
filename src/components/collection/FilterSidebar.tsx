@@ -1,18 +1,13 @@
 import { useState } from 'react';
 import { ChevronDown, ChevronUp, SlidersHorizontal, X } from 'lucide-react';
 import { Checkbox } from '@/components/ui/checkbox';
-import { Switch } from '@/components/ui/switch';
 import { cn } from '@/lib/utils';
 
 interface FilterSidebarProps {
   filterOptions: Record<string, { value: string; count: number }[]>;
   selectedFilters: Record<string, string[]>;
-  detailFilterCounts: Record<string, number>;
-  selectedDetailFilters: Record<string, boolean>;
   onToggleFilter: (key: string, value: string) => void;
-  onToggleDetailFilter: (key: string) => void;
   filterKeys: string[];
-  detailFilterKeys: string[];
   isOpen: boolean;
   onClose: () => void;
 }
@@ -31,15 +26,6 @@ const FILTER_LABELS: Record<string, string> = {
   size: 'Size',
 };
 
-const DETAIL_LABELS: Record<string, string> = {
-  longSleeves: 'Long Sleeves',
-  printed: 'Printed',
-  withPatches: 'With Patches',
-  signed: 'Signed',
-  inBox: 'In Box',
-  collaboration: 'Collaboration',
-};
-
 const SHOW_MORE_THRESHOLD = 5;
 
 function FilterSection({
@@ -53,7 +39,7 @@ function FilterSection({
   selected: string[];
   onToggle: (value: string) => void;
 }) {
-  const [expanded, setExpanded] = useState(true);
+  const [expanded, setExpanded] = useState(false);
   const [showAll, setShowAll] = useState(false);
 
   const visibleOptions = showAll ? options : options.slice(0, SHOW_MORE_THRESHOLD);
@@ -103,12 +89,8 @@ function FilterSection({
 export function FilterSidebar({
   filterOptions,
   selectedFilters,
-  detailFilterCounts,
-  selectedDetailFilters,
   onToggleFilter,
-  onToggleDetailFilter,
   filterKeys,
-  detailFilterKeys,
   isOpen,
   onClose,
 }: FilterSidebarProps) {
@@ -151,30 +133,6 @@ export function FilterSidebar({
               />
             );
           })}
-
-          {/* Detail filters */}
-          <div className="border-b border-border py-3">
-            <div className="py-1 text-sm font-semibold text-foreground mb-2">Details</div>
-            <div className="space-y-2.5">
-              {detailFilterKeys.map(key => {
-                const count = detailFilterCounts[key] || 0;
-                if (count === 0) return null;
-                return (
-                  <label key={key} className="flex items-center justify-between cursor-pointer">
-                    <span className="text-sm text-foreground">{DETAIL_LABELS[key] || key}</span>
-                    <div className="flex items-center gap-2">
-                      <span className="text-xs text-muted-foreground tabular-nums">{count}</span>
-                      <Switch
-                        checked={!!selectedDetailFilters[key]}
-                        onCheckedChange={() => onToggleDetailFilter(key)}
-                        className="scale-90"
-                      />
-                    </div>
-                  </label>
-                );
-              })}
-            </div>
-          </div>
         </div>
       </aside>
     </>

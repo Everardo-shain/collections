@@ -1,6 +1,6 @@
 import { useSearchParams } from 'react-router-dom';
 import { useCallback, useMemo } from 'react';
-import { CollectionItem, FilterKey, DetailFilterKey, getTeamType, deriveDetailFilter } from '@/types/collection';
+import { CollectionItem, FilterKey, getTeamType } from '@/types/collection';
 import { collectionItems } from '@/data/mockData';
 
 const FILTER_KEYS: FilterKey[] = [
@@ -8,8 +8,8 @@ const FILTER_KEYS: FilterKey[] = [
   'season', 'style', 'release', 'brand', 'technology', 'size',
 ];
 
-const DETAIL_FILTER_KEYS: DetailFilterKey[] = [
-  'longSleeves', 'printed', 'withPatches', 'signed', 'inBox', 'collaboration',
+const SEARCH_KEYS: (keyof CollectionItem)[] = [
+  'displayName', 'team', 'competition', 'brand', 'country',
 ];
 
 function getFilterValue(item: CollectionItem, key: FilterKey): string {
@@ -43,14 +43,6 @@ export function useFilters() {
     return result;
   }, [searchParams]);
 
-  const selectedDetailFilters = useMemo(() => {
-    const result: Record<string, boolean> = {};
-    DETAIL_FILTER_KEYS.forEach(key => {
-      if (searchParams.get(key) === 'true') result[key] = true;
-    });
-    return result;
-  }, [searchParams]);
-
   const searchQuery = searchParams.get('q') || '';
 
   const baseItems = useMemo(() => {
@@ -60,11 +52,7 @@ export function useFilters() {
     if (searchQuery) {
       const q = searchQuery.toLowerCase();
       items = items.filter(i =>
-        i.displayName.toLowerCase().includes(q) ||
-        i.team.toLowerCase().includes(q) ||
-        i.competition.toLowerCase().includes(q) ||
-        i.brand.toLowerCase().includes(q) ||
-        i.country.toLowerCase().includes(q)
+        SEARCH_KEYS.some(key => String(i[key]).toLowerCase().includes(q))
       );
     }
     return items;
@@ -78,31 +66,20 @@ export function useFilters() {
           if (!selected.includes(getFilterValue(item, key))) return false;
         }
       }
-      for (const key of DETAIL_FILTER_KEYS) {
-        if (selectedDetailFilters[key]) {
-          if (!deriveDetailFilter(item, key)) return false;
-        }
-      }
       return true;
     });
-  }, [baseItems, selectedFilters, selectedDetailFilters]);
+  }, [baseItems, selectedFilters]);
 
   const filterOptions = useMemo(() => {
     const options: Record<string, { value: string; count: number }[]> = {};
     FILTER_KEYS.forEach(key => {
       const counts: Record<string, number> = {};
-      // Count based on items filtered by all OTHER filters
       baseItems.filter(item => {
         for (const k of FILTER_KEYS) {
           if (k === key) continue;
           const selected = selectedFilters[k];
           if (selected && selected.length > 0) {
             if (!selected.includes(getFilterValue(item, k))) return false;
-          }
-        }
-        for (const k of DETAIL_FILTER_KEYS) {
-          if (selectedDetailFilters[k]) {
-            if (!deriveDetailFilter(item, k)) return false;
           }
         }
         return true;
@@ -115,29 +92,7 @@ export function useFilters() {
         .sort((a, b) => b.count - a.count);
     });
     return options;
-  }, [baseItems, selectedFilters, selectedDetailFilters]);
-
-  const detailFilterCounts = useMemo(() => {
-    const counts: Record<string, number> = {};
-    DETAIL_FILTER_KEYS.forEach(key => {
-      counts[key] = baseItems.filter(item => {
-        for (const k of FILTER_KEYS) {
-          const selected = selectedFilters[k];
-          if (selected && selected.length > 0) {
-            if (!selected.includes(getFilterValue(item, k))) return false;
-          }
-        }
-        for (const k of DETAIL_FILTER_KEYS) {
-          if (k === key) continue;
-          if (selectedDetailFilters[k]) {
-            if (!deriveDetailFilter(item, k)) return false;
-          }
-        }
-        return deriveDetailFilter(item, key);
-      }).length;
-    });
-    return counts;
-  }, [baseItems, selectedFilters, selectedDetailFilters]);
+  }, [baseItems, selectedFilters]);
 
   const toggleFilter = useCallback((key: string, value: string) => {
     setSearchParams(prev => {
@@ -153,18 +108,6 @@ export function useFilters() {
         params.delete(key);
       } else {
         params.set(key, current.join(','));
-      }
-      return params;
-    });
-  }, [setSearchParams]);
-
-  const toggleDetailFilter = useCallback((key: string) => {
-    setSearchParams(prev => {
-      const params = new URLSearchParams(prev);
-      if (params.get(key) === 'true') {
-        params.delete(key);
-      } else {
-        params.set(key, 'true');
       }
       return params;
     });
@@ -197,7 +140,7 @@ export function useFilters() {
   }, [setSearchParams]);
 
   const setCategory = useCallback((cat: string | null) => {
-    setSearchParams(prev => {
+    setSearchParams(() => {
       const params = new URLSearchParams();
       if (cat) params.set('category', cat);
       return params;
@@ -214,7 +157,7 @@ export function useFilters() {
     });
   }, [setSearchParams]);
 
-  const hasActiveFilters = Object.keys(selectedFilters).length > 0 || Object.keys(selectedDetailFilters).length > 0;
+  const hasActiveFilters = Object.keys(selectedFilters).length > 0;
 
   const activeFilterChips = useMemo(() => {
     const chips: { key: string; value: string; label: string }[] = [];
@@ -223,19 +166,8 @@ export function useFilters() {
         chips.push({ key, value, label: value });
       });
     });
-    Object.entries(selectedDetailFilters).forEach(([key]) => {
-      const labels: Record<string, string> = {
-        longSleeves: 'Long Sleeves',
-        printed: 'Printed',
-        withPatches: 'With Patches',
-        signed: 'Signed',
-        inBox: 'In Box',
-        collaboration: 'Collaboration',
-      };
-      chips.push({ key, value: 'true', label: labels[key] || key });
-    });
     return chips;
-  }, [selectedFilters, selectedDetailFilters]);
+  }, [selectedFilters]);
 
   const setSearchQuery = useCallback((q: string) => {
     setSearchParams(prev => {
@@ -249,11 +181,8 @@ export function useFilters() {
   return {
     filteredItems,
     filterOptions,
-    detailFilterCounts,
     selectedFilters,
-    selectedDetailFilters,
     toggleFilter,
-    toggleDetailFilter,
     removeFilter,
     clearAll,
     hasActiveFilters,
@@ -266,6 +195,5 @@ export function useFilters() {
     setSearchQuery,
     totalItems: baseItems.length,
     FILTER_KEYS,
-    DETAIL_FILTER_KEYS,
   };
 }

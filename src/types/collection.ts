@@ -22,6 +22,7 @@ export interface CollectionItem {
   signature: string;
   collaboration: string;
   image: string;
+  images?: string[];
 }
 
 export type FilterKey =
