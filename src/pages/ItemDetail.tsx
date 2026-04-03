@@ -132,6 +132,15 @@ export default function ItemDetail() {
                 ))}
               </div>
             )}
+
+            <ImageLightbox
+              images={images}
+              activeIndex={activeImageIndex}
+              open={lightboxOpen}
+              onOpenChange={setLightboxOpen}
+              onIndexChange={setActiveImageIndex}
+              alt={item.displayName}
+            />
           </div>
 
           {/* Details */}
