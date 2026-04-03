@@ -116,12 +116,12 @@ export function CollectionNavbar() {
             </Link>
 
             <div className="hidden md:flex items-center gap-6">
-              <Link
-                to="/"
-                className={`text-sm font-medium transition-colors hover:text-foreground ${
-                  !activeCategory ? 'text-foreground' : 'text-muted-foreground'
-                }`}
-              >
+                <Link
+                  to="/"
+                  className={`text-sm font-medium transition-colors hover:text-primary ${
+                    !activeCategory ? 'text-primary' : 'text-muted-foreground'
+                  }`}
+                >
                 All
               </Link>
               {navGroups.map(group => (
