@@ -76,7 +76,7 @@ export default function ItemDetail() {
             {item.category}
           </Link>
           <ChevronRight className="w-3.5 h-3.5 text-muted-foreground" />
-          <span className="text-foreground font-medium truncate">{item.displayName}</span>
+          <span className="text-primary font-medium truncate">{item.displayName}</span>
         </div>
       </div>
 
@@ -123,8 +123,8 @@ export default function ItemDetail() {
                   <button
                     key={idx}
                     onClick={() => setActiveImageIndex(idx)}
-                    className={`w-16 h-16 rounded-lg overflow-hidden border-2 transition-colors shrink-0 ${
-                      idx === activeImageIndex ? 'border-foreground' : 'border-border hover:border-muted-foreground'
+                     className={`w-16 h-16 rounded-lg overflow-hidden border-2 transition-colors shrink-0 ${
+                      idx === activeImageIndex ? 'border-primary' : 'border-border hover:border-muted-foreground'
                     }`}
                   >
                     <img src={img} alt={`Thumbnail ${idx + 1}`} className="w-full h-full object-cover" />

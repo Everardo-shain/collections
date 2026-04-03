@@ -71,7 +71,7 @@ const Index = () => {
                       key={opt}
                       onClick={() => { setSortBy(opt); setSortOpen(false); }}
                       className={`block w-full text-left px-4 py-2 text-sm transition-colors hover:bg-accent/50 ${
-                        sortBy === opt ? 'text-foreground font-medium' : 'text-muted-foreground'
+                        sortBy === opt ? 'text-primary font-medium' : 'text-muted-foreground'
                       }`}
                     >
                       {SORT_LABELS[opt]}

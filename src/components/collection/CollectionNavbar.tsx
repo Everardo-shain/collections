@@ -40,8 +40,8 @@ function DropdownMenu({
       onMouseLeave={handleLeave}
     >
       <button
-        className={`flex items-center gap-1 text-sm font-medium transition-colors hover:text-foreground ${
-          isActive ? 'text-foreground' : 'text-muted-foreground'
+        className={`flex items-center gap-1 text-sm font-medium transition-colors hover:text-primary ${
+          isActive ? 'text-primary' : 'text-muted-foreground'
         }`}
         onClick={() => setOpen(!open)}
       >
@@ -116,12 +116,12 @@ export function CollectionNavbar() {
             </Link>
 
             <div className="hidden md:flex items-center gap-6">
-              <Link
-                to="/"
-                className={`text-sm font-medium transition-colors hover:text-foreground ${
-                  !activeCategory ? 'text-foreground' : 'text-muted-foreground'
-                }`}
-              >
+                <Link
+                  to="/"
+                  className={`text-sm font-medium transition-colors hover:text-primary ${
+                    !activeCategory ? 'text-primary' : 'text-muted-foreground'
+                  }`}
+                >
                 All
               </Link>
               {navGroups.map(group => (
@@ -143,7 +143,7 @@ export function CollectionNavbar() {
                   placeholder="Search..."
                   value={searchQuery}
                   onChange={(e) => handleSearch(e.target.value)}
-                  className="pl-8 pr-8 h-8 w-48 text-sm bg-background"
+                  className="pl-8 pr-8 h-8 w-48 text-sm bg-background focus-visible:ring-primary focus-visible:border-primary"
                 />
                 {searchQuery && (
                   <button
