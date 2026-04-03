@@ -76,7 +76,7 @@ export default function ItemDetail() {
             {item.category}
           </Link>
           <ChevronRight className="w-3.5 h-3.5 text-muted-foreground" />
-          <span className="text-foreground font-medium truncate">{item.displayName}</span>
+          <span className="text-primary font-medium truncate">{item.displayName}</span>
         </div>
       </div>
 
