@@ -110,7 +110,7 @@ export function FilterSidebar({
         )}
       >
         <div className="p-4 lg:p-0 lg:pr-6">
-          <div className="flex items-center justify-between mb-4 lg:mb-2">
+          <div className="flex items-center justify-between mb-4 lg:mb-0">
             <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
               <SlidersHorizontal className="w-4 h-4" />
               Filters

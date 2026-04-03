@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { ImageLightbox } from '@/components/collection/ImageLightbox';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, ChevronRight, ChevronLeft, Home } from 'lucide-react';
 import { collectionItems } from '@/data/mockData';
@@ -32,6 +33,7 @@ export default function ItemDetail() {
   const { id } = useParams<{ id: string }>();
   const item = collectionItems.find(i => i.id === id);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
 
   if (!item) {
     return (
@@ -90,7 +92,7 @@ export default function ItemDetail() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">
           {/* Image gallery */}
           <div className="space-y-3">
-            <div className="relative aspect-square overflow-hidden rounded-xl bg-secondary">
+            <div className="relative aspect-square overflow-hidden rounded-xl bg-secondary cursor-pointer" onClick={() => setLightboxOpen(true)}>
               <img
                 src={images[activeImageIndex]}
                 alt={`${item.displayName} - Image ${activeImageIndex + 1}`}
@@ -130,6 +132,15 @@ export default function ItemDetail() {
                 ))}
               </div>
             )}
+
+            <ImageLightbox
+              images={images}
+              activeIndex={activeImageIndex}
+              open={lightboxOpen}
+              onOpenChange={setLightboxOpen}
+              onIndexChange={setActiveImageIndex}
+              alt={item.displayName}
+            />
           </div>
 
           {/* Details */}
