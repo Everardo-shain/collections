@@ -33,6 +33,7 @@ export default function ItemDetail() {
   const { id } = useParams<{ id: string }>();
   const item = collectionItems.find(i => i.id === id);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
+  const [lightboxOpen, setLightboxOpen] = useState(false);
 
   if (!item) {
     return (
