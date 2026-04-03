@@ -79,16 +79,14 @@ function DropdownMenu({
 }
 
 export function CollectionNavbar() {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const navigate = useNavigate();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [searchOpen, setSearchOpen] = useState(false);
   const activeCategory = searchParams.get('category');
   const activeProduct = searchParams.get('product');
   const searchQuery = searchParams.get('q') || '';
 
   const handleSearch = (value: string) => {
-    // Navigate to index with search param
     const params = new URLSearchParams(searchParams);
     if (value) params.set('q', value);
     else params.delete('q');
@@ -97,7 +95,7 @@ export function CollectionNavbar() {
 
   return (
     <>
-      {/* Thin top bar with Other Collections */}
+      {/* Thin top bar */}
       <div className="bg-secondary/50 border-b border-border">
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-end h-8">
           <Link
@@ -136,32 +134,22 @@ export function CollectionNavbar() {
             </div>
 
             <div className="flex items-center gap-2">
-              {/* Desktop search */}
-              <div className="hidden md:flex items-center">
-                {searchOpen ? (
-                  <div className="relative flex items-center">
-                    <Search className="absolute left-2.5 w-3.5 h-3.5 text-muted-foreground" />
-                    <Input
-                      type="text"
-                      placeholder="Search..."
-                      value={searchQuery}
-                      onChange={(e) => handleSearch(e.target.value)}
-                      className="pl-8 pr-8 h-8 w-48 text-sm bg-background"
-                      autoFocus
-                    />
-                    <button
-                      onClick={() => { handleSearch(''); setSearchOpen(false); }}
-                      className="absolute right-2 text-muted-foreground hover:text-foreground"
-                    >
-                      <X className="w-3.5 h-3.5" />
-                    </button>
-                  </div>
-                ) : (
+              {/* Always-visible desktop search */}
+              <div className="hidden md:flex items-center relative">
+                <Search className="absolute left-2.5 w-3.5 h-3.5 text-muted-foreground" />
+                <Input
+                  type="text"
+                  placeholder="Search..."
+                  value={searchQuery}
+                  onChange={(e) => handleSearch(e.target.value)}
+                  className="pl-8 pr-8 h-8 w-48 text-sm bg-background"
+                />
+                {searchQuery && (
                   <button
-                    onClick={() => setSearchOpen(true)}
-                    className="p-2 text-muted-foreground hover:text-foreground transition-colors"
+                    onClick={() => handleSearch('')}
+                    className="absolute right-2 text-muted-foreground hover:text-foreground"
                   >
-                    <Search className="w-4 h-4" />
+                    <X className="w-3.5 h-3.5" />
                   </button>
                 )}
               </div>
