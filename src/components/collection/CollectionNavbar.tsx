@@ -155,6 +155,8 @@ export function CollectionNavbar() {
                 )}
               </div>
 
+              <ThemeSelector />
+
               {/* Mobile menu toggle */}
               <button
                 className="md:hidden p-2 text-foreground"
