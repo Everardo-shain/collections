@@ -40,8 +40,8 @@ function DropdownMenu({
       onMouseLeave={handleLeave}
     >
       <button
-        className={`flex items-center gap-1 text-sm font-medium transition-colors hover:text-foreground ${
-          isActive ? 'text-foreground' : 'text-muted-foreground'
+        className={`flex items-center gap-1 text-sm font-medium transition-colors hover:text-primary ${
+          isActive ? 'text-primary' : 'text-muted-foreground'
         }`}
         onClick={() => setOpen(!open)}
       >
