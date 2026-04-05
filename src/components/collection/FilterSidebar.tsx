@@ -1,3 +1,4 @@
+import { FIELD_MAP, CUSTOM_FILTERS, SIDEBAR_KEYS, DETAILS_FILTERS } from '@/config/footballConfig';
 import { useState } from 'react';
 import { ChevronDown, ChevronUp, SlidersHorizontal, X } from 'lucide-react';
 import { Checkbox } from '@/components/ui/checkbox';
@@ -12,21 +13,19 @@ interface FilterSidebarProps {
   onClose: () => void;
 }
 
-const FILTER_LABELS: Record<string, string> = {
-  teamType: 'Team Type',
-  confederation: 'Confederation',
-  country: 'Country',
-  competition: 'Competition',
-  team: 'Team',
-  season: 'Season',
-  style: 'Style',
-  release: 'Release',
-  brand: 'Brand',
-  technology: 'Technology',
-  size: 'Size',
-};
 
 const SHOW_MORE_THRESHOLD = 5;
+
+function getFilterLabel(key: string) {
+  if (CUSTOM_FILTERS[key]) return CUSTOM_FILTERS[key].label;
+
+  if (key === "details") return "Details"; // 👈 importante
+
+  const mappedKey = FIELD_MAP[key];
+  if (mappedKey) return mappedKey;
+
+  return key.charAt(0).toUpperCase() + key.slice(1);
+}
 
 function FilterSection({
   label,
@@ -121,17 +120,36 @@ export function FilterSidebar({
           </div>
 
           {filterKeys.map(key => {
-            const options = filterOptions[key] || [];
-            if (options.length === 0) return null;
+
+          // 🔥 caso especial: DETAILS (Corregido)
+          if (key === "details") {
+            // En lugar de crear un array nuevo con ceros, 
+            // usamos lo que ya calculó el hook useFilters
+            const options = filterOptions[key] || []; 
+
             return (
               <FilterSection
                 key={key}
-                label={FILTER_LABELS[key] || key}
-                options={options}
+                label={getFilterLabel(key)}
+                options={options} // Ahora 'options' ya trae los counts correctos (10, 19, etc.)
                 selected={selectedFilters[key] || []}
                 onToggle={(value) => onToggleFilter(key, value)}
               />
             );
+          }
+
+            // 🔥 normal filters
+            const options = filterOptions[key] || [];
+            if (options.length === 0) return null;
+              return (
+                <FilterSection
+                  key={key}
+                  label={getFilterLabel(key)}
+                  options={options}
+                  selected={selectedFilters[key] || []}
+                  onToggle={(value) => onToggleFilter(key, value)}
+                />
+              );
           })}
         </div>
       </aside>

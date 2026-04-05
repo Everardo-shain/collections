@@ -1,199 +1,279 @@
-import { useSearchParams } from 'react-router-dom';
-import { useCallback, useMemo } from 'react';
-import { CollectionItem, FilterKey, getTeamType } from '@/types/collection';
-import { collectionItems } from '@/data/mockData';
+import {
+  FILTER_KEYS,
+  SIDEBAR_KEYS,
+  SEARCH_KEYS,
+  CUSTOM_FILTERS,
+  DETAILS_FILTERS,
+  VALUE_SEPARATOR,
+  valid,
+  normalizeKey, // 🔥 Importado
+  FIELD_MAP     // 🔥 Importado
+} from "@/config/footballConfig";
 
-const FILTER_KEYS: FilterKey[] = [
-  'teamType', 'confederation', 'country', 'competition', 'team',
-  'season', 'style', 'release', 'brand', 'technology', 'size',
-];
+import { useSearchParams } from "react-router-dom";
+import { useCallback, useMemo } from "react";
+import rawData from "@/data/json_files/football_collection.json";
+import { mapItem } from "@/utils/mapItem";
+import { CollectionItem } from "@/types/collection";
 
-const SEARCH_KEYS: (keyof CollectionItem)[] = [
-  'displayName', 'team', 'competition', 'brand', 'country',
-];
+// ===== DATA =====
+export const collectionItems: CollectionItem[] = rawData.map(mapItem);
 
-function getFilterValue(item: CollectionItem, key: FilterKey): string {
-  switch (key) {
-    case 'teamType': return getTeamType(item.entity);
-    case 'confederation': return item.confederation;
-    case 'country': return item.country;
-    case 'competition': return item.competition;
-    case 'team': return item.team;
-    case 'season': return item.season;
-    case 'style': return item.style;
-    case 'release': return item.release;
-    case 'brand': return item.brand;
-    case 'technology': return item.technology;
-    case 'size': return item.size;
-  }
+// ===== HELPERS =====
+function getArrayParam(params: URLSearchParams, key: string): string[] {
+  // Usamos el VALUE_SEPARATOR ("/") para ser consistentes con tu config
+  const val = params.get(key);
+  if (!val) return [];
+  return val.split(VALUE_SEPARATOR).map(v => v.trim()).filter(Boolean);
 }
 
+function getItemValues(value: string): string[] {
+  if (!valid(value)) return [];
+  return value.split(VALUE_SEPARATOR).map(v => v.trim());
+}
+
+function matchField(itemValue: string, filters: string[]): boolean {
+  if (!filters.length) return true;
+  if (!itemValue) return false;
+
+  const values = getItemValues(itemValue);
+  return filters.some(f => values.includes(f));
+}
+
+
+function getValue(item: CollectionItem, key: string): string {
+  // 1. Intentar acceso directo (ej: item["brand"])
+  let value = item[key as keyof CollectionItem];
+
+  // 2. Si es undefined, intentar camelCase (ej: "Brand" -> "brand")
+  if (value === undefined) {
+    const camelKey = (key.charAt(0).toLowerCase() + key.slice(1)) as keyof CollectionItem;
+    value = item[camelKey];
+  }
+
+  return typeof value === "string" ? value : "";
+}
+
+// ===== HOOK =====
 export function useFilters() {
   const [searchParams, setSearchParams] = useSearchParams();
+  const searchQuery = searchParams.get("q") || "";
 
-  const activeCategory = searchParams.get('category') || null;
-  const activeProduct = searchParams.get('product') || null;
-
-  const selectedFilters = useMemo(() => {
-    const result: Record<string, string[]> = {};
+  // ===== NAV FILTERS =====
+  const filtersState = useMemo(() => {
+    const state: Record<string, string[]> = {};
     FILTER_KEYS.forEach(key => {
-      const val = searchParams.get(key);
-      if (val) result[key] = val.split(',');
+      // Intentamos obtener con prefijo nav_ o directo
+      let vals = getArrayParam(searchParams, "nav_" + normalizeKey(key));
+      if (!vals.length) {
+        vals = getArrayParam(searchParams, normalizeKey(key));
+      }
+      state[key] = vals;
     });
-    return result;
+    return state;
   }, [searchParams]);
 
-  const searchQuery = searchParams.get('q') || '';
+  const hasNavigationFilters = useMemo(() => {
+    return Object.values(filtersState).some(vals => vals.length > 0);
+  }, [filtersState]);
 
-  const baseItems = useMemo(() => {
-    let items = collectionItems;
-    if (activeCategory) items = items.filter(i => i.category === activeCategory);
-    if (activeProduct) items = items.filter(i => i.product === activeProduct);
-    if (searchQuery) {
-      const q = searchQuery.toLowerCase();
-      items = items.filter(i =>
-        SEARCH_KEYS.some(key => String(i[key]).toLowerCase().includes(q))
-      );
-    }
-    return items;
-  }, [activeCategory, activeProduct, searchQuery]);
+  // ===== SIDEBAR FILTERS =====
+  const sidebarState = useMemo(() => {
+    const state: Record<string, string[]> = {};
+    SIDEBAR_KEYS.forEach(key => {
+      state[key] = getArrayParam(searchParams, normalizeKey(key));
+    });
+    return state;
+  }, [searchParams]);
 
+  const baseItems = collectionItems;
+
+  // ===== FILTERED ITEMS =====
   const filteredItems = useMemo(() => {
     return baseItems.filter(item => {
-      for (const key of FILTER_KEYS) {
-        const selected = selectedFilters[key];
-        if (selected && selected.length > 0) {
-          if (!selected.includes(getFilterValue(item, key))) return false;
-        }
-      }
-      return true;
-    });
-  }, [baseItems, selectedFilters]);
+      // 1. NAV (AND entre categorías)
+      const matchesFilters = Object.entries(filtersState).every(
+        ([key, values]) => matchField(getValue(item, key), values)
+      );
 
+      // 2. SIDEBAR (Lógica dinámica por llave)
+      const matchesSidebar = SIDEBAR_KEYS.every(sideKey => {
+        const selected = sidebarState[sideKey] || [];
+        if (!selected.length) return true;
+
+        // Caso especial: Details (Lógica de funciones)
+        if (sideKey === "details") {
+          return selected.every(detail => {
+            const fn = DETAILS_FILTERS[detail];
+            return fn ? fn(item as any) : true;
+          });
+        }
+
+        // Caso especial: Custom (Mapeos lógicos)
+        const custom = CUSTOM_FILTERS[sideKey];
+        if (custom) {
+          const itemValues = custom.getValues(item as any);
+          return selected.some(v => itemValues.includes(v));
+        }
+
+        // Caso Normal: Comparación dinámica OR
+        const itemValue = getValue(item, sideKey);
+        const itemValuesArray = getItemValues(itemValue);
+        return selected.some(s => itemValuesArray.includes(s));
+      });
+
+      // 3. SEARCH (Dinámico usando SEARCH_KEYS)
+      const words = searchQuery.toLowerCase().split(" ").filter(Boolean);
+      const matchesSearch = words.length === 0 || words.every(word =>
+        SEARCH_KEYS.some(key => getValue(item, key).toLowerCase().includes(word))
+      );
+
+      return matchesFilters && matchesSidebar && matchesSearch;
+    });
+  }, [baseItems, filtersState, sidebarState, searchQuery]);
+
+  // ===== FILTER OPTIONS (Dinámico) =====
   const filterOptions = useMemo(() => {
     const options: Record<string, { value: string; count: number }[]> = {};
-    FILTER_KEYS.forEach(key => {
-      const counts: Record<string, number> = {};
-      baseItems.filter(item => {
-        for (const k of FILTER_KEYS) {
-          if (k === key) continue;
-          const selected = selectedFilters[k];
-          if (selected && selected.length > 0) {
-            if (!selected.includes(getFilterValue(item, k))) return false;
+
+    SIDEBAR_KEYS.forEach(key => {
+      // Filtrado previo para conteos (Excluyendo la sección actual)
+      const itemsForThisSection = baseItems.filter(item => {
+        const matchesNav = Object.entries(filtersState).every(
+          ([fKey, values]) => matchField(getValue(item, fKey), values)
+        );
+        if (!matchesNav) return false;
+
+        const matchesOthers = SIDEBAR_KEYS.every(sideKey => {
+          if (sideKey === key) return true;
+          const selected = sidebarState[sideKey] || [];
+          if (!selected.length) return true;
+          
+          if (sideKey === "details") {
+             return selected.every(d => DETAILS_FILTERS[d]?.(item as any));
           }
-        }
-        return true;
-      }).forEach(item => {
-        const val = getFilterValue(item, key);
-        counts[val] = (counts[val] || 0) + 1;
+          
+          const custom = CUSTOM_FILTERS[sideKey];
+          if (custom) return selected.some(v => custom.getValues(item as any).includes(v));
+
+          return matchField(getValue(item, sideKey), selected);
+        });
+
+        return matchesOthers;
       });
-      options[key] = Object.entries(counts)
-        .map(([value, count]) => ({ value, count }))
-        .sort((a, b) => b.count - a.count);
+
+      // Generar opciones según tipo de llave
+      if (key === "details") {
+        options[key] = Object.entries(DETAILS_FILTERS).map(([label, fn]) => ({
+          value: label, count: itemsForThisSection.filter(i => fn(i)).length
+        }));
+      } else {
+        const counts: Record<string, number> = {};
+        const custom = CUSTOM_FILTERS[key];
+
+        itemsForThisSection.forEach(item => {
+          const values = custom 
+            ? custom.getValues(item as any) 
+            : getItemValues(getValue(item, key));
+          
+          values.forEach(v => { if (v) counts[v] = (counts[v] || 0) + 1; });
+        });
+
+        options[key] = Object.entries(counts).map(([value, count]) => ({ value, count }));
+      }
     });
+
     return options;
-  }, [baseItems, selectedFilters]);
+  }, [baseItems, filtersState, sidebarState]);
 
-  const toggleFilter = useCallback((key: string, value: string) => {
-    setSearchParams(prev => {
-      const params = new URLSearchParams(prev);
-      const current = params.get(key)?.split(',').filter(Boolean) || [];
-      const idx = current.indexOf(value);
-      if (idx >= 0) {
-        current.splice(idx, 1);
-      } else {
-        current.push(value);
-      }
-      if (current.length === 0) {
-        params.delete(key);
-      } else {
-        params.set(key, current.join(','));
-      }
-      return params;
-    });
-  }, [setSearchParams]);
+  // ===== TOGGLE =====
 
+  const toggleFilter = (key: string, value: string) => {
+    const newParams = new URLSearchParams(searchParams);
+    const normalizedKey = normalizeKey(key);
+    
+    // Obtenemos los valores actuales (ej: ["club", "national-team"])
+    const currentValues = searchParams.get(normalizedKey)?.split(VALUE_SEPARATOR).filter(Boolean) || [];
+    
+    let nextValues: string[];
+    if (currentValues.includes(value)) {
+      // Si ya existe, lo quitamos
+      nextValues = currentValues.filter(v => v !== value);
+    } else {
+      // Si no existe, lo agregamos al array
+      nextValues = [...currentValues, value];
+    }
+
+    if (nextValues.length > 0) {
+      newParams.set(normalizedKey, nextValues.join(VALUE_SEPARATOR));
+    } else {
+      newParams.delete(normalizedKey);
+    }
+
+    // Mantenemos el scroll y navegamos
+    setSearchParams(newParams, { replace: true });
+  };
+
+  // ===== REMOVE =====
   const removeFilter = useCallback((key: string, value?: string) => {
     setSearchParams(prev => {
       const params = new URLSearchParams(prev);
-      if (value) {
-        const current = params.get(key)?.split(',').filter(Boolean) || [];
-        const filtered = current.filter(v => v !== value);
-        if (filtered.length === 0) params.delete(key);
-        else params.set(key, filtered.join(','));
-      } else {
-        params.delete(key);
+      const normKey = normalizeKey(key);
+
+      if (!value) {
+        params.delete(normKey);
+        return params;
       }
+
+      const current = getArrayParam(params, normKey);
+      const newValues = current.filter(v => v !== value);
+
+      if (newValues.length) params.set(normKey, newValues.join(","));
+      else params.delete(normKey);
       return params;
     });
   }, [setSearchParams]);
 
+  // ===== CLEAR =====
   const clearAll = useCallback(() => {
-    setSearchParams(prev => {
-      const params = new URLSearchParams();
-      const cat = prev.get('category');
-      const prod = prev.get('product');
-      if (cat) params.set('category', cat);
-      if (prod) params.set('product', prod);
-      return params;
-    });
+    setSearchParams(new URLSearchParams());
   }, [setSearchParams]);
 
-  const setCategory = useCallback((cat: string | null) => {
-    setSearchParams(() => {
-      const params = new URLSearchParams();
-      if (cat) params.set('category', cat);
-      return params;
-    });
-  }, [setSearchParams]);
-
-  const setProduct = useCallback((prod: string | null) => {
-    setSearchParams(prev => {
-      const params = new URLSearchParams();
-      const cat = prev.get('category');
-      if (cat) params.set('category', cat);
-      if (prod) params.set('product', prod);
-      return params;
-    });
-  }, [setSearchParams]);
-
-  const hasActiveFilters = Object.keys(selectedFilters).length > 0;
-
+  // ===== CHIPS =====
   const activeFilterChips = useMemo(() => {
-    const chips: { key: string; value: string; label: string }[] = [];
-    Object.entries(selectedFilters).forEach(([key, values]) => {
+    const chips: { key: string; value: string; label: string; displayKey: string }[] = [];
+
+    Object.entries(sidebarState).forEach(([key, values]) => {
       values.forEach(value => {
-        chips.push({ key, value, label: value });
+        // 🔥 Formateamos la llave para que se vea bien en el chip
+        let displayKey = key;
+        if (CUSTOM_FILTERS[key]) displayKey = CUSTOM_FILTERS[key].label;
+        else if (key === "details") displayKey = "Details";
+        else displayKey = FIELD_MAP[key as keyof typeof FIELD_MAP] || (key.charAt(0).toUpperCase() + key.slice(1));
+
+        chips.push({ key, value, label: value, displayKey });
       });
     });
+
     return chips;
-  }, [selectedFilters]);
+  }, [sidebarState]);
 
-  const setSearchQuery = useCallback((q: string) => {
-    setSearchParams(prev => {
-      const params = new URLSearchParams(prev);
-      if (q) params.set('q', q);
-      else params.delete('q');
-      return params;
-    });
-  }, [setSearchParams]);
-
-  return {
+return {
     filteredItems,
     filterOptions,
-    selectedFilters,
+    selectedFilters: sidebarState,
     toggleFilter,
     removeFilter,
     clearAll,
-    hasActiveFilters,
     activeFilterChips,
-    activeCategory,
-    activeProduct,
-    setCategory,
-    setProduct,
     searchQuery,
-    setSearchQuery,
-    totalItems: baseItems.length,
-    FILTER_KEYS,
+    hasNavigationFilters,
+    setSearchQuery: (q: string) => {
+      setSearchParams(prev => {
+        const params = new URLSearchParams(prev);
+        if (q) params.set("q", q); else params.delete("q");
+        return params;
+      }, { replace: true });
+    }
   };
 }

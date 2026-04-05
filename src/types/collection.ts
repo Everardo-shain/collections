@@ -1,73 +1,43 @@
-export interface CollectionItem {
-  id: string;
-  displayName: string;
-  category: string;
-  product: string;
-  entity: string;
-  team: string;
-  season: string;
-  competition: string;
-  country: string;
-  confederation: string;
-  brand: string;
-  style: string;
-  release: string;
-  technology: string;
-  size: string;
-  sleeves: 'Short' | 'Long';
-  print: string;
-  nameset: string;
-  patch: string;
-  packaging: string;
-  signature: string;
-  collaboration: string;
+import { FIELD_MAP } from "@/config/footballConfig";
+
+/**
+ * 1. Mapeo Automático de campos del JSON
+ * Extrae las llaves de FIELD_MAP (id, displayName, etc.) 
+ * y les asigna el tipo string.
+ */
+export type CollectionItemFields = {
+  [K in keyof typeof FIELD_MAP]: string;
+};
+
+/**
+ * 2. Interfaz Principal
+ * Combina los campos del JSON con las propiedades calculadas (imágenes).
+ */
+export interface CollectionItem extends CollectionItemFields {
   image: string;
-  images?: string[];
+  images: string[];
 }
 
-export type FilterKey =
-  | 'teamType'
-  | 'confederation'
-  | 'country'
-  | 'competition'
-  | 'team'
-  | 'season'
-  | 'style'
-  | 'release'
-  | 'brand'
-  | 'technology'
-  | 'size';
-
-export type DetailFilterKey =
-  | 'longSleeves'
-  | 'printed'
-  | 'withPatches'
-  | 'signed'
-  | 'inBox'
-  | 'collaboration';
-
+/**
+ * 3. Tipos para el Estado de Filtros
+ * Usamos Record<string, string[]> para permitir cualquier llave 
+ * dinámica que definas en el config.
+ */
 export interface FilterState {
   [key: string]: string[];
 }
 
-export interface DetailFilterState {
-  [key: string]: boolean;
-}
+/**
+ * 4. Tipos Auxiliares para Navegación
+ */
+export type NavChild = {
+  label: string;
+  category: string;
+  product: string;
+  [key: string]: string; // Permite las llaves dinámicas de NAVIGATION_CONFIG.hierarchy
+};
 
-export function getTeamType(entity: string): string {
-  const lower = entity.toLowerCase();
-  if (lower.includes('national')) return 'National Team';
-  if (lower.includes('collective')) return 'Collective';
-  return 'Club';
-}
-
-export function deriveDetailFilter(item: CollectionItem, key: DetailFilterKey): boolean {
-  switch (key) {
-    case 'longSleeves': return item.sleeves === 'Long';
-    case 'printed': return item.print !== '' && item.print !== 'None';
-    case 'withPatches': return item.patch !== '' && item.patch !== 'None';
-    case 'signed': return item.signature !== '' && item.signature !== 'None';
-    case 'inBox': return item.packaging !== '' && item.packaging !== 'None';
-    case 'collaboration': return item.collaboration !== '' && item.collaboration !== 'None';
-  }
-}
+export type NavGroup = {
+  label: string;
+  children: NavChild[];
+};

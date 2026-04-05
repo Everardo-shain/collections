@@ -1,6 +1,6 @@
 import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import { Menu, X, ChevronDown, Search } from 'lucide-react';
-import { navGroups } from '@/data/mockData';
+import { NAV_GROUPS } from '@/config/footballConfig';
 import { useState, useRef, useEffect } from 'react';
 import { Input } from '@/components/ui/input';
 import { ThemeSelector } from '@/components/ThemeSelector';
@@ -10,7 +10,7 @@ function DropdownMenu({
   activeCategory,
   activeProduct,
 }: {
-  group: (typeof navGroups)[0];
+  group: (typeof NAV_GROUPS)[0];
   activeCategory: string | null;
   activeProduct: string | null;
 }) {
@@ -124,7 +124,7 @@ export function CollectionNavbar() {
                 >
                 All
               </Link>
-              {navGroups.map(group => (
+              {NAV_GROUPS.map(group => (
                 <DropdownMenu
                   key={group.label}
                   group={group}
@@ -184,7 +184,7 @@ export function CollectionNavbar() {
               <Link to="/" className="block py-1.5 text-sm font-medium text-foreground" onClick={() => setMobileOpen(false)}>
                 All
               </Link>
-              {navGroups.map(group => (
+              {NAV_GROUPS.map(group => (
                 <MobileNavGroup
                   key={group.label}
                   group={group}
@@ -210,7 +210,7 @@ function MobileNavGroup({
   group,
   onClose,
 }: {
-  group: (typeof navGroups)[0];
+  group: (typeof NAV_GROUPS)[0];
   onClose: () => void;
 }) {
   const [expanded, setExpanded] = useState(false);
