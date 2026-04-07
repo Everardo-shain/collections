@@ -8,17 +8,18 @@ interface ItemCardProps {
 }
 
 // Usamos forwardRef para pasar la referencia al motion.div
+
 export const ItemCard = forwardRef<HTMLDivElement, ItemCardProps>(({ item }, ref) => {
   return (
     <motion.div
-      ref={ref} // 🔥 Esta es la clave para eliminar el warning
+      ref={ref}
       layout
       initial={{ opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 12 }}
       transition={{ duration: 0.25 }}
     >
-      <Link to={`/item/${item.id}`} className="group block">
+      <Link to={`/item/${item.id}`} className="group block text-center"> {/* 👈 Añadido text-center aquí para heredar al resto */}
         <div className="aspect-square overflow-hidden rounded-lg bg-secondary mb-3">
           <img
             src={item.image}
@@ -27,19 +28,14 @@ export const ItemCard = forwardRef<HTMLDivElement, ItemCardProps>(({ item }, ref
             loading="lazy"
           />
         </div>
-        <div className="space-y-0.5">
-          <h3 className="text-sm font-medium text-foreground line-clamp-1 group-hover:underline underline-offset-2 group-hover:text-primary transition-colors">
+        <div className="space-y-0.5 px-2"> {/* Añadido un pequeño padding lateral para que el texto centrado no toque los bordes */}
+          <h3 className="text-sm font-medium text-foreground break-words group-hover:underline underline-offset-4 group-hover:text-primary transition-colors text-center">
             {item.displayName}
           </h3>
-          <p className="text-xs text-muted-foreground">
-            {item.team} · {item.season}
-          </p>
-          <p className="text-xs text-muted-foreground">{item.brand}</p>
         </div>
       </Link>
     </motion.div>
   );
 });
 
-// Es buena práctica ponerle el nombre para que aparezca bien en las DevTools
 ItemCard.displayName = 'ItemCard';

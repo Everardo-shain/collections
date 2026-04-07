@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { ChevronDown, ChevronUp, SlidersHorizontal, X } from 'lucide-react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { cn } from '@/lib/utils';
+import { useScrollDirection} from '@/hooks/useScrollDirection';
 
 interface FilterSidebarProps {
   filterOptions: Record<string, { value: string; count: number }[]>;
@@ -11,10 +12,11 @@ interface FilterSidebarProps {
   filterKeys: string[];
   isOpen: boolean;
   onClose: () => void;
+  stickyOffset: number;
 }
 
 
-const SHOW_MORE_THRESHOLD = 5;
+const SHOW_MORE_THRESHOLD = 10;
 
 function getFilterLabel(key: string) {
   if (CUSTOM_FILTERS[key]) return CUSTOM_FILTERS[key].label;
@@ -45,27 +47,27 @@ function FilterSection({
   const hasMore = options.length > SHOW_MORE_THRESHOLD;
 
   return (
-    <div className="border-b border-border py-3">
+    <div className="border-b border-border py-1.5">
       <button
-        className="w-full flex items-center justify-between py-1 text-sm font-semibold text-foreground"
+        className="w-full flex items-start justify-between py-1 text-sm font-semibold text-foreground"
         onClick={() => setExpanded(!expanded)}
       >
         {label}
         {expanded ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
       </button>
       {expanded && (
-        <div className="mt-2 space-y-1.5">
+        <div className="mt-2 space-y-0">
           {visibleOptions.map(opt => (
             <label
               key={opt.value}
-              className="flex items-center gap-2.5 py-1 cursor-pointer group"
+              className="flex items-start gap-2.5 py-1 cursor-pointer group"
             >
               <Checkbox
                 checked={selected.includes(opt.value)}
                 onCheckedChange={() => onToggle(opt.value)}
                 className="h-4 w-4"
               />
-              <span className="text-sm text-foreground group-hover:text-foreground flex-1 truncate">
+              <span className="text-sm text-foreground group-hover:text-foreground flex-1">
                 {opt.value}
               </span>
               <span className="text-xs text-muted-foreground tabular-nums">{opt.count}</span>
@@ -92,7 +94,9 @@ export function FilterSidebar({
   filterKeys,
   isOpen,
   onClose,
+  stickyOffset,
 }: FilterSidebarProps) {
+  const scrollDir = useScrollDirection();
   return (
     <>
       {/* Mobile overlay */}
@@ -101,16 +105,19 @@ export function FilterSidebar({
       )}
 
       <aside
-        className={cn(
-          'lg:sticky lg:top-[calc(3.5rem+2.5rem)] lg:h-[calc(100vh-6rem)] lg:overflow-y-auto lg:w-64 lg:shrink-0 lg:block',
-          'fixed top-0 left-0 h-full w-80 bg-card z-50 transform transition-transform duration-300 ease-out overflow-y-auto',
-          'lg:relative lg:translate-x-0 lg:bg-transparent lg:z-auto',
-          isOpen ? 'translate-x-0' : '-translate-x-full'
-        )}
+      style={{ 
+        top: `${stickyOffset}px`, 
+        height: `calc(100vh - ${stickyOffset}px)` 
+      }}
+      className={cn(
+        "lg:sticky lg:w-64 lg:shrink-0 lg:block lg:overflow-y-auto transition-all duration-300 ease-in-out",
+        "fixed left-0 h-full w-80 bg-card z-50 transform lg:translate-x-0 lg:bg-transparent lg:z-auto",
+        isOpen ? "translate-x-0" : "-translate-x-full"
+      )}
       >
         <div className="p-4 lg:p-0 lg:pr-6">
-          <div className="flex items-center justify-between mb-4 lg:mb-0">
-            <div className="flex items-center gap-2 text-sm font-semibold text-foreground">
+          <div className="flex items-start justify-between mb-4 lg:mb-0">
+            <div className="flex items-start gap-2 text-sm font-semibold text-foreground py-1.5">
               <SlidersHorizontal className="w-4 h-4" />
               Filters
             </div>
@@ -120,36 +127,21 @@ export function FilterSidebar({
           </div>
 
           {filterKeys.map(key => {
+            const options = filterOptions[key] || [];
+            const selected = selectedFilters[key] || [];
 
-          // 🔥 caso especial: DETAILS (Corregido)
-          if (key === "details") {
-            // En lugar de crear un array nuevo con ceros, 
-            // usamos lo que ya calculó el hook useFilters
-            const options = filterOptions[key] || []; 
+            // 🔥 Si no hay opciones (counts en 0) y no hay nada seleccionado, ocultamos toda la sección
+            if (options.length === 0 && selected.length === 0) return null;
 
             return (
               <FilterSection
                 key={key}
                 label={getFilterLabel(key)}
-                options={options} // Ahora 'options' ya trae los counts correctos (10, 19, etc.)
-                selected={selectedFilters[key] || []}
+                options={options}
+                selected={selected}
                 onToggle={(value) => onToggleFilter(key, value)}
               />
             );
-          }
-
-            // 🔥 normal filters
-            const options = filterOptions[key] || [];
-            if (options.length === 0) return null;
-              return (
-                <FilterSection
-                  key={key}
-                  label={getFilterLabel(key)}
-                  options={options}
-                  selected={selectedFilters[key] || []}
-                  onToggle={(value) => onToggleFilter(key, value)}
-                />
-              );
           })}
         </div>
       </aside>

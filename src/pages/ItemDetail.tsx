@@ -84,9 +84,6 @@ export default function ItemDetail() {
           {/* ===== DETAILS SECTOR ===== */}
           <div>
             <div className="mb-6">
-              <p className="text-sm text-muted-foreground mb-1">
-                {item.brand} · {item.entity}
-              </p>
               <h1 className="font-heading text-2xl md:text-3xl font-bold">
                 {item.displayName}
               </h1>

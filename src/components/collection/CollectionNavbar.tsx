@@ -4,6 +4,8 @@ import { NAV_GROUPS } from '@/config/footballConfig';
 import { useState, useRef, useEffect } from 'react';
 import { Input } from '@/components/ui/input';
 import { ThemeSelector } from '@/components/ThemeSelector';
+import { useScrollDirection } from '@/hooks/useScrollDirection';
+import { cn } from '@/lib/utils';
 
 function DropdownMenu({
   group,
@@ -86,6 +88,7 @@ export function CollectionNavbar() {
   const activeCategory = searchParams.get('category');
   const activeProduct = searchParams.get('product');
   const searchQuery = searchParams.get('q') || '';
+  const scrollDir = useScrollDirection();
 
   const handleSearch = (value: string) => {
     const params = new URLSearchParams(searchParams);
@@ -97,7 +100,10 @@ export function CollectionNavbar() {
   return (
     <>
       {/* Thin top bar */}
-      <div className="bg-secondary/50 border-b border-border">
+      <div className={cn(
+              "bg-secondary/50 border-b border-border transition-transform duration-300 ease-in-out",
+              scrollDir === "down" ? "-translate-y-full" : "translate-y-0"
+            )}>
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-end h-8">
           <Link
             to="/other-collections"
@@ -108,11 +114,16 @@ export function CollectionNavbar() {
         </div>
       </div>
 
-      <nav className="sticky top-0 z-50 bg-card/80 backdrop-blur-lg border-b border-border">
+      <nav className={cn(
+              "sticky top-0 z-50 bg-card border-b border-border transition-transform duration-300 ease-in-out",
+              // Si bajamos, se mueve hacia arriba su propia altura (100%)
+              // Si subimos, vuelve a su posición original
+              scrollDir === "down" ? "-translate-y-full" : "translate-y-0"
+            )}>
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-14">
             <Link to="/" className="font-heading text-xl font-bold tracking-tight text-foreground">
-              COLLECTION
+              Everardo´s Football Collection
             </Link>
 
             <div className="hidden md:flex items-center gap-6">
