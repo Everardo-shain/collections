@@ -1,4 +1,4 @@
-import { FIELD_MAP } from "@/config/footballConfig";
+import { FIELD_MAP, NAVIGATION_CONFIG } from "@/config/footballConfig";
 
 /**
  * 1. Mapeo Automático de campos del JSON
@@ -20,21 +20,24 @@ export interface CollectionItem extends CollectionItemFields {
 
 /**
  * 3. Tipos para el Estado de Filtros
- * Usamos Record<string, string[]> para permitir cualquier llave 
- * dinámica que definas en el config.
+ * Separamos conceptualmente qué es un filtro de navegación y qué es de sidebar
  */
 export interface FilterState {
+  // Filtros normales (Ej: brand, size, team)
   [key: string]: string[];
+  // Filtros con prefijo (Ej: nav_category, nav_entity)
+  // TypeScript ya lo cubre con la firma anterior, pero esto ayuda a la legibilidad
 }
 
 /**
  * 4. Tipos Auxiliares para Navegación
  */
+export type NavHierarchyKeys = Lowercase<typeof NAVIGATION_CONFIG.hierarchy[number]>;
+
 export type NavChild = {
   label: string;
-  category: string;
-  product: string;
-  [key: string]: string; // Permite las llaves dinámicas de NAVIGATION_CONFIG.hierarchy
+} & Record<NavHierarchyKeys, string> & {
+  [key: string]: string; 
 };
 
 export type NavGroup = {

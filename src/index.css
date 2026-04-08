@@ -104,9 +104,15 @@
 
 @layer utilities {
   .filter-chip {
-    @apply inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium bg-primary text-primary-foreground transition-all duration-200;
+    @apply inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium 
+           bg-primary text-primary-foreground transition-all duration-200 shadow-sm !important;
   }
+
+  /* Usamos el selector de clase para asegurar que nuestra regla gane */
   .filter-chip:hover {
-    @apply opacity-80;
+    /* Forzamos que el fondo sea el primario y usamos brightness para el efecto */
+    background-color: hsl(var(--primary)) !important;
+    filter: brightness(0.8) !important;
+    opacity: 1 !important; /* Por si acaso algo le está bajando la opacidad */
   }
 }

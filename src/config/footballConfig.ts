@@ -1,17 +1,5 @@
 import type { CollectionItem } from '@/types/collection';
 
-// ===== TYPES =====
-export type NavChild = {
-  label: string;
-  category: string;
-  product: string;
-  [key: string]: string;
-};
-
-export type NavGroup = {
-  label: string;
-  children: NavChild[];
-};
 
 type CustomFilter = {
   label: string;
@@ -75,7 +63,7 @@ export const FIELD_MAP = {
 
 // ===== NAVIGATION =====
 export const NAVIGATION_CONFIG = {
-  hierarchy: ["Category", "Product"], 
+  hierarchy: ["Category", "Product"] as const, 
   structure: {
     Apparel: ["Jersey", "Hoodie", "Jacket", "Pants", "Headwear", "Scarf"],
     Equipment: ["Boots", "Ball"],
@@ -83,15 +71,39 @@ export const NAVIGATION_CONFIG = {
   }
 } as const;
 
+export type NavHierarchyKeys = typeof NAVIGATION_CONFIG.hierarchy[number] extends string 
+  ? Lowercase<typeof NAVIGATION_CONFIG.hierarchy[number]> 
+  : never;
+
+export type NavChild = {
+  label: string;
+} & Record<NavHierarchyKeys, string> & {
+  [key: string]: string; // Fallback por seguridad
+};
+
+export type NavGroup = {
+  label: string;
+  children: NavChild[];
+};
+
 export const NAVIGATION_BREADCRUMB = [...NAVIGATION_CONFIG.hierarchy] as string[];
 
 export const NAV_GROUPS: NavGroup[] = Object.entries(NAVIGATION_CONFIG.structure).map(
   ([parentLabel, children]) => ({
     label: parentLabel,
     children: children.map(childLabel => {
-      const child = { label: childLabel } as any; 
-      child[NAVIGATION_CONFIG.hierarchy[0].toLowerCase()] = parentLabel;
-      child[NAVIGATION_CONFIG.hierarchy[1].toLowerCase()] = childLabel;
+      // Creamos el objeto base con el label
+      const child: any = { label: childLabel };
+      
+      // Mapeamos dinámicamente TODA la jerarquía
+      // Si hierarchy es ["Category", "Product", "Sub"] 
+      // esto asignará automáticamente los valores correctos.
+      NAVIGATION_CONFIG.hierarchy.forEach((key, index) => {
+        const lowerKey = key.toLowerCase();
+        // El primer nivel suele ser el padre (Apparel), el segundo el hijo (Jersey)
+        child[lowerKey] = index === 0 ? parentLabel : childLabel;
+      });
+
       return child as NavChild;
     })
   })
@@ -151,8 +163,8 @@ export const BREADCRUMB_KEY = "entity";
 
 export const breadcrumbConfig: Record<string, string[]> = {
   "National Team": ["Entity", "Confederation", "Team", "Season"],
-  "Collective": ["Confederation", "Country", "Competition", "Team", "Season"],
-  "Club": ["Confederation", "Country", "Competition", "Team", "Season"],
+  "Collective": ["Entity","Confederation", "Country", "Competition", "Team", "Season"],
+  "Club": ["Entity","Confederation", "Country", "Competition", "Team", "Season"],
   "Event": ["Confederation", "Country", "Competition", "Team", "Season"],
   "Brand": ["Brand", "Season"],
   "Person": ["Team", "Person", "Season"]
@@ -160,29 +172,18 @@ export const breadcrumbConfig: Record<string, string[]> = {
 
 // ===== BREADCRUMB RESOLVER =====
 export const BREADCRUMB_RESOLVER = (context: any): string[] | null => {
-  const { item, filtersState, sidebarState, data, matchField } = context;
+  const { item, filtersState } = context;
 
   if (item) {
-    const key = item.entity; 
-    return breadcrumbConfig[key] || null;
-  }
-
-  const totalNavValues = Object.values(filtersState || {}).flat().length;
-  const totalSidebarValues = Object.values(sidebarState || {}).flat().length;
-
-  if (totalSidebarValues > 0 || totalNavValues > 1) {
-    return null; 
+    return breadcrumbConfig[item.entity] || null;
   }
 
   if (filtersState) {
-    const parentKey = NAVIGATION_CONFIG.hierarchy[0].toLowerCase();
-    if (filtersState[parentKey]?.length === 1) {
-      return NAVIGATION_BREADCRUMB;
-    }
-
-    if (filtersState.entity?.length === 1) {
-      const entityName = filtersState.entity[0];
-      return breadcrumbConfig[entityName] || null;
+    // 🔥 IMPORTANTE: Buscar la entidad tanto en 'entity' como en 'nav_entity'
+    const entityValue = filtersState.nav_entity?.[0] || filtersState.entity?.[0];
+    
+    if (entityValue && breadcrumbConfig[entityValue]) {
+      return breadcrumbConfig[entityValue];
     }
   }
 

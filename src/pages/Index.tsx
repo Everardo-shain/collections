@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState,useEffect } from 'react';
 import { SlidersHorizontal, ChevronDown } from 'lucide-react';
 import { CollectionNavbar } from '@/components/collection/CollectionNavbar';
 import { CollectionBreadcrumb } from '@/components/collection/CollectionBreadcrumb';
@@ -20,28 +20,59 @@ const SORT_LABELS: Record<SortOption, string> = {
   'oldest': 'Season Oldest',
 };
 
+const NAV_HEIGHT = 56;
+
 const Index = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [sortBy, setSortBy] = useState<SortOption>('default');
   const [sortOpen, setSortOpen] = useState(false);
+  const [scrollY, setScrollY] = useState(0); // Movidizo adentro
+  
+  const scrollDir = useScrollDirection(); // Movidizo adentro
+  
 
-  const filters = useFilters();
+  useEffect(() => {
+    const handleScroll = () => setScrollY(window.scrollY);
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  const isNavbarHidden = scrollDir === "down" && scrollY > 100;
+  const allFilters = useFilters();
+
+  const { 
+    filteredItems, 
+    filterOptions, 
+    sidebarState, 
+    navState, 
+    activeFilterChips, 
+    searchQuery 
+  } = allFilters;
+
+  // Y el resto de funciones las agrupamos manualmente si el "..." falla
+  const filters = {
+    toggleFilter: allFilters.toggleFilter,
+    removeFilter: allFilters.removeFilter,
+    clearAll: allFilters.clearAll,
+    setSearchQuery: allFilters.setSearchQuery
+  };
+
   const pageTitle = 'All Items';
   const headerRef = useRef<HTMLDivElement>(null);
   const { height: headerHeight } = useElementSize(headerRef);
-  const scrollDir = useScrollDirection();
-  const stickyOffset = (scrollDir === "down" ? 0 : 56) + headerHeight;
+  const stickyOffset = (isNavbarHidden ? 0 : NAV_HEIGHT) + headerHeight;
 
-  const sortedItems = [...filters.filteredItems].sort((a, b) => {
+const sortedItems = [...filteredItems].sort((a, b) => {
     switch (sortBy) {
       case 'default':
         return a.id.localeCompare(b.id);
       case 'name-asc':
         return a.displayName.localeCompare(b.displayName);
       case 'newest':
-        return b.season.localeCompare(a.season);
+        // Añadimos un fallback '' para evitar errores si season es undefined
+        return (b.season || '').localeCompare(a.season || '');
       case 'oldest':
-        return a.season.localeCompare(b.season);
+        return (a.season || '').localeCompare(b.season || '');
       default:
         return 0;
     }
@@ -52,14 +83,8 @@ return (
       <CollectionNavbar />
 
       <CollectionBreadcrumb
-        filtersState={filters.selectedFilters}
-        searchQuery={filters.searchQuery}
-        data={collectionItems}
-        matchField={(value, filtersArr) => {
-          if (!filtersArr.length) return true;
-          if (!value) return false;
-          return filtersArr.includes(value);
-        }}
+        filtersState={{ ...sidebarState, ...navState }}
+        searchQuery={searchQuery}
       />
 
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-6">
@@ -69,19 +94,15 @@ return (
             bg-background es vital para que los items no se trasluzcan por debajo */}
         <div 
           ref={headerRef}
-          className={cn(
-          "sticky z-20 bg-background pt-2 transition-all duration-300 ease-in-out",
-          "pb-3",
-          // Si bajamos, el header se pega al techo (top-0)
-          // Si subimos, deja espacio para el Navbar (top-[56px])
-          scrollDir === "down" ? "top-0" : "top-[56px]"
-        )}>
+          style={{ top: isNavbarHidden ? 0 : NAV_HEIGHT }}
+          className="sticky z-20 bg-background pt-2 transition-all duration-300 ease-in-out pb-3"
+        >
           
           {/* Header */}
           <div className="flex items-end justify-between">
             <div>
               <h1 className="font-heading text-xl md:text-2xl font-bold text-foreground tracking-tight">
-                {pageTitle} ({filters.filteredItems.length})
+                {pageTitle} ({filteredItems.length})
               </h1>
               {/* <p className="text-sm text-muted-foreground mt-1">
                 {filters.filteredItems.length} items
@@ -138,7 +159,7 @@ return (
 
           {/* Active filters dentro de la zona sticky */}
           <ActiveFilters
-            chips={filters.activeFilterChips}
+            chips={activeFilterChips}
             onRemove={filters.removeFilter}
             onClearAll={filters.clearAll}
           />
@@ -148,8 +169,9 @@ return (
 
         <div className="flex items-start gap-0 lg:gap-8 mt-4">
           <FilterSidebar
-            filterOptions={filters.filterOptions}
-            selectedFilters={filters.selectedFilters}
+            filterOptions={filterOptions}
+            // 3. El Sidebar solo necesita saber qué checkboxes marcar
+            selectedFilters={sidebarState} 
             onToggleFilter={filters.toggleFilter}
             filterKeys={[...SIDEBAR_KEYS]}
             isOpen={sidebarOpen}

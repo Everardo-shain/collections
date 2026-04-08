@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, ChevronRight, ChevronLeft, Home } from 'lucide-react';
 import { ImageLightbox } from '@/components/collection/ImageLightbox';
 import { CollectionNavbar } from '@/components/collection/CollectionNavbar';
+import { CollectionBreadcrumb } from '@/components/collection/CollectionBreadcrumb';
 
 import rawData from '@/data/json_files/football_collection.json';
 import { mapItem } from '@/utils/mapItem';
@@ -36,18 +37,8 @@ export default function ItemDetail() {
     <div className="min-h-screen bg-background">
       <CollectionNavbar />
 
-      {/* Breadcrumb */}
-      <div className="bg-secondary/50 border-b border-border">
-        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 h-10 flex items-center gap-2 text-sm">
-          <Link to="/" className="flex items-center gap-1 text-muted-foreground hover:text-foreground">
-            <Home className="w-3.5 h-3.5" /> Home
-          </Link>
-          <ChevronRight className="w-3.5 h-3.5 text-muted-foreground" />
-          <span className="text-muted-foreground">{item.category}</span>
-          <ChevronRight className="w-3.5 h-3.5 text-muted-foreground" />
-          <span className="text-primary font-medium truncate">{item.displayName}</span>
-        </div>
-      </div>
+      {/* Breadcrumb dinámico */}
+      <CollectionBreadcrumb item={item} />
 
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
         

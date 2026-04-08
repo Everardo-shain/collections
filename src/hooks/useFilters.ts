@@ -47,18 +47,33 @@ function getValue(item: CollectionItem, key: string): string {
   return typeof value === "string" ? value : "";
 }
 
+function isSidebarKey(key: string): key is typeof SIDEBAR_KEYS[number] {
+  return (SIDEBAR_KEYS as readonly string[]).includes(key);
+}
+
 export function useFilters() {
   const [searchParams, setSearchParams] = useSearchParams();
   const searchQuery = searchParams.get("q") || "";
 
-  const filtersState = useMemo(() => {
+  const navState = useMemo(() => {
     const state: Record<string, string[]> = {};
+    
     FILTER_KEYS.forEach(key => {
       const norm = normalizeKey(key);
-      let vals = getArrayParam(searchParams, "nav_" + norm);
-      if (!vals.length) vals = getArrayParam(searchParams, norm);
-      state[key] = vals;
+      
+      // 🔥 Buscamos AMBOS: con prefijo nav_ y sin él (por si viene del Navbar)
+      const withPrefix = getArrayParam(searchParams, "nav_" + norm);
+      const withoutPrefix = getArrayParam(searchParams, norm);
+      
+      // Si la llave está en SIDEBAR_KEYS, priorizamos el prefijo para no chocar con el Sidebar
+      // Si NO está en Sidebar (como 'category'), aceptamos la versión sin prefijo
+      if (isSidebarKey(key)) {
+        state[key] = withPrefix;
+      } else {
+        state[key] = withPrefix.length > 0 ? withPrefix : withoutPrefix;
+      }
     });
+    
     return state;
   }, [searchParams]);
 
@@ -70,77 +85,136 @@ export function useFilters() {
     return state;
   }, [searchParams]);
 
-  const filteredItems = useMemo(() => {
-    return collectionItems.filter(item => {
-      const mNav = Object.entries(filtersState).every(([k, v]) => matchField(getValue(item, k), v));
-      
-      const mSide = SIDEBAR_KEYS.every(sideKey => {
-        const selected = sidebarState[sideKey] || [];
-        if (!selected.length) return true;
-        if (sideKey === "details") return selected.some(d => DETAILS_FILTERS[d]?.(item as any));
-        const custom = CUSTOM_FILTERS[sideKey];
-        if (custom) return selected.some(v => custom.getValues(item as any).includes(v));
-        return matchField(getValue(item, sideKey), selected);
-      });
+  // 3. Unimos ambos para el filtrado real de items
+const combinedState = useMemo(() => {
+  const combined: Record<string, string[]> = { ...sidebarState };
+  
+  Object.entries(navState).forEach(([key, values]) => {
+    if (values.length > 0) {
+      // Si el campo ya existe en sidebar, unimos (evitando duplicados)
+      // Si no existe, lo creamos.
+      combined[key] = Array.from(new Set([...(combined[key] || []), ...values]));
+    }
+  });
+  return combined;
+}, [sidebarState, navState]);
 
-      const words = searchQuery.toLowerCase().split(" ").filter(Boolean);
-      const mSearch = words.length === 0 || words.every(w =>
-        SEARCH_KEYS.some(k => getValue(item, k).toLowerCase().includes(w))
-      );
+const filteredItems = useMemo(() => {
+  return collectionItems.filter(item => {
+    // 1. Unimos navState y sidebarState para tener todos los filtros activos
+    const allActiveFilters = { ...combinedState };
 
-      return mNav && mSide && mSearch;
+    // 2. Verificamos cada filtro activo
+    const matchesAll = Object.entries(allActiveFilters).every(([k, selectedValues]) => {
+      if (!selectedValues.length) return true;
+
+      // Normalizamos la llave (quitar nav_ si existe)
+      const pureKey = k.startsWith('nav_') ? k.replace('nav_', '') : k;
+
+      // CASO A: Es el filtro especial de "details"
+      if (pureKey === "details") {
+        return selectedValues.some(d => DETAILS_FILTERS[d]?.(item as any));
+      }
+
+      // CASO B: Es un Custom Filter (como Team Type)
+      const custom = CUSTOM_FILTERS[pureKey];
+      if (custom) {
+        const itemValues = custom.getValues(item as any);
+        return selectedValues.some(v => itemValues.includes(v));
+      }
+
+      // CASO C: Es un filtro estándar (Brand, Team, etc.)
+      return matchField(getValue(item, pureKey), selectedValues);
     });
-  }, [filtersState, sidebarState, searchQuery]);
+
+    if (!matchesAll) return false;
+
+    // 3. Filtro de búsqueda (Search Bar)
+    const words = searchQuery.toLowerCase().split(" ").filter(Boolean);
+    const mSearch = words.length === 0 || words.every(w =>
+      SEARCH_KEYS.some(k => getValue(item, k).toLowerCase().includes(w))
+    );
+
+    return mSearch;
+  });
+}, [combinedState, searchQuery]); // Quitamos sidebarState de aquí porque ya está dentro de combinedState
 
   // 4. 🔥 CORRECCIÓN CRÍTICA: filterOptions (Ignorar la propia categoría en Nav y Sidebar)
-  const filterOptions = useMemo(() => {
+const filterOptions = useMemo(() => {
     const options: Record<string, { value: string; count: number }[]> = {};
 
     SIDEBAR_KEYS.forEach(key => {
       const normKey = normalizeKey(key);
 
       const itemsForThisSection = collectionItems.filter(item => {
-        // Ignorar el filtro nav de la misma categoría
-        const matchesNav = Object.entries(filtersState).every(([k, v]) => {
-          if (normalizeKey(k) === normKey) return true; 
-          return matchField(getValue(item, k), v);
-        });
+        if (searchQuery) {
+          const words = searchQuery.toLowerCase().split(" ").filter(Boolean);
+          const matchesSearch = words.every(w =>
+            SEARCH_KEYS.some(k => getValue(item, k).toLowerCase().includes(w))
+          );
+          if (!matchesSearch) return false;
+        }
+        // 1. Filtros de Navegación (Breadcrumb) - Siempre deben aplicar
+        const matchesNav = Object.entries(navState).every(([k, v]) => 
+          matchField(getValue(item, k), v)
+        );
         if (!matchesNav) return false;
 
-        // Ignorar el filtro sidebar de la misma categoría
+        // 2. Filtros de Sidebar - Aplicar todos menos el actual (para ver opciones disponibles)
         return SIDEBAR_KEYS.every(sideKey => {
-          if (normalizeKey(sideKey) === normKey) return true; 
+          if (normalizeKey(sideKey) === normKey) return true; // Ignorar si es la misma categoría
+          
           const selected = sidebarState[sideKey] || [];
           if (!selected.length) return true;
           
-          if (sideKey === "details") return selected.some(d => DETAILS_FILTERS[d]?.(item as any));
+          // Lógica especial para 'details'
+          if (sideKey === "details") {
+            return selected.some(d => DETAILS_FILTERS[d]?.(item as any));
+          }
+          
+          // Lógica para Custom Filters
           const custom = CUSTOM_FILTERS[sideKey];
-          if (custom) return selected.some(v => custom.getValues(item as any).includes(v));
+          if (custom) {
+            return selected.some(v => custom.getValues(item as any).includes(v));
+          }
+          
+          // Filtro estándar
           return matchField(getValue(item, sideKey), selected);
         });
       });
 
-if (key === "details") {
+      // --- CÁLCULO DE CONTEOS ---
+      if (key === "details") {
         options[key] = Object.entries(DETAILS_FILTERS)
           .map(([label, fn]) => ({
-            value: label, count: itemsForThisSection.filter(i => fn(i)).length
+            value: label, 
+            count: itemsForThisSection.filter(i => fn(i)).length
           }))
-          .filter(opt => opt.count > 0); // 🔥 AÑADIDO: Filtramos para que no salgan los de count cero
+          .filter(opt => opt.count > 0);
       } else {
         const counts: Record<string, number> = {};
         const custom = CUSTOM_FILTERS[key];
+        
         itemsForThisSection.forEach(item => {
-          const vals = custom ? custom.getValues(item as any) : getItemValues(getValue(item, key));
-          vals.forEach(v => { if (v) counts[v] = (counts[v] || 0) + 1; });
+          // Si es custom usamos su getValues, si no, el helper estándar
+          const vals = custom 
+            ? custom.getValues(item as any) 
+            : getItemValues(getValue(item, key));
+            
+          vals.forEach(v => { 
+            if (v) counts[v] = (counts[v] || 0) + 1; 
+          });
         });
+
         options[key] = Object.entries(counts)
-          .sort((a, b) => b[1] - a[1])
-          .map(([value, count]) => ({ value, count }));
+          .map(([value, count]) => ({ value, count }))
+          .sort((a, b) => b[1] - a[1]);
       }
     });
 
     return options;
-  }, [filtersState, sidebarState]);
+  }, [navState, sidebarState, searchQuery]);
+
 
 // 5. DEBUGGING & CHIPS
   const activeFilterChips = useMemo(() => {
@@ -191,14 +265,38 @@ if (key === "details") {
   }, [setSearchParams]);
 
 
-  return {
-    filteredItems, filterOptions, selectedFilters: sidebarState,
-    toggleFilter, removeFilter, clearAll: () => setSearchParams(new URLSearchParams()),
-    activeFilterChips, searchQuery,
-    setSearchQuery: (q: string) => setSearchParams(prev => {
-      const p = new URLSearchParams(prev);
-      if (q) p.set("q", q); else p.delete("q");
-      return p;
-    }, { replace: true })
-  };
+
+// --- Añade esto antes del return { ... } ---
+const clearAll = useCallback(() => {
+  setSearchParams(prev => {
+    const p = new URLSearchParams(prev);
+    const keys = Array.from(p.keys());
+    
+    keys.forEach(key => {
+      // SOLO eliminamos si NO empieza con nav_ y NO es la búsqueda 'q'
+      if (!key.startsWith('nav_') && key !== 'q') {
+        p.delete(key);
+      }
+    });
+    return p;
+  }, { replace: true });
+}, [setSearchParams]);
+
+// --- Modifica el return para usar la nueva función ---
+return {
+  filteredItems,
+  filterOptions,
+  sidebarState,
+  navState,
+  activeFilterChips,
+  searchQuery,
+  toggleFilter,
+  removeFilter,
+  clearAll, // <--- Ahora apunta a la función de arriba
+  setSearchQuery: (q: string) => setSearchParams(prev => {
+    const p = new URLSearchParams(prev);
+    if (q) p.set("q", q); else p.delete("q");
+    return p;
+  }, { replace: true })
+};
 }

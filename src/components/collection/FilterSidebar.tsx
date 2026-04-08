@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { ChevronDown, ChevronUp, SlidersHorizontal, X } from 'lucide-react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { cn } from '@/lib/utils';
-import { useScrollDirection} from '@/hooks/useScrollDirection';
+import { useEffect } from 'react'; // No olvides importar useEffect
 
 interface FilterSidebarProps {
   filterOptions: Record<string, { value: string; count: number }[]>;
@@ -96,35 +96,61 @@ export function FilterSidebar({
   onClose,
   stickyOffset,
 }: FilterSidebarProps) {
-  const scrollDir = useScrollDirection();
+    
+  // Bloquear scroll del body cuando el sidebar móvil está abierto
+  useEffect(() => {
+    // Solo aplicamos el bloqueo si estamos en pantallas pequeñas (< 1024px)
+    const isMobile = window.innerWidth < 1024;
+
+    if (isOpen && isMobile) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+
+    // "Cleanup function": fundamental para devolver el scroll 
+    // si el componente se desmonta inesperadamente
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isOpen]);
+
+  const isDesktop = typeof window !== 'undefined' && window.innerWidth >= 1024;
   return (
     <>
       {/* Mobile overlay */}
       {isOpen && (
-        <div className="fixed inset-0 bg-foreground/20 z-40 lg:hidden" onClick={onClose} />
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[60] lg:hidden" 
+          onClick={onClose} />
       )}
 
       <aside
       style={{ 
-        top: `${stickyOffset}px`, 
-        height: `calc(100vh - ${stickyOffset}px)` 
+        top: isDesktop ? `${stickyOffset}px` : '0', 
+        height: isDesktop ? `calc(100vh - ${stickyOffset}px)` : '100dvh'
       }}
       className={cn(
-        "lg:sticky lg:w-64 lg:shrink-0 lg:block lg:overflow-y-auto transition-all duration-300 ease-in-out",
-        "fixed left-0 h-full w-80 bg-card z-50 transform lg:translate-x-0 lg:bg-transparent lg:z-auto",
-        isOpen ? "translate-x-0" : "-translate-x-full"
+          "transition-all duration-300 ease-in-out",
+          // 3. Mobile: z-[70] para estar sobre el overlay, fixed top-0
+          "fixed left-0 top-0 w-80 bg-card z-[70] transform lg:translate-x-0",
+          // 4. Desktop: Volvemos a comportamiento normal
+          "lg:sticky lg:w-64 lg:shrink-0 lg:block lg:overflow-y-auto lg:bg-transparent lg:z-auto",
+          isOpen ? "translate-x-0" : "-translate-x-full"
       )}
       >
-        <div className="p-4 lg:p-0 lg:pr-6">
+        {/* Contenedor interno con scroll para mobile */}
+        <div className="p-4 lg:p-0 lg:pr-6 h-full overflow-y-auto lg:overflow-visible">
           <div className="flex items-start justify-between mb-4 lg:mb-0">
             <div className="flex items-start gap-2 text-sm font-semibold text-foreground py-1.5">
               <SlidersHorizontal className="w-4 h-4" />
               Filters
             </div>
-            <button className="lg:hidden p-1" onClick={onClose}>
+            {/* Botón X de cerrar más visible en mobile */}
+            <button className="lg:hidden p-2 -mr-2 hover:bg-accent rounded-full transition-colors" onClick={onClose}>
               <X className="w-5 h-5" />
             </button>
           </div>
+
 
           {filterKeys.map(key => {
             const options = filterOptions[key] || [];
