@@ -7,14 +7,14 @@ import {
   VALUE_SEPARATOR,
   valid,
   normalizeKey, 
-  FIELD_MAP     
+  FIELD_MAP,
+  CollectionItem     
 } from "@/config/footballConfig";
 
 import { useSearchParams } from "react-router-dom";
 import { useCallback, useMemo } from "react";
 import rawData from "@/data/json_files/football_collection.json";
 import { mapItem } from "@/utils/mapItem";
-import { CollectionItem } from "@/types/collection";
 
 export const collectionItems: CollectionItem[] = rawData.map(mapItem);
 

@@ -1,5 +1,4 @@
-import { FIELD_MAP } from "@/config/footballConfig";
-import { CollectionItem } from "@/types/collection";
+import { FIELD_MAP, CollectionItem } from "@/config/footballConfig";
 
 // 1. Cargamos todas las imágenes de la carpeta de forma inmediata
 const allImages = import.meta.glob("@/images/*.{jpg,jpeg,png,webp}", { 

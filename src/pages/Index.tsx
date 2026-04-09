@@ -8,8 +8,9 @@ import { ItemGrid } from '@/components/collection/ItemGrid';
 import { useFilters, collectionItems } from '@/hooks/useFilters';
 import { useScrollDirection} from '@/hooks/useScrollDirection';
 import { useElementSize} from '@/hooks/useElementSize';
-import { SIDEBAR_KEYS } from '@/config/footballConfig'; // 🔥 Importar esto
+import { SIDEBAR_KEYS, BREADCRUMB_RESOLVER, NAVIGATION_BREADCRUMB, SITE_METADATA} from '@/config/footballConfig'; // 🔥 Importar esto
 import { cn } from '@/lib/utils'; // Asegúrate de tener este import
+import { Helmet } from 'react-helmet-async';
 
 type SortOption = 'default' | 'name-asc' | 'newest' | 'oldest';
 
@@ -57,12 +58,37 @@ const Index = () => {
     setSearchQuery: allFilters.setSearchQuery
   };
 
-  const pageTitle = 'All Items';
+  // ... dentro del componente Index, después de obtener navState, sidebarState y searchQuery
+
+// 1. Consolidamos todos los filtros activos
+  const combinedState = { ...sidebarState, ...navState };
+
+  // 2. Obtenemos la jerarquía que aplica (la de la Entidad o la del Navbar por defecto)
+  const activeHierarchy = BREADCRUMB_RESOLVER({ filtersState: combinedState }) || NAVIGATION_BREADCRUMB;
+
+  // 3. CASO ÚNICO: Encontrar el "último nivel"
+  const getPageTitle = () => {
+    // Si hay búsqueda, ella manda como nivel final
+    if (searchQuery) return `Search: "${searchQuery}"`;
+
+    // Filtramos la jerarquía para ver qué campos tienen valores seleccionados
+    const activeValues = activeHierarchy
+      .map(field => combinedState[field.toLowerCase()]?.[0])
+      .filter(Boolean); // Quitamos los que están vacíos
+
+    // El título es el último valor encontrado, o "All Items" si no hay nada
+    return activeValues.length > 0 
+      ? activeValues[activeValues.length - 1] 
+      : 'All Items';
+  };
+
+  const pageTitle = getPageTitle();
+
   const headerRef = useRef<HTMLDivElement>(null);
   const { height: headerHeight } = useElementSize(headerRef);
   const stickyOffset = (isNavbarHidden ? 0 : NAV_HEIGHT) + headerHeight;
 
-const sortedItems = [...filteredItems].sort((a, b) => {
+  const sortedItems = [...filteredItems].sort((a, b) => {
     switch (sortBy) {
       case 'default':
         return a.id.localeCompare(b.id);
@@ -80,6 +106,9 @@ const sortedItems = [...filteredItems].sort((a, b) => {
 
 return (
     <div className="min-h-screen bg-background">
+      <Helmet>
+        <title>{pageTitle === 'All Items' ? SITE_METADATA.title : `${pageTitle} | ${SITE_METADATA.title}`}</title>
+      </Helmet>
       <CollectionNavbar />
 
       <CollectionBreadcrumb

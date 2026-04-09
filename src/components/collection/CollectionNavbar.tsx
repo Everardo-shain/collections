@@ -1,6 +1,6 @@
 import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import { Menu, X, ChevronDown, Search } from 'lucide-react';
-import { NAV_GROUPS, NAVIGATION_CONFIG } from '@/config/footballConfig';
+import { NAV_GROUPS, NAVIGATION_CONFIG, SITE_METADATA} from '@/config/footballConfig';
 import { useState, useRef, useEffect } from 'react';
 import { Input } from '@/components/ui/input';
 import { ThemeSelector } from '@/components/ThemeSelector';
@@ -146,7 +146,7 @@ export function CollectionNavbar() {
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-14">
             <Link to="/" className="font-heading text-xl font-bold tracking-tight text-foreground">
-              Everardo´s Football Collection
+              {SITE_METADATA.title} 
             </Link>
 
             {/* Desktop Navigation */}
