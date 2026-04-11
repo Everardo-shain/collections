@@ -66,54 +66,48 @@ export interface FilterState {
 }
 
 // ==========================================
-// 2. CONFIGURACIÓN DE NAVEGACIÓN (Navbar)
+// 2. CONFIGURACIÓN DE NAVEGACIÓN DINÁMICA
 // ==========================================
 
-/** Define el orden jerárquico y la estructura de carpetas del sitio */
 export const NAVIGATION_CONFIG = {
-  hierarchy: ["Category", "Product"] as const, 
-  structure: {
-    Apparel: ["Jersey", "Hoodie", "Jacket", "Pants", "Headwear", "Scarf"],
-    Equipment: ["Boots", "Ball"],
-    Merchandise: ["Drinkware", "Display", "Accessory", "Stationery", "Currency", "Pass", "Photo"]
-  }
+  // Cambiamos a Mayúsculas para que coincida con las llaves de tu FIELD_MAP y JSON
+  hierarchy: ["category", "product"] as const, 
 } as const;
 
-/** Tipos de utilidad para las llaves de navegación */
-export type NavHierarchyKeys = typeof NAVIGATION_CONFIG.hierarchy[number] extends string 
-  ? Lowercase<typeof NAVIGATION_CONFIG.hierarchy[number]> 
-  : never;
-
-/** Representa un elemento hijo en el menú de navegación */
-export type NavChild = {
-  label: string;
-} & Record<NavHierarchyKeys, string> & {
-  [key: string]: string; 
-};
-
-/** Grupo de elementos en el menú (ej. Apparel) */
-export type NavGroup = {
-  label: string;
-  children: NavChild[];
-};
-
-/** Lista de strings basada en la jerarquía para Breadcrumbs globales */
+// Añade esta línea que es la que te está pidiendo el Index.tsx
 export const NAVIGATION_BREADCRUMB = [...NAVIGATION_CONFIG.hierarchy] as string[];
 
-/** Generación dinámica de los grupos de navegación para el componente Navbar */
-export const NAV_GROUPS: NavGroup[] = Object.entries(NAVIGATION_CONFIG.structure).map(
-  ([parentLabel, children]) => ({
+export const generateNavGroups = (items: CollectionItem[]): NavGroup[] => {
+  const [parentKey, childKey] = NAVIGATION_CONFIG.hierarchy;
+  
+  const map = items.reduce((acc, item) => {
+    // Usamos getDynamicValue para ser seguros con las mayúsculas/minúsculas
+    const parentVal = getDynamicValue(item, parentKey);
+    const childVal = getDynamicValue(item, childKey);
+
+    if (valid(parentVal) && valid(childVal)) {
+      if (!acc[parentVal]) acc[parentVal] = new Set<string>();
+      acc[parentVal].add(childVal);
+    }
+    return acc;
+  }, {} as Record<string, Set<string>>);
+
+  return Object.entries(map).map(([parentLabel, childrenSet]) => ({
     label: parentLabel,
-    children: children.map(childLabel => {
-      const child: any = { label: childLabel };
-      NAVIGATION_CONFIG.hierarchy.forEach((key, index) => {
-        const lowerKey = key.toLowerCase();
-        child[lowerKey] = index === 0 ? parentLabel : childLabel;
-      });
-      return child as NavChild;
-    })
-  })
-);
+    children: Array.from(childrenSet)
+      .sort()
+      .map(childLabel => {
+        const child: any = { label: childLabel };
+        child[parentKey] = parentLabel;
+        child[childKey] = childLabel;
+        return child as NavChild;
+      })
+  })).sort((a, b) => a.label.localeCompare(b.label));
+};
+
+export type NavHierarchyKeys = typeof NAVIGATION_CONFIG.hierarchy[number];
+export type NavChild = { label: string; } & { [K in NavHierarchyKeys]?: string } & Record<string, string>;
+export type NavGroup = { label: string; children: NavChild[]; };
 
 // ==========================================
 // 3. CONFIGURACIÓN GENERAL Y VISIBILIDAD
@@ -123,18 +117,18 @@ export const NAV_GROUPS: NavGroup[] = Object.entries(NAVIGATION_CONFIG.structure
 export const VALUE_SEPARATOR = "/";
 
 /** Campos que NO deben ser divididos aunque contengan el separador (ej. ID) */
-export const NO_SPLIT_FIELDS = ["Display Name", "ID", "Notes"];
+export const NO_SPLIT_FIELDS = ["displayName", "id", "notes"];
 
 /** Campos que se ocultan en la tabla de especificaciones del Item Detail */
 export const HIDDEN_FIELDS = [
-  "ID",
-  "Display Name",
-  "Variant",
-  "Category",
-  "Entity",
-  "Nameset",
-  "Sleeves",
-  "Collaboration",
+  "id",
+  "displayName",
+  "variant",
+  "category",
+  "entity",
+  "nameset",
+  "sleeves",
+  "collaboration",
 ];
 
 // ==========================================
@@ -144,24 +138,32 @@ export const HIDDEN_FIELDS = [
 /** Llave principal para determinar la ruta del breadcrumb */
 export const BREADCRUMB_KEY = "entity";
 
-/** Define qué campos mostrar en el breadcrumb según el tipo de entidad */
+/** * Define qué campos mostrar en el breadcrumb según el tipo de entidad.*/
 export const breadcrumbConfig: Record<string, string[]> = {
-  "National Team": ["Entity", "Confederation", "Team", "Season"],
-  "Collective": ["Entity","Confederation", "Country", "Competition", "Team", "Season"],
-  "Club": ["Entity","Confederation", "Country", "Competition", "Team", "Season"],
-  "Event": ["Entity","Confederation", "Country", "Competition", "Team", "Season"],
-  "Brand": ["Entity","Brand", "Season"],
-  "Person": ["Entity","Person", "Season"]
+  "National Team": ["entity", "confederation", "team", "season"],
+  "Collective": ["entity", "confederation", "country", "competition", "team", "season"],
+  "Club": ["entity", "confederation", "country", "competition", "team", "season"],
+  "Event": ["entity", "confederation", "country", "competition", "team", "season"],
+  "Brand": ["entity", "brand", "season"],
+  "Person": ["entity", "person", "season"]
 };
 
 /** Resuelve qué arreglo de breadcrumbs usar según si es un Item o un Filtro */
 export const BREADCRUMB_RESOLVER = (context: any): string[] | null => {
   const { item, filtersState } = context;
-  if (item) return breadcrumbConfig[item.entity] || null;
+
+  // 1. Caso Vista de Detalle (Item)
+  if (item) {
+    return breadcrumbConfig[item.entity] || null;
+  }
+  // 2. Caso Navegación/Filtros
   if (filtersState) {
     const entityValue = filtersState.nav_entity?.[0] || filtersState.entity?.[0];
-    if (entityValue && breadcrumbConfig[entityValue]) return breadcrumbConfig[entityValue];
+    if (entityValue && breadcrumbConfig[entityValue]) {
+      return breadcrumbConfig[entityValue];
+    }
   }
+
   return null;
 };
 
@@ -196,7 +198,7 @@ export const FIELD_VISIBILITY_RULES: Record<string, (item: CollectionItem, value
 
 /** Llaves que aparecen en el Sidebar de filtros lateral */
 export const SIDEBAR_KEYS = [
-  "team-type", "confederation", "country", "competition", 
+  "teamType", "confederation", "country", "competition", 
   "team", "season", "style", "release", "brand", 
   "technology", "size", "details"
 ] as const;
@@ -212,7 +214,7 @@ export const SEARCH_KEYS = [
 /** Filtros con lógica de extracción de valores personalizada */
 type CustomFilter = { label: string; getValues: (item: CollectionItem) => string[]; };
 export const CUSTOM_FILTERS: Record<string, CustomFilter> = {
-  "team-type": {
+  "teamType": {
     label: "Team Type",
     getValues: (item) => {
       const validEntities = ["Club", "National Team", "Collective"];
@@ -237,8 +239,8 @@ export const DETAILS_FILTERS: Record<string, DetailsFilterFn> = {
 export const FILTER_KEYS: string[] = Array.from(
   new Set([
     ...Object.values(breadcrumbConfig).flat(),
-    ...NAVIGATION_CONFIG.hierarchy 
-  ].map(key => key.toLowerCase()))
+    ...NAVIGATION_CONFIG.hierarchy.map(k => k.toLowerCase()) 
+  ])
 );
 
 // ==========================================
@@ -268,8 +270,10 @@ export function getDynamicValue(item: CollectionItem, key: string): string {
 }
 
 /** Formatea un valor para su visualización, separando múltiples elementos si el campo lo permite. */
-export function formatDisplayValue(label: string, value: string): string {
-  if (NO_SPLIT_FIELDS.includes(label) || !valid(value)) return value;
+export function formatDisplayValue(key: string, value: string): string {
+  const lowerKey = key.toLowerCase();
+
+  if (NO_SPLIT_FIELDS.includes(lowerKey) || !valid(value)) return value;
   
   return value
     .split(VALUE_SEPARATOR)

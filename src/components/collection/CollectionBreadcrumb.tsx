@@ -26,10 +26,11 @@ export function CollectionBreadcrumb({
 
   // ===== HELPER: RENDERIZADO DE VALORES MÚLTIPLES =====
   const renderLabel = (key: string, fullValue: string, paramsBeforeThis: URLSearchParams) => {
-    const fieldLabel = FIELD_MAP[key as keyof typeof FIELD_MAP] || key;
-    
-    // Si no se separa, devolvemos el string tal cual
-    if (NO_SPLIT_FIELDS.includes(fieldLabel) || !fullValue.includes(VALUE_SEPARATOR)) {
+    // 1. Normalizamos la llave a minúsculas para la comparación técnica
+    const lowerKey = key.toLowerCase();
+
+    // 2. Comparamos contra el array (que debe estar en minúsculas en el config)
+    if (NO_SPLIT_FIELDS.includes(lowerKey) || !fullValue.includes(VALUE_SEPARATOR)) {
       return fullValue;
     }
 
@@ -38,16 +39,16 @@ export function CollectionBreadcrumb({
     return (
       <span className="flex items-center">
         {parts.map((part, idx) => {
-          // Link ATÓMICO: Solo filtra por UNA de las partes
+          // Mantenemos key.toLowerCase() para la URL (es estándar y más limpio)
           const individualParams = new URLSearchParams(paramsBeforeThis.toString());
-          individualParams.set(`nav_${key.toLowerCase()}`, part);
+          individualParams.set(`nav_${lowerKey}`, part); 
           
           return (
             <span key={idx} className="flex items-center">
               {idx > 0 && <span className="mx-1 opacity-50">·</span>}
               <Link 
                 to={`/?${individualParams.toString()}`} 
-                className="hover:text-primary transition-colors hover:underline decoration-primary/30"
+                className="text-muted-foreground hover:text-primary transition-colors flex items-center gap-1"
               >
                 {part}
               </Link>

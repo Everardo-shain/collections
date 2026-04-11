@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { ArrowLeft, ChevronRight, ChevronLeft } from 'lucide-react';
 import { ImageLightbox } from '@/components/collection/ImageLightbox';
@@ -16,7 +16,8 @@ import {
   valid,
   CollectionItem,
   SITE_METADATA,
-  formatDisplayValue // 🔥 Importamos el helper
+  formatDisplayValue,
+  generateNavGroups 
 } from '@/config/footballConfig';
 
 const collectionItems: CollectionItem[] = (rawData as any[]).map(mapItem);
@@ -28,6 +29,8 @@ export default function ItemDetail() {
   const [activeImageIndex, setActiveImageIndex] = useState(0);
   const [lightboxOpen, setLightboxOpen] = useState(false);
 
+  const navGroups = useMemo(() => generateNavGroups(collectionItems), []);
+
   if (!item) return null;
 
   const images = item.images?.length ? item.images : [item.image];
@@ -37,18 +40,16 @@ export default function ItemDetail() {
     <>
       <Helmet>
         <title>{`${item.displayName} | ${SITE_METADATA.title}`}</title>
-        <meta property="og:title" content={`${item.displayName} | ${SITE_METADATA.title}`} />
-        <meta name="description" content={`Details of ${item.displayName} from Everardo's personal collection.`} />
       </Helmet>
 
       <div className="min-h-screen bg-background">
-        <CollectionNavbar />
+        <CollectionNavbar navGroups={navGroups} />
         <CollectionBreadcrumb item={item} />
 
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <Link 
             to="/" 
-            className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground mb-6 transition-colors"
+            className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary mb-6 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" /> 
             Back to collection
@@ -87,19 +88,20 @@ export default function ItemDetail() {
               <div className="border-t border-border divide-y divide-border">
                 {Object.entries(FIELD_MAP).map(([camelKey, label]) => {
                   const rawValue = item[camelKey as keyof CollectionItem];
-                  if (HIDDEN_FIELDS.includes(label) || label === "Notes") return null;
+
+                  // 🔥 CAMBIO CLAVE: Ahora comparamos contra camelKey (llave interna)
+                  if (HIDDEN_FIELDS.includes(camelKey) || camelKey === "notes") return null;
+                  
                   if (typeof rawValue !== "string" || !valid(rawValue)) return null;
 
-                  // 1. Combinaciones especiales (Sleeves, etc)
+                  // Lógica de combinaciones y visibilidad (siguen usando el Label para facilidad de lectura en config)
                   let processedValue = rawValue;
                   const combinationFn = FIELD_COMBINATIONS[label];
                   if (combinationFn) processedValue = combinationFn(item, rawValue);
 
-                  // 2. Reglas de visibilidad
                   const visibilityFn = FIELD_VISIBILITY_RULES[label];
                   if (visibilityFn && !visibilityFn(item, processedValue)) return null;
 
-                  // 3. Formateo con Helper (VALUE_SEPARATOR / NO_SPLIT_FIELDS)
                   const displayValue = formatDisplayValue(label, processedValue);
 
                   return (
@@ -114,7 +116,7 @@ export default function ItemDetail() {
 
               {valid(item.notes) && (
                 <div className="mt-5">
-                  <p className="text-sm font-normal leading-relaxed">{item.notes}</p>
+                  <p className="text-sm font-normal leading-relaxed text-foreground">{item.notes}</p>
                 </div>
               )}
             </div>
