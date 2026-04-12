@@ -119,20 +119,71 @@ export const VALUE_SEPARATOR = "/";
 /** Campos que NO deben ser divididos aunque contengan el separador (ej. ID) */
 export const NO_SPLIT_FIELDS = ["displayName", "id", "notes"];
 
-/** Campos que se ocultan en la tabla de especificaciones del Item Detail */
-export const HIDDEN_FIELDS = [
-  "id",
-  "displayName",
-  "variant",
-  "category",
-  "entity",
-  "nameset",
-  "sleeves",
-  "collaboration",
-];
+// ==========================================
+// 4. DETALLES DE ITEM
+// ==========================================
+
+/** Campos que se muestran en la tabla de especificaciones del Item Detail */
+export const VISIBLE_FIELDS = [
+  "product",
+  "team",
+  "season",
+  "style",
+  "release",
+  "competition",
+  "country",
+  "confederation",
+  "technology",
+  "brand",
+  "size",
+  "person",
+  "print",
+  "patch",
+  "packaging",
+  "signature"
+] as const;
+
+export const SPECIAL_FIELDS = [
+  "notes",
+] as const;
+
+export const LINK_FIELDS = [
+  "team",
+  "season",
+  "competition",
+  "country",
+  "confederation",
+  "brand",
+  "person",
+] as const;
+
+/** Lógica para combinar valores de campos en la interfaz (ej. añadir Sleeves al Style) */
+export const FIELD_COMBINATIONS: Record<string, (item: CollectionItem, value: string) => string> = {
+  Print: (item, value) => {
+    if (valid(item.nameset)) return `${value} (${item.nameset} Nameset)`;
+    return value;
+  },
+  Style: (item, value) => {
+    if (valid(item.sleeves) && item.sleeves !== "Short") return `${value} (${item.sleeves} Sleeves)`;
+    return value;
+  },
+  Brand: (item, value) => {
+    if (valid(item.collaboration)) return `${value} x ${item.collaboration}`;
+    return value;
+  }
+};
+
+/** Define si un campo debe mostrarse basado en su valor (ej. ocultar Release "Regular") */
+export const FIELD_VISIBILITY_RULES: Record<string, (item: CollectionItem, value: string) => boolean> = {
+  Release: (_item, value) => valid(value) && value !== "Regular"
+};
+
+export type VisibleField = typeof VISIBLE_FIELDS[number];
+export type SpecialField = typeof SPECIAL_FIELDS[number];
+export type LinkField = typeof LINK_FIELDS[number];
 
 // ==========================================
-// 4. CONFIGURACIÓN DE BREADCRUMBS (Detalle)
+// 5. CONFIGURACIÓN DE BREADCRUMBS (Detalle)
 // ==========================================
 
 /** Llave principal para determinar la ruta del breadcrumb */
@@ -165,31 +216,6 @@ export const BREADCRUMB_RESOLVER = (context: any): string[] | null => {
   }
 
   return null;
-};
-
-// ==========================================
-// 5. REGLAS DINÁMICAS Y COMBINACIONES
-// ==========================================
-
-/** Lógica para combinar valores de campos en la interfaz (ej. añadir Sleeves al Style) */
-export const FIELD_COMBINATIONS: Record<string, (item: CollectionItem, value: string) => string> = {
-  Print: (item, value) => {
-    if (valid(item.nameset)) return `${value} (${item.nameset} Nameset)`;
-    return value;
-  },
-  Style: (item, value) => {
-    if (valid(item.sleeves) && item.sleeves !== "Short") return `${value} (${item.sleeves} Sleeves)`;
-    return value;
-  },
-  Brand: (item, value) => {
-    if (valid(item.collaboration)) return `${value} x ${item.collaboration}`;
-    return value;
-  }
-};
-
-/** Define si un campo debe mostrarse basado en su valor (ej. ocultar Release "Regular") */
-export const FIELD_VISIBILITY_RULES: Record<string, (item: CollectionItem, value: string) => boolean> = {
-  Release: (_item, value) => valid(value) && value !== "Regular"
 };
 
 // ==========================================

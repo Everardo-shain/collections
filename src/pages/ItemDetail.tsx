@@ -10,14 +10,18 @@ import rawData from '@/data/json_files/football_collection.json';
 import { mapItem } from '@/utils/mapItem';
 import { 
   FIELD_MAP, 
-  HIDDEN_FIELDS, 
+  VISIBLE_FIELDS, 
+  SPECIAL_FIELDS,
+  LINK_FIELDS,
+  VALUE_SEPARATOR,
   FIELD_COMBINATIONS, 
   FIELD_VISIBILITY_RULES, 
   valid,
   CollectionItem,
   SITE_METADATA,
   formatDisplayValue,
-  generateNavGroups 
+  generateNavGroups,
+  VisibleField,
 } from '@/config/footballConfig';
 
 const collectionItems: CollectionItem[] = (rawData as any[]).map(mapItem);
@@ -35,6 +39,33 @@ export default function ItemDetail() {
 
   const images = item.images?.length ? item.images : [item.image];
   const hasMultiple = images.length > 1;
+
+  // --- HELPER PARA RENDERIZAR LINKS INDIVIDUALES ---
+  const renderValueParts = (camelKey: string, rawValue: string, displayValue: string) => {
+    const isLinkable = LINK_FIELDS.includes(camelKey as any);
+    
+    // Si no es un campo de link, devolvemos el valor formateado normal
+    if (!isLinkable) return displayValue;
+
+    // Dividimos por el separador (ej. " , ")
+    const parts = rawValue.split(VALUE_SEPARATOR).map(p => p.trim()).filter(Boolean);
+
+    return (
+      <span className="flex flex-wrap justify-end gap-x-1">
+        {parts.map((part, idx) => (
+          <span key={idx} className="flex items-center">
+            <Link
+              to={`/?nav_${camelKey.toLowerCase()}=${encodeURIComponent(part)}`}
+              className="text-foreground underline underline-offset-4 decoration-primary decoration-1 hover:text-primary hover:decoration-primary transition-colors duration-300"
+            >
+              {part}
+            </Link>
+            {idx < parts.length - 1 && <span className="ml-1 text-muted-foreground">,</span>}
+          </span>
+        ))}
+      </span>
+    );
+  };
 
   return (
     <>
@@ -89,12 +120,9 @@ export default function ItemDetail() {
                 {Object.entries(FIELD_MAP).map(([camelKey, label]) => {
                   const rawValue = item[camelKey as keyof CollectionItem];
 
-                  // 🔥 CAMBIO CLAVE: Ahora comparamos contra camelKey (llave interna)
-                  if (HIDDEN_FIELDS.includes(camelKey) || camelKey === "notes") return null;
-                  
+                  if (!VISIBLE_FIELDS.includes(camelKey as VisibleField)) return null;
                   if (typeof rawValue !== "string" || !valid(rawValue)) return null;
 
-                  // Lógica de combinaciones y visibilidad (siguen usando el Label para facilidad de lectura en config)
                   let processedValue = rawValue;
                   const combinationFn = FIELD_COMBINATIONS[label];
                   if (combinationFn) processedValue = combinationFn(item, rawValue);
@@ -107,18 +135,27 @@ export default function ItemDetail() {
                   return (
                     <div key={camelKey} className="flex justify-between py-3">
                       <span className="text-sm font-bold text-foreground">{label}</span>
-                      <span className="text-sm font-normal text-right ml-4">{displayValue}</span>
+                      <span className="text-sm font-normal text-right ml-4">
+                        {renderValueParts(camelKey, rawValue, displayValue)}
+                      </span>
                     </div>
                   );
                 })}
                 <div className="border-b border-border w-full"></div>
               </div>
 
-              {valid(item.notes) && (
-                <div className="mt-5">
-                  <p className="text-sm font-normal leading-relaxed text-foreground">{item.notes}</p>
-                </div>
-              )}
+              {SPECIAL_FIELDS.map((fieldKey) => {
+                const content = item[fieldKey as keyof typeof item];
+                const safeContent = Array.isArray(content) ? content.join(", ") : content;
+
+                return valid(safeContent) && (
+                  <div key={fieldKey} className="mt-5">
+                    <p className="text-sm font-normal leading-relaxed text-foreground">
+                      {safeContent}
+                    </p>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>

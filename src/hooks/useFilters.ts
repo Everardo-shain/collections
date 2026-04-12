@@ -2,6 +2,7 @@ import {
   FILTER_KEYS,
   SIDEBAR_KEYS,
   SEARCH_KEYS,
+  LINK_FIELDS,
   CUSTOM_FILTERS,
   DETAILS_FILTERS,
   VALUE_SEPARATOR,
@@ -58,19 +59,19 @@ export function useFilters() {
   const navState = useMemo(() => {
     const state: Record<string, string[]> = {};
     
-    FILTER_KEYS.forEach(key => {
+    // En lugar de iterar solo FILTER_KEYS, iteramos todas las posibles llaves de link
+    const allNavigableKeys = Array.from(new Set([...FILTER_KEYS, ...LINK_FIELDS]));
+
+    allNavigableKeys.forEach(key => {
       const norm = normalizeKey(key);
-      
-      // 🔥 Buscamos AMBOS: con prefijo nav_ y sin él (por si viene del Navbar)
       const withPrefix = getArrayParam(searchParams, "nav_" + norm);
       const withoutPrefix = getArrayParam(searchParams, norm);
       
-      // Si la llave está en SIDEBAR_KEYS, priorizamos el prefijo para no chocar con el Sidebar
-      // Si NO está en Sidebar (como 'category'), aceptamos la versión sin prefijo
-      if (isSidebarKey(key)) {
-        state[key] = withPrefix;
-      } else {
-        state[key] = withPrefix.length > 0 ? withPrefix : withoutPrefix;
+      // Unimos ambos para que el filtro funcione venga de donde venga
+      const combinedValues = Array.from(new Set([...withPrefix, ...withoutPrefix]));
+      
+      if (combinedValues.length > 0) {
+        state[norm] = combinedValues;
       }
     });
     

@@ -13,7 +13,8 @@ import {
   BREADCRUMB_RESOLVER, 
   NAVIGATION_BREADCRUMB, 
   SITE_METADATA, 
-  generateNavGroups 
+  generateNavGroups,
+  FIELD_MAP 
 } from '@/config/footballConfig';
 import { cn } from '@/lib/utils';
 import { Helmet } from 'react-helmet-async';
@@ -47,8 +48,10 @@ const Index = () => {
     searchQuery 
   } = allFilters;
 
+  // --- LÓGICA DE ESTADO COMBINADO ---
+  const combinedState = useMemo(() => ({ ...sidebarState, ...navState }), [sidebarState, navState]);
+
   // --- LÓGICA DE NAVEGACIÓN DINÁMICA ---
-  // Generamos los grupos del Navbar basados en los items reales
   const navGroups = useMemo(() => generateNavGroups(collectionItems), []);
 
   useEffect(() => {
@@ -66,20 +69,39 @@ const Index = () => {
     setSearchQuery: allFilters.setSearchQuery
   };
 
-  const combinedState = { ...sidebarState, ...navState };
-
-  // Resolvemos la jerarquía para el título y breadcrumbs
-  const activeHierarchy = BREADCRUMB_RESOLVER({ filtersState: combinedState }) || NAVIGATION_BREADCRUMB;
-
+  // --- RESOLVER TÍTULO DINÁMICO (Incluyendo Fallback) ---
   const getPageTitle = () => {
     if (searchQuery) return `Search: "${searchQuery}"`;
 
-    const activeValues = activeHierarchy
-      .map(field => combinedState[field.toLowerCase()]?.[0])
+    // 1. Resolvemos la jerarquía oficial
+    const activeHierarchy = BREADCRUMB_RESOLVER({ filtersState: combinedState }) || NAVIGATION_BREADCRUMB;
+    
+    const hierarchyValues = activeHierarchy
+      .map(field => {
+        const lowerField = field.toLowerCase();
+        // Buscamos con y sin prefijo nav_
+        return combinedState[`nav_${lowerField}`]?.[0] || combinedState[lowerField]?.[0];
+      })
       .filter(Boolean);
 
-    return activeValues.length > 0 
-      ? activeValues[activeValues.length - 1] 
+    // 2. Buscamos filtros "extra" que no están en la jerarquía (ej. Style, Technology)
+    const extraValues: string[] = [];
+    Object.entries(combinedState).forEach(([key, values]) => {
+      const pureKey = key.startsWith('nav_') ? key.replace('nav_', '') : key;
+      const isInHierarchy = activeHierarchy.some(h => h.toLowerCase() === pureKey.toLowerCase());
+      
+      if (!isInHierarchy && values && values.length > 0) {
+        extraValues.push(values[0]);
+      }
+    });
+
+    // 3. Prioridad: Último extra > Último de jerarquía > Default
+    if (extraValues.length > 0) {
+      return extraValues[extraValues.length - 1];
+    }
+
+    return hierarchyValues.length > 0 
+      ? hierarchyValues[hierarchyValues.length - 1] 
       : 'All Items';
   };
 
@@ -112,7 +134,6 @@ const Index = () => {
         <title>{pageTitle === 'All Items' ? SITE_METADATA.title : `${pageTitle} | ${SITE_METADATA.title}`}</title>
       </Helmet>
 
-      {/* Navbar con los grupos dinámicos pasados por prop */}
       <CollectionNavbar navGroups={navGroups} />
 
       <CollectionBreadcrumb
@@ -136,7 +157,6 @@ const Index = () => {
             </div>
 
             <div className="flex items-center gap-3">
-              {/* Sort Dropdown */}
               <div className="relative">
                 <button
                   onClick={() => setSortOpen(!sortOpen)}
@@ -169,7 +189,6 @@ const Index = () => {
                 )}
               </div>
 
-              {/* Mobile filters button */}
               <button
                 className="lg:hidden flex items-center gap-2 px-3 py-2 rounded-lg border border-border text-sm font-medium text-foreground"
                 onClick={() => setSidebarOpen(true)}

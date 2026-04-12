@@ -59,7 +59,7 @@ export function CollectionBreadcrumb({
     );
   };
 
-  crumbs.push({ label: "Home", to: "/" });
+  crumbs.push({ label: "", to: "/" });
 
   // ===== 1. VISTA DE DETALLE =====
   if (item) {
@@ -92,32 +92,51 @@ export function CollectionBreadcrumb({
   else if (searchQuery) {
     crumbs.push({ label: `Search: "${searchQuery}"` });
   } 
+
   // ===== 3. NAVEGACIÓN DINÁMICA =====
   else {
     const configKeys = BREADCRUMB_RESOLVER({ filtersState });
     const activeKeys = (configKeys && configKeys.length > 0) ? configKeys : NAVIGATION_CONFIG.hierarchy;
     const currentParams = new URLSearchParams();
     
+    // 1. Procesamos la jerarquía estándar primero
     activeKeys.forEach((key, idx) => {
       const lowerKey = key.toLowerCase();
-      // Buscamos el valor en los filtros. Si hay múltiples equipos en la URL, 
-      // react-router suele devolver un array. Los unimos con el separador oficial.
       const rawValues = filtersState[`nav_${lowerKey}`] || filtersState[lowerKey];
       
       if (rawValues && rawValues.length > 0) {
-        // IMPORTANTE: Si la URL tiene varios valores para la misma llave, 
-        // los volvemos a unir para que el breadcrumb no los pierda.
         const fullValue = rawValues.join(` ${VALUE_SEPARATOR} `); 
-        
         if (valid(fullValue)) {
-          const isLast = idx === activeKeys.length - 1;
           const label = renderLabel(key, fullValue, currentParams);
-          
           const linkParams = new URLSearchParams(currentParams.toString());
           linkParams.set(`nav_${lowerKey}`, fullValue);
 
           crumbs.push({ label, to: `/?${linkParams.toString()}` });
           currentParams.set(`nav_${lowerKey}`, fullValue);
+        }
+      }
+    });
+
+    // 2. 🔥 AQUÍ VA EL FALLBACK:
+    // Procesamos cualquier otro filtro activo (como 'style') que NO esté en la jerarquía
+    Object.entries(filtersState).forEach(([key, values]) => {
+      const pureKey = key.startsWith('nav_') ? key.replace('nav_', '') : key;
+      const isAlreadyInCrumbs = activeKeys.some(k => k.toLowerCase() === pureKey.toLowerCase());
+
+      if (!isAlreadyInCrumbs && values && values.length > 0) {
+        const fullValue = values.join(` ${VALUE_SEPARATOR} `);
+        if (valid(fullValue)) {
+          // Generamos el label para estos filtros "extra"
+          const label = renderLabel(pureKey, fullValue, currentParams);
+          
+          // Creamos el link para que se mantenga en la URL
+          const linkParams = new URLSearchParams(currentParams.toString());
+          linkParams.set(`nav_${pureKey}`, fullValue);
+
+          crumbs.push({ label, to: `/?${linkParams.toString()}` });
+          
+          // Actualizamos currentParams por si hubiera más filtros extra
+          currentParams.set(`nav_${pureKey}`, fullValue);
         }
       }
     });
@@ -144,15 +163,15 @@ export function CollectionBreadcrumb({
               {useWrapperLink ? (
                 <Link 
                   to={crumb.to!} 
-                  className="text-muted-foreground hover:text-primary transition-colors flex items-center gap-1"
+                  className="text-muted-foreground hover:text-primary transition-colors flex items-center"
                 >
-                  {i === 0 && <Home className="w-3.5 h-3.5" />}
-                  {crumb.label}
+                  {/* Si es el índice 0, solo renderizamos el icono */}
+                  {i === 0 ? <Home className="w-4 h-4" /> : crumb.label}
                 </Link>
               ) : (
-                <span className={`${(isLast && !item) ? 'text-primary font-medium' : 'text-muted-foreground'} flex items-center gap-1`}>
-                  {i === 0 && <Home className="w-3.5 h-3.5" />}
-                  {crumb.label}
+                <span className={`${(isLast && !item) ? 'text-primary font-medium' : 'text-muted-foreground'} flex items-center`}>
+                  {/* Si es el índice 0, solo renderizamos el icono */}
+                  {i === 0 ? <Home className="w-4 h-4" /> : crumb.label}
                 </span>
               )}
             </span>
