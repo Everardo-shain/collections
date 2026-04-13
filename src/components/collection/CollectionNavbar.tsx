@@ -7,7 +7,6 @@ import { ThemeSelector } from '@/components/ThemeSelector';
 import { useScrollDirection } from '@/hooks/useScrollDirection';
 import { cn } from '@/lib/utils';
 
-// Importamos el tipo para mayor seguridad
 import type { NavGroup } from '@/config/footballConfig';
 
 const [PARENT_KEY, CHILD_KEY] = NAVIGATION_CONFIG.hierarchy.map(k => k.toLowerCase());
@@ -67,7 +66,6 @@ function DropdownMenu({ group, activeParent, activeChild }: { group: NavGroup; a
   );
 }
 
-// Recibimos navGroups como prop desde Index.tsx
 export function CollectionNavbar({ navGroups = [] }: { navGroups: NavGroup[] }) {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -77,14 +75,14 @@ export function CollectionNavbar({ navGroups = [] }: { navGroups: NavGroup[] }) 
   const [scrollY, setScrollY] = useState(0);
   const scrollDir = useScrollDirection();
 
-  // Sincronizar tempSearch cuando cambia la URL (ej: al borrar filtros)
   useEffect(() => {
     setTempSearch(searchParams.get('q') || '');
   }, [searchParams]);
 
   useEffect(() => {
-    if (mobileOpen) document.body.style.overflow = 'hidden';
-    else {
+    if (mobileOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
       document.body.style.overflow = 'unset';
       setActiveSubMenu(null);
     }
@@ -103,8 +101,6 @@ export function CollectionNavbar({ navGroups = [] }: { navGroups: NavGroup[] }) 
     const params = new URLSearchParams(searchParams);
     if (value.trim()) params.set('q', value.trim());
     else params.delete('q');
-    
-    // Al buscar, solemos querer resetear los filtros de navegación para ver todos los resultados
     navigate(`/?${params.toString()}`);
     setMobileOpen(false);
   };
@@ -114,20 +110,37 @@ export function CollectionNavbar({ navGroups = [] }: { navGroups: NavGroup[] }) 
 
   return (
     <>
-      {mobileOpen && <div className="fixed inset-0 bg-background/80 backdrop-blur-sm z-40 md:hidden" onClick={() => setMobileOpen(false)} />}
-
       {/* TOPBAR */}
-      <div className={cn("bg-secondary/50 border-b border-border transition-transform duration-300 z-50 relative", isHidden ? "-translate-y-full" : "translate-y-0")}>
+      <div className={cn(
+        "bg-secondary/50 transition-transform duration-300 z-[60] relative", 
+        isHidden ? "-translate-y-full" : "translate-y-0"
+      )}>
         <div className="max-w-[1440px] mx-auto px-4 lg:px-8 h-8 flex items-center justify-end">
-          <Link to="/other-collections" className="text-xs text-muted-foreground hover:text-foreground">Other Collections</Link>
+          <Link to="/other-collections" className="text-xs text-muted-foreground hover:text-foreground">
+            Other Collections
+          </Link>
         </div>
       </div>
 
-      <nav className={cn("sticky top-0 z-50 bg-card border-b border-border transition-transform duration-300", isHidden ? "-translate-y-full" : "translate-y-0")}>
+      {/* OVERLAY */}
+      {mobileOpen && (
+        <div 
+          className={cn(
+            "fixed inset-0 bg-black/40 backdrop-blur-[2px] z-40 md:hidden animate-in fade-in duration-300",
+            isHidden ? "top-0" : "top-8" 
+          )}
+          onClick={() => setMobileOpen(false)} 
+        />
+      )}
+
+      {/* NAVBAR PRINCIPAL */}
+      <nav className={cn(
+        "sticky top-0 z-50 bg-card border-b border-border transition-transform duration-300", 
+        isHidden ? "-translate-y-full" : "translate-y-0"
+      )}>
         <div className="max-w-[1440px] mx-auto px-4 lg:px-8">
           <div className="flex items-center justify-between h-14 gap-4">
             
-            {/* LOGO */}
             <Link to="/" className="font-heading text-xl font-bold tracking-tight flex-shrink-0" onClick={() => setMobileOpen(false)}>
               {SITE_METADATA.title}
             </Link>
@@ -140,8 +153,9 @@ export function CollectionNavbar({ navGroups = [] }: { navGroups: NavGroup[] }) 
               ))}
             </div>
 
-            {/* DESKTOP SEARCH + THEME */}
-            <div className="flex items-center gap-2">
+            {/* ACCIONES */}
+            <div className="flex items-center gap-1 md:gap-2 relative z-[70]"> 
+              {/* Desktop Search */}
               <div className="hidden md:flex items-center relative">
                 <Search className="absolute left-2.5 w-3.5 h-3.5 text-muted-foreground pointer-events-none" />
                 <Input 
@@ -153,103 +167,106 @@ export function CollectionNavbar({ navGroups = [] }: { navGroups: NavGroup[] }) 
                   className="pl-8 pr-8 h-8 w-48 text-sm bg-background border-border focus-visible:ring-primary"
                 />
                 {tempSearch && (
-                  <button 
-                    onClick={() => { setTempSearch(''); triggerSearch(''); }} 
-                    className="absolute right-2 text-muted-foreground hover:text-foreground"
-                  >
+                  <button onClick={() => { setTempSearch(''); triggerSearch(''); }} className="absolute right-2 text-muted-foreground hover:text-foreground">
                     <X className="w-3.5 h-3.5" />
                   </button>
                 )}
               </div>
 
-              <ThemeSelector />
-              
-              {/* Botón Móvil */}
-              <button className="md:hidden p-2 hover:bg-accent rounded-md" onClick={() => setMobileOpen(!mobileOpen)}>
+              {/* Selector de Tema: Ahora con la prop de ocultado y siempre visible */}
+              <ThemeSelector navbarHidden={isHidden} />
+
+              {/* Botón de Menú Móvil */}
+              <button 
+                className="md:hidden p-2 hover:bg-accent rounded-md relative z-[71]" 
+                onClick={() => setMobileOpen(!mobileOpen)}
+              >
                 {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
               </button>
             </div>
           </div>
 
-          {/* --- MENÚ MÓVIL DRILL-DOWN --- */}
+          {/* --- MENÚ MÓVIL --- */}
           {mobileOpen && (
-            <div className="md:hidden pb-6 border-t border-border pt-3 bg-card min-h-[300px] overflow-hidden relative">
-              {/* SEARCH MÓVIL */}
-              <div className={cn(
-                "transition-all duration-300 ease-in-out px-4",
-                activeSubMenu ? "-translate-x-full opacity-0 pointer-events-none absolute" : "translate-x-0 opacity-100"
-              )}>
-               <div className="relative mb-3">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-                  <Input 
-                    type="text" 
-                    placeholder="Search" 
-                    value={tempSearch} 
-                    onChange={(e) => setTempSearch(e.target.value)} 
-                    onKeyDown={(e) => e.key === 'Enter' && triggerSearch(tempSearch)} 
-                    className="pl-9 pr-9 h-9 text-sm" 
-                  />
-                  {tempSearch && (
-                    <button onClick={() => { setTempSearch(''); triggerSearch(''); }} className="absolute right-3 top-1/2 -translate-y-1/2 text-muted-foreground">
-                      <X className="w-4 h-4" />
+            <div className="md:hidden absolute top-full left-0 right-0 w-full bg-card border-b border-border shadow-2xl z-50 overflow-hidden">
+              <div className="max-h-[75vh] overflow-y-auto overflow-x-hidden pb-8 pt-3 relative scrollbar-hide">
+                
+                {/* NIVEL 1 */}
+                <div className={cn(
+                  "transition-all duration-300 ease-in-out px-4 w-full",
+                  activeSubMenu ? "-translate-x-full opacity-0 pointer-events-none absolute hidden" : "translate-x-0 opacity-100 relative"
+                )}>
+                  <div className="relative mb-4 flex items-center">
+                    <Search className="absolute left-3 w-4 h-4 text-muted-foreground pointer-events-none" />
+                    <Input 
+                      type="text" 
+                      placeholder="Search" 
+                      value={tempSearch} 
+                      onChange={(e) => setTempSearch(e.target.value)} 
+                      onKeyDown={(e) => e.key === 'Enter' && triggerSearch(tempSearch)} 
+                      className="pl-9 pr-9 h-10 w-full text-sm bg-background border-border focus-visible:ring-primary" 
+                    />
+                    {tempSearch && (
+                      <button onClick={() => { setTempSearch(''); triggerSearch(''); }} className="absolute right-3 text-muted-foreground hover:text-foreground">
+                        <X className="w-4 h-4" />
+                      </button>
+                    )}
+                  </div>
+                  
+                  <Link to="/" className={cn("block py-4 text-base font-bold border-b border-border/40", !activeParent ? "text-primary" : "text-foreground")} onClick={() => setMobileOpen(false)}>All Items</Link>
+                  
+                  {navGroups.map(group => (
+                    <button 
+                      key={group.label}
+                      onClick={() => setActiveSubMenu(group.label)}
+                      className={cn(
+                        "w-full flex items-center justify-between py-4 text-base font-bold border-b border-border/40 text-left",
+                        activeParent === group.label ? "text-primary" : "text-foreground"
+                      )}
+                    >
+                      {group.label}
+                      <ChevronRight className="w-4 h-4" />
                     </button>
-                  )}
+                  ))}
                 </div>
-                
-                {/* LISTA MÓVIL PRINCIPAL */}
-                <Link to="/" className={cn("block py-4 text-base font-bold border-b border-border/40", !activeParent ? "text-primary" : "text-foreground")} onClick={() => setMobileOpen(false)}>All Jerseys</Link>
-                
+
+                {/* NIVEL 2 (Submenús) */}
                 {navGroups.map(group => (
-                  <button 
-                    key={group.label}
-                    onClick={() => setActiveSubMenu(group.label)}
+                  <div 
+                    key={`sub-${group.label}`}
                     className={cn(
-                      "w-full flex items-center justify-between py-4 text-base font-bold border-b border-border/40",
-                      activeParent === group.label ? "text-primary" : "text-foreground"
+                      "transition-all duration-300 ease-in-out px-4 inset-x-0 w-full",
+                      activeSubMenu === group.label ? "translate-x-0 opacity-100 relative" : "translate-x-full opacity-0 absolute pointer-events-none hidden"
                     )}
                   >
-                    {group.label}
-                    <ChevronRight className="w-4 h-4" />
-                  </button>
+                    <button onClick={() => setActiveSubMenu(null)} className="flex items-center gap-2 py-2 text-primary font-medium mb-2 -ml-1">
+                      <ChevronLeft className="w-4 h-4" /> Back
+                    </button>
+                    <Link 
+                      to={`/?nav_${PARENT_KEY}=${encodeURIComponent(group.label)}`}
+                      className={cn("block py-4 text-xl font-bold border-b border-border/40", activeParent === group.label && !activeChild ? "text-primary" : "text-foreground")}
+                      onClick={() => setMobileOpen(false)}
+                    >
+                      {group.label}
+                    </Link>
+                    <div className="mt-1">
+                      {group.children.map(child => (
+                        <Link
+                          key={child.label}
+                          to={`/?nav_${PARENT_KEY}=${encodeURIComponent(group.label)}&nav_${CHILD_KEY}=${encodeURIComponent(child.label)}`}
+                          className={cn(
+                            "block py-3.5 text-base border-b border-border/40 last:border-0",
+                            activeParent === group.label && activeChild === child.label ? "text-primary font-bold" : "text-muted-foreground"
+                          )}
+                          onClick={() => setMobileOpen(false)}
+                        >
+                          {child.label}
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
                 ))}
               </div>
-
-              {/* SUBMENÚS MÓVIL (Nivel 2) */}
-              {navGroups.map(group => (
-                <div 
-                  key={`sub-${group.label}`}
-                  className={cn(
-                    "transition-all duration-300 ease-in-out px-4 inset-x-0",
-                    activeSubMenu === group.label ? "translate-x-0 opacity-100 relative" : "translate-x-full opacity-0 absolute pointer-events-none"
-                  )}
-                >
-                  <button onClick={() => setActiveSubMenu(null)} className="flex items-center gap-2 py-2 text-primary font-medium mb-2 -ml-1">
-                    <ChevronLeft className="w-4 h-4" /> Back
-                  </button>
-                  <Link 
-                    to={`/?nav_${PARENT_KEY}=${encodeURIComponent(group.label)}`}
-                    className={cn("block py-4 text-xl font-bold border-b border-border/40", activeParent === group.label && !activeChild ? "text-primary" : "text-foreground")}
-                    onClick={() => setMobileOpen(false)}
-                  >
-                    {group.label}
-                  </Link>
-                  <div className="mt-1">
-                    {group.children.map(child => (
-                      <Link
-                        key={child.label}
-                        to={`/?nav_${PARENT_KEY}=${encodeURIComponent(group.label)}&nav_${CHILD_KEY}=${encodeURIComponent(child.label)}`}
-                        className={cn(
-                          "block py-3 text-base border-b border-border/40",
-                          activeParent === group.label && activeChild === child.label ? "text-primary font-bold" : "text-muted-foreground"
-                        )}
-                        onClick={() => setMobileOpen(false)}
-                      >
-                        {child.label}
-                      </Link>
-                    ))}
-                  </div>
-                </div>
-              ))}
             </div>
           )}
         </div>
