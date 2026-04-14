@@ -16,10 +16,10 @@ import {
   generateNavGroups,
   SORT_CONFIG,
   SortOption,
+  BREADCRUMB_LABELS,
 } from '@/config/footballConfig';
 import { cn } from '@/lib/utils';
 import { Helmet } from 'react-helmet-async';
-
 
 const NAV_HEIGHT = 56;
 
@@ -62,40 +62,46 @@ const Index = () => {
     setSearchQuery: allFilters.setSearchQuery
   };
 
-  // --- RESOLVER TÍTULO DINÁMICO (Incluyendo Fallback) ---
-  const getPageTitle = () => {
+  // --- RESOLVER TÍTULO DINÁMICO (Contextual) ---
+const getPageTitle = () => {
     if (searchQuery) return `Search: "${searchQuery}"`;
 
-    // 1. Resolvemos la jerarquía oficial
+    // 1. Identificar la entidad actual para saber qué etiquetas usar
+    const entityValue = combinedState.nav_entity?.[0] || combinedState.entity?.[0] || "";
     const activeHierarchy = BREADCRUMB_RESOLVER({ filtersState: combinedState }) || NAVIGATION_BREADCRUMB;
     
-    const hierarchyValues = activeHierarchy
+    const activeFilters = activeHierarchy
       .map(field => {
         const lowerField = field.toLowerCase();
-        // Buscamos con y sin prefijo nav_
-        return combinedState[`nav_${lowerField}`]?.[0] || combinedState[lowerField]?.[0];
+        const value = combinedState[`nav_${lowerField}`]?.[0] || combinedState[lowerField]?.[0];
+        
+        if (!value) return null;
+
+        // ⚡️ Lógica de sufijo personalizado
+        const extraText = BREADCRUMB_LABELS[entityValue]?.[lowerField] || "";
+        const finalLabel = `${value}${extraText}`;
+
+        return { label: finalLabel, field: lowerField };
       })
-      .filter(Boolean);
+      .filter(Boolean) as { label: string, field: string }[];
 
-    // 2. Buscamos filtros "extra" que no están en la jerarquía (ej. Style, Technology)
-    const extraValues: string[] = [];
-    Object.entries(combinedState).forEach(([key, values]) => {
-      const pureKey = key.startsWith('nav_') ? key.replace('nav_', '') : key;
-      const isInHierarchy = activeHierarchy.some(h => h.toLowerCase() === pureKey.toLowerCase());
-      
-      if (!isInHierarchy && values && values.length > 0) {
-        extraValues.push(values[0]);
-      }
-    });
+    if (activeFilters.length === 0) return 'All Items';
 
-    // 3. Prioridad: Último extra > Último de jerarquía > Default
-    if (extraValues.length > 0) {
-      return extraValues[extraValues.length - 1];
+    const last = activeFilters[activeFilters.length - 1];
+
+    // Si es nivel de Navbar (Entity/Product), solo mostramos el valor puro
+    const isNavbarLevel = last.field === 'entity' || last.field === 'category' || last.field === 'product';
+    if (activeFilters.length === 1 || isNavbarLevel) {
+      return last.label;
     }
 
-    return hierarchyValues.length > 0 
-      ? hierarchyValues[hierarchyValues.length - 1] 
-      : 'All Items';
+    const penultimate = activeFilters[activeFilters.length - 2];
+
+    if (last.field === 'season') {
+      return `${last.label} ${penultimate.label}`;
+    }
+
+    return `${last.label}`;
   };
 
   const pageTitle = getPageTitle();
@@ -104,6 +110,7 @@ const Index = () => {
   const { height: headerHeight } = useElementSize(headerRef);
   const stickyOffset = (isNavbarHidden ? 0 : NAV_HEIGHT) + headerHeight;
 
+  // --- ORDENAMIENTO USANDO CONFIG ---
   const sortedItems = useMemo(() => {
     const config = SORT_CONFIG[sortBy];
     return [...filteredItems].sort(config.compare);

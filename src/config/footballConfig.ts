@@ -202,14 +202,25 @@ export const BREADCRUMB_KEY = "entity";
 
 /** * Define qué campos mostrar en el breadcrumb según el tipo de entidad.*/
 export const breadcrumbConfig: Record<string, string[]> = {
-  "National Team": ["entity", "confederation", "team", "season"],
-  "Collective": ["entity", "confederation", "country", "competition", "team", "season"],
-  "Club": ["entity", "confederation", "country", "competition", "team", "season"],
-  "Event": ["entity", "confederation", "country", "competition", "team", "season"],
+  "National Team": ["entity", "team", "season"],
+  "Collective": ["entity", "country", "team", "season"],
+  "Club": ["entity", "country", "team", "season"],
+  "Event": ["entity", "competition", "season"],
   "Brand": ["entity", "brand", "season"],
   "Person": ["entity", "person", "season"]
 };
 
+export const BREADCRUMB_LABELS: Record<string, Record<string, string>> = {
+  "National Team": {
+    "team": " National Team",
+  },
+  "Collective": {
+    "country": " Collective Teams",
+  },
+  "Club": {
+    "country": " Clubs",
+  },
+};
 /** Resuelve qué arreglo de breadcrumbs usar según si es un Item o un Filtro */
 export const BREADCRUMB_RESOLVER = (context: any): string[] | null => {
   const { item, filtersState } = context;
