@@ -14,19 +14,12 @@ import {
   NAVIGATION_BREADCRUMB, 
   SITE_METADATA, 
   generateNavGroups,
-  FIELD_MAP 
+  SORT_CONFIG,
+  SortOption,
 } from '@/config/footballConfig';
 import { cn } from '@/lib/utils';
 import { Helmet } from 'react-helmet-async';
 
-type SortOption = 'default' | 'name-asc' | 'newest' | 'oldest';
-
-const SORT_LABELS: Record<SortOption, string> = {
-  'default': 'Default',
-  'name-asc': 'Name',
-  'newest': 'Season Newest',
-  'oldest': 'Season Oldest',
-};
 
 const NAV_HEIGHT = 56;
 
@@ -112,20 +105,8 @@ const Index = () => {
   const stickyOffset = (isNavbarHidden ? 0 : NAV_HEIGHT) + headerHeight;
 
   const sortedItems = useMemo(() => {
-    return [...filteredItems].sort((a, b) => {
-      switch (sortBy) {
-        case 'default':
-          return a.id.localeCompare(b.id);
-        case 'name-asc':
-          return a.displayName.localeCompare(b.displayName);
-        case 'newest':
-          return (b.season || '').localeCompare(a.season || '');
-        case 'oldest':
-          return (a.season || '').localeCompare(b.season || '');
-        default:
-          return 0;
-      }
-    });
+    const config = SORT_CONFIG[sortBy];
+    return [...filteredItems].sort(config.compare);
   }, [filteredItems, sortBy]);
 
   return (
@@ -162,7 +143,7 @@ const Index = () => {
                   onClick={() => setSortOpen(!sortOpen)}
                   className="flex items-center gap-1.5 px-3 py-2 rounded-lg border border-border text-sm font-medium text-foreground hover:bg-accent/50 transition-colors"
                 >
-                  {SORT_LABELS[sortBy]}
+                  {SORT_CONFIG[sortBy].label}
                   <ChevronDown
                     className={cn("w-3.5 h-3.5 transition-transform", sortOpen && "rotate-180")}
                   />
@@ -170,7 +151,7 @@ const Index = () => {
 
                 {sortOpen && (
                   <div className="absolute right-0 top-full mt-1 min-w-[160px] bg-card border border-border rounded-lg shadow-lg py-1 z-30">
-                    {(Object.keys(SORT_LABELS) as SortOption[]).map(opt => (
+                    {(Object.keys(SORT_CONFIG) as SortOption[]).map(opt => (
                       <button
                         key={opt}
                         onClick={() => {
@@ -182,7 +163,7 @@ const Index = () => {
                           sortBy === opt ? 'text-primary font-medium' : 'text-muted-foreground'
                         )}
                       >
-                        {SORT_LABELS[opt]}
+                        {SORT_CONFIG[opt].label}
                       </button>
                     ))}
                   </div>

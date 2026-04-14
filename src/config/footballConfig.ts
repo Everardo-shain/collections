@@ -3,6 +3,8 @@
  * Fuente de verdad única para tipos, navegación, filtros y constantes globales.
  */
 
+import listsData from '@/data/json_files/football_collection - Lists.json';
+
 // ==========================================
 // 0. METADATOS DEL SITIO
 // ==========================================
@@ -81,7 +83,6 @@ export const generateNavGroups = (items: CollectionItem[]): NavGroup[] => {
   const [parentKey, childKey] = NAVIGATION_CONFIG.hierarchy;
   
   const map = items.reduce((acc, item) => {
-    // Usamos getDynamicValue para ser seguros con las mayúsculas/minúsculas
     const parentVal = getDynamicValue(item, parentKey);
     const childVal = getDynamicValue(item, childKey);
 
@@ -92,17 +93,27 @@ export const generateNavGroups = (items: CollectionItem[]): NavGroup[] => {
     return acc;
   }, {} as Record<string, Set<string>>);
 
-  return Object.entries(map).map(([parentLabel, childrenSet]) => ({
-    label: parentLabel,
-    children: Array.from(childrenSet)
-      .sort()
-      .map(childLabel => {
-        const child: any = { label: childLabel };
-        child[parentKey] = parentLabel;
-        child[childKey] = childLabel;
-        return child as NavChild;
-      })
-  })).sort((a, b) => a.label.localeCompare(b.label));
+  return Object.entries(map)
+    .map(([parentLabel, childrenSet]) => ({
+      label: parentLabel,
+      children: Array.from(childrenSet)
+        .sort((a, b) => {
+          const posA = getIndex(a, childKey);
+          const posB = getIndex(b, childKey);
+          return posA === posB ? a.localeCompare(b) : posA - posB;
+        })
+        .map(childLabel => {
+          const child: any = { label: childLabel };
+          child[parentKey] = parentLabel;
+          child[childKey] = childLabel;
+          return child as NavChild;
+        })
+    }))
+    .sort((a, b) => {
+      const posA = getIndex(a.label, parentKey);
+      const posB = getIndex(b.label, parentKey);
+      return posA === posB ? a.label.localeCompare(b.label) : posA - posB;
+    });
 };
 
 export type NavHierarchyKeys = typeof NAVIGATION_CONFIG.hierarchy[number];
@@ -238,13 +249,20 @@ export const SEARCH_KEYS = [
 ] as const;
 
 /** Filtros con lógica de extracción de valores personalizada */
-type CustomFilter = { label: string; getValues: (item: CollectionItem) => string[]; };
+type CustomFilter = { 
+  label: string; 
+  filter: keyof CollectionItem; 
+  getValues: (item: CollectionItem, config: CustomFilter) => string[]; 
+};
+
 export const CUSTOM_FILTERS: Record<string, CustomFilter> = {
   "teamType": {
     label: "Team Type",
-    getValues: (item) => {
-      const validEntities = ["Club", "National Team", "Collective"];
-      if (item.entity && validEntities.includes(item.entity)) return [item.entity];
+    filter: "entity",
+    getValues: (item, config) => {
+      const validValues = ["Club", "National Team", "Collective"];
+      const value = item[config.filter as keyof CollectionItem]; 
+      if (typeof value === "string" && validValues.includes(value)) {return [value];}
       return [];
     }
   }
@@ -269,8 +287,63 @@ export const FILTER_KEYS: string[] = Array.from(
   ])
 );
 
+
 // ==========================================
-// 7. FUNCIONES HELPER (Utilidades)
+// 7. SORTING Y FUNCIONES DE ORDENAMIENTO
+// ==========================================
+
+export type SortOption = 'default' | 'newest' | 'oldest';
+
+interface SortConfig {
+  label: string;
+  compare: (a: CollectionItem, b: CollectionItem) => number;
+}
+
+export const getIndex = (value: string | undefined, fieldKey: string) => {
+  if (!valid(value)) return Infinity;
+  const jsonColumnName = (FIELD_MAP as any)[fieldKey] || fieldKey;
+  const orderArray = (listsData as Record<string, string[]>)[jsonColumnName] || [];
+  const valToSearch = value?.toLowerCase() || "";
+  const index = orderArray.findIndex(item => item.toLowerCase() === valToSearch);
+  return index === -1 ? Infinity : index;
+};
+
+const defaultCompare = (a: CollectionItem, b: CollectionItem) => a.id.localeCompare(b.id);
+
+export const SORT_CONFIG: Record<SortOption, SortConfig> = {
+  'default': {
+    label: 'Default',
+    compare: defaultCompare
+  },
+  'newest': {
+    label: 'Season Newest',
+    compare: (a, b) => {
+      const posA = getIndex(a.season, 'season');
+      const posB = getIndex(b.season, 'season');
+      if (posA === Infinity || posB === Infinity) {
+        return posA - posB;
+      }
+      const diff = posA - posB;
+      return diff !== 0 ? diff : defaultCompare(a, b);
+    }
+  },
+  'oldest': {
+    label: 'Season Oldest',
+    compare: (a, b) => {
+      const posA = getIndex(a.season, 'season');
+      const posB = getIndex(b.season, 'season');
+      if (posA === Infinity || posB === Infinity) {
+        return posA - posB; 
+      }
+      const diff = posB - posA; 
+      return diff !== 0 ? diff : defaultCompare(a, b);
+    }
+  }
+};
+
+
+// ==========================================
+// 8. FUNCIONES HELPER (Utilidades)
 // ==========================================
 
 /** Transforma un texto en una llave válida para URL (slug) */

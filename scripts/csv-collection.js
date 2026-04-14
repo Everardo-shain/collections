@@ -11,7 +11,7 @@ if (!collection) {
 const config = {
   football: {
     input: "src/data/csv_files/football_collection - Collection.csv",
-    output: "src/data/json_files/football_collection.json"
+    output: "src/data/json_files/football_collection - Collection.json"
   }
 };
 
@@ -35,4 +35,4 @@ const records = parse(csv, {
 // 📤 Save JSON
 fs.writeFileSync(output, JSON.stringify(records, null, 2));
 
-console.log(`✅ JSON generated: ${output}`);
+console.log(`✅ Collection JSON generated: ${output}`);

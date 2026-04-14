@@ -14,7 +14,7 @@ import {
 
 import { useSearchParams } from "react-router-dom";
 import { useCallback, useMemo } from "react";
-import rawData from "@/data/json_files/football_collection.json";
+import rawData from "@/data/json_files/football_collection - Collection.json";
 import { mapItem } from "@/utils/mapItem";
 
 export const collectionItems: CollectionItem[] = rawData.map(mapItem);
@@ -120,10 +120,9 @@ const filteredItems = useMemo(() => {
       // CASO B: Es un Custom Filter (como Team Type)
       const custom = CUSTOM_FILTERS[pureKey];
       if (custom) {
-        const itemValues = custom.getValues(item as any);
+        const itemValues = custom.getValues(item as any, custom); 
         return selectedValues.some(v => itemValues.includes(v));
       }
-
       // CASO C: Es un filtro estándar (Brand, Team, etc.)
       return matchField(getValue(item, pureKey), selectedValues);
     });
@@ -176,7 +175,7 @@ const filterOptions = useMemo(() => {
           // Lógica para Custom Filters
           const custom = CUSTOM_FILTERS[sideKey];
           if (custom) {
-            return selected.some(v => custom.getValues(item as any).includes(v));
+            return selected.some(v => custom.getValues(item as any, custom).includes(v));
           }
           
           // Filtro estándar
@@ -199,7 +198,7 @@ const filterOptions = useMemo(() => {
         itemsForThisSection.forEach(item => {
           // Si es custom usamos su getValues, si no, el helper estándar
           const vals = custom 
-            ? custom.getValues(item as any) 
+            ? custom.getValues(item as any, custom)
             : getItemValues(getValue(item, key));
             
           vals.forEach(v => { 

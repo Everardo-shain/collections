@@ -22,11 +22,7 @@ export function ThemeSelector({ navbarHidden }: ThemeSelectorProps) {
   useEffect(() => {
     if (navbarHidden) {
       setOpen(false);
-      // "Blur" saca el foco del elemento. 
-      // setTimeout asegura que ocurra después del ciclo de renderizado.
-      setTimeout(() => {
-        if (buttonRef.current) buttonRef.current.blur();
-      }, 0);
+      if (buttonRef.current) buttonRef.current.blur();
     }
   }, [navbarHidden]);
 
@@ -52,30 +48,34 @@ export function ThemeSelector({ navbarHidden }: ThemeSelectorProps) {
           e.stopPropagation();
           setOpen(!open);
         }}
-        // Eliminamos clases de hover/focus nativas que puedan dar problemas
-        // y controlamos el estilo manualmente.
         className={cn(
-          "p-2 rounded-md transition-all duration-200 flex items-center justify-center outline-none",
-          "text-muted-foreground",
-          // Solo mostramos el estado "activo" si está abierto Y el navbar no está oculto
+          "p-2 rounded-md transition-all duration-150 flex items-center justify-center outline-none bg-transparent", 
+          
+          // --- LÓGICA DEL BOTÓN PRINCIPAL ---
+          // Solo cambia el FONDO (gris/accent). El icono NO cambia de color.
           open && !navbarHidden 
-            ? "bg-accent text-foreground shadow-sm" 
-            : "hover:bg-accent/50 hover:text-foreground focus:bg-transparent"
+            ? "bg-accent scale-95" 
+            : cn(
+                "[@media(hover:hover)]:hover:bg-accent",
+                "active:bg-accent active:scale-95"
+              ),
+          
+          "focus:outline-none"
         )}
         aria-label="Toggle theme"
       >
-        <CurrentIcon className="w-[18px] h-[18px]" />
+        {/* El icono siempre mantiene el color de texto base (negro en light, blanco en dark) */}
+        <CurrentIcon className="w-[18px] h-[18px] text-foreground" />
       </button>
 
       {open && !navbarHidden && (
         <div 
           className={cn(
-            "absolute right-0 top-full mt-2 min-w-[130px] py-1 z-[80]",
-            "bg-card border border-border rounded-lg shadow-xl",
-            "animate-in fade-in zoom-in-95 duration-100"
+            "absolute right-0 top-full mt-2 min-w-[140px] py-1 z-[80]",
+            "bg-card border border-border rounded-lg shadow-xl animate-in fade-in zoom-in-95 duration-100"
           )}
         >
-          <div className="px-3 py-1.5 text-[10px] font-bold text-muted-foreground/70 uppercase tracking-wider select-none">
+          <div className="px-3 py-1.5 text-[10px] font-bold text-muted-foreground/70 uppercase tracking-wider select-none border-b border-border/40 mb-1">
             Appearance
           </div>
 
@@ -91,16 +91,16 @@ export function ThemeSelector({ navbarHidden }: ThemeSelectorProps) {
                   buttonRef.current?.blur();
                 }}
                 className={cn(
-                  "w-full flex items-center gap-2.5 px-3 py-2 text-sm transition-all",
+                  "w-full flex items-center gap-2.5 px-3 py-2 text-sm transition-all text-left",
+                  // --- LÓGICA DEL MENÚ DESPLEGABLE ---
+                  // Aquí sí usamos primary para la opción seleccionada
                   isActive 
-                    ? "bg-accent text-primary font-semibold" 
+                    ? "bg-accent/50 text-primary font-bold" 
                     : "text-muted-foreground hover:bg-accent/50 hover:text-foreground"
                 )}
               >
-                <Icon className={cn(
-                  "w-3.5 h-3.5", 
-                  isActive ? "text-primary" : "opacity-70"
-                )} />
+                {/* El icono del menú también se vuelve primary si está seleccionado */}
+                <Icon className={cn("w-3.5 h-3.5", isActive ? "text-primary" : "text-foreground opacity-70")} />
                 {label}
               </button>
             );

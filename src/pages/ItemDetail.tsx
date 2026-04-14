@@ -6,7 +6,7 @@ import { CollectionNavbar } from '@/components/collection/CollectionNavbar';
 import { CollectionBreadcrumb } from '@/components/collection/CollectionBreadcrumb';
 import { Helmet } from "react-helmet-async";
 
-import rawData from '@/data/json_files/football_collection.json';
+import rawData from '@/data/json_files/football_collection - Collection.json';
 import { mapItem } from '@/utils/mapItem';
 import { 
   FIELD_MAP, 
@@ -44,10 +44,8 @@ export default function ItemDetail() {
   const renderValueParts = (camelKey: string, rawValue: string, displayValue: string) => {
     const isLinkable = LINK_FIELDS.includes(camelKey as any);
     
-    // Si no es un campo de link, devolvemos el valor formateado normal
     if (!isLinkable) return displayValue;
 
-    // Dividimos por el separador (ej. " , ")
     const parts = rawValue.split(VALUE_SEPARATOR).map(p => p.trim()).filter(Boolean);
 
     return (
@@ -144,13 +142,14 @@ export default function ItemDetail() {
                 <div className="border-b border-border w-full"></div>
               </div>
 
+              {/* CAMPOS ESPECIALES - Con soporte para saltos de línea */}
               {SPECIAL_FIELDS.map((fieldKey) => {
                 const content = item[fieldKey as keyof typeof item];
                 const safeContent = Array.isArray(content) ? content.join(", ") : content;
 
                 return valid(safeContent) && (
                   <div key={fieldKey} className="mt-5">
-                    <p className="text-sm font-normal leading-relaxed text-foreground">
+                    <p className="text-sm font-normal leading-relaxed text-foreground whitespace-pre-line">
                       {safeContent}
                     </p>
                   </div>

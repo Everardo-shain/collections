@@ -1,9 +1,11 @@
-import { FIELD_MAP, CUSTOM_FILTERS, SIDEBAR_KEYS, DETAILS_FILTERS } from '@/config/footballConfig';
-import { useState } from 'react';
+import { FIELD_MAP, CUSTOM_FILTERS, getIndex } from '@/config/footballConfig';
+import { useState, useEffect } from 'react';
 import { ChevronDown, ChevronUp, SlidersHorizontal, X } from 'lucide-react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { cn } from '@/lib/utils';
-import { useEffect } from 'react'; // No olvides importar useEffect
+
+// 👇 Importamos el archivo JSON con el orden de las listas
+import listsData from '@/data/json_files/football_collection - Lists.json';
 
 interface FilterSidebarProps {
   filterOptions: Record<string, { value: string; count: number }[]>;
@@ -15,13 +17,12 @@ interface FilterSidebarProps {
   stickyOffset: number;
 }
 
-
 const SHOW_MORE_THRESHOLD = 10;
 
 function getFilterLabel(key: string) {
   if (CUSTOM_FILTERS[key]) return CUSTOM_FILTERS[key].label;
 
-  if (key === "details") return "Details"; // 👈 importante
+  if (key === "details") return "Details";
 
   const mappedKey = FIELD_MAP[key];
   if (mappedKey) return mappedKey;
@@ -116,6 +117,7 @@ export function FilterSidebar({
   }, [isOpen]);
 
   const isDesktop = typeof window !== 'undefined' && window.innerWidth >= 1024;
+  
   return (
     <>
       {/* Mobile overlay */}
@@ -151,19 +153,39 @@ export function FilterSidebar({
             </button>
           </div>
 
-
           {filterKeys.map(key => {
             const options = filterOptions[key] || [];
             const selected = selectedFilters[key] || [];
 
-            // 🔥 Si no hay opciones (counts en 0) y no hay nada seleccionado, ocultamos toda la sección
             if (options.length === 0 && selected.length === 0) return null;
+
+            const label = getFilterLabel(key);
+
+            const customConfig = CUSTOM_FILTERS[key];
+
+            const fieldKeyForOrder = customConfig?.filter || key;
+
+            let sortedOptions = [...options];
+
+            if (listsData) {
+              sortedOptions.sort((a, b) => {
+                // ⚡️ Usamos la misma lógica que el SORT_CONFIG
+                const posA = getIndex(a.value, fieldKeyForOrder);
+                const posB = getIndex(b.value, fieldKeyForOrder);
+                
+                // Si hay empate en posición (ej: ambos son Infinity), 
+                // ordenamos por cantidad de items (count) de mayor a menor
+                if (posA === posB) return b.count - a.count;
+                
+                return posA - posB;
+              });
+            }
 
             return (
               <FilterSection
                 key={key}
-                label={getFilterLabel(key)}
-                options={options}
+                label={label}
+                options={sortedOptions}
                 selected={selected}
                 onToggle={(value) => onToggleFilter(key, value)}
               />
