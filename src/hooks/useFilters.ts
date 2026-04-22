@@ -59,19 +59,16 @@ export function useFilters() {
   const navState = useMemo(() => {
     const state: Record<string, string[]> = {};
     
-    // En lugar de iterar solo FILTER_KEYS, iteramos todas las posibles llaves de link
+    // Usamos FILTER_KEYS y LINK_FIELDS para saber qué buscar
     const allNavigableKeys = Array.from(new Set([...FILTER_KEYS, ...LINK_FIELDS]));
 
     allNavigableKeys.forEach(key => {
       const norm = normalizeKey(key);
+      // SOLO buscamos con el prefijo "nav_"
       const withPrefix = getArrayParam(searchParams, "nav_" + norm);
-      const withoutPrefix = getArrayParam(searchParams, norm);
       
-      // Unimos ambos para que el filtro funcione venga de donde venga
-      const combinedValues = Array.from(new Set([...withPrefix, ...withoutPrefix]));
-      
-      if (combinedValues.length > 0) {
-        state[norm] = combinedValues;
+      if (withPrefix.length > 0) {
+        state[norm] = withPrefix;
       }
     });
     
@@ -81,7 +78,12 @@ export function useFilters() {
   const sidebarState = useMemo(() => {
     const state: Record<string, string[]> = {};
     SIDEBAR_KEYS.forEach(key => {
-      state[key] = getArrayParam(searchParams, normalizeKey(key));
+      const norm = normalizeKey(key);
+      // SOLO buscamos la llave limpia (sin prefijo)
+      const val = getArrayParam(searchParams, norm);
+      if (val.length > 0) {
+        state[norm] = val;
+      }
     });
     return state;
   }, [searchParams]);
@@ -140,13 +142,14 @@ const filteredItems = useMemo(() => {
 }, [combinedState, searchQuery]); // Quitamos sidebarState de aquí porque ya está dentro de combinedState
 
   // 4. 🔥 CORRECCIÓN CRÍTICA: filterOptions (Ignorar la propia categoría en Nav y Sidebar)
-const filterOptions = useMemo(() => {
+  const filterOptions = useMemo(() => {
     const options: Record<string, { value: string; count: number }[]> = {};
 
     SIDEBAR_KEYS.forEach(key => {
       const normKey = normalizeKey(key);
 
       const itemsForThisSection = collectionItems.filter(item => {
+        // A. Búsqueda: Siempre aplica
         if (searchQuery) {
           const words = searchQuery.toLowerCase().split(" ").filter(Boolean);
           const matchesSearch = words.every(w =>
@@ -154,32 +157,34 @@ const filterOptions = useMemo(() => {
           );
           if (!matchesSearch) return false;
         }
-        // 1. Filtros de Navegación (Breadcrumb) - Siempre deben aplicar
+
+        // B. Navegación (Breadcrumb): Siempre aplica
+        // Esto es lo que garantiza que si estás en "Club > Real Madrid", 
+        // el sidebar solo muestre cosas del Madrid.
         const matchesNav = Object.entries(navState).every(([k, v]) => 
           matchField(getValue(item, k), v)
         );
         if (!matchesNav) return false;
 
-        // 2. Filtros de Sidebar - Aplicar todos menos el actual (para ver opciones disponibles)
+        // C. Filtros del Sidebar: Aplicar todos MENOS el que estamos calculando ahora
         return SIDEBAR_KEYS.every(sideKey => {
-          if (normalizeKey(sideKey) === normKey) return true; // Ignorar si es la misma categoría
+          const sKeyNorm = normalizeKey(sideKey);
           
-          const selected = sidebarState[sideKey] || [];
+          // SI ES LA CATEGORÍA ACTUAL, NO FILTRAR (Para que no desaparezcan las otras marcas)
+          if (sKeyNorm === normKey) return true;
+          
+          const selected = sidebarState[sKeyNorm] || [];
           if (!selected.length) return true;
           
-          // Lógica especial para 'details'
-          if (sideKey === "details") {
+          // Lógica de matching...
+          if (sKeyNorm === "details") {
             return selected.some(d => DETAILS_FILTERS[d]?.(item as any));
           }
-          
-          // Lógica para Custom Filters
-          const custom = CUSTOM_FILTERS[sideKey];
+          const custom = CUSTOM_FILTERS[sKeyNorm];
           if (custom) {
             return selected.some(v => custom.getValues(item as any, custom).includes(v));
           }
-          
-          // Filtro estándar
-          return matchField(getValue(item, sideKey), selected);
+          return matchField(getValue(item, sKeyNorm), selected);
         });
       });
 

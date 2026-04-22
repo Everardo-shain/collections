@@ -17,13 +17,21 @@ import {
   SORT_CONFIG,
   SortOption,
   BREADCRUMB_LABELS,
+  BREADCRUMB_KEYS,
+  VALUE_SEPARATOR,
+  valid,
+  LINK_FIELDS,
+  TITLE_FORMATTERS,
+  formatDisplayValue,
 } from '@/config/footballConfig';
+import { useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { Helmet } from 'react-helmet-async';
 
 const NAV_HEIGHT = 56;
 
 const Index = () => {
+  const location = useLocation();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [sortBy, setSortBy] = useState<SortOption>('default');
   const [sortOpen, setSortOpen] = useState(false);
@@ -63,45 +71,78 @@ const Index = () => {
   };
 
   // --- RESOLVER TÍTULO DINÁMICO (Contextual) ---
-const getPageTitle = () => {
+  const getPageTitle = () => {
     if (searchQuery) return `Search: "${searchQuery}"`;
 
-    // 1. Identificar la entidad actual para saber qué etiquetas usar
-    const entityValue = combinedState.nav_entity?.[0] || combinedState.entity?.[0] || "";
-    const activeHierarchy = BREADCRUMB_RESOLVER({ filtersState: combinedState }) || NAVIGATION_BREADCRUMB;
+    const urlParams = new URLSearchParams(window.location.search);
     
-    const activeFilters = activeHierarchy
+    // Verificamos si el state existe y si coincide con algún filtro activo en la URL
+    if (location.state?.customLabel && location.state?.filterKey) {
+      const key = `nav_${location.state.filterKey.toLowerCase()}`;
+      if (urlParams.has(key)) {
+        return location.state.customLabel;
+      }
+    }
+
+    const getNavVal = (k: string) => {
+      const lowerK = k.toLowerCase();
+      return urlParams.has(`nav_${lowerK}`) ? urlParams.get(`nav_${lowerK}`) : null;
+    };
+
+    // 1. Obtener el contexto de la URL
+    let compositeKey = BREADCRUMB_KEYS
+      .map(k => getNavVal(k))
+      .filter(v => v !== null && valid(v))
+      .join(VALUE_SEPARATOR);
+
+    if (!compositeKey && filteredItems.length > 0) {
+      const firstItem = filteredItems[0];
+      compositeKey = BREADCRUMB_KEYS
+        .map(k => firstItem[k as keyof typeof firstItem])
+        .filter(valid)
+        .join(VALUE_SEPARATOR);
+    }
+
+    const firstKeyValue = getNavVal(BREADCRUMB_KEYS[0]) || (filteredItems[0]?.entity) || "";
+
+    // 2. Obtener la jerarquía activa
+    const activeHierarchy = BREADCRUMB_RESOLVER({ filtersState: navState }) || NAVIGATION_BREADCRUMB;
+    
+    // Convertimos la jerarquía a minúsculas para comparar fácilmente
+    const hierarchyKeysLower = activeHierarchy.map(k => k.toLowerCase());
+
+    const activeFilters = Array.from(new Set([...activeHierarchy, ...LINK_FIELDS]))
       .map(field => {
         const lowerField = field.toLowerCase();
-        const value = combinedState[`nav_${lowerField}`]?.[0] || combinedState[lowerField]?.[0];
-        
+        const value = getNavVal(lowerField);
         if (!value) return null;
 
-        // ⚡️ Lógica de sufijo personalizado
-        const extraText = BREADCRUMB_LABELS[entityValue]?.[lowerField] || "";
-        const finalLabel = `${value}${extraText}`;
-
-        return { label: finalLabel, field: lowerField };
+        // 🔥 LÓGICA FILTRADA:
+        // Solo aplicamos BREADCRUMB_LABELS si el campo es parte de la jerarquía estructural.
+        // Si es un LINK_FIELD que no está en la jerarquía (como "sleeves"), extraText será "".
+        const isHierarchyField = hierarchyKeysLower.includes(lowerField);
+        
+        const specificLabels = BREADCRUMB_LABELS[compositeKey] || BREADCRUMB_LABELS[firstKeyValue];
+        const extraText = isHierarchyField ? (specificLabels?.[lowerField] || "") : "";
+        
+        const combinedLabel = `${value}${extraText}`;
+        const formattedLabel = formatDisplayValue(lowerField, combinedLabel);
+        
+        return { 
+          label: formattedLabel, 
+          field: lowerField 
+        };
       })
       .filter(Boolean) as { label: string, field: string }[];
 
     if (activeFilters.length === 0) return 'All Items';
 
     const last = activeFilters[activeFilters.length - 1];
+    const formatter = TITLE_FORMATTERS[last.field];
 
-    // Si es nivel de Navbar (Entity/Product), solo mostramos el valor puro
-    const isNavbarLevel = last.field === 'entity' || last.field === 'category' || last.field === 'product';
-    if (activeFilters.length === 1 || isNavbarLevel) {
-      return last.label;
-    }
-
-    const penultimate = activeFilters[activeFilters.length - 2];
-
-    if (last.field === 'season') {
-      return `${last.label} ${penultimate.label}`;
-    }
-
-    return `${last.label}`;
+    return formatter 
+      ? formatter(last, activeFilters, compositeKey) 
+      : last.label;
   };
 
   const pageTitle = getPageTitle();
@@ -124,9 +165,9 @@ const getPageTitle = () => {
 
       <CollectionNavbar navGroups={navGroups} />
 
-      <CollectionBreadcrumb
-        filtersState={combinedState}
-        searchQuery={searchQuery}
+      <CollectionBreadcrumb 
+        filtersState={navState} 
+        searchQuery={searchQuery} 
       />
 
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-6">

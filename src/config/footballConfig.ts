@@ -29,6 +29,7 @@ export const FIELD_MAP = {
   category: "Category",
   product: "Product",
   entity: "Entity",
+  team_type: "Team Type",
   team: "Team",
   season: "Season",
   style: "Style",
@@ -125,10 +126,10 @@ export type NavGroup = { label: string; children: NavChild[]; };
 // ==========================================
 
 /** Separador utilizado en campos que contienen múltiples valores */
-export const VALUE_SEPARATOR = "/";
+export const VALUE_SEPARATOR = " | ";
 
 /** Campos que NO deben ser divididos aunque contengan el separador (ej. ID) */
-export const NO_SPLIT_FIELDS = ["displayName", "id", "notes"];
+export const NO_SPLIT_FIELDS = ["displayName", "id"];
 
 // ==========================================
 // 4. DETALLES DE ITEM
@@ -168,25 +169,56 @@ export const LINK_FIELDS = [
   "person",
 ] as const;
 
-/** Lógica para combinar valores de campos en la interfaz (ej. añadir Sleeves al Style) */
-export const FIELD_COMBINATIONS: Record<string, (item: CollectionItem, value: string) => string> = {
-  Print: (item, value) => {
-    if (valid(item.nameset)) return `${value} (${item.nameset} Nameset)`;
-    return value;
-  },
-  Style: (item, value) => {
-    if (valid(item.sleeves) && item.sleeves !== "Short") return `${value} (${item.sleeves} Sleeves)`;
-    return value;
+
+// Definimos un tipo para el retorno de la combinación
+export type CombinationPart = {
+  text: string;
+  fieldKey?: string; // Si existe, se tratará como un link a ese campo
+};
+
+export type CombinationResult = {
+  parts: CombinationPart[];
+  fullLink?: boolean; 
+};
+
+export const FIELD_COMBINATIONS: Record<string, (item: CollectionItem, value: string) => CombinationResult> = {
+  Team: (item, value) => {
+    const parts: CombinationPart[] = [{ text: value, fieldKey: "team" }];
+    if (valid(item.team_type) && item.team_type == "National Team") {
+      parts.push({ text: " " });
+      parts.push({ text: item.team_type, fieldKey: "team_type" });
+    }
+    return { parts, fullLink: true };
   },
   Brand: (item, value) => {
-    if (valid(item.collaboration)) return `${value} x ${item.collaboration}`;
-    return value;
+    const parts: CombinationPart[] = [{ text: value, fieldKey: "brand" }];
+    if (valid(item.collaboration)) {
+      parts.push({ text: " x " });
+      parts.push({ text: item.collaboration, fieldKey: "collaboration" }); 
+    }
+    return { parts, fullLink: false };
+  },
+  Style: (item, value) => {
+    const parts: CombinationPart[] = [{ text: value, fieldKey: "style" }];
+    if (valid(item.sleeves) && item.sleeves !== "Short") {
+      parts.push({ text: " - " }); 
+      parts.push({ text: `${item.sleeves} Sleeves`, fieldKey: "sleeves" });
+    }
+    return { parts, fullLink: false };
+  },
+  Print: (item, value) => {
+    const parts: CombinationPart[] = [{ text: value, fieldKey: "print" }];
+    if (valid(item.nameset)) {
+      parts.push({ text: " - " }); 
+      parts.push({ text: `${item.nameset} Nameset`, fieldKey: "nameset" });
+    }
+    return { parts, fullLink: false };
   }
 };
 
 /** Define si un campo debe mostrarse basado en su valor (ej. ocultar Release "Regular") */
 export const FIELD_VISIBILITY_RULES: Record<string, (item: CollectionItem, value: string) => boolean> = {
-  Release: (_item, value) => valid(value) && value !== "Regular"
+  // Release: (_item, value) => valid(value) && value !== "Regular"
 };
 
 export type VisibleField = typeof VISIBLE_FIELDS[number];
@@ -198,42 +230,74 @@ export type LinkField = typeof LINK_FIELDS[number];
 // ==========================================
 
 /** Llave principal para determinar la ruta del breadcrumb */
-export const BREADCRUMB_KEY = "entity";
+export const BREADCRUMB_KEYS = ["entity", "team_type"] as const;
 
 /** * Define qué campos mostrar en el breadcrumb según el tipo de entidad.*/
 export const breadcrumbConfig: Record<string, string[]> = {
-  "National Team": ["entity", "team", "season"],
-  "Collective": ["entity", "country", "team", "season"],
-  "Club": ["entity", "country", "team", "season"],
+  "Team | National Team": ["entity", "team_type", "team", "season"],
+  "Team | Collective": ["entity", "team_type", "country", "team", "season"],
+  "Team | Club": ["entity", "team_type", "country", "team", "season"],
+  "Team": ["entity", "season"],
   "Event": ["entity", "competition", "season"],
   "Brand": ["entity", "brand", "season"],
   "Person": ["entity", "person", "season"]
 };
 
+// 1. EL "QUÉ": Sufijos estáticos para cada campo
 export const BREADCRUMB_LABELS: Record<string, Record<string, string>> = {
-  "National Team": {
+  "Team | National Team": {
     "team": " National Team",
   },
-  "Collective": {
-    "country": " Collective Teams",
-  },
-  "Club": {
+  "Team | Club": {
     "country": " Clubs",
   },
+  "Team | Collective": {
+    "country": " Collective Teams",
+  }
 };
+
+// 2. EL "CÓMO": Reglas de estructura para el título final
+export const TITLE_FORMATTERS: Record<string, (last: any, all: any[], compositeKey?: string) => string> = {
+  season: (last, all) => {
+    if (all.length > 1) {
+      const penultimate = all[all.length - 2];
+      return `${last.label} ${penultimate.label}`;
+    }
+    return last.label;
+  },
+
+};
+
 /** Resuelve qué arreglo de breadcrumbs usar según si es un Item o un Filtro */
 export const BREADCRUMB_RESOLVER = (context: any): string[] | null => {
   const { item, filtersState } = context;
-
+  // Función helper interna para construir la llave compuesta
+  const getCompositeKey = (getData: (key: string) => string | undefined) => {
+    return BREADCRUMB_KEYS
+      .map(key => getData(key))
+      .filter(valid) // Solo valores válidos
+      .join(VALUE_SEPARATOR);
+  };
   // 1. Caso Vista de Detalle (Item)
   if (item) {
-    return breadcrumbConfig[item.entity] || null;
+    // Intentamos buscar por la combinación (ej: "National Team | Jersey")
+    const compositeKey = getCompositeKey((k) => getDynamicValue(item, k));
+    if (breadcrumbConfig[compositeKey]) return breadcrumbConfig[compositeKey];
+    // Fallback: Si no existe la combinación, buscamos solo por la primera llave (Entity)
+    const firstKey = getDynamicValue(item, BREADCRUMB_KEYS[0]);
+    return breadcrumbConfig[firstKey] || null;
   }
   // 2. Caso Navegación/Filtros
   if (filtersState) {
-    const entityValue = filtersState.nav_entity?.[0] || filtersState.entity?.[0];
-    if (entityValue && breadcrumbConfig[entityValue]) {
-      return breadcrumbConfig[entityValue];
+    const getFilterVal = (k: string) => filtersState[`nav_${k}`]?.[0] || filtersState[k]?.[0];
+    
+    const compositeKey = getCompositeKey(getFilterVal);
+    if (breadcrumbConfig[compositeKey]) return breadcrumbConfig[compositeKey];
+
+    // Fallback: Buscar solo por la primera llave activa
+    const firstKey = getFilterVal(BREADCRUMB_KEYS[0]);
+    if (firstKey && breadcrumbConfig[firstKey]) {
+      return breadcrumbConfig[firstKey];
     }
   }
 
@@ -246,14 +310,14 @@ export const BREADCRUMB_RESOLVER = (context: any): string[] | null => {
 
 /** Llaves que aparecen en el Sidebar de filtros lateral */
 export const SIDEBAR_KEYS = [
-  "teamType", "confederation", "country", "competition", 
+  "team_type", "confederation", "country", "competition", 
   "team", "season", "style", "release", "brand", 
   "technology", "size", "details"
 ] as const;
 
 /** Campos que el buscador principal utiliza para filtrar resultados */
 export const SEARCH_KEYS = [
-  "displayName", "team", "person", "style", "season", 
+  "displayName", "team", "person", "style", "team_type", "season", 
   "competition", "country", "confederation", "brand", 
   "product", "entity", "category", "release", 
   "technology", "collaboration", "print", "patch"
@@ -267,16 +331,16 @@ type CustomFilter = {
 };
 
 export const CUSTOM_FILTERS: Record<string, CustomFilter> = {
-  "teamType": {
-    label: "Team Type",
-    filter: "entity",
-    getValues: (item, config) => {
-      const validValues = ["Club", "National Team", "Collective"];
-      const value = item[config.filter as keyof CollectionItem]; 
-      if (typeof value === "string" && validValues.includes(value)) {return [value];}
-      return [];
-    }
-  }
+  // "team_type": {
+  //   label: "Team Type",
+  //   filter: "entity",
+  //   getValues: (item, config) => {
+  //     const validValues = ["Club", "National Team", "Collective"];
+  //     const value = item[config.filter as keyof CollectionItem]; 
+  //     if (typeof value === "string" && validValues.includes(value)) {return [value];}
+  //     return [];
+  //   }
+  // }
 };
 
 /** Filtros rápidos (Checkboxes) basados en condiciones booleanas del Item */

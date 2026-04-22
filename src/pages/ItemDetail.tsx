@@ -22,6 +22,7 @@ import {
   formatDisplayValue,
   generateNavGroups,
   VisibleField,
+  CombinationResult,
 } from '@/config/footballConfig';
 
 const collectionItems: CollectionItem[] = (rawData as any[]).map(mapItem);
@@ -41,26 +42,50 @@ export default function ItemDetail() {
   const hasMultiple = images.length > 1;
 
   // --- HELPER PARA RENDERIZAR LINKS INDIVIDUALES ---
-  const renderValueParts = (camelKey: string, rawValue: string, displayValue: string) => {
-    const isLinkable = LINK_FIELDS.includes(camelKey as any);
-    
-    if (!isLinkable) return displayValue;
+  const renderValueParts = (camelKey: string, rawValue: string, combination: CombinationResult) => {
+    const { parts, fullLink } = combination;
+    const fullDisplayText = parts.map(p => p.text).join(''); // El nombre "bonito" completo
 
-    const parts = rawValue.split(VALUE_SEPARATOR).map(p => p.trim()).filter(Boolean);
+    if (fullLink) {
+      return (
+        <Link
+          to={`/?nav_${camelKey.toLowerCase()}=${encodeURIComponent(rawValue)}`}
+          // 🔥 PASAMOS EL NOMBRE AQUÍ:
+          state={{ customLabel: fullDisplayText, filterKey: camelKey.toLowerCase() }}
+          className="underline underline-offset-4 decoration-primary decoration-1 hover:text-primary transition-colors"
+        >
+          {fullDisplayText}
+        </Link>
+      );
+    }
 
     return (
-      <span className="flex flex-wrap justify-end gap-x-1">
-        {parts.map((part, idx) => (
-          <span key={idx} className="flex items-center">
-            <Link
-              to={`/?nav_${camelKey.toLowerCase()}=${encodeURIComponent(part)}`}
-              className="text-foreground underline underline-offset-4 decoration-primary decoration-1 hover:text-primary hover:decoration-primary transition-colors duration-300"
-            >
-              {part}
-            </Link>
-            {idx < parts.length - 1 && <span className="ml-1 text-muted-foreground">,</span>}
-          </span>
-        ))}
+      <span className="flex flex-wrap justify-end">
+        {parts.map((part, idx) => {
+          const isLinkable = part.fieldKey && LINK_FIELDS.includes(part.fieldKey as any);
+          
+          if (isLinkable && part.fieldKey) {
+            const navValue = item[part.fieldKey as keyof CollectionItem] as string;
+            
+            return (
+              <Link
+                key={idx}
+                to={`/?nav_${part.fieldKey.toLowerCase()}=${encodeURIComponent(navValue)}`}
+                // 🔥 PASAMOS EL NOMBRE PARA LINKS INDEPENDIENTES TAMBIÉN:
+                state={{ customLabel: part.text, filterKey: part.fieldKey.toLowerCase() }}
+                className="underline underline-offset-4 decoration-primary decoration-1 hover:text-primary transition-colors"
+              >
+                {part.text}
+              </Link>
+            );
+          }
+
+          return (
+            <span key={idx} className="whitespace-pre text-foreground">
+              {part.text}
+            </span>
+          );
+        })}
       </span>
     );
   };
@@ -121,20 +146,22 @@ export default function ItemDetail() {
                   if (!VISIBLE_FIELDS.includes(camelKey as VisibleField)) return null;
                   if (typeof rawValue !== "string" || !valid(rawValue)) return null;
 
-                  let processedValue = rawValue;
+                  // Obtenemos la estructura de la combinación
                   const combinationFn = FIELD_COMBINATIONS[label];
-                  if (combinationFn) processedValue = combinationFn(item, rawValue);
+                  const combination: CombinationResult = combinationFn 
+                    ? combinationFn(item, rawValue)
+                    : { parts: [{ text: rawValue, fieldKey: camelKey }], fullLink: false };
 
+                  // Para la visibilidad, unimos los textos de las partes
+                  const displayString = combination.parts.map(p => p.text).join('');
                   const visibilityFn = FIELD_VISIBILITY_RULES[label];
-                  if (visibilityFn && !visibilityFn(item, processedValue)) return null;
-
-                  const displayValue = formatDisplayValue(label, processedValue);
+                  if (visibilityFn && !visibilityFn(item, displayString)) return null;
 
                   return (
                     <div key={camelKey} className="flex justify-between py-3">
                       <span className="text-sm font-bold text-foreground">{label}</span>
                       <span className="text-sm font-normal text-right ml-4">
-                        {renderValueParts(camelKey, rawValue, displayValue)}
+                        {renderValueParts(camelKey, rawValue, combination)}
                       </span>
                     </div>
                   );
@@ -142,7 +169,7 @@ export default function ItemDetail() {
                 <div className="border-b border-border w-full"></div>
               </div>
 
-              {/* CAMPOS ESPECIALES - Con soporte para saltos de línea */}
+              {/* CAMPOS ESPECIALES */}
               {SPECIAL_FIELDS.map((fieldKey) => {
                 const content = item[fieldKey as keyof typeof item];
                 const safeContent = Array.isArray(content) ? content.join(", ") : content;
