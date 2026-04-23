@@ -13,13 +13,11 @@ import {
   VISIBLE_FIELDS, 
   SPECIAL_FIELDS,
   LINK_FIELDS,
-  VALUE_SEPARATOR,
   FIELD_COMBINATIONS, 
   FIELD_VISIBILITY_RULES, 
   valid,
   CollectionItem,
   SITE_METADATA,
-  formatDisplayValue,
   generateNavGroups,
   VisibleField,
   CombinationResult,
@@ -146,15 +144,14 @@ export default function ItemDetail() {
                   if (!VISIBLE_FIELDS.includes(camelKey as VisibleField)) return null;
                   if (typeof rawValue !== "string" || !valid(rawValue)) return null;
 
-                  // Obtenemos la estructura de la combinación
-                  const combinationFn = FIELD_COMBINATIONS[label];
+                  const combinationFn = FIELD_COMBINATIONS[camelKey]; 
+                  
                   const combination: CombinationResult = combinationFn 
                     ? combinationFn(item, rawValue)
                     : { parts: [{ text: rawValue, fieldKey: camelKey }], fullLink: false };
 
-                  // Para la visibilidad, unimos los textos de las partes
                   const displayString = combination.parts.map(p => p.text).join('');
-                  const visibilityFn = FIELD_VISIBILITY_RULES[label];
+                  const visibilityFn = FIELD_VISIBILITY_RULES[camelKey]; 
                   if (visibilityFn && !visibilityFn(item, displayString)) return null;
 
                   return (

@@ -6,10 +6,7 @@ import {
   NAVIGATION_CONFIG, 
   valid, 
   CollectionItem,
-  VALUE_SEPARATOR,
   LINK_FIELDS,
-  FIELD_MAP, 
-  FIELD_COMBINATIONS 
 } from "@/config/footballConfig";
 
 interface BreadcrumbProps {

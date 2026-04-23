@@ -190,15 +190,28 @@ const filteredItems = useMemo(() => {
 
       // --- CÁLCULO DE CONTEOS ---
       if (key === "details") {
-        options[key] = Object.entries(DETAILS_FILTERS)
+        let detailsOpts = Object.entries(DETAILS_FILTERS)
           .map(([label, fn]) => ({
             value: label, 
             count: itemsForThisSection.filter(i => fn(i)).length
           }))
           .filter(opt => opt.count > 0);
+
+        // 🔥 Ocultar si solo hay 1 opción y aplica a TODOS los items (no filtra nada)
+        if (detailsOpts.length === 1 && detailsOpts[0].count === itemsForThisSection.length) {
+            const isSelected = sidebarState["details"]?.includes(detailsOpts[0].value);
+            if (!isSelected) {
+                detailsOpts = [];
+            }
+        }
+
+        options[key] = detailsOpts;
       } else {
         const counts: Record<string, number> = {};
         const custom = CUSTOM_FILTERS[key];
+        
+        // 🔥 Llevamos la cuenta de cuántos items NO tienen este campo (son inválidos)
+        let invalidCount = 0; 
         
         itemsForThisSection.forEach(item => {
           // Si es custom usamos su getValues, si no, el helper estándar
@@ -206,14 +219,38 @@ const filteredItems = useMemo(() => {
             ? custom.getValues(item as any, custom)
             : getItemValues(getValue(item, key));
             
-          vals.forEach(v => { 
-            if (v) counts[v] = (counts[v] || 0) + 1; 
-          });
+          // Si el arreglo viene vacío, significa que el valor era "-", n/a o vacío
+          if (vals.length === 0) {
+            invalidCount++;
+          } else {
+            vals.forEach(v => { 
+              if (v) counts[v] = (counts[v] || 0) + 1; 
+            });
+          }
         });
 
-        options[key] = Object.entries(counts)
+        let finalOptions = Object.entries(counts)
           .map(([value, count]) => ({ value, count }))
           .sort((a, b) => b[1] - a[1]);
+
+        // 🔥 LÓGICA PRINCIPAL: Ocultar si solo queda 1 opción disponible
+        if (finalOptions.length === 1) {
+          // PERO si invalidCount > 0, lo dejamos visible.
+          // (Porque filtrar por esa única opción útilmente excluiría a los inválidos).
+          // Si invalidCount === 0, TODOS los items mostrados tienen exactamente esta opción.
+          if (invalidCount === 0) {
+            const sKeyNorm = normalizeKey(key);
+            const isSelected = sidebarState[sKeyNorm]?.includes(finalOptions[0].value);
+            
+            // Solo vaciamos la lista si el usuario no la tiene seleccionada actualmente.
+            // (Si la tiene seleccionada, debemos mostrarla para que pueda quitar el check)
+            if (!isSelected) {
+              finalOptions = []; 
+            }
+          }
+        }
+
+        options[key] = finalOptions;
       }
     });
 

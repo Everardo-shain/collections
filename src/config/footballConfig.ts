@@ -182,7 +182,7 @@ export type CombinationResult = {
 };
 
 export const FIELD_COMBINATIONS: Record<string, (item: CollectionItem, value: string) => CombinationResult> = {
-  Team: (item, value) => {
+  team: (item, value) => {
     const parts: CombinationPart[] = [{ text: value, fieldKey: "team" }];
     if (valid(item.team_type) && item.team_type == "National Team") {
       parts.push({ text: " " });
@@ -190,7 +190,7 @@ export const FIELD_COMBINATIONS: Record<string, (item: CollectionItem, value: st
     }
     return { parts, fullLink: true };
   },
-  Brand: (item, value) => {
+  brand: (item, value) => {
     const parts: CombinationPart[] = [{ text: value, fieldKey: "brand" }];
     if (valid(item.collaboration)) {
       parts.push({ text: " x " });
@@ -198,7 +198,7 @@ export const FIELD_COMBINATIONS: Record<string, (item: CollectionItem, value: st
     }
     return { parts, fullLink: false };
   },
-  Style: (item, value) => {
+  style: (item, value) => {
     const parts: CombinationPart[] = [{ text: value, fieldKey: "style" }];
     if (valid(item.sleeves) && item.sleeves !== "Short") {
       parts.push({ text: " - " }); 
@@ -206,7 +206,7 @@ export const FIELD_COMBINATIONS: Record<string, (item: CollectionItem, value: st
     }
     return { parts, fullLink: false };
   },
-  Print: (item, value) => {
+  print: (item, value) => {
     const parts: CombinationPart[] = [{ text: value, fieldKey: "print" }];
     if (valid(item.nameset)) {
       parts.push({ text: " - " }); 
