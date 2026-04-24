@@ -161,8 +161,11 @@ export function CollectionNavbar({ navGroups = [] }: { navGroups: NavGroup[] }) 
         <div className="max-w-[1440px] mx-auto px-4 lg:px-8">
           <div className="flex items-center justify-between h-14 gap-4">
 
-            <Link to={baseHref} className="font-heading text-xl font-bold tracking-tight flex-shrink-0" onClick={() => setMobileOpen(false)}>
-              {collectionTitle}
+            <Link to={baseHref} className="font-heading text-xl font-bold tracking-tight flex-shrink-0 flex items-center gap-2" onClick={() => setMobileOpen(false)}>
+              {(config as any).metadata?.logo && (
+                <img src={(config as any).metadata.logo} alt="" className="h-6 w-6" />
+              )}
+              <span>{collectionTitle}</span>
             </Link>
 
             <div className="hidden md:flex items-center gap-6 flex-1 justify-center">
