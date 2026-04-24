@@ -181,7 +181,7 @@ export const BREADCRUMB_RESOLVER = (context: any): string[] | null => {
 // 6. FILTROS / SIDEBAR / BÚSQUEDA
 // ==========================================
 export const SIDEBAR_KEYS = [
-  "team_test", "team_type", "confederation", "country", "competition",
+  "team_type", "confederation", "country", "competition",
   "team", "season", "style", "release", "brand",
   "technology", "size", "details",
 ] as const;
@@ -194,16 +194,16 @@ export const SEARCH_KEYS = [
 ] as const;
 
 export const CUSTOM_FILTERS: Record<string, CustomFilter> = {
-  team_test: {
-    label: "Team Test",
-    filter: "team",
-    getValues: (item, config) => {
-      const validValues = ["Deportivo Toluca", "Borussia Dortmund", "Germany"];
-      const value = item[config.filter as keyof CollectionItem];
-      if (typeof value === "string" && validValues.includes(value)) return [value];
-      return [];
-    },
-  },
+  // team_test: {
+  //   label: "Team Test",
+  //   filter: "team",
+  //   getValues: (item, config) => {
+  //     const validValues = ["Deportivo Toluca", "Borussia Dortmund", "Germany"];
+  //     const value = item[config.filter as keyof CollectionItem];
+  //     if (typeof value === "string" && validValues.includes(value)) return [value];
+  //     return [];
+  //   },
+  // },
   details: {
     label: "Details",
     filter: "id" as any,

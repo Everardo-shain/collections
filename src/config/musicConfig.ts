@@ -20,6 +20,7 @@ import {
 export const rawData = rawDataJson as Record<string, string>[];
 export const listsData = listsDataJson as Record<string, string[]>;
 
+/** Metadatos específicos de la colección */
 export const metadata = {
   id: "music",
   title: "Everardo´s Music Collection",
@@ -27,6 +28,9 @@ export const metadata = {
   ogImage: "/og-image.png",
 } as const;
 
+// ==========================================
+// 1. MAPEO DE CAMPOS
+// ==========================================
 export const FIELD_MAP = {
   id: "ID",
   displayName: "Display Name",
@@ -56,12 +60,18 @@ export const FIELD_MAP = {
   notes: "Notes",
 } as const;
 
+// ==========================================
+// 2. NAVEGACIÓN
+// ==========================================
 export const NAVIGATION_CONFIG = {
   hierarchy: ["category", "product"] as const,
 } as const;
 
 export const NAVIGATION_BREADCRUMB = [...NAVIGATION_CONFIG.hierarchy] as string[];
 
+// ==========================================
+// 4. DETALLES DE ITEM
+// ==========================================
 export const VISIBLE_FIELDS = [
   "product", "team", "season", "style", "release", "competition", "country",
   "confederation", "technology", "brand", "size", "person", "print",
@@ -115,6 +125,9 @@ export type VisibleField = typeof VISIBLE_FIELDS[number];
 export type SpecialField = typeof SPECIAL_FIELDS[number];
 export type LinkField = typeof LINK_FIELDS[number];
 
+// ==========================================
+// 5. BREADCRUMBS
+// ==========================================
 export const BREADCRUMB_KEYS = ["entity", "team_type"] as const;
 
 export const breadcrumbConfig: Record<string, string[]> = {
@@ -164,9 +177,13 @@ export const BREADCRUMB_RESOLVER = (context: any): string[] | null => {
   return null;
 };
 
+// ==========================================
+// 6. FILTROS / SIDEBAR / BÚSQUEDA
+// ==========================================
 export const SIDEBAR_KEYS = [
-  "team_type", "country", "competition", "team", "season",
-  "style", "release", "brand", "size", "details",
+  "team_type", "confederation", "country", "competition",
+  "team", "season", "style", "release", "brand",
+  "technology", "size", "details",
 ] as const;
 
 export const SEARCH_KEYS = [
@@ -177,11 +194,24 @@ export const SEARCH_KEYS = [
 ] as const;
 
 export const CUSTOM_FILTERS: Record<string, CustomFilter> = {
+  // team_test: {
+  //   label: "Team Test",
+  //   filter: "team",
+  //   getValues: (item, config) => {
+  //     const validValues = ["Deportivo Toluca", "Borussia Dortmund", "Germany"];
+  //     const value = item[config.filter as keyof CollectionItem];
+  //     if (typeof value === "string" && validValues.includes(value)) return [value];
+  //     return [];
+  //   },
+  // },
   details: {
     label: "Details",
     filter: "id" as any,
     getValues: (item) => {
       const activeDetails: string[] = [];
+      if (valid(item.sleeves) && item.sleeves === "Long") activeDetails.push("Long Sleeves");
+      if (valid(item.print)) activeDetails.push("Printed");
+      if (valid(item.patch)) activeDetails.push("With Patches");
       if (valid(item.signature)) activeDetails.push("Signed");
       if (valid(item.packaging)) activeDetails.push("In Box");
       if (valid(item.collaboration)) activeDetails.push("Collaboration");
@@ -197,6 +227,9 @@ export const FILTER_KEYS: string[] = Array.from(
   ])
 );
 
+// ==========================================
+// 7. FACTORIES (mapItem, sort, navGroups, getIndex)
+// ==========================================
 export const mapItem = createMapItem(FIELD_MAP);
 export const getIndex = createGetIndex(FIELD_MAP, listsData);
 export const SORT_CONFIG = createSortConfig(getIndex);

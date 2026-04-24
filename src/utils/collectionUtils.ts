@@ -127,7 +127,7 @@ export const isMatch = (itemValue: string, searchWords: string[]) => {
 // ==========================================
 
 // Carga global de imágenes (todas las colecciones comparten la carpeta /images)
-const allImages = import.meta.glob("@/images/*.{jpg,jpeg,png,webp}", {
+const allImages = import.meta.glob("@/assets/images/*.{jpg,jpeg,png,webp}", {
   eager: true,
   import: 'default'
 });
@@ -156,7 +156,7 @@ export function createMapItem(FIELD_MAP: Record<string, string>) {
     return {
       ...fields,
       id,
-      image: matchingImages.length > 0 ? matchingImages[0] : "/src/images/placeholder.jpg",
+      image: matchingImages.length > 0 ? matchingImages[0] : "/src/assets/images/placeholder.jpg",
       images: matchingImages,
     };
   };
