@@ -26,6 +26,8 @@ export const metadata = {
   title: "Everardo´s Music Collection",
   description: "Personal music collection showcase",
   ogImage: "/og-image.png",
+  accentColor: "280 70% 55%",
+  logo: "/src/assets/site/logo.svg",
 } as const;
 
 // ==========================================

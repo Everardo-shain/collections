@@ -26,6 +26,8 @@ export const metadata = {
   title: "Everardo´s Football Collection",
   description: "Personal football collection showcase",
   ogImage: "/og-image.png",
+  accentColor: "142 71% 40%",
+  logo: "/src/assets/site/logo.svg",
 } as const;
 
 // ==========================================
