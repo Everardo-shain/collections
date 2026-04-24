@@ -57,6 +57,18 @@ const Index = () => {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  useEffect(() => {
+    const accent = (metadata as any)?.accentColor;
+    if (accent) {
+      document.documentElement.style.setProperty('--primary', accent);
+      document.documentElement.style.setProperty('--ring', accent);
+    }
+    return () => {
+      document.documentElement.style.removeProperty('--primary');
+      document.documentElement.style.removeProperty('--ring');
+    };
+  }, [metadata]);
+
   const isNavbarHidden = scrollDir === "down" && scrollY > 100;
 
   const filters = {

@@ -42,22 +42,35 @@ export default function Home() {
             {ids.map(id => {
               const config = COLLECTIONS_MAP[id];
               const meta = (config as any).metadata;
+              const accent = meta?.accentColor;
               return (
                 <Link
                   key={id}
                   to={`/view/${id}`}
-                  className="group relative rounded-2xl border border-border bg-card p-8 md:p-10 transition-all hover:border-primary hover:shadow-lg"
+                  className="group relative rounded-2xl border border-border bg-card p-8 md:p-10 transition-all hover:border-primary hover:shadow-lg overflow-hidden"
+                  style={accent ? { borderTop: `4px solid hsl(${accent})` } : undefined}
                 >
-                  <div className="text-xs uppercase tracking-widest text-muted-foreground mb-3">
-                    Collection
+                  <div className="flex items-center gap-3 mb-3">
+                    {meta?.logo && (
+                      <img src={meta.logo} alt="" className="h-8 w-8" />
+                    )}
+                    <div className="text-xs uppercase tracking-widest text-muted-foreground">
+                      Collection
+                    </div>
                   </div>
-                  <h2 className="font-heading text-2xl md:text-3xl font-bold text-foreground group-hover:text-primary transition-colors mb-2">
-                    {meta?.title || id}
+                  <h2
+                    className="font-heading text-2xl md:text-3xl font-bold text-foreground mb-2 transition-colors"
+                    style={accent ? { color: undefined } : undefined}
+                  >
+                    <span className="group-hover:opacity-80 transition-opacity">{meta?.title || id}</span>
                   </h2>
                   <p className="text-sm text-muted-foreground mb-6">
                     {COLLECTION_DESCRIPTIONS[id] || meta?.description}
                   </p>
-                  <span className="inline-flex items-center gap-1 text-sm font-medium text-primary">
+                  <span
+                    className="inline-flex items-center gap-1 text-sm font-medium"
+                    style={accent ? { color: `hsl(${accent})` } : undefined}
+                  >
                     Browse →
                   </span>
                 </Link>

@@ -25,6 +25,8 @@ export const SITE_METADATA = {
   author: "Everardo",
   url: "https://tu-sitio.com",
   ogImage: "/og-image.png",
+  accentColor: "142 71% 40%",
+  logo: "/src/assets/site/logo.svg",
 } as const;
 
 // Re-exports de utilidades compartidas para conveniencia
