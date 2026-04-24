@@ -1,35 +1,30 @@
 import { ChevronRight, Home } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
-import { 
-  BREADCRUMB_RESOLVER, 
-  getDynamicValue, 
-  NAVIGATION_CONFIG, 
-  valid, 
-  CollectionItem,
-  LINK_FIELDS,
-} from "@/config";
+import { valid, getDynamicValue, CollectionItem } from "@/config";
+import { useCollection } from "@/hooks/useCollection";
 
 interface BreadcrumbProps {
   filtersState?: Record<string, string[]>;
   searchQuery?: string;
-  item?: CollectionItem; 
-  firstItem?: CollectionItem; // <-- 1. Añadimos firstItem aquí
+  item?: CollectionItem;
+  firstItem?: CollectionItem;
 }
-
-// ... (mismos imports)
 
 export function CollectionBreadcrumb({
   filtersState = {},
   searchQuery = "",
   item,
 }: BreadcrumbProps) {
-  const { search, state } = useLocation(); // 1. Extraemos 'state' de la ubicación
+  const { search, state } = useLocation();
+  const { collectionId, config } = useCollection();
+  const { BREADCRUMB_RESOLVER, NAVIGATION_CONFIG, LINK_FIELDS } = config;
+  const baseHref = `/view/${collectionId}`;
+
   const crumbs: { label: string; to?: string; key: string }[] = [];
 
-  crumbs.push({ label: "", to: "/", key: "home" });
+  crumbs.push({ label: "", to: baseHref, key: "home" });
 
   if (item) {
-    // --- LÓGICA PARA ITEM DETAIL ---
     const configKeys = BREADCRUMB_RESOLVER({ item });
     if (configKeys) {
       const currentParams = new URLSearchParams();
@@ -38,8 +33,7 @@ export function CollectionBreadcrumb({
         if (valid(val)) {
           const levelParams = new URLSearchParams(currentParams.toString());
           levelParams.set(`nav_${key.toLowerCase()}`, val);
-          // En el detalle, el label es el valor puro (sin combinaciones)
-          crumbs.push({ label: val, to: `/?${levelParams.toString()}`, key: key.toLowerCase() });
+          crumbs.push({ label: val, to: `${baseHref}?${levelParams.toString()}`, key: key.toLowerCase() });
           currentParams.set(`nav_${key.toLowerCase()}`, val);
         }
       });
@@ -47,7 +41,6 @@ export function CollectionBreadcrumb({
   } else if (searchQuery) {
     crumbs.push({ label: `Search: "${searchQuery}"`, key: "search" });
   } else {
-    // --- LÓGICA PARA GALERÍA (FILTRADA) ---
     const urlParams = new URLSearchParams(search);
     const configKeys = BREADCRUMB_RESOLVER({ filtersState }) || [];
     const allKeys = Array.from(new Set([...NAVIGATION_CONFIG.hierarchy, ...configKeys, ...LINK_FIELDS]));
@@ -60,7 +53,7 @@ export function CollectionBreadcrumb({
         if (valid(val)) {
           const linkParams = new URLSearchParams(currentParams.toString());
           linkParams.set(`nav_${lowKey}`, val);
-          crumbs.push({ label: val, to: `/?${linkParams.toString()}`, key: lowKey });
+          crumbs.push({ label: val, to: `${baseHref}?${linkParams.toString()}`, key: lowKey });
           currentParams.set(`nav_${lowKey}`, val);
         }
       }
@@ -74,11 +67,8 @@ export function CollectionBreadcrumb({
         {crumbs.map((crumb, i) => {
           const isLast = i === crumbs.length - 1;
           const isHome = i === 0;
-          
-          let displayLabel = isHome ? "" : crumb.label;
 
-          // 🔥 LA SOLUCIÓN DEFINITIVA:
-          // Si el 'state' de la navegación coincide con la llave de este crumb, usamos el label que nos mandaron.
+          let displayLabel = isHome ? "" : crumb.label;
           if (state?.customLabel && state?.filterKey === crumb.key) {
             displayLabel = state.customLabel;
           }
@@ -87,7 +77,7 @@ export function CollectionBreadcrumb({
             <span key={i} className="flex items-center gap-2 flex-shrink-0">
               {i > 0 && <ChevronRight className="w-3.5 h-3.5 text-muted-foreground" />}
               {!isLast || item ? (
-                <Link to={crumb.to || "/"} className="text-muted-foreground hover:text-primary transition-colors">
+                <Link to={crumb.to || baseHref} className="text-muted-foreground hover:text-primary transition-colors">
                   {isHome ? <Home className="w-4 h-4" /> : displayLabel}
                 </Link>
               ) : (

@@ -1,9 +1,8 @@
-import { FIELD_MAP, CUSTOM_FILTERS, getIndex, listsData } from '@/config';
 import { useState, useEffect } from 'react';
 import { ChevronDown, ChevronUp, SlidersHorizontal, X } from 'lucide-react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { cn } from '@/lib/utils';
-
+import { useCollection } from '@/hooks/useCollection';
 
 interface FilterSidebarProps {
   filterOptions: Record<string, { value: string; count: number }[]>;
@@ -16,18 +15,6 @@ interface FilterSidebarProps {
 }
 
 const SHOW_MORE_THRESHOLD = 10;
-
-function getFilterLabel(key: string) {
-  // 1. Si está en CUSTOM_FILTERS, usa su label
-  if (CUSTOM_FILTERS[key]) return CUSTOM_FILTERS[key].label;
-
-  // 2. Si es una llave normal mapeada
-  const mappedKey = FIELD_MAP[key];
-  if (mappedKey) return mappedKey;
-
-  // 3. Fallback: Capitalizar
-  return key.charAt(0).toUpperCase() + key.slice(1);
-}
 
 function FilterSection({
   label,
@@ -58,10 +45,7 @@ function FilterSection({
       {expanded && (
         <div className="mt-2 space-y-0">
           {visibleOptions.map(opt => (
-            <label
-              key={opt.value}
-              className="flex items-start gap-2.5 py-1 cursor-pointer group"
-            >
+            <label key={opt.value} className="flex items-start gap-2.5 py-1 cursor-pointer group">
               <Checkbox
                 checked={selected.includes(opt.value)}
                 onCheckedChange={() => onToggle(opt.value)}
@@ -96,9 +80,16 @@ export function FilterSidebar({
   onClose,
   stickyOffset,
 }: FilterSidebarProps) {
-  
-  // 1. Verificamos si hay AL MENOS una opción para mostrar en cualquier categoría
-  // O si hay filtros ya seleccionados (para no ocultar el sidebar si el usuario quiere desmarcarlos)
+  const { config } = useCollection();
+  const { FIELD_MAP, CUSTOM_FILTERS, getIndex, listsData } = config;
+
+  const getFilterLabel = (key: string) => {
+    if (CUSTOM_FILTERS[key]) return CUSTOM_FILTERS[key].label;
+    const mappedKey = (FIELD_MAP as any)[key];
+    if (mappedKey) return mappedKey;
+    return key.charAt(0).toUpperCase() + key.slice(1);
+  };
+
   const hasVisibleFilters = filterKeys.some(key => {
     const options = filterOptions[key] || [];
     const selected = selectedFilters[key] || [];
@@ -116,25 +107,23 @@ export function FilterSidebar({
   }, [isOpen]);
 
   const isDesktop = typeof window !== 'undefined' && window.innerWidth >= 1024;
-  
+
   return (
     <>
-      {/* Mobile overlay */}
       {isOpen && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[60] lg:hidden" 
-          onClick={onClose} />
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[60] lg:hidden" onClick={onClose} />
       )}
 
       <aside
-        style={{ 
-          top: isDesktop ? `${stickyOffset}px` : '0', 
-          height: isDesktop ? `calc(100vh - ${stickyOffset}px)` : '100dvh'
+        style={{
+          top: isDesktop ? `${stickyOffset}px` : '0',
+          height: isDesktop ? `calc(100vh - ${stickyOffset}px)` : '100dvh',
         }}
         className={cn(
-            "transition-all duration-300 ease-in-out",
-            "fixed left-0 top-0 w-80 bg-card z-[70] transform lg:translate-x-0",
-            "lg:sticky lg:w-64 lg:shrink-0 lg:block lg:overflow-y-auto lg:bg-transparent lg:z-auto",
-            isOpen ? "translate-x-0" : "-translate-x-full"
+          "transition-all duration-300 ease-in-out",
+          "fixed left-0 top-0 w-80 bg-card z-[70] transform lg:translate-x-0",
+          "lg:sticky lg:w-64 lg:shrink-0 lg:block lg:overflow-y-auto lg:bg-transparent lg:z-auto",
+          isOpen ? "translate-x-0" : "-translate-x-full"
         )}
       >
         <div className="p-4 lg:p-0 lg:pr-6 h-full overflow-y-auto lg:overflow-visible">
@@ -148,7 +137,6 @@ export function FilterSidebar({
             </button>
           </div>
 
-          {/* 2. LÓGICA INFORMATIVA: Si no hay filtros, mostramos el mensaje */}
           {!hasVisibleFilters ? (
             <div className="mt-4 p-4 border border-dashed border-muted rounded-xl bg-muted/20">
               <p className="text-xs text-muted-foreground text-center italic leading-relaxed">
@@ -156,7 +144,6 @@ export function FilterSidebar({
               </p>
             </div>
           ) : (
-            // 3. RENDERIZADO NORMAL (Tu lógica de map actual)
             filterKeys.map(key => {
               const options = filterOptions[key] || [];
               const selected = selectedFilters[key] || [];
@@ -165,7 +152,7 @@ export function FilterSidebar({
 
               const label = getFilterLabel(key);
               const customConfig = CUSTOM_FILTERS[key];
-              const fieldKeyForOrder = customConfig?.filter || key;
+              const fieldKeyForOrder = (customConfig?.filter as string) || key;
 
               let sortedOptions = [...options];
 
