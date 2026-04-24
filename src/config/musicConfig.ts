@@ -1,5 +1,5 @@
 /**
- * FOOTBALL COLLECTION CONFIGURATION
+ * MUSIC COLLECTION CONFIGURATION
  */
 
 
@@ -8,15 +8,15 @@
 // ==========================================
 
 /** Ruta de los datos */
-import rawDataJson from "@/data/json_files/football_collection - Collection.json";
-import listsDataJson from '@/data/json_files/football_collection - Lists.json';
+import rawDataJson from "@/data/json_files/music_collection - Collection.json";
+import listsDataJson from '@/data/json_files/music_collection - Lists.json';
 export const rawData = rawDataJson;
 export const listsData = listsDataJson;
 
 /** Información global para SEO y Branding */
 export const SITE_METADATA = {
-  title: "Everardo´s Football Collection",
-  description: "Personal football collection showcase",
+  title: "Everardo´s Music Collection",
+  description: "Personal music collection showcase",
   author: "Everardo",
   url: "https://tu-sitio.com", // Útil para metas de Open Graph
   ogImage: "/og-image.png",      // Imagen por defecto para redes sociales

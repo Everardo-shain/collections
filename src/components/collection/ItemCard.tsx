@@ -1,7 +1,7 @@
 import { forwardRef } from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { CollectionItem } from '@/config/footballConfig';
+import { CollectionItem } from '@/config';
 
 interface ItemCardProps {
   item: CollectionItem;

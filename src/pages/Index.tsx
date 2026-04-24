@@ -23,7 +23,7 @@ import {
   LINK_FIELDS,
   TITLE_FORMATTERS,
   formatDisplayValue,
-} from '@/config/footballConfig';
+} from '@/config';
 import { useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { Helmet } from 'react-helmet-async';
@@ -48,9 +48,6 @@ const Index = () => {
     activeFilterChips, 
     searchQuery 
   } = allFilters;
-
-  // --- LÓGICA DE ESTADO COMBINADO ---
-  const combinedState = useMemo(() => ({ ...sidebarState, ...navState }), [sidebarState, navState]);
 
   // --- LÓGICA DE NAVEGACIÓN DINÁMICA ---
   const navGroups = useMemo(() => generateNavGroups(collectionItems), []);

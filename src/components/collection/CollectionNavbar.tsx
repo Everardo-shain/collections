@@ -1,13 +1,13 @@
 import { Link, useSearchParams, useNavigate } from 'react-router-dom';
 import { Menu, X, ChevronDown, ChevronRight, ChevronLeft, Search } from 'lucide-react';
-import { NAVIGATION_CONFIG, SITE_METADATA } from '@/config/footballConfig';
+import { NAVIGATION_CONFIG, SITE_METADATA } from '@/config';
 import { useState, useRef, useEffect } from 'react';
 import { Input } from '@/components/ui/input';
 import { ThemeSelector } from '@/components/ThemeSelector';
 import { useScrollDirection } from '@/hooks/useScrollDirection';
 import { cn } from '@/lib/utils';
 
-import type { NavGroup } from '@/config/footballConfig';
+import type { NavGroup } from '@/config';
 
 const [PARENT_KEY, CHILD_KEY] = NAVIGATION_CONFIG.hierarchy.map(k => k.toLowerCase());
 

@@ -1,5 +1,5 @@
 import { AnimatePresence } from 'framer-motion';
-import { CollectionItem } from '@/config/footballConfig';
+import { CollectionItem } from '@/config';
 import { ItemCard } from './ItemCard';
 
 interface ItemGridProps {

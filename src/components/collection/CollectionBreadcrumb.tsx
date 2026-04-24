@@ -7,7 +7,7 @@ import {
   valid, 
   CollectionItem,
   LINK_FIELDS,
-} from "@/config/footballConfig";
+} from "@/config";
 
 interface BreadcrumbProps {
   filtersState?: Record<string, string[]>;

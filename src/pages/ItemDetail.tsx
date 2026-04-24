@@ -6,7 +6,6 @@ import { CollectionNavbar } from '@/components/collection/CollectionNavbar';
 import { CollectionBreadcrumb } from '@/components/collection/CollectionBreadcrumb';
 import { Helmet } from "react-helmet-async";
 
-import rawData from '@/data/json_files/football_collection - Collection.json';
 import { mapItem } from '@/utils/mapItem';
 import { 
   FIELD_MAP, 
@@ -21,7 +20,8 @@ import {
   generateNavGroups,
   VisibleField,
   CombinationResult,
-} from '@/config/footballConfig';
+  rawData
+} from '@/config';
 
 const collectionItems: CollectionItem[] = (rawData as any[]).map(mapItem);
 

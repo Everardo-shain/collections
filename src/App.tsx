@@ -5,7 +5,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { Helmet, HelmetProvider } from "react-helmet-async";
-import { SITE_METADATA } from "@/config/footballConfig";
+import { SITE_METADATA } from "@/config";
 
 // Componentes y Páginas
 import Index from "./pages/Index.tsx";

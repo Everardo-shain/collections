@@ -1,6 +1,6 @@
 import { useEffect, useCallback, useState, useRef } from 'react';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
-import { ChevronLeft, ChevronRight, X, ExternalLink } from 'lucide-react';
+import { ChevronLeft, ChevronRight, X} from 'lucide-react';
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
 import { motion, useMotionValue, animate } from 'framer-motion';
 

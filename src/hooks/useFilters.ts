@@ -4,17 +4,16 @@ import {
   SEARCH_KEYS,
   LINK_FIELDS,
   CUSTOM_FILTERS,
-  DETAILS_FILTERS,
   VALUE_SEPARATOR,
   valid,
   normalizeKey, 
   FIELD_MAP,
-  CollectionItem     
-} from "@/config/footballConfig";
+  CollectionItem,
+  rawData
+} from "@/config";
 
 import { useSearchParams } from "react-router-dom";
 import { useCallback, useMemo } from "react";
-import rawData from "@/data/json_files/football_collection - Collection.json";
 import { mapItem } from "@/utils/mapItem";
 
 export const collectionItems: CollectionItem[] = rawData.map(mapItem);
@@ -48,11 +47,7 @@ function getValue(item: CollectionItem, key: string): string {
 }
 
 const cleanText = (str: string) => {
-  return str
-    .toLowerCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "") 
-    .trim();
+  return str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
 };
 
 const getLevenshteinDistance = (a: string, b: string): number => {
@@ -61,11 +56,7 @@ const getLevenshteinDistance = (a: string, b: string): number => {
   for (let i = 1; i <= a.length; i++) {
     for (let j = 1; j <= b.length; j++) {
       const cost = a[i - 1] === b[j - 1] ? 0 : 1;
-      matrix[i][j] = Math.min(
-        matrix[i - 1][j] + 1,
-        matrix[i][j - 1] + 1,
-        matrix[i - 1][j - 1] + cost
-      );
+      matrix[i][j] = Math.min(matrix[i - 1][j] + 1, matrix[i][j - 1] + 1, matrix[i - 1][j - 1] + cost);
     }
   }
   return matrix[a.length][b.length];
@@ -89,13 +80,13 @@ export function useFilters() {
   const [searchParams, setSearchParams] = useSearchParams();
   const searchQuery = searchParams.get("q") || "";
 
+  // 1. GESTIÓN DE ESTADOS (URL)
   const navState = useMemo(() => {
     const state: Record<string, string[]> = {};
-    const allNavigableKeys = Array.from(new Set([...FILTER_KEYS, ...LINK_FIELDS]));
-    allNavigableKeys.forEach(key => {
+    Array.from(new Set([...FILTER_KEYS, ...LINK_FIELDS])).forEach(key => {
       const norm = normalizeKey(key);
-      const withPrefix = getArrayParam(searchParams, "nav_" + norm);
-      if (withPrefix.length > 0) state[norm] = withPrefix;
+      const val = getArrayParam(searchParams, "nav_" + norm);
+      if (val.length > 0) state[norm] = val;
     });
     return state;
   }, [searchParams]);
@@ -113,13 +104,12 @@ export function useFilters() {
   const combinedState = useMemo(() => {
     const combined: Record<string, string[]> = { ...sidebarState };
     Object.entries(navState).forEach(([key, values]) => {
-      if (values.length > 0) {
-        combined[key] = Array.from(new Set([...(combined[key] || []), ...values]));
-      }
+      combined[key] = Array.from(new Set([...(combined[key] || []), ...values]));
     });
     return combined;
   }, [sidebarState, navState]);
 
+  // 2. FILTRADO DE LA COLECCIÓN
   const filteredItems = useMemo(() => {
     const searchWords = cleanText(searchQuery).split(" ").filter(Boolean);
     const isSearching = searchWords.length > 0;
@@ -129,11 +119,9 @@ export function useFilters() {
         const itemSearchText = SEARCH_KEYS.map(k => getValue(item, k)).join(" ");
         return isMatch(itemSearchText, searchWords);
       }
-
       return Object.entries(combinedState).every(([k, selectedValues]) => {
         if (!selectedValues.length) return true;
-        const pureKey = k.startsWith('nav_') ? k.replace('nav_', '') : k;
-        if (pureKey === "details") return selectedValues.some(d => DETAILS_FILTERS[d]?.(item as any));
+        const pureKey = k.replace('nav_', '');
         const custom = CUSTOM_FILTERS[pureKey];
         if (custom) return selectedValues.some(v => custom.getValues(item as any, custom).includes(v));
         return matchField(getValue(item, pureKey), selectedValues);
@@ -141,112 +129,77 @@ export function useFilters() {
     });
   }, [combinedState, searchQuery]);
 
+  // 3. GENERACIÓN DE OPCIONES (Lógica de conteo y visibilidad)
   const filterOptions = useMemo(() => {
     const options: Record<string, { value: string; count: number }[]> = {};
     const searchWords = cleanText(searchQuery).split(" ").filter(Boolean);
 
     SIDEBAR_KEYS.forEach(key => {
       const normKey = normalizeKey(key);
+      const custom = CUSTOM_FILTERS[key];
 
       const itemsForThisSection = collectionItems.filter(item => {
-        // A. Lógica con Búsqueda
+        // A. Búsqueda por texto
         if (searchWords.length > 0) {
           const itemSearchText = SEARCH_KEYS.map(k => getValue(item, k)).join(" ");
           if (!isMatch(itemSearchText, searchWords)) return false;
-
-          return SIDEBAR_KEYS.every(sideKey => {
-            const sKeyNorm = normalizeKey(sideKey);
-            if (sKeyNorm === normKey) return true;
-            const selected = sidebarState[sKeyNorm] || [];
-            if (!selected.length) return true;
-            if (sKeyNorm === "details") return selected.some(d => DETAILS_FILTERS[d]?.(item as any));
-            const custom = CUSTOM_FILTERS[sKeyNorm];
-            if (custom) return selected.some(v => custom.getValues(item as any, custom).includes(v));
-            return matchField(getValue(item, sKeyNorm), selected);
-          });
         }
 
-        // B. Lógica con Navegación
+        // B. Filtros de Navegación (NavLinks)
         const matchesNav = Object.entries(navState).every(([k, v]) => matchField(getValue(item, k), v));
         if (!matchesNav) return false;
 
-        // C. Filtros del Sidebar
+        // C. Filtros Cruzados del Sidebar
         return SIDEBAR_KEYS.every(sideKey => {
           const sKeyNorm = normalizeKey(sideKey);
           if (sKeyNorm === normKey) return true;
           const selected = sidebarState[sKeyNorm] || [];
           if (!selected.length) return true;
-          if (sKeyNorm === "details") return selected.some(d => DETAILS_FILTERS[d]?.(item as any));
-          const custom = CUSTOM_FILTERS[sKeyNorm];
-          if (custom) return selected.some(v => custom.getValues(item as any, custom).includes(v));
+          const sideCustom = CUSTOM_FILTERS[sideKey];
+          if (sideCustom) return selected.some(v => sideCustom.getValues(item as any, sideCustom).includes(v));
           return matchField(getValue(item, sKeyNorm), selected);
         });
       });
 
-      // --- CÁLCULO DE CONTEOS ---
-      if (key === "details") {
-        let detailsOpts = Object.entries(DETAILS_FILTERS)
-          .map(([label, fn]) => ({
-            value: label, 
-            count: itemsForThisSection.filter(i => fn(i)).length
-          }))
-          .filter(opt => opt.count > 0 || sidebarState["details"]?.includes(opt.value));
-
-        // 🔥 Lógica de ocultado para Details:
-        // Si solo hay 1 opción y esa opción aplica a TODOS los items que estamos viendo,
-        // no sirve de nada mostrarla (a menos que el usuario ya la haya marcado).
-        if (detailsOpts.length === 1) {
-          const isSelected = sidebarState["details"]?.includes(detailsOpts[0].value);
-          const appliesToAll = detailsOpts[0].count === itemsForThisSection.length;
-          
-          if (!isSelected && appliesToAll) {
-            detailsOpts = [];
-          }
+      // CONTEO DE VALORES
+      const counts: Record<string, number> = {};
+      itemsForThisSection.forEach(item => {
+        const vals = custom 
+          ? custom.getValues(item as any, custom) 
+          : getItemValues(getValue(item, key));
+        
+        if (vals.length > 0) {
+          vals.forEach(v => { if (v) counts[v] = (counts[v] || 0) + 1; });
         }
+      });
 
-        options[key] = detailsOpts;
-      } else {
-        const counts: Record<string, number> = {};
-        const custom = CUSTOM_FILTERS[key];
-        let totalValidsForThisSection = 0;
+      // Inyectar seleccionados con count 0 (para que no desaparezcan al desmarcar)
+      const selectedValues = sidebarState[normKey] || [];
+      selectedValues.forEach(val => { if (!(val in counts)) counts[val] = 0; });
 
-        itemsForThisSection.forEach(item => {
-          const vals = custom ? custom.getValues(item as any, custom) : getItemValues(getValue(item, key));
-          if (vals.length > 0) {
-            totalValidsForThisSection++;
-            vals.forEach(v => { if (v) counts[v] = (counts[v] || 0) + 1; });
-          }
-        });
+      let finalOptions = Object.entries(counts).map(([value, count]) => ({ value, count }));
 
-        // 🔥 CRÍTICO: Inyectar valores seleccionados con count 0 si no están en los resultados actuales
-        const selectedValues = sidebarState[normKey] || [];
-        selectedValues.forEach(val => {
-          if (!(val in counts)) counts[val] = 0;
-        });
-
-        let finalOptions = Object.entries(counts)
-          .map(([value, count]) => ({ value, count }))
-          .sort((a, b) => b[1] - a[1]);
-
-        // Solo ocultar la sección si realmente no hay nada útil que mostrar Y nada seleccionado
-        if (finalOptions.length === 1 && selectedValues.length === 0) {
-            if (finalOptions[0].count === totalValidsForThisSection) {
-                finalOptions = [];
-            }
+      // --- REGLA DE REDUNDANCIA (Ocultado inteligente) ---
+      // Si solo hay una opción y no hay nada seleccionado...
+      if (finalOptions.length === 1 && selectedValues.length === 0) {
+        // ...y esa opción la tienen todos los items actuales, el filtro es inútil.
+        if (finalOptions[0].count === itemsForThisSection.length) {
+          finalOptions = [];
         }
-
-        options[key] = finalOptions;
       }
+
+      options[key] = finalOptions;
     });
 
     return options;
   }, [navState, sidebarState, searchQuery]);
 
+  // 4. ACCIONES Y UTILIDADES
   const activeFilterChips = useMemo(() => {
     const chips: any[] = [];
     Object.entries(sidebarState).forEach(([key, values]) => {
       values.forEach(value => {
-        let displayKey = CUSTOM_FILTERS[key]?.label || (key === "details" ? "Details" : (FIELD_MAP as any)[key]) || key;
+        let displayKey = CUSTOM_FILTERS[key]?.label || (FIELD_MAP as any)[key] || key;
         chips.push({ key, value, label: value, displayKey });
       });
     });
@@ -270,8 +223,7 @@ export function useFilters() {
       if (!value) { p.delete(normKey); return p; }
       const current = getArrayParam(p, normKey);
       const next = current.filter(v => v !== value);
-      if (next.length) p.set(normKey, next.join(VALUE_SEPARATOR));
-      else p.delete(normKey);
+      next.length ? p.set(normKey, next.join(VALUE_SEPARATOR)) : p.delete(normKey);
       return p;
     }, { replace: true });
   }, [setSearchParams]);
@@ -279,9 +231,7 @@ export function useFilters() {
   const clearAll = useCallback(() => {
     setSearchParams(prev => {
       const p = new URLSearchParams(prev);
-      Array.from(p.keys()).forEach(key => {
-        if (!key.startsWith('nav_') && key !== 'q') p.delete(key);
-      });
+      Array.from(p.keys()).forEach(k => { if (!k.startsWith('nav_') && k !== 'q') p.delete(k); });
       return p;
     }, { replace: true });
   }, [setSearchParams]);
@@ -291,7 +241,7 @@ export function useFilters() {
     toggleFilter, removeFilter, clearAll,
     setSearchQuery: (q: string) => setSearchParams(prev => {
       const p = new URLSearchParams(prev);
-      if (q) p.set("q", q); else p.delete("q");
+      q ? p.set("q", q) : p.delete("q");
       return p;
     }, { replace: true })
   };

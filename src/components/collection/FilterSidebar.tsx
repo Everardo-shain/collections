@@ -1,11 +1,9 @@
-import { FIELD_MAP, CUSTOM_FILTERS, getIndex } from '@/config/footballConfig';
+import { FIELD_MAP, CUSTOM_FILTERS, getIndex, listsData } from '@/config';
 import { useState, useEffect } from 'react';
 import { ChevronDown, ChevronUp, SlidersHorizontal, X } from 'lucide-react';
 import { Checkbox } from '@/components/ui/checkbox';
 import { cn } from '@/lib/utils';
 
-// 👇 Importamos el archivo JSON con el orden de las listas
-import listsData from '@/data/json_files/football_collection - Lists.json';
 
 interface FilterSidebarProps {
   filterOptions: Record<string, { value: string; count: number }[]>;
@@ -20,13 +18,14 @@ interface FilterSidebarProps {
 const SHOW_MORE_THRESHOLD = 10;
 
 function getFilterLabel(key: string) {
+  // 1. Si está en CUSTOM_FILTERS, usa su label
   if (CUSTOM_FILTERS[key]) return CUSTOM_FILTERS[key].label;
 
-  if (key === "details") return "Details";
-
+  // 2. Si es una llave normal mapeada
   const mappedKey = FIELD_MAP[key];
   if (mappedKey) return mappedKey;
 
+  // 3. Fallback: Capitalizar
   return key.charAt(0).toUpperCase() + key.slice(1);
 }
 

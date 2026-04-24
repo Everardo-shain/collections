@@ -12,6 +12,10 @@ const config = {
   football: {
     input: "src/data/csv_files/football_collection - Collection.csv",
     output: "src/data/json_files/football_collection - Collection.json"
+  },
+  music: {
+    input: "src/data/csv_files/music_collection - Collection.csv",
+    output: "src/data/json_files/music_collection - Collection.json"
   }
 };
 
