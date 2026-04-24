@@ -98,10 +98,20 @@ export function CollectionNavbar({ navGroups = [] }: { navGroups: NavGroup[] }) 
   const isHidden = scrollDir === "down" && scrollY > 100 && !mobileOpen;
 
   const triggerSearch = (value: string) => {
-    const params = new URLSearchParams(searchParams);
-    if (value.trim()) params.set('q', value.trim());
-    else params.delete('q');
-    navigate(`/?${params.toString()}`);
+    // En lugar de copiar los params existentes, creamos unos nuevos desde cero
+    const params = new URLSearchParams();
+    
+    const cleanValue = value.trim();
+    
+    if (cleanValue) {
+      // Si hay texto, el ÚNICO parámetro será 'q'
+      params.set('q', cleanValue);
+      navigate(`/?${params.toString()}`);
+    } else {
+      // Si el usuario borra el buscador y da Enter, vuelve a la raíz sin filtros
+      navigate('/');
+    }
+    
     setMobileOpen(false);
   };
 

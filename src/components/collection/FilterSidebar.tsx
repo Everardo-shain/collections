@@ -97,23 +97,23 @@ export function FilterSidebar({
   onClose,
   stickyOffset,
 }: FilterSidebarProps) {
-    
-  // Bloquear scroll del body cuando el sidebar móvil está abierto
-  useEffect(() => {
-    // Solo aplicamos el bloqueo si estamos en pantallas pequeñas (< 1024px)
-    const isMobile = window.innerWidth < 1024;
+  
+  // 1. Verificamos si hay AL MENOS una opción para mostrar en cualquier categoría
+  // O si hay filtros ya seleccionados (para no ocultar el sidebar si el usuario quiere desmarcarlos)
+  const hasVisibleFilters = filterKeys.some(key => {
+    const options = filterOptions[key] || [];
+    const selected = selectedFilters[key] || [];
+    return options.length > 0 || selected.length > 0;
+  });
 
+  useEffect(() => {
+    const isMobile = window.innerWidth < 1024;
     if (isOpen && isMobile) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = '';
     }
-
-    // "Cleanup function": fundamental para devolver el scroll 
-    // si el componente se desmonta inesperadamente
-    return () => {
-      document.body.style.overflow = '';
-    };
+    return () => { document.body.style.overflow = ''; };
   }, [isOpen]);
 
   const isDesktop = typeof window !== 'undefined' && window.innerWidth >= 1024;
@@ -127,70 +127,69 @@ export function FilterSidebar({
       )}
 
       <aside
-      style={{ 
-        top: isDesktop ? `${stickyOffset}px` : '0', 
-        height: isDesktop ? `calc(100vh - ${stickyOffset}px)` : '100dvh'
-      }}
-      className={cn(
-          "transition-all duration-300 ease-in-out",
-          // 3. Mobile: z-[70] para estar sobre el overlay, fixed top-0
-          "fixed left-0 top-0 w-80 bg-card z-[70] transform lg:translate-x-0",
-          // 4. Desktop: Volvemos a comportamiento normal
-          "lg:sticky lg:w-64 lg:shrink-0 lg:block lg:overflow-y-auto lg:bg-transparent lg:z-auto",
-          isOpen ? "translate-x-0" : "-translate-x-full"
-      )}
+        style={{ 
+          top: isDesktop ? `${stickyOffset}px` : '0', 
+          height: isDesktop ? `calc(100vh - ${stickyOffset}px)` : '100dvh'
+        }}
+        className={cn(
+            "transition-all duration-300 ease-in-out",
+            "fixed left-0 top-0 w-80 bg-card z-[70] transform lg:translate-x-0",
+            "lg:sticky lg:w-64 lg:shrink-0 lg:block lg:overflow-y-auto lg:bg-transparent lg:z-auto",
+            isOpen ? "translate-x-0" : "-translate-x-full"
+        )}
       >
-        {/* Contenedor interno con scroll para mobile */}
         <div className="p-4 lg:p-0 lg:pr-6 h-full overflow-y-auto lg:overflow-visible">
-          <div className="flex items-start justify-between mb-4 lg:mb-0">
+          <div className="flex items-start justify-between mb-4">
             <div className="flex items-start gap-2 text-sm font-semibold text-foreground py-1.5">
               <SlidersHorizontal className="w-4 h-4" />
               Filters
             </div>
-            {/* Botón X de cerrar más visible en mobile */}
             <button className="lg:hidden p-2 -mr-2 hover:bg-accent rounded-full transition-colors" onClick={onClose}>
               <X className="w-5 h-5" />
             </button>
           </div>
 
-          {filterKeys.map(key => {
-            const options = filterOptions[key] || [];
-            const selected = selectedFilters[key] || [];
+          {/* 2. LÓGICA INFORMATIVA: Si no hay filtros, mostramos el mensaje */}
+          {!hasVisibleFilters ? (
+            <div className="mt-4 p-4 border border-dashed border-muted rounded-xl bg-muted/20">
+              <p className="text-xs text-muted-foreground text-center italic leading-relaxed">
+                No additional filters available for these results.
+              </p>
+            </div>
+          ) : (
+            // 3. RENDERIZADO NORMAL (Tu lógica de map actual)
+            filterKeys.map(key => {
+              const options = filterOptions[key] || [];
+              const selected = selectedFilters[key] || [];
 
-            if (options.length === 0 && selected.length === 0) return null;
+              if (options.length === 0 && selected.length === 0) return null;
 
-            const label = getFilterLabel(key);
+              const label = getFilterLabel(key);
+              const customConfig = CUSTOM_FILTERS[key];
+              const fieldKeyForOrder = customConfig?.filter || key;
 
-            const customConfig = CUSTOM_FILTERS[key];
+              let sortedOptions = [...options];
 
-            const fieldKeyForOrder = customConfig?.filter || key;
+              if (listsData) {
+                sortedOptions.sort((a, b) => {
+                  const posA = getIndex(a.value, fieldKeyForOrder);
+                  const posB = getIndex(b.value, fieldKeyForOrder);
+                  if (posA === posB) return b.count - a.count;
+                  return posA - posB;
+                });
+              }
 
-            let sortedOptions = [...options];
-
-            if (listsData) {
-              sortedOptions.sort((a, b) => {
-                // ⚡️ Usamos la misma lógica que el SORT_CONFIG
-                const posA = getIndex(a.value, fieldKeyForOrder);
-                const posB = getIndex(b.value, fieldKeyForOrder);
-                
-                // Si hay empate en posición (ej: ambos son Infinity), 
-                // ordenamos por cantidad de items (count) de mayor a menor
-                if (posA === posB) return b.count - a.count;
-                
-                return posA - posB;
-              });
-            }
-
-            return (
-              <FilterSection
-                key={key}
-                label={label}
-                options={sortedOptions}
-                selected={selected}
-                onToggle={(value) => onToggleFilter(key, value)}
-              />
-            );
-          })}
+              return (
+                <FilterSection
+                  key={key}
+                  label={label}
+                  options={sortedOptions}
+                  selected={selected}
+                  onToggle={(value) => onToggleFilter(key, value)}
+                />
+              );
+            })
+          )}
         </div>
       </aside>
     </>
