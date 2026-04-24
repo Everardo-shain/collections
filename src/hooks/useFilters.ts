@@ -1,22 +1,14 @@
-import {
-  FILTER_KEYS,
-  SIDEBAR_KEYS,
-  SEARCH_KEYS,
-  LINK_FIELDS,
-  CUSTOM_FILTERS,
-  VALUE_SEPARATOR,
-  valid,
-  normalizeKey, 
-  FIELD_MAP,
-  CollectionItem,
-  rawData
-} from "@/config";
-
 import { useSearchParams } from "react-router-dom";
 import { useCallback, useMemo } from "react";
-import { mapItem } from "@/utils/mapItem";
-
-export const collectionItems: CollectionItem[] = rawData.map(mapItem);
+import {
+  VALUE_SEPARATOR,
+  valid,
+  normalizeKey,
+  cleanText,
+  isMatch,
+  CollectionItem,
+} from "@/config";
+import { useCollection } from "@/hooks/useCollection";
 
 // --- HELPERS ---
 function getArrayParam(params: URLSearchParams, key: string): string[] {
@@ -46,41 +38,28 @@ function getValue(item: CollectionItem, key: string): string {
   return typeof value === "string" ? value : "";
 }
 
-const cleanText = (str: string) => {
-  return str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
-};
-
-const getLevenshteinDistance = (a: string, b: string): number => {
-  const matrix = Array.from({ length: a.length + 1 }, (_, i) => [i]);
-  for (let j = 1; j <= b.length; j++) matrix[0][j] = j;
-  for (let i = 1; i <= a.length; i++) {
-    for (let j = 1; j <= b.length; j++) {
-      const cost = a[i - 1] === b[j - 1] ? 0 : 1;
-      matrix[i][j] = Math.min(matrix[i - 1][j] + 1, matrix[i][j - 1] + 1, matrix[i - 1][j - 1] + cost);
-    }
-  }
-  return matrix[a.length][b.length];
-};
-
-const isMatch = (itemValue: string, searchWords: string[]) => {
-  const normalizedValue = cleanText(itemValue);
-  const itemParts = normalizedValue.split(" ");
-  return searchWords.every(word => {
-    if (normalizedValue.includes(word)) return true;
-    return itemParts.some(part => {
-      if (word.length <= 3) return part === word;
-      const distance = getLevenshteinDistance(word, part);
-      const maxErrors = word.length <= 6 ? 1 : 2;
-      return distance <= maxErrors;
-    });
-  });
-};
-
 export function useFilters() {
   const [searchParams, setSearchParams] = useSearchParams();
   const searchQuery = searchParams.get("q") || "";
 
-  // 1. GESTIÓN DE ESTADOS (URL)
+  const { config } = useCollection();
+  const {
+    rawData,
+    mapItem,
+    FILTER_KEYS,
+    SIDEBAR_KEYS,
+    SEARCH_KEYS,
+    LINK_FIELDS,
+    CUSTOM_FILTERS,
+    FIELD_MAP,
+  } = config;
+
+  const collectionItems: CollectionItem[] = useMemo(
+    () => (rawData as Record<string, string>[]).map(mapItem),
+    [rawData, mapItem]
+  );
+
+  // 1. ESTADOS DESDE URL
   const navState = useMemo(() => {
     const state: Record<string, string[]> = {};
     Array.from(new Set([...FILTER_KEYS, ...LINK_FIELDS])).forEach(key => {
@@ -89,7 +68,7 @@ export function useFilters() {
       if (val.length > 0) state[norm] = val;
     });
     return state;
-  }, [searchParams]);
+  }, [searchParams, FILTER_KEYS, LINK_FIELDS]);
 
   const sidebarState = useMemo(() => {
     const state: Record<string, string[]> = {};
@@ -99,7 +78,7 @@ export function useFilters() {
       if (val.length > 0) state[norm] = val;
     });
     return state;
-  }, [searchParams]);
+  }, [searchParams, SIDEBAR_KEYS]);
 
   const combinedState = useMemo(() => {
     const combined: Record<string, string[]> = { ...sidebarState };
@@ -109,7 +88,7 @@ export function useFilters() {
     return combined;
   }, [sidebarState, navState]);
 
-  // 2. FILTRADO DE LA COLECCIÓN
+  // 2. FILTRADO
   const filteredItems = useMemo(() => {
     const searchWords = cleanText(searchQuery).split(" ").filter(Boolean);
     const isSearching = searchWords.length > 0;
@@ -123,13 +102,13 @@ export function useFilters() {
         if (!selectedValues.length) return true;
         const pureKey = k.replace('nav_', '');
         const custom = CUSTOM_FILTERS[pureKey];
-        if (custom) return selectedValues.some(v => custom.getValues(item as any, custom).includes(v));
+        if (custom) return selectedValues.some(v => custom.getValues(item, custom).includes(v));
         return matchField(getValue(item, pureKey), selectedValues);
       });
     });
-  }, [combinedState, searchQuery]);
+  }, [collectionItems, combinedState, searchQuery, SEARCH_KEYS, CUSTOM_FILTERS]);
 
-  // 3. GENERACIÓN DE OPCIONES (Lógica de conteo y visibilidad)
+  // 3. OPCIONES
   const filterOptions = useMemo(() => {
     const options: Record<string, { value: string; count: number }[]> = {};
     const searchWords = cleanText(searchQuery).split(" ").filter(Boolean);
@@ -139,72 +118,56 @@ export function useFilters() {
       const custom = CUSTOM_FILTERS[key];
 
       const itemsForThisSection = collectionItems.filter(item => {
-        // A. Búsqueda por texto
         if (searchWords.length > 0) {
           const itemSearchText = SEARCH_KEYS.map(k => getValue(item, k)).join(" ");
           if (!isMatch(itemSearchText, searchWords)) return false;
         }
-
-        // B. Filtros de Navegación (NavLinks)
         const matchesNav = Object.entries(navState).every(([k, v]) => matchField(getValue(item, k), v));
         if (!matchesNav) return false;
 
-        // C. Filtros Cruzados del Sidebar
         return SIDEBAR_KEYS.every(sideKey => {
           const sKeyNorm = normalizeKey(sideKey);
           if (sKeyNorm === normKey) return true;
           const selected = sidebarState[sKeyNorm] || [];
           if (!selected.length) return true;
           const sideCustom = CUSTOM_FILTERS[sideKey];
-          if (sideCustom) return selected.some(v => sideCustom.getValues(item as any, sideCustom).includes(v));
+          if (sideCustom) return selected.some(v => sideCustom.getValues(item, sideCustom).includes(v));
           return matchField(getValue(item, sKeyNorm), selected);
         });
       });
 
-      // CONTEO DE VALORES
       const counts: Record<string, number> = {};
       itemsForThisSection.forEach(item => {
-        const vals = custom 
-          ? custom.getValues(item as any, custom) 
-          : getItemValues(getValue(item, key));
-        
-        if (vals.length > 0) {
-          vals.forEach(v => { if (v) counts[v] = (counts[v] || 0) + 1; });
-        }
+        const vals = custom ? custom.getValues(item, custom) : getItemValues(getValue(item, key));
+        if (vals.length > 0) vals.forEach(v => { if (v) counts[v] = (counts[v] || 0) + 1; });
       });
 
-      // Inyectar seleccionados con count 0 (para que no desaparezcan al desmarcar)
       const selectedValues = sidebarState[normKey] || [];
       selectedValues.forEach(val => { if (!(val in counts)) counts[val] = 0; });
 
       let finalOptions = Object.entries(counts).map(([value, count]) => ({ value, count }));
 
-      // --- REGLA DE REDUNDANCIA (Ocultado inteligente) ---
-      // Si solo hay una opción y no hay nada seleccionado...
       if (finalOptions.length === 1 && selectedValues.length === 0) {
-        // ...y esa opción la tienen todos los items actuales, el filtro es inútil.
-        if (finalOptions[0].count === itemsForThisSection.length) {
-          finalOptions = [];
-        }
+        if (finalOptions[0].count === itemsForThisSection.length) finalOptions = [];
       }
 
       options[key] = finalOptions;
     });
 
     return options;
-  }, [navState, sidebarState, searchQuery]);
+  }, [collectionItems, navState, sidebarState, searchQuery, SIDEBAR_KEYS, SEARCH_KEYS, CUSTOM_FILTERS]);
 
-  // 4. ACCIONES Y UTILIDADES
+  // 4. CHIPS
   const activeFilterChips = useMemo(() => {
     const chips: any[] = [];
     Object.entries(sidebarState).forEach(([key, values]) => {
       values.forEach(value => {
-        let displayKey = CUSTOM_FILTERS[key]?.label || (FIELD_MAP as any)[key] || key;
+        const displayKey = CUSTOM_FILTERS[key]?.label || (FIELD_MAP as any)[key] || key;
         chips.push({ key, value, label: value, displayKey });
       });
     });
     return chips;
-  }, [sidebarState]);
+  }, [sidebarState, CUSTOM_FILTERS, FIELD_MAP]);
 
   const toggleFilter = (key: string, value: string) => {
     const newParams = new URLSearchParams(searchParams);
@@ -237,12 +200,13 @@ export function useFilters() {
   }, [setSearchParams]);
 
   return {
+    collectionItems,
     filteredItems, filterOptions, sidebarState, navState, activeFilterChips, searchQuery,
     toggleFilter, removeFilter, clearAll,
     setSearchQuery: (q: string) => setSearchParams(prev => {
       const p = new URLSearchParams(prev);
       q ? p.set("q", q) : p.delete("q");
       return p;
-    }, { replace: true })
+    }, { replace: true }),
   };
 }

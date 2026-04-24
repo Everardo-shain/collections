@@ -5,25 +5,11 @@ import { CollectionBreadcrumb } from '@/components/collection/CollectionBreadcru
 import { FilterSidebar } from '@/components/collection/FilterSidebar';
 import { ActiveFilters } from '@/components/collection/ActiveFilters';
 import { ItemGrid } from '@/components/collection/ItemGrid';
-import { useFilters, collectionItems } from '@/hooks/useFilters';
+import { useFilters } from '@/hooks/useFilters';
+import { useCollection } from '@/hooks/useCollection';
 import { useScrollDirection } from '@/hooks/useScrollDirection';
 import { useElementSize } from '@/hooks/useElementSize';
-import { 
-  SIDEBAR_KEYS, 
-  BREADCRUMB_RESOLVER, 
-  NAVIGATION_BREADCRUMB, 
-  SITE_METADATA, 
-  generateNavGroups,
-  SORT_CONFIG,
-  SortOption,
-  BREADCRUMB_LABELS,
-  BREADCRUMB_KEYS,
-  VALUE_SEPARATOR,
-  valid,
-  LINK_FIELDS,
-  TITLE_FORMATTERS,
-  formatDisplayValue,
-} from '@/config';
+import { SITE_METADATA, valid, formatDisplayValue, VALUE_SEPARATOR, SortOption } from '@/config';
 import { useLocation } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { Helmet } from 'react-helmet-async';
@@ -36,21 +22,34 @@ const Index = () => {
   const [sortBy, setSortBy] = useState<SortOption>('default');
   const [sortOpen, setSortOpen] = useState(false);
   const [scrollY, setScrollY] = useState(0);
-  
-  const scrollDir = useScrollDirection();
-  const allFilters = useFilters();
 
-  const { 
-    filteredItems, 
-    filterOptions, 
-    sidebarState, 
-    navState, 
-    activeFilterChips, 
-    searchQuery 
+  const scrollDir = useScrollDirection();
+  const { config } = useCollection();
+  const {
+    SIDEBAR_KEYS,
+    BREADCRUMB_RESOLVER,
+    NAVIGATION_BREADCRUMB,
+    generateNavGroups,
+    SORT_CONFIG,
+    BREADCRUMB_LABELS,
+    BREADCRUMB_KEYS,
+    LINK_FIELDS,
+    TITLE_FORMATTERS,
+    metadata,
+  } = config;
+
+  const allFilters = useFilters();
+  const {
+    collectionItems,
+    filteredItems,
+    filterOptions,
+    sidebarState,
+    navState,
+    activeFilterChips,
+    searchQuery,
   } = allFilters;
 
-  // --- LÓGICA DE NAVEGACIÓN DINÁMICA ---
-  const navGroups = useMemo(() => generateNavGroups(collectionItems), []);
+  const navGroups = useMemo(() => generateNavGroups(collectionItems), [generateNavGroups, collectionItems]);
 
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
@@ -64,21 +63,17 @@ const Index = () => {
     toggleFilter: allFilters.toggleFilter,
     removeFilter: allFilters.removeFilter,
     clearAll: allFilters.clearAll,
-    setSearchQuery: allFilters.setSearchQuery
+    setSearchQuery: allFilters.setSearchQuery,
   };
 
-  // --- RESOLVER TÍTULO DINÁMICO (Contextual) ---
   const getPageTitle = () => {
     if (searchQuery) return `Search: "${searchQuery}"`;
 
     const urlParams = new URLSearchParams(window.location.search);
-    
-    // Verificamos si el state existe y si coincide con algún filtro activo en la URL
+
     if (location.state?.customLabel && location.state?.filterKey) {
       const key = `nav_${location.state.filterKey.toLowerCase()}`;
-      if (urlParams.has(key)) {
-        return location.state.customLabel;
-      }
+      if (urlParams.has(key)) return location.state.customLabel;
     }
 
     const getNavVal = (k: string) => {
@@ -86,7 +81,6 @@ const Index = () => {
       return urlParams.has(`nav_${lowerK}`) ? urlParams.get(`nav_${lowerK}`) : null;
     };
 
-    // 1. Obtener el contexto de la URL
     let compositeKey = BREADCRUMB_KEYS
       .map(k => getNavVal(k))
       .filter(v => v !== null && valid(v))
@@ -95,17 +89,14 @@ const Index = () => {
     if (!compositeKey && filteredItems.length > 0) {
       const firstItem = filteredItems[0];
       compositeKey = BREADCRUMB_KEYS
-        .map(k => firstItem[k as keyof typeof firstItem])
+        .map(k => firstItem[k as keyof typeof firstItem] as string)
         .filter(valid)
         .join(VALUE_SEPARATOR);
     }
 
     const firstKeyValue = getNavVal(BREADCRUMB_KEYS[0]) || (filteredItems[0]?.entity) || "";
 
-    // 2. Obtener la jerarquía activa
     const activeHierarchy = BREADCRUMB_RESOLVER({ filtersState: navState }) || NAVIGATION_BREADCRUMB;
-    
-    // Convertimos la jerarquía a minúsculas para comparar fácilmente
     const hierarchyKeysLower = activeHierarchy.map(k => k.toLowerCase());
 
     const activeFilters = Array.from(new Set([...activeHierarchy, ...LINK_FIELDS]))
@@ -114,32 +105,23 @@ const Index = () => {
         const value = getNavVal(lowerField);
         if (!value) return null;
 
-        // 🔥 LÓGICA FILTRADA:
-        // Solo aplicamos BREADCRUMB_LABELS si el campo es parte de la jerarquía estructural.
-        // Si es un LINK_FIELD que no está en la jerarquía (como "sleeves"), extraText será "".
         const isHierarchyField = hierarchyKeysLower.includes(lowerField);
-        
         const specificLabels = BREADCRUMB_LABELS[compositeKey] || BREADCRUMB_LABELS[firstKeyValue];
         const extraText = isHierarchyField ? (specificLabels?.[lowerField] || "") : "";
-        
+
         const combinedLabel = `${value}${extraText}`;
         const formattedLabel = formatDisplayValue(lowerField, combinedLabel);
-        
-        return { 
-          label: formattedLabel, 
-          field: lowerField 
-        };
+
+        return { label: formattedLabel, field: lowerField };
       })
-      .filter(Boolean) as { label: string, field: string }[];
+      .filter(Boolean) as { label: string; field: string }[];
 
     if (activeFilters.length === 0) return 'All Items';
 
     const last = activeFilters[activeFilters.length - 1];
     const formatter = TITLE_FORMATTERS[last.field];
 
-    return formatter 
-      ? formatter(last, activeFilters, compositeKey) 
-      : last.label;
+    return formatter ? formatter(last, activeFilters, compositeKey) : last.label;
   };
 
   const pageTitle = getPageTitle();
@@ -148,29 +130,31 @@ const Index = () => {
   const { height: headerHeight } = useElementSize(headerRef);
   const stickyOffset = (isNavbarHidden ? 0 : NAV_HEIGHT) + headerHeight;
 
-  // --- ORDENAMIENTO USANDO CONFIG ---
   const sortedItems = useMemo(() => {
-    const config = SORT_CONFIG[sortBy];
-    return [...filteredItems].sort(config.compare);
-  }, [filteredItems, sortBy]);
+    const sortConfig = SORT_CONFIG[sortBy];
+    return [...filteredItems].sort(sortConfig.compare);
+  }, [filteredItems, sortBy, SORT_CONFIG]);
+
+  const collectionTitle = metadata?.title || SITE_METADATA.title;
+  const seoTitle = pageTitle === 'All Items' ? collectionTitle : `${pageTitle} | ${collectionTitle}`;
 
   return (
     <div className="min-h-screen bg-background">
       <Helmet>
-        <title>{pageTitle === 'All Items' ? SITE_METADATA.title : `${pageTitle} | ${SITE_METADATA.title}`}</title>
+        <title>{seoTitle}</title>
+        <meta name="description" content={metadata?.description || SITE_METADATA.description} />
+        <meta property="og:title" content={seoTitle} />
+        <meta property="og:description" content={metadata?.description || SITE_METADATA.description} />
+        <meta property="og:type" content="website" />
+        {metadata?.ogImage && <meta property="og:image" content={metadata.ogImage} />}
       </Helmet>
 
       <CollectionNavbar navGroups={navGroups} />
 
-      <CollectionBreadcrumb 
-        filtersState={navState} 
-        searchQuery={searchQuery} 
-      />
+      <CollectionBreadcrumb filtersState={navState} searchQuery={searchQuery} />
 
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-6">
-        
-        {/* ZONA STICKY */}
-        <div 
+        <div
           ref={headerRef}
           style={{ top: isNavbarHidden ? 0 : NAV_HEIGHT }}
           className="sticky z-20 bg-background pt-2 transition-all duration-300 ease-in-out pb-3"
@@ -189,9 +173,7 @@ const Index = () => {
                   className="flex items-center gap-1.5 px-3 py-2 rounded-lg border border-border text-sm font-medium text-foreground hover:bg-accent/50 transition-colors"
                 >
                   {SORT_CONFIG[sortBy].label}
-                  <ChevronDown
-                    className={cn("w-3.5 h-3.5 transition-transform", sortOpen && "rotate-180")}
-                  />
+                  <ChevronDown className={cn("w-3.5 h-3.5 transition-transform", sortOpen && "rotate-180")} />
                 </button>
 
                 {sortOpen && (
@@ -199,10 +181,7 @@ const Index = () => {
                     {(Object.keys(SORT_CONFIG) as SortOption[]).map(opt => (
                       <button
                         key={opt}
-                        onClick={() => {
-                          setSortBy(opt);
-                          setSortOpen(false);
-                        }}
+                        onClick={() => { setSortBy(opt); setSortOpen(false); }}
                         className={cn(
                           "block w-full text-left px-4 py-2 text-sm transition-colors hover:bg-accent/50",
                           sortBy === opt ? 'text-primary font-medium' : 'text-muted-foreground'
@@ -235,7 +214,7 @@ const Index = () => {
         <div className="flex items-start gap-0 lg:gap-8 mt-4">
           <FilterSidebar
             filterOptions={filterOptions}
-            selectedFilters={sidebarState} 
+            selectedFilters={sidebarState}
             onToggleFilter={filters.toggleFilter}
             filterKeys={[...SIDEBAR_KEYS]}
             isOpen={sidebarOpen}

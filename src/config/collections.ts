@@ -1,9 +1,3 @@
-import * as Football from "./footballConfig";
-import * as Music from "./musicConfig";
-
-export const COLLECTIONS_MAP: Record<string, any> = {
-  football: Football,
-  music: Music,
-};
-
-export type CollectionId = keyof typeof COLLECTIONS_MAP;
+// Backwards-compatible re-export.
+export { COLLECTIONS_MAP, DEFAULT_COLLECTION_ID } from "./index";
+export type { CollectionId } from "./index";
