@@ -2,7 +2,20 @@
 <html lang="en" class="light">
 <head>
     <script>
-      (function(){var t=localStorage.getItem('collection-theme')||'system';if(t==='system'){t=window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'}document.documentElement.className=t})();
+      (function() {
+        // Lógica de tema existente
+        var t = localStorage.getItem('collection-theme') || 'system';
+        if (t === 'system') {
+          t = window.matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light';
+        }
+        document.documentElement.className = t;
+
+        // NUEVA Lógica de color de acento
+        var savedAccent = localStorage.getItem('last-accent-color');
+        if (savedAccent) {
+          document.documentElement.style.setProperty('--accent-color', savedAccent);
+        }
+      })();
     </script>
 
     <meta charset="UTF-8" />

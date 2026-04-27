@@ -28,10 +28,13 @@ export function useCollection(): { collectionId: CollectionId; config: Collectio
     const updateAccentColor = () => {
       const isDark = document.documentElement.classList.contains('dark');
       const colorToApply = isDark ? darkColor : lightColor;
+      
       document.documentElement.style.setProperty('--accent-color', colorToApply);
+      
+      // GUARDAR en localStorage para la próxima carga
+      localStorage.setItem('last-accent-color', colorToApply);
     };
 
-    // Aplicar inmediatamente
     updateAccentColor();
 
     const observer = new MutationObserver(updateAccentColor);
@@ -42,17 +45,15 @@ export function useCollection(): { collectionId: CollectionId; config: Collectio
 
     return () => {
       observer.disconnect();
-      // IMPORTANTE: Solo reseteamos si ya no estamos en una ruta de "view"
-      // Esto evita que al cambiar filtros (que cambian la URL) el color parpadee
       if (!window.location.pathname.includes('/view/')) {
         const isDarkNow = document.documentElement.classList.contains('dark');
-        document.documentElement.style.setProperty(
-          '--accent-color', 
-          isDarkNow ? SITE_METADATA.darkAccentColor : SITE_METADATA.lightAccentColor
-        );
+        const defaultColor = isDarkNow ? SITE_METADATA.darkAccentColor : SITE_METADATA.lightAccentColor;
+        document.documentElement.style.setProperty('--accent-color', defaultColor);
+        
+        // Actualizar también el storage al salir
+        localStorage.setItem('last-accent-color', defaultColor);
       }
     };
-    // Añadimos location.pathname para que el efecto sea consciente de los cambios de ruta
   }, [collectionData.config, location.pathname]);
 
   return collectionData;

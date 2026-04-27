@@ -64,9 +64,9 @@ export const FIELD_MAP = {
 } as const;
 
 export const STATS_KEYS = [
-  "team", "person", "style", "season",
-  "competition", "country", "confederation", "brand",
-  "technology"
+  "team_type", "confederation", "country", "competition",
+  "team", "season", "style", "release", "brand",
+  "technology", "person", "size", "details",
 ] as const;
 
 // ==========================================

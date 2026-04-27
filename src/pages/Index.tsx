@@ -170,80 +170,83 @@ const Index = () => {
           style={{ top: isNavbarHidden ? 0 : NAV_HEIGHT }}
           className="sticky z-20 bg-background pt-2 transition-all duration-300 ease-in-out pb-3"
         >
-          <div className="flex items-end justify-between">
+          {/* HEADER REESTRUCTURADO */}
+          <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+            {/* Título: Siempre arriba en mobile */}
             <div>
               <h1 className="font-heading text-xl md:text-2xl font-bold text-foreground tracking-tight">
                 {pageTitle} ({filteredItems.length})
               </h1>
             </div>
 
-            <div className="flex items-center gap-3">
-              {/* View mode toggle */}
-              <div className="inline-flex items-center rounded-lg border border-border p-0.5 bg-card">
-                <button
-                  onClick={() => setViewMode('gallery')}
-                  aria-label="Gallery view"
-                  className={cn(
-                    "flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-sm font-medium transition-colors",
-                    viewMode === 'gallery'
-                      ? "text-primary-foreground"
-                      : "text-muted-foreground hover:text-foreground"
-                  )}
-                  style={viewMode === 'gallery' ? { backgroundColor: 'hsl(var(--accent-color))' } : undefined}
-                >
-                  <LayoutGrid className="w-4 h-4" />
-                  <span className="hidden sm:inline">Gallery</span>
-                </button>
-                <button
-                  onClick={() => setViewMode('stats')}
-                  aria-label="Stats view"
-                  className={cn(
-                    "flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-sm font-medium transition-colors",
-                    viewMode === 'stats'
-                      ? "text-primary-foreground"
-                      : "text-muted-foreground hover:text-foreground"
-                  )}
-                  style={viewMode === 'stats' ? { backgroundColor: 'hsl(var(--accent-color))' } : undefined}
-                >
-                  <BarChart3 className="w-4 h-4" />
-                  <span className="hidden sm:inline">Stats</span>
-                </button>
-              </div>
-
-              <div className="relative">
-                <button
-                  onClick={() => setSortOpen(!sortOpen)}
-                  className="flex items-center gap-1.5 px-3 py-2 rounded-lg border border-border text-sm font-medium text-foreground hover:bg-accent/50 transition-colors"
-                >
-                  {SORT_CONFIG[sortBy].label}
-                  <ChevronDown className={cn("w-3.5 h-3.5 transition-transform", sortOpen && "rotate-180")} />
-                </button>
-
-                {sortOpen && (
-                  <div className="absolute right-0 top-full mt-1 min-w-[160px] bg-card border border-border rounded-lg shadow-lg py-1 z-30">
-                    {(Object.keys(SORT_CONFIG) as SortOption[]).map(opt => (
-                      <button
-                        key={opt}
-                        onClick={() => { setSortBy(opt); setSortOpen(false); }}
-                        className={cn(
-                          "block w-full text-left px-4 py-2 text-sm transition-colors hover:bg-accent/50",
-                          sortBy === opt ? 'text-primary font-medium' : 'text-muted-foreground'
-                        )}
-                      >
-                        {SORT_CONFIG[opt].label}
-                      </button>
-                    ))}
-                  </div>
-                )}
-              </div>
-
+            {/* Controles: En una fila separada en mobile */}
+            <div className="flex items-center justify-between md:justify-end gap-3">
+              {/* Botón de Filtros: Independiente en mobile */}
               <button
-                className="lg:hidden flex items-center gap-2 px-3 py-2 rounded-lg border border-border text-sm font-medium text-foreground"
+                className="lg:hidden flex items-center gap-2 px-3 py-2 rounded-lg border border-border text-sm font-medium text-foreground bg-card hover:bg-accent/50 transition-colors"
                 onClick={() => setSidebarOpen(true)}
               >
                 <SlidersHorizontal className="w-4 h-4" />
-                Filters
+                <span>Filters</span> 
               </button>
+              <div className="flex items-center gap-2 md:gap-3">
+                {/* View mode toggle */}
+                <div className="inline-flex items-center rounded-lg border border-border p-0.5 bg-card">
+                  <button
+                    onClick={() => setViewMode('gallery')}
+                    className={cn(
+                      "flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-sm font-medium transition-colors",
+                      viewMode === 'gallery'
+                        ? "text-primary-foreground"
+                        : "text-muted-foreground hover:text-foreground"
+                    )}
+                    style={viewMode === 'gallery' ? { backgroundColor: 'hsl(var(--accent-color))' } : undefined}
+                  >
+                    <LayoutGrid className="w-4 h-4" />
+                    <span className="hidden sm:inline">Gallery</span>
+                  </button>
+                  <button
+                    onClick={() => setViewMode('stats')}
+                    className={cn(
+                      "flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-sm font-medium transition-colors",
+                      viewMode === 'stats'
+                        ? "text-primary-foreground"
+                        : "text-muted-foreground hover:text-foreground"
+                    )}
+                    style={viewMode === 'stats' ? { backgroundColor: 'hsl(var(--accent-color))' } : undefined}
+                  >
+                    <BarChart3 className="w-4 h-4" />
+                    <span className="hidden sm:inline">Stats</span>
+                  </button>
+                </div>
+
+                {/* Sort dropdown */}
+                <div className="relative">
+                  <button
+                    onClick={() => setSortOpen(!sortOpen)}
+                    className="flex items-center gap-1.5 px-3 py-2 rounded-lg border border-border text-sm font-medium text-foreground hover:bg-accent/50 transition-colors"
+                  >
+                    {SORT_CONFIG[sortBy].label}
+                    <ChevronDown className={cn("w-3.5 h-3.5 transition-transform", sortOpen && "rotate-180")} />
+                  </button>
+                  {sortOpen && (
+                    <div className="absolute right-0 top-full mt-1 min-w-[160px] bg-card border border-border rounded-lg shadow-lg py-1 z-30">
+                      {(Object.keys(SORT_CONFIG) as SortOption[]).map(opt => (
+                        <button
+                          key={opt}
+                          onClick={() => { setSortBy(opt); setSortOpen(false); }}
+                          className={cn(
+                            "block w-full text-left px-4 py-2 text-sm transition-colors hover:bg-accent/50",
+                            sortBy === opt ? 'text-primary font-medium' : 'text-muted-foreground'
+                          )}
+                        >
+                          {SORT_CONFIG[opt].label}
+                        </button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </div>
             </div>
           </div>
 
