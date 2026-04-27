@@ -1,10 +1,11 @@
-import { useRef, useState, useEffect, useMemo } from 'react';
-import { SlidersHorizontal, ChevronDown } from 'lucide-react';
+import { useRef, useState, useEffect, useMemo, useCallback } from 'react';
+import { SlidersHorizontal, ChevronDown, LayoutGrid, BarChart3 } from 'lucide-react';
 import { CollectionNavbar } from '@/components/collection/CollectionNavbar';
 import { CollectionBreadcrumb } from '@/components/collection/CollectionBreadcrumb';
 import { FilterSidebar } from '@/components/collection/FilterSidebar';
 import { ActiveFilters } from '@/components/collection/ActiveFilters';
 import { ItemGrid } from '@/components/collection/ItemGrid';
+import { StatsView } from '@/components/collection/StatsView';
 import { useFilters } from '@/hooks/useFilters';
 import { useCollection } from '@/hooks/useCollection';
 import { useScrollDirection } from '@/hooks/useScrollDirection';
@@ -22,6 +23,12 @@ const Index = () => {
   const [sortBy, setSortBy] = useState<SortOption>('default');
   const [sortOpen, setSortOpen] = useState(false);
   const [scrollY, setScrollY] = useState(0);
+  const [viewMode, setViewMode] = useState<'gallery' | 'stats'>('gallery');
+  const [activeStatsTable, setActiveStatsTable] = useState<string | null>(null);
+
+  const handleStatsTableChange = useCallback((key: string) => {
+    setActiveStatsTable(key || null);
+  }, []);
 
   const scrollDir = useScrollDirection();
   
@@ -171,6 +178,38 @@ const Index = () => {
             </div>
 
             <div className="flex items-center gap-3">
+              {/* View mode toggle */}
+              <div className="inline-flex items-center rounded-lg border border-border p-0.5 bg-card">
+                <button
+                  onClick={() => setViewMode('gallery')}
+                  aria-label="Gallery view"
+                  className={cn(
+                    "flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-sm font-medium transition-colors",
+                    viewMode === 'gallery'
+                      ? "text-primary-foreground"
+                      : "text-muted-foreground hover:text-foreground"
+                  )}
+                  style={viewMode === 'gallery' ? { backgroundColor: 'hsl(var(--accent-color))' } : undefined}
+                >
+                  <LayoutGrid className="w-4 h-4" />
+                  <span className="hidden sm:inline">Gallery</span>
+                </button>
+                <button
+                  onClick={() => setViewMode('stats')}
+                  aria-label="Stats view"
+                  className={cn(
+                    "flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-sm font-medium transition-colors",
+                    viewMode === 'stats'
+                      ? "text-primary-foreground"
+                      : "text-muted-foreground hover:text-foreground"
+                  )}
+                  style={viewMode === 'stats' ? { backgroundColor: 'hsl(var(--accent-color))' } : undefined}
+                >
+                  <BarChart3 className="w-4 h-4" />
+                  <span className="hidden sm:inline">Stats</span>
+                </button>
+              </div>
+
               <div className="relative">
                 <button
                   onClick={() => setSortOpen(!sortOpen)}
@@ -227,7 +266,20 @@ const Index = () => {
           />
 
           <div className="flex-1 min-w-0">
-            <ItemGrid items={sortedItems} />
+            {viewMode === 'gallery' ? (
+              <ItemGrid items={sortedItems} />
+            ) : (
+              <StatsView
+                items={sortedItems}
+                sidebarState={sidebarState}
+                activeTable={activeStatsTable}
+                onChangeTable={handleStatsTableChange}
+                onSelectValue={(key, value) => {
+                  filters.toggleFilter(key, value);
+                  setViewMode('gallery');
+                }}
+              />
+            )}
           </div>
         </div>
       </div>
