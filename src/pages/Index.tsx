@@ -1,10 +1,11 @@
-import { useRef, useState, useEffect, useMemo } from 'react';
-import { SlidersHorizontal, ChevronDown } from 'lucide-react';
+import { useRef, useState, useEffect, useMemo, useCallback } from 'react';
+import { SlidersHorizontal, ChevronDown, LayoutGrid, BarChart3 } from 'lucide-react';
 import { CollectionNavbar } from '@/components/collection/CollectionNavbar';
 import { CollectionBreadcrumb } from '@/components/collection/CollectionBreadcrumb';
 import { FilterSidebar } from '@/components/collection/FilterSidebar';
 import { ActiveFilters } from '@/components/collection/ActiveFilters';
 import { ItemGrid } from '@/components/collection/ItemGrid';
+import { StatsView } from '@/components/collection/StatsView';
 import { useFilters } from '@/hooks/useFilters';
 import { useCollection } from '@/hooks/useCollection';
 import { useScrollDirection } from '@/hooks/useScrollDirection';
