@@ -178,6 +178,38 @@ const Index = () => {
             </div>
 
             <div className="flex items-center gap-3">
+              {/* View mode toggle */}
+              <div className="inline-flex items-center rounded-lg border border-border p-0.5 bg-card">
+                <button
+                  onClick={() => setViewMode('gallery')}
+                  aria-label="Gallery view"
+                  className={cn(
+                    "flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-sm font-medium transition-colors",
+                    viewMode === 'gallery'
+                      ? "text-primary-foreground"
+                      : "text-muted-foreground hover:text-foreground"
+                  )}
+                  style={viewMode === 'gallery' ? { backgroundColor: 'hsl(var(--accent-color))' } : undefined}
+                >
+                  <LayoutGrid className="w-4 h-4" />
+                  <span className="hidden sm:inline">Gallery</span>
+                </button>
+                <button
+                  onClick={() => setViewMode('stats')}
+                  aria-label="Stats view"
+                  className={cn(
+                    "flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-sm font-medium transition-colors",
+                    viewMode === 'stats'
+                      ? "text-primary-foreground"
+                      : "text-muted-foreground hover:text-foreground"
+                  )}
+                  style={viewMode === 'stats' ? { backgroundColor: 'hsl(var(--accent-color))' } : undefined}
+                >
+                  <BarChart3 className="w-4 h-4" />
+                  <span className="hidden sm:inline">Stats</span>
+                </button>
+              </div>
+
               <div className="relative">
                 <button
                   onClick={() => setSortOpen(!sortOpen)}
