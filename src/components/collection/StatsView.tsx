@@ -84,36 +84,43 @@ export function StatsView({
     );
   }
 
+  const activeLabel = activeTable ? formatLabel(activeTable, CUSTOM_FILTERS, FIELD_MAP) : '';
+
   return (
     <div className="space-y-4">
-      {/* Horizontal tabs */}
-      <div className="overflow-x-auto scrollbar-thin -mx-1 px-1">
-        <div className="flex items-center gap-2 pb-1 min-w-max">
-          {validTables.map(key => {
-            const isActive = key === activeTable;
-            return (
-              <button
-                key={key}
-                onClick={() => onChangeTable(key)}
-                className={cn(
-                  "whitespace-nowrap px-3 py-1.5 rounded-full text-sm font-medium border transition-colors capitalize",
-                  isActive
-                    ? "border-transparent text-primary-foreground"
-                    : "border-border text-muted-foreground hover:bg-accent/50 hover:text-foreground"
-                )}
-                style={isActive ? { backgroundColor: 'hsl(var(--accent-color))' } : undefined}
-              >
-                {formatLabel(key, CUSTOM_FILTERS, FIELD_MAP)}
-              </button>
-            );
-          })}
-        </div>
+      {/* Segmented control: wraps to multiple rows, joined buttons, only outer block corners rounded */}
+      <div className="flex flex-wrap -mt-px -ml-px overflow-hidden rounded-lg">
+        {validTables.map(key => {
+          const isActive = key === activeTable;
+          return (
+            <button
+              key={key}
+              onClick={() => onChangeTable(key)}
+              className={cn(
+                "flex-1 min-w-[120px] -mt-px -ml-px px-3 py-1.5 text-sm font-medium border border-border transition-colors capitalize",
+                isActive
+                  ? "text-primary-foreground border-transparent relative z-10"
+                  : "bg-card text-muted-foreground hover:bg-accent/50 hover:text-foreground"
+              )}
+              style={isActive ? { backgroundColor: 'hsl(var(--accent-color))' } : undefined}
+            >
+              {formatLabel(key, CUSTOM_FILTERS, FIELD_MAP)}
+            </button>
+          );
+        })}
       </div>
+
+      {/* Count indicator */}
+      {activeTable && (
+        <p className="text-xs text-muted-foreground">
+          Showing {rows.length} {activeLabel.toLowerCase()}{rows.length !== 1 ? (activeLabel.toLowerCase().endsWith('s') ? '' : 's') : ''}
+        </p>
+      )}
 
       {/* Table */}
       <div className="rounded-lg border border-border bg-card overflow-hidden">
         <div className="grid grid-cols-[1fr_auto] gap-x-4 px-4 py-2 text-xs uppercase tracking-wide text-muted-foreground border-b border-border bg-muted/30">
-          <span>{activeTable && formatLabel(activeTable, CUSTOM_FILTERS, FIELD_MAP)}</span>
+          <span>{activeLabel}</span>
           <span>Count</span>
         </div>
         <ul className="divide-y divide-border">
