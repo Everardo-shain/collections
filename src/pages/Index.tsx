@@ -23,6 +23,12 @@ const Index = () => {
   const [sortBy, setSortBy] = useState<SortOption>('default');
   const [sortOpen, setSortOpen] = useState(false);
   const [scrollY, setScrollY] = useState(0);
+  const [viewMode, setViewMode] = useState<'gallery' | 'stats'>('gallery');
+  const [activeStatsTable, setActiveStatsTable] = useState<string | null>(null);
+
+  const handleStatsTableChange = useCallback((key: string) => {
+    setActiveStatsTable(key || null);
+  }, []);
 
   const scrollDir = useScrollDirection();
   
