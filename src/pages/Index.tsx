@@ -266,7 +266,20 @@ const Index = () => {
           />
 
           <div className="flex-1 min-w-0">
-            <ItemGrid items={sortedItems} />
+            {viewMode === 'gallery' ? (
+              <ItemGrid items={sortedItems} />
+            ) : (
+              <StatsView
+                items={sortedItems}
+                sidebarState={sidebarState}
+                activeTable={activeStatsTable}
+                onChangeTable={handleStatsTableChange}
+                onSelectValue={(key, value) => {
+                  filters.toggleFilter(key, value);
+                  setViewMode('gallery');
+                }}
+              />
+            )}
           </div>
         </div>
       </div>
