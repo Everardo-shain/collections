@@ -26,7 +26,8 @@ export const metadata = {
   title: "Everardo´s Football Collection",
   description: "Personal football collection showcase",
   ogImage: "/og-image.png",
-  accentColor: "142 71% 40%",
+  lightAccentColor: "142 71% 40%",
+  darkAccentColor: "111 100% 51%",
   logo: "/src/assets/site/logo.svg",
 } as const;
 
@@ -61,6 +62,12 @@ export const FIELD_MAP = {
   signature: "Signature",
   notes: "Notes",
 } as const;
+
+export const STATS_KEYS = [
+  "team_type", "confederation", "country", "competition",
+  "team", "season", "style", "release", "brand",
+  "technology", "person", "size", "details",
+] as const;
 
 // ==========================================
 // 2. NAVEGACIÓN

@@ -25,7 +25,8 @@ export const SITE_METADATA = {
   author: "Everardo",
   url: "https://tu-sitio.com",
   ogImage: "/og-image.png",
-  accentColor: "142 71% 40%",
+  lightAccentColor: "1 0% 0%",
+  darkAccentColor: "1 0% 100%",
   logo: "/src/assets/site/logo.svg",
 } as const;
 

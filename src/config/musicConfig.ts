@@ -26,7 +26,8 @@ export const metadata = {
   title: "Everardo´s Music Collection",
   description: "Personal music collection showcase",
   ogImage: "/og-image.png",
-  accentColor: "280 70% 55%",
+  lightAccentColor: "209.277 92% 35%",
+  darkAccentColor: "189.084 100% 51%",
   logo: "/src/assets/site/logo.svg",
 } as const;
 
@@ -61,6 +62,12 @@ export const FIELD_MAP = {
   signature: "Signature",
   notes: "Notes",
 } as const;
+
+export const STATS_KEYS = [
+  "team", "person", "style", "season",
+  "competition", "country", "confederation", "brand",
+  "technology"
+] as const;
 
 // ==========================================
 // 2. NAVEGACIÓN

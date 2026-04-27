@@ -24,7 +24,10 @@ const Index = () => {
   const [scrollY, setScrollY] = useState(0);
 
   const scrollDir = useScrollDirection();
+  
+  // El hook useCollection ahora se encarga de inyectar el --accent-color automáticamente
   const { config } = useCollection();
+  
   const {
     SIDEBAR_KEYS,
     BREADCRUMB_RESOLVER,
@@ -51,23 +54,12 @@ const Index = () => {
 
   const navGroups = useMemo(() => generateNavGroups(collectionItems), [generateNavGroups, collectionItems]);
 
+  // Solo mantenemos el efecto del scroll para la UI
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
-
-  useEffect(() => {
-    const accent = (metadata as any)?.accentColor;
-    if (accent) {
-      document.documentElement.style.setProperty('--primary', accent);
-      document.documentElement.style.setProperty('--ring', accent);
-    }
-    return () => {
-      document.documentElement.style.removeProperty('--primary');
-      document.documentElement.style.removeProperty('--ring');
-    };
-  }, [metadata]);
 
   const isNavbarHidden = scrollDir === "down" && scrollY > 100;
 
