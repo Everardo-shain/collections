@@ -210,3 +210,120 @@ export default function ItemDetail() {
     </>
   );
 }
+
+/**
+ * Infinite carousel: real-time 1:1 drag with wrap-around.
+ * Renders [last, ...images, first] sentinel slides for seamless looping.
+ */
+function InfiniteCarousel({
+  images,
+  activeIndex,
+  onIndexChange,
+  onTap,
+}: {
+  images: string[];
+  activeIndex: number;
+  onIndexChange: (i: number) => void;
+  onTap?: () => void;
+}) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [width, setWidth] = useState(0);
+  const x = useMotionValue(0);
+  const draggingRef = useRef(false);
+  const startXRef = useRef(0);
+  const hasMultiple = images.length > 1;
+
+  // Measure container
+  useEffect(() => {
+    if (!containerRef.current) return;
+    const el = containerRef.current;
+    const measure = () => setWidth(el.offsetWidth);
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  // Snap to active index when it changes externally (or on mount)
+  useEffect(() => {
+    if (width === 0) return;
+    // slide index in extended array = activeIndex + 1 (offset by leading sentinel)
+    const target = -((activeIndex + 1) * width);
+    if (!draggingRef.current) {
+      animate(x, target, { type: 'spring', stiffness: 300, damping: 32 });
+    }
+  }, [activeIndex, width, x]);
+
+  if (!hasMultiple) {
+    return (
+      <div ref={containerRef} className="w-full h-full flex items-center justify-center p-6" onClick={onTap}>
+        <img src={images[0]} className="max-w-full max-h-full object-contain pointer-events-none" alt="" />
+      </div>
+    );
+  }
+
+  const slides = [images[images.length - 1], ...images, images[0]];
+
+  return (
+    <div ref={containerRef} className="w-full h-full overflow-hidden">
+      {width > 0 && (
+        <motion.div
+          className="flex h-full cursor-grab active:cursor-grabbing"
+          style={{ x, width: width * slides.length }}
+          drag="x"
+          dragElastic={0}
+          dragMomentum={false}
+          onDragStart={(e) => {
+            draggingRef.current = true;
+            const pe = e as PointerEvent;
+            startXRef.current = pe.clientX ?? 0;
+          }}
+          onDragEnd={(e, info) => {
+            draggingRef.current = false;
+            const offset = info.offset.x;
+            const velocity = info.velocity.x;
+            let next = activeIndex;
+            const threshold = width * 0.2;
+            if (offset < -threshold || velocity < -400) next = activeIndex + 1;
+            else if (offset > threshold || velocity > 400) next = activeIndex - 1;
+
+            // Animate to the (potentially out-of-range) sentinel slide first
+            const sentinelTarget = -((next + 1) * width);
+            animate(x, sentinelTarget, {
+              type: 'spring',
+              stiffness: 300,
+              damping: 32,
+              onComplete: () => {
+                const wrapped = ((next % images.length) + images.length) % images.length;
+                if (wrapped !== next) {
+                  // Jump silently to wrapped position
+                  x.set(-((wrapped + 1) * width));
+                }
+                onIndexChange(wrapped);
+              },
+            });
+
+            const pe = e as PointerEvent;
+            const dx = Math.abs((pe.clientX ?? 0) - startXRef.current);
+            if (dx < 5 && onTap) onTap();
+          }}
+        >
+          {slides.map((img, idx) => (
+            <div
+              key={idx}
+              className="h-full flex-shrink-0 flex items-center justify-center p-6"
+              style={{ width }}
+            >
+              <img
+                src={img}
+                draggable={false}
+                className="max-w-full max-h-full object-contain pointer-events-none select-none"
+                alt=""
+              />
+            </div>
+          ))}
+        </motion.div>
+      )}
+    </div>
+  );
+}
