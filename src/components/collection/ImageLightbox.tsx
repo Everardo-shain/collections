@@ -3,7 +3,7 @@ import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { motion, useMotionValue, animate } from 'framer-motion';
 
-// Helper para accesibilidad sin sacrificar diseño
+// Helper for accessibility without affecting layout
 const VisuallyHidden = ({ children }: { children: React.ReactNode }) => (
   <span style={{ position: 'absolute', width: 1, height: 1, padding: 0, margin: -1, overflow: 'hidden', clip: 'rect(0,0,0,0)', whiteSpace: 'nowrap', border: 0 }}>
     {children}
@@ -23,12 +23,16 @@ export function ImageLightbox({ images, activeIndex: initialIndex, open, onOpenC
   const [internalIndex, setInternalIndex] = useState(initialIndex);
   const [isZoomed, setIsZoomed] = useState(false);
   const [containerWidth, setContainerWidth] = useState(0);
-  
+
   const hasMultiple = images.length > 1;
   const x = useMotionValue(0);
   const containerRef = useRef<HTMLDivElement>(null);
+  const draggingRef = useRef(false);
 
-  // Sincronizar índice al abrir
+  // Sentinel-extended slides for infinite loop
+  const slides = hasMultiple ? [images[images.length - 1], ...images, images[0]] : images;
+
+  // Sync index when opening
   useEffect(() => {
     if (open) {
       setInternalIndex(initialIndex);
@@ -36,43 +40,54 @@ export function ImageLightbox({ images, activeIndex: initialIndex, open, onOpenC
     }
   }, [open, initialIndex]);
 
-  // Medir contenedor para el carrusel
+  // Measure container
   useEffect(() => {
-    if (open) {
-      const timer = setTimeout(() => {
-        if (containerRef.current) setContainerWidth(containerRef.current.offsetWidth);
-      }, 100);
-      return () => clearTimeout(timer);
-    }
+    if (!open) return;
+    const measure = () => {
+      if (containerRef.current) setContainerWidth(containerRef.current.offsetWidth);
+    };
+    const t = setTimeout(measure, 50);
+    window.addEventListener('resize', measure);
+    return () => {
+      clearTimeout(t);
+      window.removeEventListener('resize', measure);
+    };
   }, [open]);
 
-  // Animación suave entre imágenes
+  // Snap to active index
   useEffect(() => {
-    if (containerWidth > 0) {
-      animate(x, -(internalIndex * containerWidth), {
-        type: "spring",
-        stiffness: 260,
-        damping: 28,
-      });
+    if (containerWidth === 0) return;
+    const offset = hasMultiple ? internalIndex + 1 : internalIndex;
+    const target = -(offset * containerWidth);
+    if (!draggingRef.current) {
+      animate(x, target, { type: 'spring', stiffness: 280, damping: 32 });
     }
-  }, [internalIndex, containerWidth, x]);
+  }, [internalIndex, containerWidth, x, hasMultiple]);
 
   const handleClose = useCallback((isOpen: boolean) => {
     if (!isOpen) onIndexChange(internalIndex);
     onOpenChange(isOpen);
   }, [internalIndex, onIndexChange, onOpenChange]);
 
-  const goToPrev = useCallback(() => {
-    if (isZoomed) return;
-    setInternalIndex((prev) => (prev - 1 + images.length) % images.length);
-  }, [images.length, isZoomed]);
+  const goTo = useCallback((next: number) => {
+    if (isZoomed || !hasMultiple || containerWidth === 0) return;
+    const sentinelTarget = -((next + 1) * containerWidth);
+    animate(x, sentinelTarget, {
+      type: 'spring',
+      stiffness: 280,
+      damping: 32,
+      onComplete: () => {
+        const wrapped = ((next % images.length) + images.length) % images.length;
+        if (wrapped !== next) x.set(-((wrapped + 1) * containerWidth));
+        setInternalIndex(wrapped);
+      },
+    });
+  }, [isZoomed, hasMultiple, containerWidth, images.length, x]);
 
-  const goToNext = useCallback(() => {
-    if (isZoomed) return;
-    setInternalIndex((prev) => (prev + 1) % images.length);
-  }, [images.length, isZoomed]);
+  const goToPrev = useCallback(() => goTo(internalIndex - 1), [goTo, internalIndex]);
+  const goToNext = useCallback(() => goTo(internalIndex + 1), [goTo, internalIndex]);
 
-  // Atajos de teclado
+  // Keyboard
   useEffect(() => {
     if (!open) return;
     const handler = (e: KeyboardEvent) => {
@@ -86,51 +101,60 @@ export function ImageLightbox({ images, activeIndex: initialIndex, open, onOpenC
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent 
+      <DialogContent
         className="max-w-[100vw] w-screen h-screen p-0 bg-background border-none shadow-none flex flex-col items-center justify-center z-[100] outline-none overflow-hidden [&>button]:hidden duration-0"
       >
         <VisuallyHidden>
           <DialogTitle>{alt || 'Image gallery'}</DialogTitle>
         </VisuallyHidden>
 
-        {/* --- BOTÓN CERRAR --- */}
+        {/* Close button */}
         <div className="absolute top-4 right-4 z-[150]">
-          <button 
-            onClick={() => handleClose(false)} 
+          <button
+            onClick={() => handleClose(false)}
             className="p-3 bg-black/40 backdrop-blur-md text-white border border-white/10 hover:bg-black/60 transition-all rounded-full shadow-lg"
           >
             <X className="w-6 h-6" />
           </button>
         </div>
 
-        {/* --- CONTADOR --- */}
-        <div className="absolute bottom-6 right-8 z-[150] bg-black/40 backdrop-blur-md text-white border border-white/10 font-medium text-xs px-4 py-2 rounded-full select-none shadow-lg">
-          {internalIndex + 1} / {images.length}
-        </div>
-        
+        {/* Counter */}
+        {hasMultiple && (
+          <div className="absolute top-4 left-1/2 -translate-x-1/2 z-[150] bg-black/40 backdrop-blur-md text-white border border-white/10 font-medium text-xs px-4 py-2 rounded-full select-none shadow-lg">
+            {internalIndex + 1} / {images.length}
+          </div>
+        )}
+
         <div className="relative w-full h-full flex items-center justify-center">
           <div className="w-full h-full flex items-center overflow-hidden" ref={containerRef}>
             {containerWidth > 0 && (
               <motion.div
                 className="flex h-full"
-                style={{ x }}
-                drag={hasMultiple && !isZoomed ? "x" : false}
-                dragConstraints={{ left: -(internalIndex * containerWidth), right: -(internalIndex * containerWidth) }}
-                dragElastic={0.2}
+                style={{ x, width: containerWidth * slides.length }}
+                drag={hasMultiple && !isZoomed ? 'x' : false}
+                dragElastic={0}
+                dragMomentum={false}
+                onDragStart={() => { draggingRef.current = true; }}
                 onDragEnd={(_, info) => {
-                  if (info.offset.x < -50) goToNext();
-                  else if (info.offset.x > 50) goToPrev();
+                  draggingRef.current = false;
+                  const offset = info.offset.x;
+                  const velocity = info.velocity.x;
+                  const threshold = containerWidth * 0.18;
+                  let next = internalIndex;
+                  if (offset < -threshold || velocity < -400) next = internalIndex + 1;
+                  else if (offset > threshold || velocity > 400) next = internalIndex - 1;
+                  goTo(next);
                 }}
               >
-                {images.map((img, idx) => (
-                  <div 
-                    key={idx} 
-                    className="flex-shrink-0 flex items-center justify-center w-screen h-screen" 
+                {slides.map((img, idx) => (
+                  <div
+                    key={idx}
+                    className="flex-shrink-0 flex items-center justify-center h-full"
                     style={{ width: containerWidth }}
                   >
-                    <ZoomableImage 
-                      src={img} 
-                      isActive={internalIndex === idx} 
+                    <ZoomableImage
+                      src={img}
+                      isActive={hasMultiple ? idx === internalIndex + 1 : idx === internalIndex}
                       onZoomChange={setIsZoomed}
                     />
                   </div>
@@ -139,25 +163,35 @@ export function ImageLightbox({ images, activeIndex: initialIndex, open, onOpenC
             )}
           </div>
 
-          {/* --- FLECHAS DE NAVEGACIÓN --- */}
+          {/* Nav arrows */}
           {!isZoomed && hasMultiple && (
             <>
-            <button 
-              onClick={goToPrev} 
-              className="absolute left-4 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-black/40 backdrop-blur-md text-white border border-white/10 flex items-center justify-center hover:bg-black/60 z-[110] transition-all shadow-xl"
-            >
-              <ChevronLeft className="w-9 h-9" />
-            </button>
-
-            <button 
-              onClick={goToNext} 
-              className="absolute right-4 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-black/40 backdrop-blur-md text-white border border-white/10 flex items-center justify-center hover:bg-black/60 z-[110] transition-all shadow-xl"
-            >
-              <ChevronRight className="w-9 h-9" />
-            </button>
+              <button
+                onClick={goToPrev}
+                className="absolute left-4 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-black/40 backdrop-blur-md text-white border border-white/10 flex items-center justify-center hover:bg-black/60 z-[110] transition-all shadow-xl"
+              >
+                <ChevronLeft className="w-9 h-9" />
+              </button>
+              <button
+                onClick={goToNext}
+                className="absolute right-4 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-black/40 backdrop-blur-md text-white border border-white/10 flex items-center justify-center hover:bg-black/60 z-[110] transition-all shadow-xl"
+              >
+                <ChevronRight className="w-9 h-9" />
+              </button>
             </>
           )}
         </div>
+
+        {/* Bottom add-on: displayName */}
+        {alt && (
+          <div className="absolute bottom-0 left-0 right-0 z-[140] pointer-events-none">
+            <div className="px-6 py-4 bg-gradient-to-t from-black/70 to-transparent flex justify-center">
+              <span className="text-white/90 text-sm font-medium tracking-wide text-center max-w-2xl truncate">
+                {alt}
+              </span>
+            </div>
+          </div>
+        )}
       </DialogContent>
     </Dialog>
   );
@@ -171,7 +205,7 @@ function ZoomableImage({ src, isActive, onZoomChange }: { src: string, isActive:
 
   const toggleZoom = (e: React.MouseEvent) => {
     if (!imgRef.current) return;
-    
+
     if (!zoomed) {
       const rect = imgRef.current.getBoundingClientRect();
       const newScale = window.innerWidth / rect.width;
@@ -179,7 +213,7 @@ function ZoomableImage({ src, isActive, onZoomChange }: { src: string, isActive:
       const clickPercent = clickYRelative / rect.height;
       const imgHeightFull = rect.height * newScale;
       const overflow = (imgHeightFull - window.innerHeight) / 2;
-      
+
       setScale(newScale);
       setZoomed(true);
       onZoomChange(true);
@@ -216,9 +250,10 @@ function ZoomableImage({ src, isActive, onZoomChange }: { src: string, isActive:
       <motion.img
         ref={imgRef}
         src={src}
+        draggable={false}
         animate={{ scale: zoomed ? scale : 1, y: zoomed ? yPos : 0 }}
-        transition={{ duration: 0.2 }} 
-        className={`max-h-full max-w-full w-auto h-auto object-contain select-none shadow-2xl ${
+        transition={{ duration: 0.2 }}
+        className={`max-h-full max-w-full w-auto h-auto object-contain select-none shadow-2xl pointer-events-auto ${
           zoomed ? 'cursor-zoom-out' : 'cursor-zoom-in'
         }`}
         onClick={toggleZoom}
