@@ -142,51 +142,31 @@ export default function ItemDetail() {
               {/* Contenedor Principal Cuadrado Forzado */}
               <div className="relative flex-1 aspect-square overflow-hidden rounded-xl border border-border bg-[hsl(var(--image-bg))]">
                 
-                {/* VISTA MOBILE (Carrete) */}
-                <div className="lg:hidden relative h-full touch-pan-y">
-                  <motion.div
-                    drag="x"
-                    dragConstraints={{ left: 0, right: 0 }}
-                    animate={{ x: `-${activeImageIndex * 100}%` }}
-                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                    onDragEnd={(_, info) => {
-                      const threshold = 50;
-                      if (info.offset.x < -threshold && activeImageIndex < images.length - 1) setActiveImageIndex(activeImageIndex + 1);
-                      else if (info.offset.x > threshold && activeImageIndex > 0) setActiveImageIndex(activeImageIndex - 1);
-                    }}
-                    className="flex h-full cursor-grab active:cursor-grabbing"
-                  >
-                    {images.map((img, idx) => (
-                      <div key={idx} className="w-full h-full flex-shrink-0 flex items-center justify-center p-6" onClick={() => setLightboxOpen(true)}>
-                        <img src={img} className="max-w-full max-h-full object-contain pointer-events-none" alt="" />
-                      </div>
-                    ))}
-                  </motion.div>
-
-                  {/* Puntos Mobile */}
+                {/* VISTA MOBILE (Carrete Infinito 1:1) */}
+                <div className="lg:hidden absolute inset-0 touch-pan-y">
+                  <InfiniteCarousel
+                    images={images}
+                    activeIndex={activeImageIndex}
+                    onIndexChange={setActiveImageIndex}
+                    onTap={() => setLightboxOpen(true)}
+                  />
                   {hasMultiple && (
-                    <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-1.5 pointer-events-none">
+                    <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-1.5 pointer-events-none z-10">
                       {images.map((_, i) => (
-                        <div key={i} className={cn("w-1.5 h-1.5 rounded-full transition-all duration-300", activeImageIndex === i ? "bg-primary w-4" : "bg-primary/20")} />
+                        <div key={i} className={cn("w-1.5 h-1.5 rounded-full transition-all duration-300", activeImageIndex === i ? "bg-primary w-4" : "bg-primary/30")} />
                       ))}
                     </div>
                   )}
                 </div>
 
-                {/* VISTA DESKTOP (Fade Refinado) */}
+                {/* VISTA DESKTOP */}
                 <div className="hidden lg:flex w-full h-full items-center justify-center cursor-pointer p-12" onClick={() => setLightboxOpen(true)}>
-                  <AnimatePresence mode="wait">
-                    <motion.img
-                      key={activeImageIndex}
-                      initial={{ opacity: 0, scale: 0.98 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 1.02 }}
-                      transition={{ duration: 0.2 }}
-                      src={images[activeImageIndex]}
-                      className="max-w-full max-h-full object-contain"
-                      alt={item.displayName}
-                    />
-                  </AnimatePresence>
+                  <img
+                    key={activeImageIndex}
+                    src={images[activeImageIndex]}
+                    className="max-w-full max-h-full object-contain"
+                    alt={item.displayName}
+                  />
                 </div>
               </div>
             </div>
