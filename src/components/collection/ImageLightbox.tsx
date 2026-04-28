@@ -1,4 +1,4 @@
-import { useEffect, useCallback, useState, useRef } from 'react';
+import { useEffect, useCallback, useState, useRef, useLayoutEffect } from 'react';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { motion, useMotionValue, animate } from 'framer-motion';
@@ -28,40 +28,53 @@ export function ImageLightbox({ images, activeIndex: initialIndex, open, onOpenC
   const x = useMotionValue(0);
   const containerRef = useRef<HTMLDivElement>(null);
   const draggingRef = useRef(false);
+  const animatingRef = useRef(false);
+  const didInitialPositionRef = useRef(false);
 
   // Sentinel-extended slides for infinite loop
   const slides = hasMultiple ? [images[images.length - 1], ...images, images[0]] : images;
 
-  // Sync index when opening
+  // Sync index when opening — also reset initial-position flag so we snap instantly
   useEffect(() => {
     if (open) {
       setInternalIndex(initialIndex);
       setIsZoomed(false);
+      didInitialPositionRef.current = false;
     }
   }, [open, initialIndex]);
 
-  // Measure container
-  useEffect(() => {
+  // Measure container synchronously after layout to avoid any visible drift
+  useLayoutEffect(() => {
     if (!open) return;
     const measure = () => {
-      if (containerRef.current) setContainerWidth(containerRef.current.offsetWidth);
+      if (containerRef.current) {
+        const w = containerRef.current.offsetWidth;
+        setContainerWidth(w);
+        // Set x instantly to the requested slide BEFORE first paint of carousel
+        if (w > 0 && !didInitialPositionRef.current) {
+          const offset = hasMultiple ? initialIndex + 1 : initialIndex;
+          x.set(-(offset * w));
+          didInitialPositionRef.current = true;
+        }
+      }
     };
-    const t = setTimeout(measure, 50);
+    measure();
     window.addEventListener('resize', measure);
-    return () => {
-      clearTimeout(t);
-      window.removeEventListener('resize', measure);
-    };
-  }, [open]);
+    return () => window.removeEventListener('resize', measure);
+  }, [open, initialIndex, hasMultiple, x]);
 
-  // Snap to active index
+  // Snap to active index — but skip the very first run after open (already set instantly)
   useEffect(() => {
     if (containerWidth === 0) return;
     const offset = hasMultiple ? internalIndex + 1 : internalIndex;
     const target = -(offset * containerWidth);
-    if (!draggingRef.current) {
-      animate(x, target, { type: 'spring', stiffness: 280, damping: 32 });
+    if (draggingRef.current || animatingRef.current) return;
+    // If we just opened, snap instantly (no animation)
+    if (!didInitialPositionRef.current || Math.abs(x.get() - target) < 1) {
+      x.set(target);
+      return;
     }
+    animate(x, target, { type: 'spring', stiffness: 280, damping: 32 });
   }, [internalIndex, containerWidth, x, hasMultiple]);
 
   const handleClose = useCallback((isOpen: boolean) => {
@@ -71,6 +84,7 @@ export function ImageLightbox({ images, activeIndex: initialIndex, open, onOpenC
 
   const goTo = useCallback((next: number) => {
     if (isZoomed || !hasMultiple || containerWidth === 0) return;
+    animatingRef.current = true;
     const sentinelTarget = -((next + 1) * containerWidth);
     animate(x, sentinelTarget, {
       type: 'spring',
@@ -79,6 +93,7 @@ export function ImageLightbox({ images, activeIndex: initialIndex, open, onOpenC
       onComplete: () => {
         const wrapped = ((next % images.length) + images.length) % images.length;
         if (wrapped !== next) x.set(-((wrapped + 1) * containerWidth));
+        animatingRef.current = false;
         setInternalIndex(wrapped);
       },
     });
@@ -163,18 +178,18 @@ export function ImageLightbox({ images, activeIndex: initialIndex, open, onOpenC
             )}
           </div>
 
-          {/* Nav arrows */}
+          {/* Nav arrows — desktop only */}
           {!isZoomed && hasMultiple && (
             <>
               <button
                 onClick={goToPrev}
-                className="absolute left-4 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-black/40 backdrop-blur-md text-white border border-white/10 flex items-center justify-center hover:bg-black/60 z-[110] transition-all shadow-xl"
+                className="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-black/40 backdrop-blur-md text-white border border-white/10 items-center justify-center hover:bg-black/60 z-[110] transition-all shadow-xl"
               >
                 <ChevronLeft className="w-9 h-9" />
               </button>
               <button
                 onClick={goToNext}
-                className="absolute right-4 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-black/40 backdrop-blur-md text-white border border-white/10 flex items-center justify-center hover:bg-black/60 z-[110] transition-all shadow-xl"
+                className="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-black/40 backdrop-blur-md text-white border border-white/10 items-center justify-center hover:bg-black/60 z-[110] transition-all shadow-xl"
               >
                 <ChevronRight className="w-9 h-9" />
               </button>
