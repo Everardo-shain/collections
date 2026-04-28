@@ -1,4 +1,5 @@
 import { useMemo, useEffect } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { CollectionItem, valid, VALUE_SEPARATOR, normalizeKey } from '@/config';
 import { cn } from '@/lib/utils';
 import { useCollection } from '@/hooks/useCollection';
@@ -37,14 +38,14 @@ export function StatsView({
   onSelectValue,
 }: StatsViewProps) {
   const { config } = useCollection();
+  const [searchParams, setSearchParams] = useSearchParams();
   const { STATS_KEYS, CUSTOM_FILTERS, FIELD_MAP } = config as any;
 
-  // Compute valid tables: have at least one value AND not currently filtered in sidebar
+  // Compute valid tables
   const validTables = useMemo(() => {
     return (STATS_KEYS as readonly string[]).filter(key => {
       const normKey = normalizeKey(key);
       if ((sidebarState[normKey] || []).length > 0) return false;
-      // at least one item with value
       return items.some(item => getItemValuesForKey(item, key, CUSTOM_FILTERS).length > 0);
     });
   }, [STATS_KEYS, items, sidebarState, CUSTOM_FILTERS]);
@@ -75,6 +76,30 @@ export function StatsView({
 
   const total = items.length;
 
+  /**
+   * ESTA ES LA FUNCIÓN CLAVE:
+   * Al seleccionar un valor, actualizamos la URL para que el navegador
+   * registre una nueva entrada en el historial.
+   */
+  const handleRowClick = (value: string) => {
+    if (!activeTable) return;
+
+    // 1. Notificamos al padre para que actualice el estado interno de filtros
+    onSelectValue(activeTable, value);
+
+    // 2. Creamos los nuevos parámetros para la URL
+    const newParams = new URLSearchParams(searchParams);
+    
+    // Agregamos el filtro seleccionado
+    newParams.set(`nav_${normalizeKey(activeTable)}`, value);
+    
+    // IMPORTANTÍSIMO: Quitamos el modo stats para que el Index muestre el Grid
+    newParams.delete('view'); 
+    
+    // Navegamos: Esto hace que "Back" nos regrese a ?view=stats
+    setSearchParams(newParams);
+  };
+
   if (validTables.length === 0) {
     return (
       <div className="flex flex-col items-center justify-center py-20 text-center">
@@ -87,8 +112,7 @@ export function StatsView({
   const activeLabel = activeTable ? formatLabel(activeTable, CUSTOM_FILTERS, FIELD_MAP) : '';
 
   return (
-    <div className="space-y-4">
-      {/* Segmented control: bloque unido, bordes limpios sin recortes */}
+    <div className="space-y-4 animate-in fade-in duration-500">
       <div className="flex flex-wrap border-t border-l border-border rounded-lg overflow-hidden bg-card">
         {validTables.map(key => {
           const isActive = key === activeTable;
@@ -97,8 +121,6 @@ export function StatsView({
               key={key}
               onClick={() => onChangeTable(key)}
               className={cn(
-                // Quitamos los márgenes negativos problemáticos
-                // Usamos borde derecho y abajo para completar la cuadrícula sin duplicar
                 "flex-1 min-w-[120px] px-3 py-1.5 text-sm font-medium border-r border-b border-border transition-colors capitalize",
                 isActive
                   ? "text-primary-foreground relative z-10 border-b-transparent"
@@ -112,14 +134,12 @@ export function StatsView({
         })}
       </div>
 
-      {/* Count indicator */}
       {activeTable && (
         <p className="text-xs text-muted-foreground">
           Showing <span className="font-bold text-foreground">{rows.length}</span> unique options for {activeLabel}
         </p>
       )}
 
-      {/* Table */}
       <div className="rounded-lg border border-border bg-card overflow-hidden">
         <div className="grid grid-cols-[1fr_auto] gap-x-4 px-4 py-2 text-xs uppercase tracking-wide text-muted-foreground border-b border-border bg-muted/30">
           <span>{activeLabel}</span>
@@ -131,7 +151,7 @@ export function StatsView({
             return (
               <li key={row.value}>
                 <button
-                  onClick={() => activeTable && onSelectValue(activeTable, row.value)}
+                  onClick={() => handleRowClick(row.value)} // Usamos nuestra nueva función
                   className="w-full grid grid-cols-[1fr_auto] gap-x-4 items-center px-4 py-3 text-left hover:bg-accent/30 transition-colors group"
                 >
                   <div className="min-w-0">
@@ -140,7 +160,7 @@ export function StatsView({
                     </div>
                     <div className="mt-1.5 h-1.5 w-full rounded-full bg-muted overflow-hidden">
                       <div
-                        className="h-full rounded-full transition-all"
+                        className="h-full rounded-full transition-all duration-500"
                         style={{
                           width: `${pct}%`,
                           backgroundColor: 'hsl(var(--accent-color))',

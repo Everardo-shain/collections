@@ -19,7 +19,10 @@ export const ItemCard = forwardRef<HTMLDivElement, ItemCardProps>(({ item }, ref
       exit={{ opacity: 0, y: 12 }}
       transition={{ duration: 0.25 }}
     >
-      <Link to={`/view/${collectionId}/item/${item.id}`} className="group block text-center">
+      <Link 
+  to={`/view/${collectionId}/item/${item.id}`} 
+  state={{ returnSearch: window.location.search }} // Guardamos la búsqueda aquí
+ className="group block text-center">
         <div className="aspect-square overflow-hidden rounded-lg bg-secondary mb-3">
           <img
             src={item.image}

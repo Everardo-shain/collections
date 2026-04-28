@@ -11,7 +11,7 @@ import { useCollection } from '@/hooks/useCollection';
 import { useScrollDirection } from '@/hooks/useScrollDirection';
 import { useElementSize } from '@/hooks/useElementSize';
 import { SITE_METADATA, valid, formatDisplayValue, VALUE_SEPARATOR, SortOption } from '@/config';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useSearchParams } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { Helmet } from 'react-helmet-async';
 
@@ -19,20 +19,38 @@ const NAV_HEIGHT = 56;
 
 const Index = () => {
   const location = useLocation();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [sortBy, setSortBy] = useState<SortOption>('default');
   const [sortOpen, setSortOpen] = useState(false);
   const [scrollY, setScrollY] = useState(0);
-  const [viewMode, setViewMode] = useState<'gallery' | 'stats'>('gallery');
-  const [activeStatsTable, setActiveStatsTable] = useState<string | null>(null);
+
+  // --- LÓGICA DE VISTA BASADA EN URL ---
+  const viewMode = (searchParams.get('view') as 'gallery' | 'stats') || 'gallery';
+  const activeStatsTable = searchParams.get('table') || null;
+
+  const setViewMode = (mode: 'gallery' | 'stats') => {
+    const newParams = new URLSearchParams(searchParams);
+    if (mode === 'stats') {
+      newParams.set('view', 'stats');
+    } else {
+      newParams.delete('view');
+      newParams.delete('table'); // Limpiar tabla si volveмы al grid
+    }
+    setSearchParams(newParams);
+  };
 
   const handleStatsTableChange = useCallback((key: string) => {
-    setActiveStatsTable(key || null);
-  }, []);
+    const newParams = new URLSearchParams(searchParams);
+    if (key) {
+      newParams.set('table', key);
+    } else {
+      newParams.delete('table');
+    }
+    setSearchParams(newParams);
+  }, [searchParams, setSearchParams]);
 
   const scrollDir = useScrollDirection();
-  
-  // El hook useCollection ahora se encarga de inyectar el --accent-color automáticamente
   const { config } = useCollection();
   
   const {
@@ -61,7 +79,6 @@ const Index = () => {
 
   const navGroups = useMemo(() => generateNavGroups(collectionItems), [generateNavGroups, collectionItems]);
 
-  // Solo mantenemos el efecto del scroll para la UI
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -79,7 +96,6 @@ const Index = () => {
 
   const getPageTitle = () => {
     if (searchQuery) return `Search: "${searchQuery}"`;
-
     const urlParams = new URLSearchParams(window.location.search);
 
     if (location.state?.customLabel && location.state?.filterKey) {
@@ -106,7 +122,6 @@ const Index = () => {
     }
 
     const firstKeyValue = getNavVal(BREADCRUMB_KEYS[0]) || (filteredItems[0]?.entity) || "";
-
     const activeHierarchy = BREADCRUMB_RESOLVER({ filtersState: navState }) || NAVIGATION_BREADCRUMB;
     const hierarchyKeysLower = activeHierarchy.map(k => k.toLowerCase());
 
@@ -119,7 +134,6 @@ const Index = () => {
         const isHierarchyField = hierarchyKeysLower.includes(lowerField);
         const specificLabels = BREADCRUMB_LABELS[compositeKey] || BREADCRUMB_LABELS[firstKeyValue];
         const extraText = isHierarchyField ? (specificLabels?.[lowerField] || "") : "";
-
         const combinedLabel = `${value}${extraText}`;
         const formattedLabel = formatDisplayValue(lowerField, combinedLabel);
 
@@ -128,15 +142,12 @@ const Index = () => {
       .filter(Boolean) as { label: string; field: string }[];
 
     if (activeFilters.length === 0) return 'All Items';
-
     const last = activeFilters[activeFilters.length - 1];
     const formatter = TITLE_FORMATTERS[last.field];
-
     return formatter ? formatter(last, activeFilters, compositeKey) : last.label;
   };
 
   const pageTitle = getPageTitle();
-
   const headerRef = useRef<HTMLDivElement>(null);
   const { height: headerHeight } = useElementSize(headerRef);
   const stickyOffset = (isNavbarHidden ? 0 : NAV_HEIGHT) + headerHeight;
@@ -154,10 +165,6 @@ const Index = () => {
       <Helmet>
         <title>{seoTitle}</title>
         <meta name="description" content={metadata?.description || SITE_METADATA.description} />
-        <meta property="og:title" content={seoTitle} />
-        <meta property="og:description" content={metadata?.description || SITE_METADATA.description} />
-        <meta property="og:type" content="website" />
-        {metadata?.ogImage && <meta property="og:image" content={metadata.ogImage} />}
       </Helmet>
 
       <CollectionNavbar navGroups={navGroups} />
@@ -170,18 +177,14 @@ const Index = () => {
           style={{ top: isNavbarHidden ? 0 : NAV_HEIGHT }}
           className="sticky z-20 bg-background pt-2 transition-all duration-300 ease-in-out pb-3"
         >
-          {/* HEADER REESTRUCTURADO */}
           <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-            {/* Título: Siempre arriba en mobile */}
             <div>
               <h1 className="font-heading text-xl md:text-2xl font-bold text-foreground tracking-tight">
                 {pageTitle} ({filteredItems.length})
               </h1>
             </div>
 
-            {/* Controles: En una fila separada en mobile */}
             <div className="flex items-center justify-between md:justify-end gap-3">
-              {/* Botón de Filtros: Independiente en mobile */}
               <button
                 className="lg:hidden flex items-center gap-2 px-3 py-2 rounded-lg border border-border text-sm font-medium text-foreground bg-card hover:bg-accent/50 transition-colors"
                 onClick={() => setSidebarOpen(true)}
@@ -189,16 +192,14 @@ const Index = () => {
                 <SlidersHorizontal className="w-4 h-4" />
                 <span>Filters</span> 
               </button>
+              
               <div className="flex items-center gap-2 md:gap-3">
-                {/* View mode toggle */}
                 <div className="inline-flex items-center rounded-lg border border-border p-0.5 bg-card">
                   <button
                     onClick={() => setViewMode('gallery')}
                     className={cn(
                       "flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-sm font-medium transition-colors",
-                      viewMode === 'gallery'
-                        ? "text-primary-foreground"
-                        : "text-muted-foreground hover:text-foreground"
+                      viewMode === 'gallery' ? "text-primary-foreground" : "text-muted-foreground hover:text-foreground"
                     )}
                     style={viewMode === 'gallery' ? { backgroundColor: 'hsl(var(--accent-color))' } : undefined}
                   >
@@ -209,9 +210,7 @@ const Index = () => {
                     onClick={() => setViewMode('stats')}
                     className={cn(
                       "flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-sm font-medium transition-colors",
-                      viewMode === 'stats'
-                        ? "text-primary-foreground"
-                        : "text-muted-foreground hover:text-foreground"
+                      viewMode === 'stats' ? "text-primary-foreground" : "text-muted-foreground hover:text-foreground"
                     )}
                     style={viewMode === 'stats' ? { backgroundColor: 'hsl(var(--accent-color))' } : undefined}
                   >
@@ -220,7 +219,6 @@ const Index = () => {
                   </button>
                 </div>
 
-                {/* Sort dropdown */}
                 <div className="relative">
                   <button
                     onClick={() => setSortOpen(!sortOpen)}
@@ -279,7 +277,8 @@ const Index = () => {
                 onChangeTable={handleStatsTableChange}
                 onSelectValue={(key, value) => {
                   filters.toggleFilter(key, value);
-                  setViewMode('gallery');
+                  // La navegación a 'gallery' ya ocurre dentro de StatsView 
+                  // a través del handleRowClick que definimos anteriormente.
                 }}
               />
             )}

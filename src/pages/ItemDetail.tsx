@@ -1,5 +1,5 @@
 import { useState, useMemo } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useLocation } from 'react-router-dom';
 import { ArrowLeft, ChevronRight, ChevronLeft } from 'lucide-react';
 import { ImageLightbox } from '@/components/collection/ImageLightbox';
 import { CollectionNavbar } from '@/components/collection/CollectionNavbar';
@@ -11,6 +11,7 @@ import { useCollection } from '@/hooks/useCollection';
 
 export default function ItemDetail() {
   const { id } = useParams<{ id: string }>();
+  const location = useLocation(); // Hook para leer el estado enviado
   const { collectionId, config } = useCollection();
   const {
     rawData,
@@ -24,6 +25,14 @@ export default function ItemDetail() {
     generateNavGroups,
     metadata,
   } = config;
+
+  // LÓGICA DE RETORNO INTELIGENTE
+  const returnPath = useMemo(() => {
+    const base = `/view/${collectionId}`;
+    // Si venimos de una búsqueda filtrada, el state tendrá 'returnSearch' (?nav_team=...)
+    const search = location.state?.returnSearch || "";
+    return `${base}${search}`;
+  }, [collectionId, location.state]);
 
   const collectionItems: CollectionItem[] = useMemo(
     () => (rawData as Record<string, string>[]).map(mapItem),
@@ -100,16 +109,18 @@ export default function ItemDetail() {
       </Helmet>
 
       <div className="min-h-screen bg-background">
+        {/* Pasamos los navGroups. El Navbar se mantendrá coherente */}
         <CollectionNavbar navGroups={navGroups} />
         <CollectionBreadcrumb item={item} />
 
         <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          {/* BOTÓN BACK ACTUALIZADO */}
           <Link
-            to={baseHref}
-            className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary mb-6 transition-colors"
+            to={returnPath}
+            className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary mb-6 transition-colors group"
           >
-            <ArrowLeft className="w-4 h-4" />
-            Back to collection
+            <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
+            {location.state?.returnSearch ? "Back to filtered results" : "Back to collection"}
           </Link>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16">

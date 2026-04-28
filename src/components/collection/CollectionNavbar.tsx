@@ -1,13 +1,11 @@
-import { Link, useSearchParams, useNavigate, useParams } from 'react-router-dom';
+import { Link, useSearchParams, useNavigate, useParams, useLocation } from 'react-router-dom';
 import { Menu, X, ChevronDown, ChevronRight, ChevronLeft, Search } from 'lucide-react';
-import { SITE_METADATA, COLLECTIONS_MAP } from '@/config';
+import { SITE_METADATA, COLLECTIONS_MAP, type NavGroup, type CollectionId } from '@/config';
 import { useState, useRef, useEffect } from 'react';
 import { Input } from '@/components/ui/input';
 import { ThemeSelector } from '@/components/ThemeSelector';
 import { useScrollDirection } from '@/hooks/useScrollDirection';
 import { cn } from '@/lib/utils';
-
-import type { NavGroup, CollectionId } from '@/config';
 
 // --- DROPDOWN DESKTOP ---
 function DropdownMenu({
@@ -81,6 +79,7 @@ function DropdownMenu({
 export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups?: NavGroup[], isHome?: boolean }) {
   const { collectionId } = useParams<{ collectionId: CollectionId }>();
   const [searchParams] = useSearchParams();
+  const location = useLocation();
   const navigate = useNavigate();
   
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -89,7 +88,6 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
   const [scrollY, setScrollY] = useState(0);
   const scrollDir = useScrollDirection();
 
-  // Configuración dinámica basada en si es Home o Colección
   const config = collectionId ? COLLECTIONS_MAP[collectionId] : null;
   const baseHref = isHome ? "/" : `/view/${collectionId}`;
   const collectionTitle = isHome ? SITE_METADATA.title : (config as any)?.metadata?.title || SITE_METADATA.title;
@@ -97,6 +95,27 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
 
   const PARENT_KEY = config?.NAVIGATION_CONFIG.hierarchy[0]?.toLowerCase() || "parent";
   const CHILD_KEY = config?.NAVIGATION_CONFIG.hierarchy[1]?.toLowerCase() || "child";
+
+  // --- LÓGICA DE PERSISTENCIA VISUAL ---
+  const getActiveFilter = (key: string) => {
+    // 1. Prioridad: Parámetro real en la URL (Index filtrado)
+    const urlParam = searchParams.get(key);
+    if (urlParam) return urlParam;
+
+    // 2. Si no hay URL, buscar en el estado (Estamos en un ItemDetail)
+    if (location.state?.returnSearch) {
+      const stateParams = new URLSearchParams(location.state.returnSearch);
+      return stateParams.get(key);
+    }
+    return null;
+  };
+
+  const activeParent = getActiveFilter(`nav_${PARENT_KEY}`);
+  const activeChild = getActiveFilter(`nav_${CHILD_KEY}`);
+  const activeQ = searchParams.get('q') || (location.state?.returnSearch ? new URLSearchParams(location.state.returnSearch).get('q') : null);
+  
+  // "All" solo se ilumina si realmente no hay filtros activos en URL ni en Memoria
+  const isAllSelected = !activeParent && !activeQ;
 
   useEffect(() => {
     setTempSearch(searchParams.get('q') || '');
@@ -127,12 +146,8 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
     setMobileOpen(false);
   };
 
-  const activeParent = searchParams.get(`nav_${PARENT_KEY}`);
-  const activeChild = searchParams.get(`nav_${CHILD_KEY}`);
-
   return (
     <>
-      {/* TOPBAR (Solo en colecciones) */}
       {!isHome && (
         <div className={cn(
           "bg-secondary/50 transition-transform duration-300 z-[60] relative",
@@ -158,61 +173,47 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
         isHidden ? "-translate-y-full" : "translate-y-0"
       )}>
         <div className="max-w-[1440px] mx-auto px-4 lg:px-8">
-          <div className="flex items-center justify-between h-14 gap-4">
+          <div className="flex items-center justify-between h-14 gap-2 md:gap-4">
+            
+            <div className="flex-1 flex items-center min-w-0"> 
+              {isHome ? (
+                <div className="font-heading text-lg md:text-xl font-bold tracking-tight flex items-center gap-2 md:gap-3 cursor-default truncate">
+                  {logoUrl && (
+                    <div className="h-7 w-7 md:h-9 md:w-9 bg-primary shrink-0"
+                      style={{
+                        maskImage: `url(${logoUrl})`, WebkitMaskImage: `url(${logoUrl})`,
+                        maskRepeat: 'no-repeat', WebkitMaskRepeat: 'no-repeat',
+                        maskPosition: 'center', WebkitMaskPosition: 'center',
+                        maskSize: 'contain', WebkitMaskSize: 'contain',
+                      }}
+                    />
+                  )}
+                  <span className="leading-none text-primary truncate">{collectionTitle}</span>
+                </div>
+              ) : (
+                <Link to={baseHref} className="font-heading text-lg md:text-xl font-bold tracking-tight flex items-center gap-2 md:gap-3 group truncate" onClick={() => setMobileOpen(false)}>
+                  {logoUrl && (
+                    <div className="h-7 w-7 md:h-9 md:w-9 bg-primary shrink-0 transition-all duration-300"
+                      style={{
+                        maskImage: `url(${logoUrl})`, WebkitMaskImage: `url(${logoUrl})`,
+                        maskRepeat: 'no-repeat', WebkitMaskRepeat: 'no-repeat',
+                        maskPosition: 'center', WebkitMaskPosition: 'center',
+                        maskSize: 'contain', WebkitMaskSize: 'contain',
+                      }}
+                    />
+                  )}
+                  <span className="transition-colors duration-300 leading-none text-primary truncate">{collectionTitle}</span>
+                </Link>
+              )}
+            </div>
 
-      {/* LOGO SECCIÓN */}
-      {isHome ? (
-        // Renderizado estático para el Home (Cursor normal, sin link)
-        <div className="font-heading text-xl font-bold tracking-tight flex-shrink-0 flex items-center gap-3 cursor-default">
-          {logoUrl && (
-            <div 
-              className="h-8 w-8 md:h-9 md:w-9 bg-primary"
-              style={{
-                maskImage: `url(${logoUrl})`,
-                WebkitMaskImage: `url(${logoUrl})`,
-                maskRepeat: 'no-repeat', WebkitMaskRepeat: 'no-repeat',
-                maskPosition: 'center', WebkitMaskPosition: 'center',
-                maskSize: 'contain', WebkitMaskSize: 'contain',
-              }}
-            />
-          )}
-          <span className="leading-none text-primary">
-            {collectionTitle}
-          </span>
-        </div>
-      ) : (
-        // Renderizado con Link para Colecciones
-        <Link 
-          to={baseHref} 
-          className="font-heading text-xl font-bold tracking-tight flex-shrink-0 flex items-center gap-3 group" 
-          onClick={() => setMobileOpen(false)}
-        >
-          {logoUrl && (
-            <div 
-              className="h-8 w-8 md:h-9 md:w-9 bg-primary transition-all duration-300 ease-in-out"
-              style={{
-                maskImage: `url(${logoUrl})`,
-                WebkitMaskImage: `url(${logoUrl})`,
-                maskRepeat: 'no-repeat', WebkitMaskRepeat: 'no-repeat',
-                maskPosition: 'center', WebkitMaskPosition: 'center',
-                maskSize: 'contain', WebkitMaskSize: 'contain',
-              }}
-            />
-          )}
-          <span className="transition-colors duration-300 leading-none text-primary">
-            {collectionTitle}
-          </span>
-        </Link>
-      )}
-
-            {/* NAVEGACIÓN DESKTOP (Oculta en Home) */}
             {!isHome && (
               <div className="hidden md:flex items-center gap-6 flex-1 justify-center">
                 <Link
                   to={baseHref}
                   className={cn(
                     "text-sm font-medium hover:text-primary transition-colors",
-                    !activeParent && !searchParams.get('q') ? 'text-primary' : 'text-foreground'
+                    isAllSelected ? 'text-primary' : 'text-foreground'
                   )}
                 >
                   All
@@ -231,8 +232,7 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
               </div>
             )}
 
-            <div className="flex items-center gap-1 md:gap-2 relative z-[70]">
-              {/* SEARCH DESKTOP (Oculto en Home) */}
+            <div className="flex items-center gap-1 md:gap-2 shrink-0">
               {!isHome && (
                 <div className="hidden md:flex items-center relative">
                   <Search className="absolute left-2.5 w-3.5 h-3.5 text-muted-foreground pointer-events-none" />
@@ -251,22 +251,15 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
                   )}
                 </div>
               )}
-
               <ThemeSelector navbarHidden={isHidden} />
-
-              {/* MENU MOBILE TOGGLE (Solo en colecciones) */}
               {!isHome && (
-                <button
-                  className="md:hidden p-2 hover:bg-accent rounded-md relative z-[71]"
-                  onClick={() => setMobileOpen(!mobileOpen)}
-                >
+                <button className="md:hidden p-2 hover:bg-accent rounded-md relative z-[71]" onClick={() => setMobileOpen(!mobileOpen)}>
                   {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
                 </button>
               )}
             </div>
           </div>
 
-          {/* MOBILE MENU CONTENT (Solo en colecciones) */}
           {!isHome && mobileOpen && (
             <div className="md:hidden absolute top-full left-0 right-0 w-full bg-card border-b border-border shadow-2xl z-50 overflow-hidden">
               <div className="max-h-[75vh] overflow-y-auto pb-8 pt-3 relative">
@@ -276,21 +269,20 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
                     <Input placeholder="Search" value={tempSearch} onChange={(e) => setTempSearch(e.target.value)}
                       onKeyDown={(e) => e.key === 'Enter' && triggerSearch(tempSearch)} className="pl-9 h-10 w-full bg-background" />
                   </div>
-                  <Link to={baseHref} className="block py-4 text-base font-bold border-b border-border/40" onClick={() => setMobileOpen(false)}>All Items</Link>
+                  <Link to={baseHref} className={cn("block py-4 text-base font-bold border-b border-border/40", isAllSelected && "text-primary")} onClick={() => setMobileOpen(false)}>All Items</Link>
                   {navGroups.map(group => (
-                    <button key={group.label} onClick={() => setActiveSubMenu(group.label)} className="w-full flex items-center justify-between py-4 text-base font-bold border-b border-border/40">
+                    <button key={group.label} onClick={() => setActiveSubMenu(group.label)} className={cn("w-full flex items-center justify-between py-4 text-base font-bold border-b border-border/40", activeParent === group.label && "text-primary")}>
                       {group.label} <ChevronRight className="w-4 h-4" />
                     </button>
                   ))}
                 </div>
-                {/* SUBMENUS MOBILE */}
                 {navGroups.map(group => (
                   <div key={`sub-${group.label}`} className={cn("px-4", activeSubMenu === group.label ? "block" : "hidden")}>
                     <button onClick={() => setActiveSubMenu(null)} className="flex items-center gap-2 py-2 text-primary font-medium mb-2"><ChevronLeft className="w-4 h-4" /> Back</button>
-                    <Link to={`${baseHref}?nav_${PARENT_KEY}=${encodeURIComponent(group.label)}`} className="block py-4 text-xl font-bold border-b" onClick={() => setMobileOpen(false)}>{group.label}</Link>
+                    <Link to={`${baseHref}?nav_${PARENT_KEY}=${encodeURIComponent(group.label)}`} className={cn("block py-4 text-xl font-bold border-b", activeParent === group.label && !activeChild && "text-primary")} onClick={() => setMobileOpen(false)}>{group.label}</Link>
                     {group.children.map(child => (
                       <Link key={child.label} to={`${baseHref}?nav_${PARENT_KEY}=${encodeURIComponent(group.label)}&nav_${CHILD_KEY}=${encodeURIComponent(child.label)}`}
-                        className="block py-3.5 text-base border-b border-border/40 last:border-0" onClick={() => setMobileOpen(false)}>{child.label}</Link>
+                        className={cn("block py-3.5 text-base border-b border-border/40 last:border-0", activeParent === group.label && activeChild === child.label && "text-primary font-bold")} onClick={() => setMobileOpen(false)}>{child.label}</Link>
                     ))}
                   </div>
                 ))}
