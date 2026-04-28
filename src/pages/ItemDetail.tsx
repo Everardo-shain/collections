@@ -298,6 +298,7 @@ function InfiniteCarousel({
             else if (offset > threshold || velocity > 400) next = activeIndex - 1;
 
             // Animate to the (potentially out-of-range) sentinel slide first
+            animatingRef.current = true;
             const sentinelTarget = -((next + 1) * width);
             animate(x, sentinelTarget, {
               type: 'spring',
@@ -306,9 +307,10 @@ function InfiniteCarousel({
               onComplete: () => {
                 const wrapped = ((next % images.length) + images.length) % images.length;
                 if (wrapped !== next) {
-                  // Jump silently to wrapped position
+                  // Jump silently to wrapped position (same image, no visible change)
                   x.set(-((wrapped + 1) * width));
                 }
+                animatingRef.current = false;
                 onIndexChange(wrapped);
               },
             });
