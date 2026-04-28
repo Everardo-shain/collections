@@ -1,9 +1,9 @@
-import { useEffect, useCallback, useState, useRef, useLayoutEffect } from 'react';
+import { useEffect, useCallback, useState, useRef } from 'react';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { motion, useMotionValue, animate } from 'framer-motion';
 
-// Helper for accessibility without affecting layout
+// A11y helper
 const VisuallyHidden = ({ children }: { children: React.ReactNode }) => (
   <span style={{ position: 'absolute', width: 1, height: 1, padding: 0, margin: -1, overflow: 'hidden', clip: 'rect(0,0,0,0)', whiteSpace: 'nowrap', border: 0 }}>
     {children}
@@ -22,85 +22,25 @@ interface ImageLightboxProps {
 export function ImageLightbox({ images, activeIndex: initialIndex, open, onOpenChange, onIndexChange, alt }: ImageLightboxProps) {
   const [internalIndex, setInternalIndex] = useState(initialIndex);
   const [isZoomed, setIsZoomed] = useState(false);
-  const [containerWidth, setContainerWidth] = useState(0);
 
-  const hasMultiple = images.length > 1;
-  const x = useMotionValue(0);
-  const containerRef = useRef<HTMLDivElement>(null);
-  const draggingRef = useRef(false);
-  const animatingRef = useRef(false);
-  const didInitialPositionRef = useRef(false);
-
-  // Sentinel-extended slides for infinite loop
-  const slides = hasMultiple ? [images[images.length - 1], ...images, images[0]] : images;
-
-  // Sync index when opening — also reset initial-position flag so we snap instantly
+  // Sync index whenever the lightbox opens
   useEffect(() => {
     if (open) {
       setInternalIndex(initialIndex);
       setIsZoomed(false);
-      didInitialPositionRef.current = false;
     }
   }, [open, initialIndex]);
-
-  // Measure container synchronously after layout to avoid any visible drift
-  useLayoutEffect(() => {
-    if (!open) return;
-    const measure = () => {
-      if (containerRef.current) {
-        const w = containerRef.current.offsetWidth;
-        setContainerWidth(w);
-        // Set x instantly to the requested slide BEFORE first paint of carousel
-        if (w > 0 && !didInitialPositionRef.current) {
-          const offset = hasMultiple ? initialIndex + 1 : initialIndex;
-          x.set(-(offset * w));
-          didInitialPositionRef.current = true;
-        }
-      }
-    };
-    measure();
-    window.addEventListener('resize', measure);
-    return () => window.removeEventListener('resize', measure);
-  }, [open, initialIndex, hasMultiple, x]);
-
-  // Snap to active index — but skip the very first run after open (already set instantly)
-  useEffect(() => {
-    if (containerWidth === 0) return;
-    const offset = hasMultiple ? internalIndex + 1 : internalIndex;
-    const target = -(offset * containerWidth);
-    if (draggingRef.current || animatingRef.current) return;
-    // If we just opened, snap instantly (no animation)
-    if (!didInitialPositionRef.current || Math.abs(x.get() - target) < 1) {
-      x.set(target);
-      return;
-    }
-    animate(x, target, { type: 'spring', stiffness: 280, damping: 32 });
-  }, [internalIndex, containerWidth, x, hasMultiple]);
 
   const handleClose = useCallback((isOpen: boolean) => {
     if (!isOpen) onIndexChange(internalIndex);
     onOpenChange(isOpen);
   }, [internalIndex, onIndexChange, onOpenChange]);
 
-  const goTo = useCallback((next: number) => {
-    if (isZoomed || !hasMultiple || containerWidth === 0) return;
-    animatingRef.current = true;
-    const sentinelTarget = -((next + 1) * containerWidth);
-    animate(x, sentinelTarget, {
-      type: 'spring',
-      stiffness: 280,
-      damping: 32,
-      onComplete: () => {
-        const wrapped = ((next % images.length) + images.length) % images.length;
-        if (wrapped !== next) x.set(-((wrapped + 1) * containerWidth));
-        animatingRef.current = false;
-        setInternalIndex(wrapped);
-      },
-    });
-  }, [isZoomed, hasMultiple, containerWidth, images.length, x]);
+  // Programmatic navigation - exposed to nav arrows
+  const navRef = useRef<{ go: (next: number) => void } | null>(null);
 
-  const goToPrev = useCallback(() => goTo(internalIndex - 1), [goTo, internalIndex]);
-  const goToNext = useCallback(() => goTo(internalIndex + 1), [goTo, internalIndex]);
+  const goToPrev = useCallback(() => navRef.current?.go(internalIndex - 1), [internalIndex]);
+  const goToNext = useCallback(() => navRef.current?.go(internalIndex + 1), [internalIndex]);
 
   // Keyboard
   useEffect(() => {
@@ -113,6 +53,8 @@ export function ImageLightbox({ images, activeIndex: initialIndex, open, onOpenC
     window.addEventListener('keydown', handler);
     return () => window.removeEventListener('keydown', handler);
   }, [open, goToPrev, goToNext, handleClose]);
+
+  const hasMultiple = images.length > 1;
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
@@ -128,6 +70,7 @@ export function ImageLightbox({ images, activeIndex: initialIndex, open, onOpenC
           <button
             onClick={() => handleClose(false)}
             className="p-3 bg-black/40 backdrop-blur-md text-white border border-white/10 hover:bg-black/60 transition-all rounded-full shadow-lg"
+            aria-label="Close"
           >
             <X className="w-6 h-6" />
           </button>
@@ -141,42 +84,16 @@ export function ImageLightbox({ images, activeIndex: initialIndex, open, onOpenC
         )}
 
         <div className="relative w-full h-full flex items-center justify-center">
-          <div className="w-full h-full flex items-center overflow-hidden" ref={containerRef}>
-            {containerWidth > 0 && (
-              <motion.div
-                className="flex h-full"
-                style={{ x, width: containerWidth * slides.length }}
-                drag={hasMultiple && !isZoomed ? 'x' : false}
-                dragElastic={0}
-                dragMomentum={false}
-                onDragStart={() => { draggingRef.current = true; }}
-                onDragEnd={(_, info) => {
-                  draggingRef.current = false;
-                  const offset = info.offset.x;
-                  const velocity = info.velocity.x;
-                  const threshold = containerWidth * 0.18;
-                  let next = internalIndex;
-                  if (offset < -threshold || velocity < -400) next = internalIndex + 1;
-                  else if (offset > threshold || velocity > 400) next = internalIndex - 1;
-                  goTo(next);
-                }}
-              >
-                {slides.map((img, idx) => (
-                  <div
-                    key={idx}
-                    className="flex-shrink-0 flex items-center justify-center h-full"
-                    style={{ width: containerWidth }}
-                  >
-                    <ZoomableImage
-                      src={img}
-                      isActive={hasMultiple ? idx === internalIndex + 1 : idx === internalIndex}
-                      onZoomChange={setIsZoomed}
-                    />
-                  </div>
-                ))}
-              </motion.div>
-            )}
-          </div>
+          {open && (
+            <LightboxCarousel
+              images={images}
+              activeIndex={internalIndex}
+              onIndexChange={setInternalIndex}
+              isZoomed={isZoomed}
+              onZoomChange={setIsZoomed}
+              navRef={navRef}
+            />
+          )}
 
           {/* Nav arrows — desktop only */}
           {!isZoomed && hasMultiple && (
@@ -184,12 +101,14 @@ export function ImageLightbox({ images, activeIndex: initialIndex, open, onOpenC
               <button
                 onClick={goToPrev}
                 className="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-black/40 backdrop-blur-md text-white border border-white/10 items-center justify-center hover:bg-black/60 z-[110] transition-all shadow-xl"
+                aria-label="Previous image"
               >
                 <ChevronLeft className="w-9 h-9" />
               </button>
               <button
                 onClick={goToNext}
                 className="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-black/40 backdrop-blur-md text-white border border-white/10 items-center justify-center hover:bg-black/60 z-[110] transition-all shadow-xl"
+                aria-label="Next image"
               >
                 <ChevronRight className="w-9 h-9" />
               </button>
@@ -197,7 +116,7 @@ export function ImageLightbox({ images, activeIndex: initialIndex, open, onOpenC
           )}
         </div>
 
-        {/* Bottom add-on: displayName */}
+        {/* Footer with displayName */}
         {alt && (
           <div className="absolute bottom-0 left-0 right-0 z-[140] pointer-events-none">
             <div className="px-6 py-4 bg-gradient-to-t from-black/70 to-transparent flex justify-center">
@@ -212,6 +131,137 @@ export function ImageLightbox({ images, activeIndex: initialIndex, open, onOpenC
   );
 }
 
+/**
+ * Infinite carousel using sentinel slides + 1:1 drag with framer-motion.
+ * Shares its logic with the InfiniteCarousel from ItemDetail.
+ */
+function LightboxCarousel({
+  images,
+  activeIndex,
+  onIndexChange,
+  isZoomed,
+  onZoomChange,
+  navRef,
+}: {
+  images: string[];
+  activeIndex: number;
+  onIndexChange: (i: number) => void;
+  isZoomed: boolean;
+  onZoomChange: (z: boolean) => void;
+  navRef: React.MutableRefObject<{ go: (next: number) => void } | null>;
+}) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [width, setWidth] = useState(0);
+  const x = useMotionValue(0);
+  const draggingRef = useRef(false);
+  const animatingRef = useRef(false);
+  const initializedRef = useRef(false);
+  const hasMultiple = images.length > 1;
+
+  // Measure container with ResizeObserver
+  useEffect(() => {
+    if (!containerRef.current) return;
+    const el = containerRef.current;
+    const measure = () => {
+      const w = el.offsetWidth;
+      if (w <= 0) return;
+      setWidth(w);
+      if (!initializedRef.current) {
+        const offset = hasMultiple ? activeIndex + 1 : activeIndex;
+        x.set(-(offset * w));
+        initializedRef.current = true;
+      }
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // Snap to active index when it changes externally (keyboard/buttons)
+  useEffect(() => {
+    if (width === 0) return;
+    if (draggingRef.current || animatingRef.current) return;
+    const offset = hasMultiple ? activeIndex + 1 : activeIndex;
+    const target = -(offset * width);
+    if (Math.abs(x.get() - target) < 1) return;
+    animate(x, target, { type: 'spring', stiffness: 300, damping: 32 });
+  }, [activeIndex, width, x, hasMultiple]);
+
+  // Programmatic go() exposed via ref
+  const go = useCallback((next: number) => {
+    if (isZoomed || !hasMultiple || width === 0) return;
+    animatingRef.current = true;
+    const sentinelTarget = -((next + 1) * width);
+    animate(x, sentinelTarget, {
+      type: 'spring',
+      stiffness: 300,
+      damping: 32,
+      onComplete: () => {
+        const wrapped = ((next % images.length) + images.length) % images.length;
+        if (wrapped !== next) x.set(-((wrapped + 1) * width));
+        animatingRef.current = false;
+        onIndexChange(wrapped);
+      },
+    });
+  }, [isZoomed, hasMultiple, width, images.length, x, onIndexChange]);
+
+  useEffect(() => {
+    navRef.current = { go };
+    return () => { navRef.current = null; };
+  }, [go, navRef]);
+
+  if (!hasMultiple) {
+    return (
+      <div ref={containerRef} className="w-full h-full flex items-center justify-center">
+        <ZoomableImage src={images[0]} isActive onZoomChange={onZoomChange} />
+      </div>
+    );
+  }
+
+  const slides = [images[images.length - 1], ...images, images[0]];
+
+  return (
+    <div ref={containerRef} className="w-full h-full overflow-hidden">
+      {width > 0 && (
+        <motion.div
+          className="flex h-full"
+          style={{ x, width: width * slides.length }}
+          drag={!isZoomed ? 'x' : false}
+          dragElastic={0}
+          dragMomentum={false}
+          onDragStart={() => { draggingRef.current = true; }}
+          onDragEnd={(_, info) => {
+            draggingRef.current = false;
+            const offset = info.offset.x;
+            const velocity = info.velocity.x;
+            const threshold = width * 0.18;
+            let next = activeIndex;
+            if (offset < -threshold || velocity < -400) next = activeIndex + 1;
+            else if (offset > threshold || velocity > 400) next = activeIndex - 1;
+            go(next);
+          }}
+        >
+          {slides.map((img, idx) => (
+            <div
+              key={idx}
+              className="flex-shrink-0 flex items-center justify-center h-full"
+              style={{ width }}
+            >
+              <ZoomableImage
+                src={img}
+                isActive={idx === activeIndex + 1}
+                onZoomChange={onZoomChange}
+              />
+            </div>
+          ))}
+        </motion.div>
+      )}
+    </div>
+  );
+}
+
 function ZoomableImage({ src, isActive, onZoomChange }: { src: string, isActive: boolean, onZoomChange: (z: boolean) => void }) {
   const [zoomed, setZoomed] = useState(false);
   const [scale, setScale] = useState(1);
@@ -220,7 +270,6 @@ function ZoomableImage({ src, isActive, onZoomChange }: { src: string, isActive:
 
   const toggleZoom = (e: React.MouseEvent) => {
     if (!imgRef.current) return;
-
     if (!zoomed) {
       const rect = imgRef.current.getBoundingClientRect();
       const newScale = window.innerWidth / rect.width;
