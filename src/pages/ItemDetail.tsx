@@ -230,28 +230,38 @@ function InfiniteCarousel({
   const [width, setWidth] = useState(0);
   const x = useMotionValue(0);
   const draggingRef = useRef(false);
+  const animatingRef = useRef(false);
   const startXRef = useRef(0);
+  const initializedRef = useRef(false);
   const hasMultiple = images.length > 1;
 
   // Measure container
   useEffect(() => {
     if (!containerRef.current) return;
     const el = containerRef.current;
-    const measure = () => setWidth(el.offsetWidth);
+    const measure = () => {
+      const w = el.offsetWidth;
+      setWidth(w);
+      if (w > 0 && !initializedRef.current) {
+        // Set x instantly to current activeIndex on mount
+        x.set(-((activeIndex + 1) * w));
+        initializedRef.current = true;
+      }
+    };
     measure();
     const ro = new ResizeObserver(measure);
     ro.observe(el);
     return () => ro.disconnect();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Snap to active index when it changes externally (or on mount)
+  // Snap to active index when it changes externally
   useEffect(() => {
     if (width === 0) return;
-    // slide index in extended array = activeIndex + 1 (offset by leading sentinel)
+    if (draggingRef.current || animatingRef.current) return;
     const target = -((activeIndex + 1) * width);
-    if (!draggingRef.current) {
-      animate(x, target, { type: 'spring', stiffness: 300, damping: 32 });
-    }
+    if (Math.abs(x.get() - target) < 1) return;
+    animate(x, target, { type: 'spring', stiffness: 300, damping: 32 });
   }, [activeIndex, width, x]);
 
   if (!hasMultiple) {
@@ -288,6 +298,7 @@ function InfiniteCarousel({
             else if (offset > threshold || velocity > 400) next = activeIndex - 1;
 
             // Animate to the (potentially out-of-range) sentinel slide first
+            animatingRef.current = true;
             const sentinelTarget = -((next + 1) * width);
             animate(x, sentinelTarget, {
               type: 'spring',
@@ -296,9 +307,10 @@ function InfiniteCarousel({
               onComplete: () => {
                 const wrapped = ((next % images.length) + images.length) % images.length;
                 if (wrapped !== next) {
-                  // Jump silently to wrapped position
+                  // Jump silently to wrapped position (same image, no visible change)
                   x.set(-((wrapped + 1) * width));
                 }
+                animatingRef.current = false;
                 onIndexChange(wrapped);
               },
             });
