@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef, useEffect } from 'react';
 import { useParams, Link, useLocation } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import { ImageLightbox } from '@/components/collection/ImageLightbox';
@@ -6,7 +6,7 @@ import { CollectionNavbar } from '@/components/collection/CollectionNavbar';
 import { CollectionBreadcrumb } from '@/components/collection/CollectionBreadcrumb';
 import { Helmet } from "react-helmet-async";
 import { cn } from "@/lib/utils";
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, useMotionValue, animate } from 'framer-motion';
 
 import { CollectionItem, SITE_METADATA, valid, CombinationResult } from '@/config';
 import { useCollection } from '@/hooks/useCollection';
@@ -142,51 +142,31 @@ export default function ItemDetail() {
               {/* Contenedor Principal Cuadrado Forzado */}
               <div className="relative flex-1 aspect-square overflow-hidden rounded-xl border border-border bg-[hsl(var(--image-bg))]">
                 
-                {/* VISTA MOBILE (Carrete) */}
-                <div className="lg:hidden relative h-full touch-pan-y">
-                  <motion.div
-                    drag="x"
-                    dragConstraints={{ left: 0, right: 0 }}
-                    animate={{ x: `-${activeImageIndex * 100}%` }}
-                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                    onDragEnd={(_, info) => {
-                      const threshold = 50;
-                      if (info.offset.x < -threshold && activeImageIndex < images.length - 1) setActiveImageIndex(activeImageIndex + 1);
-                      else if (info.offset.x > threshold && activeImageIndex > 0) setActiveImageIndex(activeImageIndex - 1);
-                    }}
-                    className="flex h-full cursor-grab active:cursor-grabbing"
-                  >
-                    {images.map((img, idx) => (
-                      <div key={idx} className="w-full h-full flex-shrink-0 flex items-center justify-center p-6" onClick={() => setLightboxOpen(true)}>
-                        <img src={img} className="max-w-full max-h-full object-contain pointer-events-none" alt="" />
-                      </div>
-                    ))}
-                  </motion.div>
-
-                  {/* Puntos Mobile */}
+                {/* VISTA MOBILE (Carrete Infinito 1:1) */}
+                <div className="lg:hidden absolute inset-0 touch-pan-y">
+                  <InfiniteCarousel
+                    images={images}
+                    activeIndex={activeImageIndex}
+                    onIndexChange={setActiveImageIndex}
+                    onTap={() => setLightboxOpen(true)}
+                  />
                   {hasMultiple && (
-                    <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-1.5 pointer-events-none">
+                    <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-1.5 pointer-events-none z-10">
                       {images.map((_, i) => (
-                        <div key={i} className={cn("w-1.5 h-1.5 rounded-full transition-all duration-300", activeImageIndex === i ? "bg-primary w-4" : "bg-primary/20")} />
+                        <div key={i} className={cn("w-1.5 h-1.5 rounded-full transition-all duration-300", activeImageIndex === i ? "bg-primary w-4" : "bg-primary/30")} />
                       ))}
                     </div>
                   )}
                 </div>
 
-                {/* VISTA DESKTOP (Fade Refinado) */}
+                {/* VISTA DESKTOP */}
                 <div className="hidden lg:flex w-full h-full items-center justify-center cursor-pointer p-12" onClick={() => setLightboxOpen(true)}>
-                  <AnimatePresence mode="wait">
-                    <motion.img
-                      key={activeImageIndex}
-                      initial={{ opacity: 0, scale: 0.98 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 1.02 }}
-                      transition={{ duration: 0.2 }}
-                      src={images[activeImageIndex]}
-                      className="max-w-full max-h-full object-contain"
-                      alt={item.displayName}
-                    />
-                  </AnimatePresence>
+                  <img
+                    key={activeImageIndex}
+                    src={images[activeImageIndex]}
+                    className="max-w-full max-h-full object-contain"
+                    alt={item.displayName}
+                  />
                 </div>
               </div>
             </div>
@@ -228,5 +208,122 @@ export default function ItemDetail() {
         <ImageLightbox images={images} activeIndex={activeImageIndex} open={lightboxOpen} onOpenChange={setLightboxOpen} onIndexChange={setActiveImageIndex} alt={item.displayName} />
       </div>
     </>
+  );
+}
+
+/**
+ * Infinite carousel: real-time 1:1 drag with wrap-around.
+ * Renders [last, ...images, first] sentinel slides for seamless looping.
+ */
+function InfiniteCarousel({
+  images,
+  activeIndex,
+  onIndexChange,
+  onTap,
+}: {
+  images: string[];
+  activeIndex: number;
+  onIndexChange: (i: number) => void;
+  onTap?: () => void;
+}) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [width, setWidth] = useState(0);
+  const x = useMotionValue(0);
+  const draggingRef = useRef(false);
+  const startXRef = useRef(0);
+  const hasMultiple = images.length > 1;
+
+  // Measure container
+  useEffect(() => {
+    if (!containerRef.current) return;
+    const el = containerRef.current;
+    const measure = () => setWidth(el.offsetWidth);
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
+
+  // Snap to active index when it changes externally (or on mount)
+  useEffect(() => {
+    if (width === 0) return;
+    // slide index in extended array = activeIndex + 1 (offset by leading sentinel)
+    const target = -((activeIndex + 1) * width);
+    if (!draggingRef.current) {
+      animate(x, target, { type: 'spring', stiffness: 300, damping: 32 });
+    }
+  }, [activeIndex, width, x]);
+
+  if (!hasMultiple) {
+    return (
+      <div ref={containerRef} className="w-full h-full flex items-center justify-center p-6" onClick={onTap}>
+        <img src={images[0]} className="max-w-full max-h-full object-contain pointer-events-none" alt="" />
+      </div>
+    );
+  }
+
+  const slides = [images[images.length - 1], ...images, images[0]];
+
+  return (
+    <div ref={containerRef} className="w-full h-full overflow-hidden">
+      {width > 0 && (
+        <motion.div
+          className="flex h-full cursor-grab active:cursor-grabbing"
+          style={{ x, width: width * slides.length }}
+          drag="x"
+          dragElastic={0}
+          dragMomentum={false}
+          onDragStart={(e) => {
+            draggingRef.current = true;
+            const pe = e as PointerEvent;
+            startXRef.current = pe.clientX ?? 0;
+          }}
+          onDragEnd={(e, info) => {
+            draggingRef.current = false;
+            const offset = info.offset.x;
+            const velocity = info.velocity.x;
+            let next = activeIndex;
+            const threshold = width * 0.2;
+            if (offset < -threshold || velocity < -400) next = activeIndex + 1;
+            else if (offset > threshold || velocity > 400) next = activeIndex - 1;
+
+            // Animate to the (potentially out-of-range) sentinel slide first
+            const sentinelTarget = -((next + 1) * width);
+            animate(x, sentinelTarget, {
+              type: 'spring',
+              stiffness: 300,
+              damping: 32,
+              onComplete: () => {
+                const wrapped = ((next % images.length) + images.length) % images.length;
+                if (wrapped !== next) {
+                  // Jump silently to wrapped position
+                  x.set(-((wrapped + 1) * width));
+                }
+                onIndexChange(wrapped);
+              },
+            });
+
+            const pe = e as PointerEvent;
+            const dx = Math.abs((pe.clientX ?? 0) - startXRef.current);
+            if (dx < 5 && onTap) onTap();
+          }}
+        >
+          {slides.map((img, idx) => (
+            <div
+              key={idx}
+              className="h-full flex-shrink-0 flex items-center justify-center p-6"
+              style={{ width }}
+            >
+              <img
+                src={img}
+                draggable={false}
+                className="max-w-full max-h-full object-contain pointer-events-none select-none"
+                alt=""
+              />
+            </div>
+          ))}
+        </motion.div>
+      )}
+    </div>
   );
 }
