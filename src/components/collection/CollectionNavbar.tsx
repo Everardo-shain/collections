@@ -150,7 +150,7 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
     <>
       {!isHome && (
         <div className={cn(
-          "bg-secondary/50 transition-transform duration-300 z-[60] relative",
+          "bg-secondary/50 transition-transform duration-300 z-30 relative", 
           isHidden ? "-translate-y-full" : "translate-y-0"
         )}>
           <div className="max-w-[1440px] mx-auto px-4 lg:px-8 h-8 flex items-center justify-end">

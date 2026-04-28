@@ -8,8 +8,10 @@ interface ItemCardProps {
   item: CollectionItem;
 }
 
+// ItemCard.tsx - Cambios en la imagen
 export const ItemCard = forwardRef<HTMLDivElement, ItemCardProps>(({ item }, ref) => {
   const { collectionId } = useCollection();
+  
   return (
     <motion.div
       ref={ref}
@@ -20,18 +22,23 @@ export const ItemCard = forwardRef<HTMLDivElement, ItemCardProps>(({ item }, ref
       transition={{ duration: 0.25 }}
     >
       <Link 
-  to={`/view/${collectionId}/item/${item.id}`} 
-  state={{ returnSearch: window.location.search }} // Guardamos la búsqueda aquí
- className="group block text-center">
-        <div className="aspect-square overflow-hidden rounded-lg bg-secondary mb-3">
+        to={`/view/${collectionId}/item/${item.id}`} 
+        state={{ returnSearch: window.location.search }} 
+        className="group block text-center cursor-pointer"
+      >
+        {/* Contenedor Cuadrado */}
+        <div className="aspect-square overflow-hidden rounded-lg bg-[hsl(var(--image-bg))] mb-3 flex items-center justify-center">
           <img
             src={item.image}
             alt={item.displayName}
-            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+            /* Eliminamos 'group-hover:scale-105' para que la imagen se quede quieta */
+            className="w-full h-full object-contain transition-opacity duration-300"
             loading="lazy"
           />
         </div>
+        
         <div className="space-y-0.5 px-2">
+          {/* El texto seguirá reaccionando (underline y color) para indicar que es un link */}
           <h3 className="text-sm font-medium text-foreground break-words group-hover:underline underline-offset-4 group-hover:text-primary transition-colors text-center">
             {item.displayName}
           </h3>
