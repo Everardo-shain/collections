@@ -6,7 +6,7 @@ import { CollectionNavbar } from '@/components/collection/CollectionNavbar';
 import { CollectionBreadcrumb } from '@/components/collection/CollectionBreadcrumb';
 import { Helmet } from "react-helmet-async";
 import { cn } from "@/lib/utils";
-import { motion, useMotionValue, animate, PanInfo } from 'framer-motion';
+import { motion, useMotionValue, animate } from 'framer-motion';
 
 import { CollectionItem, SITE_METADATA, valid, CombinationResult } from '@/config';
 import { useCollection } from '@/hooks/useCollection';
