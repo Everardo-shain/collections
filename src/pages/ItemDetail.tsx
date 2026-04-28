@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useRef, useEffect } from 'react';
 import { useParams, Link, useLocation } from 'react-router-dom';
 import { ArrowLeft } from 'lucide-react';
 import { ImageLightbox } from '@/components/collection/ImageLightbox';
@@ -6,7 +6,7 @@ import { CollectionNavbar } from '@/components/collection/CollectionNavbar';
 import { CollectionBreadcrumb } from '@/components/collection/CollectionBreadcrumb';
 import { Helmet } from "react-helmet-async";
 import { cn } from "@/lib/utils";
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, useMotionValue, animate, PanInfo } from 'framer-motion';
 
 import { CollectionItem, SITE_METADATA, valid, CombinationResult } from '@/config';
 import { useCollection } from '@/hooks/useCollection';
