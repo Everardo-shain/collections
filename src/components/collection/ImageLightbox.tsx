@@ -191,7 +191,10 @@ function LightboxCarousel({
         ? 0
         : -((activeIndex + 1) * width);
 
-    if (Math.abs(x.get() - target) < 1) return;
+    if (Math.abs(x.get() - target) < 1) {
+      previousActiveIndexRef.current = activeIndex;
+      return;
+    }
     animatingRef.current = true;
     animate(x, target, {
       type: 'spring',
@@ -217,10 +220,17 @@ function LightboxCarousel({
     animate(x, sentinelTarget, {
       type: 'spring',
       stiffness: 300,
-      damping: 32,
+      damping: 30,
       onComplete: () => {
-        const wrapped = ((next % images.length) + images.length) % images.length;
-        if (wrapped !== next) x.set(-((wrapped + 1) * width));
+        let wrapped = next;
+        if (next < 0) {
+          wrapped = images.length - 1;
+          x.set(-(images.length * width));
+        } else if (next >= images.length) {
+          wrapped = 0;
+          x.set(-width);
+        }
+        previousActiveIndexRef.current = wrapped;
         animatingRef.current = false;
         onIndexChange(wrapped);
       },
@@ -256,7 +266,7 @@ function LightboxCarousel({
             draggingRef.current = false;
             const offset = info.offset.x;
             const velocity = info.velocity.x;
-            const threshold = width * 0.18;
+            const threshold = width * 0.1;
             let next = activeIndex;
             if (offset < -threshold || velocity < -400) next = activeIndex + 1;
             else if (offset > threshold || velocity > 400) next = activeIndex - 1;
