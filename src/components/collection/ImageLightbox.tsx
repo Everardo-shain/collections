@@ -340,7 +340,7 @@ function ZoomableImage({ src, isActive, onZoomChange }: { src: string, isActive:
   }, [isActive]);
 
   return (
-    <div className="relative flex items-center justify-center w-full h-full" onMouseMove={handleMouseMove}>
+    <div className="relative flex items-end justify-center w-full h-full" onMouseMove={handleMouseMove}>
       <motion.img
         ref={imgRef}
         src={src}
