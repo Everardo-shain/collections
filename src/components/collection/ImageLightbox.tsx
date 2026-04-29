@@ -245,7 +245,7 @@ function LightboxCarousel({
           {slides.map((img, idx) => (
             <div
               key={idx}
-              className="flex-shrink-0 flex items-center justify-center h-full"
+              className="flex-shrink-0 flex items-end justify-center h-full"
               style={{ width }}
             >
               <ZoomableImage
