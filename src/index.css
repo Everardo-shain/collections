@@ -21,6 +21,7 @@
 
     /* Aplicamos la variable */
     --primary: var(--accent-color);
+    --primary-hover: color-mix(in srgb, hsl(var(--accent-color)), white 20%);
     --primary-foreground: 0 0% 100%;
 
     --secondary: 0 0% 94%;
@@ -71,6 +72,7 @@
     --popover: 0 0% 8%;
     --popover-foreground: 0 0% 95%;
     --primary: var(--accent-color);
+    --primary-hover: color-mix(in srgb, hsl(var(--accent-color)), black 20%);
     --primary-foreground: 0 0% 5%;
     --secondary: 0 0% 14%;
     --secondary-foreground: 0 0% 95%;
@@ -118,9 +120,6 @@
 
   /* Usamos el selector de clase para asegurar que nuestra regla gane */
   .filter-chip:hover {
-    /* Forzamos que el fondo sea el primario y usamos brightness para el efecto */
-    background-color: hsl(var(--primary)) !important;
-    filter: brightness(0.8) !important;
-    opacity: 1 !important; /* Por si acaso algo le está bajando la opacidad */
+    background-color: var(--primary-hover) !important;
   }
 }

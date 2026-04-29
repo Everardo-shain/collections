@@ -2,6 +2,7 @@ import { useEffect, useCallback, useState, useRef } from 'react';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { motion, useMotionValue, animate } from 'framer-motion';
+import { cn } from "@/lib/utils";
 
 // A11y helper
 const VisuallyHidden = ({ children }: { children: React.ReactNode }) => (
@@ -23,7 +24,6 @@ export function ImageLightbox({ images, activeIndex: initialIndex, open, onOpenC
   const [internalIndex, setInternalIndex] = useState(initialIndex);
   const [isZoomed, setIsZoomed] = useState(false);
 
-  // Sync index whenever the lightbox opens
   useEffect(() => {
     if (open) {
       setInternalIndex(initialIndex);
@@ -36,13 +36,10 @@ export function ImageLightbox({ images, activeIndex: initialIndex, open, onOpenC
     onOpenChange(isOpen);
   }, [internalIndex, onIndexChange, onOpenChange]);
 
-  // Programmatic navigation - exposed to nav arrows
   const navRef = useRef<{ go: (next: number) => void } | null>(null);
-
   const goToPrev = useCallback(() => navRef.current?.go(internalIndex - 1), [internalIndex]);
   const goToNext = useCallback(() => navRef.current?.go(internalIndex + 1), [internalIndex]);
 
-  // Keyboard
   useEffect(() => {
     if (!open) return;
     const handler = (e: KeyboardEvent) => {
@@ -54,36 +51,42 @@ export function ImageLightbox({ images, activeIndex: initialIndex, open, onOpenC
     return () => window.removeEventListener('keydown', handler);
   }, [open, goToPrev, goToNext, handleClose]);
 
-  const hasMultiple = images.length > 1;
+const hasMultiple = images.length > 1;
+  const controlStyles = "bg-background/50 backdrop-blur-md text-foreground border border-border shadow-sm transition-all hover:bg-background";
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent
-        className="max-w-[100vw] w-screen h-screen p-0 bg-background border-none shadow-none flex flex-col items-center justify-center z-[100] outline-none overflow-hidden [&>button]:hidden duration-0"
+        className="max-w-[100vw] w-screen h-screen p-0 bg-background border-none shadow-none flex flex-col z-[100] outline-none overflow-hidden [&>button]:hidden duration-0"
       >
         <VisuallyHidden>
           <DialogTitle>{alt || 'Image gallery'}</DialogTitle>
         </VisuallyHidden>
 
-        {/* Close button */}
-        <div className="absolute top-4 right-4 z-[150]">
+        {/* --- ÁREA PRINCIPAL --- */}
+        {/* Cambiamos items-center por items-end para pegar la imagen al footer */}
+        <div className="relative flex-1 w-full overflow-hidden flex items-end justify-center">
+          
+          {/* Contador (Flotante) */}
+          {hasMultiple && (
+            <div className={cn(
+              "absolute top-6 left-6 z-[150] px-4 py-2 rounded-full text-[10px] font-bold tracking-[0.2em] uppercase",
+              controlStyles
+            )}>
+              {internalIndex + 1} / {images.length}
+            </div>
+          )}
+
+          {/* Botón Cerrar (Flotante) */}
           <button
             onClick={() => handleClose(false)}
-            className="p-3 bg-black/40 backdrop-blur-md text-white border border-white/10 hover:bg-black/60 transition-all rounded-full shadow-lg"
+            className={cn("absolute top-6 right-6 z-[150] p-2.5 rounded-full", controlStyles)}
             aria-label="Close"
           >
-            <X className="w-6 h-6" />
+            <X className="w-5 h-5" />
           </button>
-        </div>
 
-        {/* Counter */}
-        {hasMultiple && (
-          <div className="absolute top-4 left-1/2 -translate-x-1/2 z-[150] bg-black/40 backdrop-blur-md text-white border border-white/10 font-medium text-xs px-4 py-2 rounded-full select-none shadow-lg">
-            {internalIndex + 1} / {images.length}
-          </div>
-        )}
-
-        <div className="relative w-full h-full flex items-center justify-center">
+          {/* Carrusel */}
           {open && (
             <LightboxCarousel
               images={images}
@@ -95,35 +98,31 @@ export function ImageLightbox({ images, activeIndex: initialIndex, open, onOpenC
             />
           )}
 
-          {/* Nav arrows — desktop only */}
+          {/* Flechas (Solo Desktop) */}
           {!isZoomed && hasMultiple && (
             <>
               <button
                 onClick={goToPrev}
-                className="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-black/40 backdrop-blur-md text-white border border-white/10 items-center justify-center hover:bg-black/60 z-[110] transition-all shadow-xl"
-                aria-label="Previous image"
+                className={cn("hidden md:flex absolute left-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full items-center justify-center z-[110]", controlStyles)}
               >
-                <ChevronLeft className="w-9 h-9" />
+                <ChevronLeft className="w-7 h-7" />
               </button>
               <button
                 onClick={goToNext}
-                className="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 w-14 h-14 rounded-full bg-black/40 backdrop-blur-md text-white border border-white/10 items-center justify-center hover:bg-black/60 z-[110] transition-all shadow-xl"
-                aria-label="Next image"
+                className={cn("hidden md:flex absolute right-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full items-center justify-center z-[110]", controlStyles)}
               >
-                <ChevronRight className="w-9 h-9" />
+                <ChevronRight className="w-7 h-7" />
               </button>
             </>
           )}
         </div>
 
-        {/* Footer with displayName */}
+        {/* --- FOOTER (El nombre del item) --- */}
         {alt && (
-          <div className="absolute bottom-0 left-0 right-0 z-[140] pointer-events-none">
-            <div className="px-6 py-4 bg-gradient-to-t from-black/70 to-transparent flex justify-center">
-              <span className="text-white/90 text-sm font-medium tracking-wide text-center max-w-2xl truncate">
-                {alt}
-              </span>
-            </div>
+          <div className="h-14 shrink-0 flex items-center justify-center px-6 bg-background border-t border-border z-[140]">
+            <span className="text-foreground text-[13px] font-medium tracking-tight text-center truncate max-w-3xl uppercase">
+              {alt}
+            </span>
           </div>
         )}
       </DialogContent>

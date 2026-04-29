@@ -146,27 +146,13 @@ export function createMapItem(FIELD_MAP: Record<string, string>) {
       fields[camelKey] = raw[jsonName]?.trim() || "";
     });
 
-    const matchingImages = imagePaths
+    // Filtra y ordena solo las imágenes reales que coincidan con el ID del ítem
+    const images = imagePaths
       .filter((path) => {
         const fileName = path.split('/').pop() || "";
         return fileName.startsWith(`${id}_`);
       })
       .sort();
-
-    // MOCK: ensure at least 10 images per item with at least one real image,
-    // by appending cache-busted variants of the existing pictures. Used to
-    // verify infinite carousel + vertical thumbnail scroll.
-    let images = matchingImages;
-    if (matchingImages.length >= 1 && matchingImages.length < 10) {
-      const padded = [...matchingImages];
-      let i = 1;
-      while (padded.length < 10) {
-        const base = matchingImages[padded.length % matchingImages.length];
-        const sep = base.includes('?') ? '&' : '?';
-        padded.push(`${base}${sep}mock=${i++}`);
-      }
-      images = padded;
-    }
 
     return {
       ...fields,
