@@ -1,4 +1,4 @@
-import { useEffect, useCallback, useState, useRef } from 'react';
+import { useEffect, useCallback, useState, useRef, useLayoutEffect } from 'react';
 import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { motion, useMotionValue, animate } from 'framer-motion';
@@ -23,8 +23,10 @@ interface ImageLightboxProps {
 export function ImageLightbox({ images, activeIndex: initialIndex, open, onOpenChange, onIndexChange, alt }: ImageLightboxProps) {
   const [internalIndex, setInternalIndex] = useState(initialIndex);
   const [isZoomed, setIsZoomed] = useState(false);
+  const navRef = useRef<{ go: (next: number) => void } | null>(null);
+  const currentIndex = open && navRef.current === null ? initialIndex : internalIndex;
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (open) {
       setInternalIndex(initialIndex);
       setIsZoomed(false);
@@ -32,13 +34,12 @@ export function ImageLightbox({ images, activeIndex: initialIndex, open, onOpenC
   }, [open, initialIndex]);
 
   const handleClose = useCallback((isOpen: boolean) => {
-    if (!isOpen) onIndexChange(internalIndex);
+    if (!isOpen) onIndexChange(currentIndex);
     onOpenChange(isOpen);
-  }, [internalIndex, onIndexChange, onOpenChange]);
+  }, [currentIndex, onIndexChange, onOpenChange]);
 
-  const navRef = useRef<{ go: (next: number) => void } | null>(null);
-  const goToPrev = useCallback(() => navRef.current?.go(internalIndex - 1), [internalIndex]);
-  const goToNext = useCallback(() => navRef.current?.go(internalIndex + 1), [internalIndex]);
+  const goToPrev = useCallback(() => navRef.current?.go(currentIndex - 1), [currentIndex]);
+  const goToNext = useCallback(() => navRef.current?.go(currentIndex + 1), [currentIndex]);
 
   useEffect(() => {
     if (!open) return;
@@ -51,21 +52,19 @@ export function ImageLightbox({ images, activeIndex: initialIndex, open, onOpenC
     return () => window.removeEventListener('keydown', handler);
   }, [open, goToPrev, goToNext, handleClose]);
 
-const hasMultiple = images.length > 1;
+  const hasMultiple = images.length > 1;
   const controlStyles = "bg-background/50 backdrop-blur-md text-foreground border border-border shadow-sm transition-all hover:bg-background";
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent
-        className="max-w-[100vw] w-screen h-screen p-0 bg-background border-none shadow-none flex flex-col z-[100] outline-none overflow-hidden [&>button]:hidden duration-0"
+        className="!max-w-none max-w-[100vw] w-screen h-screen !gap-0 !p-0 !rounded-none bg-background border-none shadow-none flex flex-col z-[100] outline-none overflow-hidden [&>button]:hidden duration-0 data-[state=open]:!animate-none data-[state=closed]:!animate-none"
       >
         <VisuallyHidden>
           <DialogTitle>{alt || 'Image gallery'}</DialogTitle>
         </VisuallyHidden>
 
-        {/* --- ÁREA PRINCIPAL --- */}
-        {/* Cambiamos items-center por items-end para pegar la imagen al footer */}
-        <div className="relative flex-1 w-full overflow-hidden flex items-end justify-center">
+        <div className="relative flex-1 min-h-0 w-full overflow-hidden flex items-stretch justify-center mb-[-1px]">
           
           {/* Contador (Flotante) */}
           {hasMultiple && (
@@ -73,7 +72,7 @@ const hasMultiple = images.length > 1;
               "absolute top-6 left-6 z-[150] px-4 py-2 rounded-full text-[10px] font-bold tracking-[0.2em] uppercase",
               controlStyles
             )}>
-              {internalIndex + 1} / {images.length}
+              {currentIndex + 1} / {images.length}
             </div>
           )}
 
@@ -89,8 +88,9 @@ const hasMultiple = images.length > 1;
           {/* Carrusel */}
           {open && (
             <LightboxCarousel
+              key={`lightbox-${initialIndex}-${images.length}`}
               images={images}
-              activeIndex={internalIndex}
+              activeIndex={currentIndex}
               onIndexChange={setInternalIndex}
               isZoomed={isZoomed}
               onZoomChange={setIsZoomed}
@@ -103,13 +103,13 @@ const hasMultiple = images.length > 1;
             <>
               <button
                 onClick={goToPrev}
-                className={cn("hidden md:flex absolute left-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full items-center justify-center z-[110]", controlStyles)}
+                className={cn("hidden md:flex absolute left-6 top-1/2 -translate-y-1/2 w-16 h-16 rounded-full items-center justify-center z-[110]", controlStyles)}
               >
                 <ChevronLeft className="w-7 h-7" />
               </button>
               <button
                 onClick={goToNext}
-                className={cn("hidden md:flex absolute right-6 top-1/2 -translate-y-1/2 w-12 h-12 rounded-full items-center justify-center z-[110]", controlStyles)}
+                className={cn("hidden md:flex absolute right-6 top-1/2 -translate-y-1/2 w-16 h-16 rounded-full items-center justify-center z-[110]", controlStyles)}
               >
                 <ChevronRight className="w-7 h-7" />
               </button>
@@ -119,7 +119,7 @@ const hasMultiple = images.length > 1;
 
         {/* --- FOOTER (El nombre del item) --- */}
         {alt && (
-          <div className="h-14 shrink-0 flex items-center justify-center px-6 bg-background border-t border-border z-[140]">
+          <div className="h-14 shrink-0 mt-0 flex items-center justify-center px-6 bg-background border-t border-border z-[140]">
             <span className="text-foreground text-[13px] font-medium tracking-tight text-center truncate max-w-3xl uppercase">
               {alt}
             </span>
