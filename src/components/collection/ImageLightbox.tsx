@@ -213,7 +213,7 @@ function LightboxCarousel({
 
   if (!hasMultiple) {
     return (
-      <div ref={containerRef} className="w-full h-full flex items-center justify-center">
+      <div ref={containerRef} className="w-full h-full flex items-end justify-center">
         <ZoomableImage src={images[0]} isActive onZoomChange={onZoomChange} />
       </div>
     );
@@ -245,7 +245,7 @@ function LightboxCarousel({
           {slides.map((img, idx) => (
             <div
               key={idx}
-              className="flex-shrink-0 flex items-center justify-center h-full"
+              className="flex-shrink-0 flex items-end justify-center h-full"
               style={{ width }}
             >
               <ZoomableImage

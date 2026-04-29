@@ -364,7 +364,7 @@ function InfiniteCarousel({
           className="flex h-full cursor-pointer"
           style={{ x, width: width * slides.length }}
           drag="x"
-          dragElastic={0.2}
+          dragElastic={0}
           dragMomentum={false}
           onTap={() => {
             if (!isDraggingRef.current && onTap) onTap();
