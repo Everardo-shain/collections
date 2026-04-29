@@ -316,6 +316,7 @@ function InfiniteCarousel({
   const isDraggingRef = useRef(false);
   const animatingRef = useRef(false);
   const initializedRef = useRef(false);
+  const previousActiveIndexRef = useRef(activeIndex);
   const hasMultiple = images.length > 1;
 
   useEffect(() => {
@@ -338,10 +339,38 @@ function InfiniteCarousel({
   useEffect(() => {
     if (width === 0) return;
     if (isDraggingRef.current || animatingRef.current) return;
-    const target = -((activeIndex + 1) * width);
-    if (Math.abs(x.get() - target) < 1) return;
-    animate(x, target, { type: 'spring', stiffness: 300, damping: 32 });
-  }, [activeIndex, width, x]);
+    const previousIndex = previousActiveIndexRef.current;
+    if (previousIndex === activeIndex) return;
+
+    const isForwardClone = previousIndex === images.length - 1 && activeIndex === 0;
+    const isBackwardClone = previousIndex === 0 && activeIndex === images.length - 1;
+    const target = isForwardClone
+      ? -((images.length + 1) * width)
+      : isBackwardClone
+        ? 0
+        : -((activeIndex + 1) * width);
+
+    if (Math.abs(x.get() - target) < 1) {
+      previousActiveIndexRef.current = activeIndex;
+      return;
+    }
+
+    animatingRef.current = true;
+    animate(x, target, {
+      type: 'spring',
+      stiffness: 300,
+      damping: 30,
+      onComplete: () => {
+        if (isForwardClone) {
+          x.set(-width);
+        } else if (isBackwardClone) {
+          x.set(-(images.length * width));
+        }
+        previousActiveIndexRef.current = activeIndex;
+        animatingRef.current = false;
+      },
+    });
+  }, [activeIndex, width, x, images.length]);
 
   if (!hasMultiple) {
     return (
@@ -380,7 +409,7 @@ function InfiniteCarousel({
             const offset = info.offset.x;
             const velocity = info.velocity.x;
             let next = activeIndex;
-            const threshold = width * 0.2;
+            const threshold = width * 0.1;
             
             if (offset < -threshold || velocity < -400) next = activeIndex + 1;
             else if (offset > threshold || velocity > 400) next = activeIndex - 1;
@@ -392,10 +421,15 @@ function InfiniteCarousel({
               stiffness: 300,
               damping: 32,
               onComplete: () => {
-                const wrapped = ((next % images.length) + images.length) % images.length;
-                if (wrapped !== next) {
-                  x.set(-((wrapped + 1) * width));
+                let wrapped = next;
+                if (next < 0) {
+                  wrapped = images.length - 1;
+                  x.set(-(images.length * width));
+                } else if (next >= images.length) {
+                  wrapped = 0;
+                  x.set(-width);
                 }
+                previousActiveIndexRef.current = wrapped;
                 animatingRef.current = false;
                 onIndexChange(wrapped);
               },
