@@ -58,7 +58,7 @@ export function ImageLightbox({ images, activeIndex: initialIndex, open, onOpenC
   return (
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent
-        className="!max-w-none max-w-[100vw] w-screen h-screen !gap-0 !p-0 !rounded-none bg-background border-none shadow-none flex flex-col z-[100] outline-none overflow-hidden [&>button]:hidden duration-0 data-[state=open]:!animate-none data-[state=closed]:!animate-none"
+        className="!max-w-none w-screen h-screen !gap-0 !p-0 !rounded-none bg-background border-none shadow-none !flex flex-col z-[100] outline-none overflow-hidden [&>button]:hidden duration-0 data-[state=open]:!animate-none data-[state=closed]:!animate-none"
       >
         <VisuallyHidden>
           <DialogTitle>{alt || 'Image gallery'}</DialogTitle>
