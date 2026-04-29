@@ -150,43 +150,64 @@ function LightboxCarousel({
   navRef: React.MutableRefObject<{ go: (next: number) => void } | null>;
 }) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [width, setWidth] = useState(0);
-  const x = useMotionValue(0);
+  const hasMultiple = images.length > 1;
+  const initialWidth = typeof window !== 'undefined' ? window.innerWidth : 0;
+  const initialOffset = hasMultiple ? activeIndex + 1 : activeIndex;
+  const [width, setWidth] = useState(initialWidth);
+  const x = useMotionValue(-(initialOffset * initialWidth));
   const draggingRef = useRef(false);
   const animatingRef = useRef(false);
-  const initializedRef = useRef(false);
-  const hasMultiple = images.length > 1;
+  const previousActiveIndexRef = useRef(activeIndex);
 
-  // Measure container with ResizeObserver
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!containerRef.current) return;
     const el = containerRef.current;
     const measure = () => {
       const w = el.offsetWidth;
       if (w <= 0) return;
       setWidth(w);
-      if (!initializedRef.current) {
-        const offset = hasMultiple ? activeIndex + 1 : activeIndex;
+      if (!animatingRef.current && !draggingRef.current) {
+        const offset = hasMultiple ? previousActiveIndexRef.current + 1 : previousActiveIndexRef.current;
         x.set(-(offset * w));
-        initializedRef.current = true;
       }
     };
     measure();
     const ro = new ResizeObserver(measure);
     ro.observe(el);
     return () => ro.disconnect();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [hasMultiple, x]);
 
-  // Snap to active index when it changes externally (keyboard/buttons)
   useEffect(() => {
     if (width === 0) return;
     if (draggingRef.current || animatingRef.current) return;
-    const offset = hasMultiple ? activeIndex + 1 : activeIndex;
-    const target = -(offset * width);
+    const previousIndex = previousActiveIndexRef.current;
+    if (previousIndex === activeIndex) return;
+
+    const isForwardClone = previousIndex === images.length - 1 && activeIndex === 0;
+    const isBackwardClone = previousIndex === 0 && activeIndex === images.length - 1;
+    const target = isForwardClone
+      ? -((images.length + 1) * width)
+      : isBackwardClone
+        ? 0
+        : -((activeIndex + 1) * width);
+
     if (Math.abs(x.get() - target) < 1) return;
-    animate(x, target, { type: 'spring', stiffness: 300, damping: 32 });
-  }, [activeIndex, width, x, hasMultiple]);
+    animatingRef.current = true;
+    animate(x, target, {
+      type: 'spring',
+      stiffness: 300,
+      damping: 30,
+      onComplete: () => {
+        if (isForwardClone) {
+          x.set(-width);
+        } else if (isBackwardClone) {
+          x.set(-(images.length * width));
+        }
+        previousActiveIndexRef.current = activeIndex;
+        animatingRef.current = false;
+      },
+    });
+  }, [activeIndex, width, x, images.length]);
 
   // Programmatic go() exposed via ref
   const go = useCallback((next: number) => {
