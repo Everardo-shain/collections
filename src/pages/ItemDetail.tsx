@@ -419,7 +419,7 @@ function InfiniteCarousel({
             animate(x, sentinelTarget, {
               type: 'spring',
               stiffness: 300,
-              damping: 32,
+              damping: 30,
               onComplete: () => {
                 let wrapped = next;
                 if (next < 0) {
