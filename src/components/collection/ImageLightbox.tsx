@@ -213,7 +213,7 @@ function LightboxCarousel({
     <div ref={containerRef} className="w-full h-full overflow-hidden bg-background">
       {width > 0 && (
         <motion.div
-          className="flex h-full cursor-grab active:cursor-grabbing"
+          className="flex h-full"
           style={{ x, width: width * images.length }}
           drag={!isZoomed ? 'x' : false}
           dragConstraints={{ left: -((images.length - 1) * width), right: 0 }}
@@ -246,59 +246,183 @@ function LightboxCarousel({
 function ZoomableImage({ src, isActive, onZoomChange, isDraggingRef }: any) {
   const [zoomed, setZoomed] = useState(false);
   const [scale, setScale] = useState(1);
+  const [xPos, setXPos] = useState(0);
   const [yPos, setYPos] = useState(0);
   const imgRef = useRef<HTMLImageElement>(null);
 
-  const toggleZoom = (e: React.MouseEvent) => {
-    if (isDraggingRef?.current) return;
-    if (!imgRef.current) return;
-    if (!zoomed) {
-      const rect = imgRef.current.getBoundingClientRect();
-      const newScale = window.innerWidth / rect.width;
-      const clickYRelative = e.clientY - rect.top;
-      const clickPercent = clickYRelative / rect.height;
-      const imgHeightFull = rect.height * newScale;
-      const overflow = (imgHeightFull - window.innerHeight) / 2;
-      setScale(newScale);
-      setZoomed(true);
-      onZoomChange(true);
-      if (imgHeightFull > window.innerHeight) setYPos(overflow - (clickPercent * overflow * 2));
-    } else {
-      setZoomed(false);
-      onZoomChange(false);
-      setYPos(0);
-    }
-  };
-
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (!zoomed || !imgRef.current) return;
-    const fullHeight = imgRef.current.offsetHeight * scale;
-    const windowH = window.innerHeight;
-    if (fullHeight > windowH) {
-      const overflow = (fullHeight - windowH) / 2;
-      const mousePercent = e.clientY / windowH;
-      setYPos(overflow - (mousePercent * overflow * 2));
-    }
-  };
+  // Refs para gestión de gestos
+  const lastTouch = useRef({ x: 0, y: 0 });
+  const startDistance = useRef(0);
+  const initialScale = useRef(1);
+  const isPinching = useRef(false);
+  const canZoomRef = useRef(false);
 
   useEffect(() => {
-    if (!isActive) {
-      setZoomed(false);
-      setYPos(0);
+    const timer = setTimeout(() => { canZoomRef.current = true; }, 400);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const resetZoom = () => {
+    setZoomed(false);
+    onZoomChange(false);
+    setXPos(0);
+    setYPos(0);
+    setScale(1);
+    initialScale.current = 1;
+  };
+
+  // --- ATAJO: ZOOM CON CLIC / TAP ---
+  const toggleZoom = (e: React.MouseEvent) => {
+    if (isDraggingRef?.current || !canZoomRef.current || isPinching.current) return;
+    if (!imgRef.current) return;
+
+    if (!zoomed) {
+      const fixedScale = 2.5;
+      const rect = imgRef.current.getBoundingClientRect();
+      const windowW = window.innerWidth;
+      const windowH = window.innerHeight;
+
+      const clickXPercent = (e.clientX - rect.left) / rect.width;
+      const clickYPercent = (e.clientY - rect.top) / rect.height;
+
+      setScale(fixedScale);
+      setZoomed(true);
+      onZoomChange(true);
+
+      // Posicionar según el clic
+      updateOffsets(fixedScale, clickXPercent, clickYPercent, windowW, windowH, rect);
+    } else {
+      resetZoom();
     }
-  }, [isActive]);
+  };
+
+  const updateOffsets = (currentScale: number, px: number, py: number, winW: number, winH: number, rect: DOMRect) => {
+    const fullW = rect.width / scale * currentScale; 
+    const fullH = rect.height / scale * currentScale;
+
+    if (fullW > winW) {
+      const limitX = (fullW - winW) / 2;
+      setXPos(limitX - (px * limitX * 2));
+    }
+    if (fullH > winH) {
+      const limitY = (fullH - winH) / 2;
+      setYPos(limitY - (py * limitY * 2));
+    }
+  };
+
+  // --- LÓGICA TÁCTIL (PINCH & PAN) ---
+  const handleTouchStart = (e: React.TouchEvent) => {
+    if (e.touches.length === 2) {
+      // Iniciando Pinch
+      isPinching.current = true;
+      const dist = Math.hypot(
+        e.touches[0].clientX - e.touches[1].clientX,
+        e.touches[0].clientY - e.touches[1].clientY
+      );
+      startDistance.current = dist;
+      initialScale.current = scale;
+    } else if (e.touches.length === 1 && zoomed) {
+      // Iniciando Pan (un dedo)
+      isPinching.current = false;
+      lastTouch.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+    }
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    if (!imgRef.current) return;
+
+    if (e.touches.length === 2 && isPinching.current) {
+      // LÓGICA DE PINCH (ZOOM DINÁMICO)
+      const dist = Math.hypot(
+        e.touches[0].clientX - e.touches[1].clientX,
+        e.touches[0].clientY - e.touches[1].clientY
+      );
+      
+      let newScale = (dist / startDistance.current) * initialScale.current;
+      newScale = Math.max(1, Math.min(newScale, 5)); // Límite de 1x a 5x
+      
+      setScale(newScale);
+      
+      if (newScale > 1.05) {
+        setZoomed(true);
+        onZoomChange(true);
+      } else {
+        setZoomed(false);
+        onZoomChange(false);
+        setXPos(0);
+        setYPos(0);
+      }
+    } else if (e.touches.length === 1 && zoomed && !isPinching.current) {
+      // LÓGICA DE PAN (DESPLAZAMIENTO)
+      const touch = e.touches[0];
+      const deltaX = touch.clientX - lastTouch.current.x;
+      const deltaY = touch.clientY - lastTouch.current.y;
+      lastTouch.current = { x: touch.clientX, y: touch.clientY };
+
+      const winW = window.innerWidth;
+      const winH = window.innerHeight;
+      const fullW = imgRef.current.offsetWidth * scale;
+      const fullH = imgRef.current.offsetHeight * scale;
+
+      if (fullW > winW) {
+        const limX = (fullW - winW) / 2;
+        setXPos(prev => Math.max(-limX, Math.min(limX, prev + deltaX)));
+      }
+      if (fullH > winH) {
+        const limY = (fullH - winH) / 2;
+        setYPos(prev => Math.max(-limY, Math.min(limY, prev + deltaY)));
+      }
+    }
+  };
+
+  const handleTouchEnd = () => {
+    if (scale <= 1.05) resetZoom();
+    // No reseteamos isPinching inmediatamente para evitar que un 
+    // "levantamiento de dedo" active el pan accidentalmente
+    setTimeout(() => { isPinching.current = false; }, 100);
+  };
+
+  // Mouse move para desktop sigue igual
+  const handleMouseMove = (e: React.MouseEvent) => {
+    if (!zoomed || !imgRef.current || isPinching.current) return;
+    const winW = window.innerWidth;
+    const winH = window.innerHeight;
+    const fullW = imgRef.current.offsetWidth * scale;
+    const fullH = imgRef.current.offsetHeight * scale;
+
+    if (fullW > winW) {
+      const ovX = (fullW - winW) / 2;
+      setXPos(ovX - (e.clientX / winW * ovX * 2));
+    }
+    if (fullH > winH) {
+      const ovY = (fullH - winH) / 2;
+      setYPos(ovY - (e.clientY / winH * ovY * 2));
+    }
+  };
+
+  useEffect(() => { if (!isActive) resetZoom(); }, [isActive]);
 
   return (
-    <div className="relative flex items-center justify-center w-full h-full" onMouseMove={handleMouseMove}>
+    <div 
+      className="relative flex items-center justify-center w-full h-full overflow-hidden touch-none" 
+      onMouseMove={handleMouseMove}
+      onTouchStart={handleTouchStart}
+      onTouchMove={handleTouchMove}
+      onTouchEnd={handleTouchEnd}
+    >
       <motion.img
         ref={imgRef}
         src={src}
         draggable={false}
-        animate={{ scale: zoomed ? scale : 1, y: zoomed ? yPos : 0 }}
-        transition={{ duration: 0.25, ease: "easeOut" }}
+        animate={{ 
+          scale: scale, 
+          x: zoomed ? xPos : 0,
+          y: zoomed ? yPos : 0 
+        }}
+        transition={isPinching.current ? { duration: 0 } : { duration: 0.25, ease: "easeOut" }}
         className={cn(
           "max-h-full max-w-full w-auto h-auto object-contain select-none pointer-events-auto",
-          zoomed ? 'cursor-zoom-out' : 'cursor-zoom-in'
+          zoomed ? 'cursor-zoom-out z-50' : 'cursor-zoom-in'
         )}
         onClick={toggleZoom}
       />
