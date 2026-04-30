@@ -442,7 +442,7 @@ function ImageCarousel({
               <img
                 src={img}
                 draggable={false}
-                className="w-full h-full object-contain pointer-events-none select-none"
+                className="w-full h-full object-contain scale-[1.01] pointer-events-none select-none"
                 alt=""
               />
             </div>
