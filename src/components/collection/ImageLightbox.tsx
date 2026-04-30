@@ -129,7 +129,7 @@ export function ImageLightbox({ images, activeIndex: initialIndex, open, onOpenC
               key={`lightbox-${images.length}`}
               images={images}
               activeIndex={currentIndex}
-              onIndexChange={setInternalIndex}
+              onIndexChange={updateIndex}
               isZoomed={isZoomed}
               onZoomChange={setIsZoomed}
               navRef={navRef}
