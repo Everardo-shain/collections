@@ -28,7 +28,7 @@ export const metadata = {
   ogImage: "/og-image.png",
   lightAccentColor: "142 71% 40%",
   darkAccentColor: "111 100% 51%",
-  logo: "/src/assets/site/logo.svg",
+  logo: "/src/assets/site/football-logo.svg",
 } as const;
 
 // ==========================================

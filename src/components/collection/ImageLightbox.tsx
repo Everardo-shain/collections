@@ -38,8 +38,13 @@ export function ImageLightbox({ images, activeIndex: initialIndex, open, onOpenC
     onOpenChange(isOpen);
   }, [currentIndex, onIndexChange, onOpenChange]);
 
-  const goToPrev = useCallback(() => navRef.current?.go(currentIndex - 1), [currentIndex]);
-  const goToNext = useCallback(() => navRef.current?.go(currentIndex + 1), [currentIndex]);
+  const goToPrev = useCallback(() => {
+    if (currentIndex > 0) navRef.current?.go(currentIndex - 1);
+  }, [currentIndex]);
+
+  const goToNext = useCallback(() => {
+    if (currentIndex < images.length - 1) navRef.current?.go(currentIndex + 1);
+  }, [currentIndex, images.length]);
 
   useEffect(() => {
     if (!open) return;
@@ -53,7 +58,12 @@ export function ImageLightbox({ images, activeIndex: initialIndex, open, onOpenC
   }, [open, goToPrev, goToNext, handleClose]);
 
   const hasMultiple = images.length > 1;
-  const controlStyles = "bg-background/50 backdrop-blur-md text-foreground border border-border shadow-sm transition-all hover:bg-background";
+
+  const arrowStyles = cn(
+    "bg-primary text-primary-foreground transition-all duration-200",
+    "hover:bg-primary-hover",
+    "disabled:opacity-20 disabled:cursor-not-allowed"
+  );
 
   return (
     <Dialog open={open} onOpenChange={handleClose}>
@@ -66,29 +76,26 @@ export function ImageLightbox({ images, activeIndex: initialIndex, open, onOpenC
 
         <div className="relative flex-1 min-h-0 w-full overflow-hidden flex items-stretch justify-center mb-[-1px]">
           
-          {/* Contador (Flotante) */}
+          {/* Contador (Solo texto plano) */}
           {hasMultiple && (
-            <div className={cn(
-              "absolute top-6 left-6 z-[150] px-4 py-2 rounded-full text-[10px] font-bold tracking-[0.2em] uppercase",
-              controlStyles
-            )}>
+            <div className="absolute top-8 left-8 z-[150] text-[14px] font-bold tracking-[0.2em] uppercase text-muted-foreground select-none">
               {currentIndex + 1} / {images.length}
             </div>
           )}
 
-          {/* Botón Cerrar (Flotante) */}
+          {/* Cerrar (Solo SVG plano) */}
           <button
             onClick={() => handleClose(false)}
-            className={cn("absolute top-6 right-6 z-[150] p-2.5 rounded-full", controlStyles)}
+            className="absolute top-6 right-6 z-[150] p-2 text-muted-foreground hover:text-primary transition-colors duration-200"
             aria-label="Close"
           >
-            <X className="w-5 h-5" />
+            <X className="w-8 h-8" />
           </button>
 
           {/* Carrusel */}
           {open && (
             <LightboxCarousel
-              key={`lightbox-${initialIndex}-${images.length}`}
+              key={`lightbox-${images.length}`}
               images={images}
               activeIndex={currentIndex}
               onIndexChange={setInternalIndex}
@@ -98,26 +105,28 @@ export function ImageLightbox({ images, activeIndex: initialIndex, open, onOpenC
             />
           )}
 
-          {/* Flechas (Solo Desktop) */}
+          {/* Flechas (Planeras sin sombra) */}
           {!isZoomed && hasMultiple && (
             <>
               <button
                 onClick={goToPrev}
-                className={cn("hidden md:flex absolute left-6 top-1/2 -translate-y-1/2 w-16 h-16 rounded-full items-center justify-center z-[110]", controlStyles)}
+                disabled={currentIndex === 0}
+                className={cn("hidden md:flex absolute left-6 top-1/2 -translate-y-1/2 w-10 h-10 rounded items-center justify-center z-[110]", arrowStyles)}
               >
-                <ChevronLeft className="w-7 h-7" />
+                <ChevronLeft className="w-6 h-6" />
               </button>
               <button
                 onClick={goToNext}
-                className={cn("hidden md:flex absolute right-6 top-1/2 -translate-y-1/2 w-16 h-16 rounded-full items-center justify-center z-[110]", controlStyles)}
+                disabled={currentIndex === images.length - 1}
+                className={cn("hidden md:flex absolute right-6 top-1/2 -translate-y-1/2 w-10 h-10 rounded items-center justify-center z-[110]", arrowStyles)}
               >
-                <ChevronRight className="w-7 h-7" />
+                <ChevronRight className="w-6 h-6" />
               </button>
             </>
           )}
         </div>
 
-        {/* --- FOOTER (El nombre del item) --- */}
+        {/* Footer (Fondo sólido) */}
         {alt && (
           <div className="h-14 shrink-0 mt-0 flex items-center justify-center px-6 bg-background border-t border-border z-[140]">
             <span className="text-foreground text-[13px] font-medium tracking-tight text-center truncate max-w-3xl uppercase">
@@ -130,10 +139,6 @@ export function ImageLightbox({ images, activeIndex: initialIndex, open, onOpenC
   );
 }
 
-/**
- * Infinite carousel using sentinel slides + 1:1 drag with framer-motion.
- * Shares its logic with the InfiniteCarousel from ItemDetail.
- */
 function LightboxCarousel({
   images,
   activeIndex,
@@ -141,23 +146,20 @@ function LightboxCarousel({
   isZoomed,
   onZoomChange,
   navRef,
-}: {
-  images: string[];
-  activeIndex: number;
-  onIndexChange: (i: number) => void;
-  isZoomed: boolean;
-  onZoomChange: (z: boolean) => void;
-  navRef: React.MutableRefObject<{ go: (next: number) => void } | null>;
-}) {
+}: any) {
   const containerRef = useRef<HTMLDivElement>(null);
-  const hasMultiple = images.length > 1;
-  const initialWidth = typeof window !== 'undefined' ? window.innerWidth : 0;
-  const initialOffset = hasMultiple ? activeIndex + 1 : activeIndex;
-  const [width, setWidth] = useState(initialWidth);
-  const x = useMotionValue(-(initialOffset * initialWidth));
+  const [width, setWidth] = useState(typeof window !== 'undefined' ? window.innerWidth : 0);
+  const x = useMotionValue(-(activeIndex * width));
   const draggingRef = useRef(false);
-  const animatingRef = useRef(false);
-  const previousActiveIndexRef = useRef(activeIndex);
+  const hasMultiple = images.length > 1;
+
+  const transitionConfig = {
+    type: 'spring' as const,
+    stiffness: 220,
+    damping: 35,
+    mass: 0.8,
+    restDelta: 0.001
+  };
 
   useLayoutEffect(() => {
     if (!containerRef.current) return;
@@ -166,124 +168,56 @@ function LightboxCarousel({
       const w = el.offsetWidth;
       if (w <= 0) return;
       setWidth(w);
-      if (!animatingRef.current && !draggingRef.current) {
-        const offset = hasMultiple ? previousActiveIndexRef.current + 1 : previousActiveIndexRef.current;
-        x.set(-(offset * w));
-      }
+      x.set(-(activeIndex * w));
     };
     measure();
     const ro = new ResizeObserver(measure);
     ro.observe(el);
     return () => ro.disconnect();
-  }, [hasMultiple, x]);
+  }, [width, x]); 
 
   useEffect(() => {
-    if (width === 0) return;
-    if (draggingRef.current || animatingRef.current) return;
-    const previousIndex = previousActiveIndexRef.current;
-    if (previousIndex === activeIndex) return;
+    if (width === 0 || draggingRef.current) return;
+    animate(x, -(activeIndex * width), transitionConfig);
+  }, [activeIndex, width, x]);
 
-    const isForwardClone = previousIndex === images.length - 1 && activeIndex === 0;
-    const isBackwardClone = previousIndex === 0 && activeIndex === images.length - 1;
-    const target = isForwardClone
-      ? -((images.length + 1) * width)
-      : isBackwardClone
-        ? 0
-        : -((activeIndex + 1) * width);
-
-    if (Math.abs(x.get() - target) < 1) {
-      previousActiveIndexRef.current = activeIndex;
-      return;
-    }
-    animatingRef.current = true;
-    animate(x, target, {
-      type: 'spring',
-      stiffness: 300,
-      damping: 30,
-      onComplete: () => {
-        if (isForwardClone) {
-          x.set(-width);
-        } else if (isBackwardClone) {
-          x.set(-(images.length * width));
-        }
-        previousActiveIndexRef.current = activeIndex;
-        animatingRef.current = false;
-      },
-    });
-  }, [activeIndex, width, x, images.length]);
-
-  // Programmatic go() exposed via ref
   const go = useCallback((next: number) => {
     if (isZoomed || !hasMultiple || width === 0) return;
-    animatingRef.current = true;
-    const sentinelTarget = -((next + 1) * width);
-    animate(x, sentinelTarget, {
-      type: 'spring',
-      stiffness: 300,
-      damping: 30,
-      onComplete: () => {
-        let wrapped = next;
-        if (next < 0) {
-          wrapped = images.length - 1;
-          x.set(-(images.length * width));
-        } else if (next >= images.length) {
-          wrapped = 0;
-          x.set(-width);
-        }
-        previousActiveIndexRef.current = wrapped;
-        animatingRef.current = false;
-        onIndexChange(wrapped);
-      },
-    });
-  }, [isZoomed, hasMultiple, width, images.length, x, onIndexChange]);
+    const clampedNext = Math.max(0, Math.min(images.length - 1, next));
+    onIndexChange(clampedNext);
+  }, [isZoomed, hasMultiple, width, images.length, onIndexChange]);
 
   useEffect(() => {
     navRef.current = { go };
     return () => { navRef.current = null; };
   }, [go, navRef]);
 
-  if (!hasMultiple) {
-    return (
-      <div ref={containerRef} className="w-full h-full flex items-end justify-center">
-        <ZoomableImage src={images[0]} isActive onZoomChange={onZoomChange} />
-      </div>
-    );
-  }
-
-  const slides = [images[images.length - 1], ...images, images[0]];
-
   return (
-    <div ref={containerRef} className="w-full h-full overflow-hidden">
+    <div ref={containerRef} className="w-full h-full overflow-hidden bg-background">
       {width > 0 && (
         <motion.div
-          className="flex h-full"
-          style={{ x, width: width * slides.length }}
+          className="flex h-full cursor-grab active:cursor-grabbing"
+          style={{ x, width: width * images.length }}
           drag={!isZoomed ? 'x' : false}
-          dragElastic={0}
+          dragConstraints={{ left: -((images.length - 1) * width), right: 0 }}
+          dragElastic={0.1}
           dragMomentum={false}
           onDragStart={() => { draggingRef.current = true; }}
           onDragEnd={(_, info) => {
-            draggingRef.current = false;
+            setTimeout(() => { draggingRef.current = false; }, 50);
             const offset = info.offset.x;
             const velocity = info.velocity.x;
-            const threshold = width * 0.1;
             let next = activeIndex;
-            if (offset < -threshold || velocity < -400) next = activeIndex + 1;
-            else if (offset > threshold || velocity > 400) next = activeIndex - 1;
-            go(next);
+            if (offset < -width * 0.15 || velocity < -300) next = activeIndex + 1;
+            else if (offset > width * 0.15 || velocity > 300) next = activeIndex - 1;
+            next = Math.max(0, Math.min(images.length - 1, next));
+            animate(x, -(next * width), transitionConfig);
+            onIndexChange(next);
           }}
         >
-          {slides.map((img, idx) => (
-            <div
-              key={idx}
-              className="flex-shrink-0 flex items-end justify-center h-full"
-              style={{ width }}
-            >
-              <ZoomableImage
-                src={img}
-                isActive={idx === activeIndex + 1}
-                onZoomChange={onZoomChange}
-              />
+          {images.map((img, idx) => (
+            <div key={idx} className="flex-shrink-0 flex items-center justify-center h-full" style={{ width }}>
+              <ZoomableImage src={img} isActive={idx === activeIndex} onZoomChange={onZoomChange} isDraggingRef={draggingRef} />
             </div>
           ))}
         </motion.div>
@@ -292,13 +226,14 @@ function LightboxCarousel({
   );
 }
 
-function ZoomableImage({ src, isActive, onZoomChange }: { src: string, isActive: boolean, onZoomChange: (z: boolean) => void }) {
+function ZoomableImage({ src, isActive, onZoomChange, isDraggingRef }: any) {
   const [zoomed, setZoomed] = useState(false);
   const [scale, setScale] = useState(1);
   const [yPos, setYPos] = useState(0);
   const imgRef = useRef<HTMLImageElement>(null);
 
   const toggleZoom = (e: React.MouseEvent) => {
+    if (isDraggingRef?.current) return;
     if (!imgRef.current) return;
     if (!zoomed) {
       const rect = imgRef.current.getBoundingClientRect();
@@ -307,13 +242,10 @@ function ZoomableImage({ src, isActive, onZoomChange }: { src: string, isActive:
       const clickPercent = clickYRelative / rect.height;
       const imgHeightFull = rect.height * newScale;
       const overflow = (imgHeightFull - window.innerHeight) / 2;
-
       setScale(newScale);
       setZoomed(true);
       onZoomChange(true);
-      if (imgHeightFull > window.innerHeight) {
-        setYPos(overflow - (clickPercent * overflow * 2));
-      }
+      if (imgHeightFull > window.innerHeight) setYPos(overflow - (clickPercent * overflow * 2));
     } else {
       setZoomed(false);
       onZoomChange(false);
@@ -340,16 +272,17 @@ function ZoomableImage({ src, isActive, onZoomChange }: { src: string, isActive:
   }, [isActive]);
 
   return (
-    <div className="relative flex items-end justify-center w-full h-full" onMouseMove={handleMouseMove}>
+    <div className="relative flex items-center justify-center w-full h-full" onMouseMove={handleMouseMove}>
       <motion.img
         ref={imgRef}
         src={src}
         draggable={false}
         animate={{ scale: zoomed ? scale : 1, y: zoomed ? yPos : 0 }}
-        transition={{ duration: 0.2 }}
-        className={`max-h-full max-w-full w-auto h-auto object-contain select-none shadow-2xl pointer-events-auto ${
+        transition={{ duration: 0.25, ease: "easeOut" }}
+        className={cn(
+          "max-h-full max-w-full w-auto h-auto object-contain select-none pointer-events-auto",
           zoomed ? 'cursor-zoom-out' : 'cursor-zoom-in'
-        }`}
+        )}
         onClick={toggleZoom}
       />
     </div>

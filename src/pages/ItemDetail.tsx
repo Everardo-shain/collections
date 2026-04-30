@@ -79,11 +79,11 @@ export default function ItemDetail() {
   const baseHref = `/view/${collectionId}`;
 
   const handlePrevImage = () => {
-    setActiveImageIndex((prev) => (prev - 1 + images.length) % images.length);
+    setActiveImageIndex((prev) => Math.max(0, prev - 1));
   };
 
   const handleNextImage = () => {
-    setActiveImageIndex((prev) => (prev + 1) % images.length);
+    setActiveImageIndex((prev) => Math.min(images.length - 1, prev + 1));
   };
 
   const renderValueParts = (camelKey: string, rawValue: string, combination: CombinationResult) => {
@@ -200,8 +200,11 @@ export default function ItemDetail() {
                   {hasMultiple && (
                     <button 
                       onClick={handlePrevImage} 
-                      className="p-1 lg:p-2 shrink-0 text-primary transition-colors group"
-                      aria-label="Previous image"
+                      disabled={activeImageIndex === 0}
+                      className={cn(
+                        "p-1 lg:p-2 shrink-0 transition-all group",
+                        activeImageIndex === 0 ? "opacity-40 cursor-not-allowed" : "text-primary hover:scale-110"
+                      )}
                     >
                       <ChevronLeft className="w-6 h-6 lg:w-8 lg:h-8" />
                     </button>
@@ -209,7 +212,7 @@ export default function ItemDetail() {
 
                   <div className="relative flex-1 aspect-square w-full overflow-hidden rounded-lg border border-border bg-[hsl(var(--image-bg))] shadow-sm">
                     <div className="absolute inset-0">
-                      <InfiniteCarousel
+                      <ImageCarousel
                         images={images}
                         activeIndex={activeImageIndex}
                         onIndexChange={setActiveImageIndex}
@@ -221,8 +224,11 @@ export default function ItemDetail() {
                   {hasMultiple && (
                     <button 
                       onClick={handleNextImage} 
-                      className="p-1 lg:p-2 shrink-0 text-primary transition-colors group"
-                      aria-label="Next image"
+                      disabled={activeImageIndex === images.length - 1}
+                      className={cn(
+                        "p-1 lg:p-2 shrink-0 transition-all group",
+                        activeImageIndex === images.length - 1 ? "opacity-40 cursor-not-allowed" : "text-primary hover:scale-110"
+                      )}
                     >
                       <ChevronRight className="w-6 h-6 lg:w-8 lg:h-8" />
                     </button>
@@ -230,18 +236,17 @@ export default function ItemDetail() {
                 </div>
 
                 {hasMultiple && (
-                  <div className="flex justify-center items-center gap-2 pt-2">
+                  <div className="flex justify-center items-center gap-2 pt-4">
                     {images.map((_, idx) => (
                       <button
                         key={idx}
                         onClick={() => setActiveImageIndex(idx)}
                         className={cn(
-                          "w-2.5 h-2.5 rounded-full transition-all",
+                          "w-2 h-2 rounded-full transition-all duration-300",
                           idx === activeImageIndex 
                             ? "bg-primary w-6" 
-                            : "bg-border hover:bg-muted-foreground"
+                            : "bg-muted-foreground opacity-40 hover:opacity-100"
                         )}
-                        aria-label={`Go to image ${idx + 1}`}
                       />
                     ))}
                   </div>
@@ -275,7 +280,7 @@ export default function ItemDetail() {
                   
                   return valid(safe) && (
                     <div key={f} className="py-6"> 
-                      <p className="text-sm italic text-muted-foreground whitespace-pre-line leading-relaxed">
+                      <p className="text-sm text-foreground whitespace-pre-line leading-relaxed">
                         {safe}
                       </p>
                     </div>
@@ -299,7 +304,7 @@ export default function ItemDetail() {
   );
 }
 
-function InfiniteCarousel({
+function ImageCarousel({
   images,
   activeIndex,
   onIndexChange,
@@ -314,10 +319,17 @@ function InfiniteCarousel({
   const [width, setWidth] = useState(0);
   const x = useMotionValue(0);
   const isDraggingRef = useRef(false);
-  const animatingRef = useRef(false);
   const initializedRef = useRef(false);
-  const previousActiveIndexRef = useRef(activeIndex);
+  
   const hasMultiple = images.length > 1;
+
+  const transitionConfig = {
+    type: 'spring' as const,
+    stiffness: 220, 
+    damping: 35,    
+    mass: 0.8,
+    restDelta: 0.001
+  };
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -325,52 +337,25 @@ function InfiniteCarousel({
     const measure = () => {
       const w = el.offsetWidth;
       setWidth(w);
-      if (w > 0 && !initializedRef.current) {
-        x.set(-((activeIndex + 1) * w));
-        initializedRef.current = true;
+      if (w > 0) {
+        if (!initializedRef.current) {
+          x.set(-(activeIndex * w));
+          initializedRef.current = true;
+        } else {
+          x.set(-(activeIndex * w));
+        }
       }
     };
     measure();
     const ro = new ResizeObserver(measure);
     ro.observe(el);
     return () => ro.disconnect();
-  }, [activeIndex, x]);
+  }, [width, x]);
 
   useEffect(() => {
-    if (width === 0) return;
-    if (isDraggingRef.current || animatingRef.current) return;
-    const previousIndex = previousActiveIndexRef.current;
-    if (previousIndex === activeIndex) return;
-
-    const isForwardClone = previousIndex === images.length - 1 && activeIndex === 0;
-    const isBackwardClone = previousIndex === 0 && activeIndex === images.length - 1;
-    const target = isForwardClone
-      ? -((images.length + 1) * width)
-      : isBackwardClone
-        ? 0
-        : -((activeIndex + 1) * width);
-
-    if (Math.abs(x.get() - target) < 1) {
-      previousActiveIndexRef.current = activeIndex;
-      return;
-    }
-
-    animatingRef.current = true;
-    animate(x, target, {
-      type: 'spring',
-      stiffness: 300,
-      damping: 30,
-      onComplete: () => {
-        if (isForwardClone) {
-          x.set(-width);
-        } else if (isBackwardClone) {
-          x.set(-(images.length * width));
-        }
-        previousActiveIndexRef.current = activeIndex;
-        animatingRef.current = false;
-      },
-    });
-  }, [activeIndex, width, x, images.length]);
+    if (width === 0 || isDraggingRef.current) return;
+    animate(x, -(activeIndex * width), transitionConfig);
+  }, [activeIndex, width, x]);
 
   if (!hasMultiple) {
     return (
@@ -384,24 +369,28 @@ function InfiniteCarousel({
     );
   }
 
-  const slides = [images[images.length - 1], ...images, images[0]];
-
   return (
     <div ref={containerRef} className="w-full h-full overflow-hidden">
       {width > 0 && (
         <motion.div
-          className="flex h-full cursor-pointer"
-          style={{ x, width: width * slides.length }}
+          className="flex h-full cursor-grab active:cursor-grabbing"
+          style={{ x, width: width * images.length }}
           drag="x"
-          dragElastic={0}
+          dragConstraints={{ left: -((images.length - 1) * width), right: 0 }}
+          dragElastic={0.1}
           dragMomentum={false}
           onTap={() => {
-            if (!isDraggingRef.current && onTap) onTap();
+            // Solo abrimos el lightbox si NO estábamos arrastrando
+            if (!isDraggingRef.current && onTap) {
+              onTap();
+            }
           }}
           onDragStart={() => {
             isDraggingRef.current = true;
           }}
           onDragEnd={(_, info) => {
+            // El truco: esperamos 50ms antes de decir que "ya no estamos arrastrando"
+            // Esto evita que el evento Tap se dispare justo al soltar el mouse
             setTimeout(() => {
               isDraggingRef.current = false;
             }, 50);
@@ -409,34 +398,18 @@ function InfiniteCarousel({
             const offset = info.offset.x;
             const velocity = info.velocity.x;
             let next = activeIndex;
-            const threshold = width * 0.1;
+            const threshold = width * 0.15;
             
-            if (offset < -threshold || velocity < -400) next = activeIndex + 1;
-            else if (offset > threshold || velocity > 400) next = activeIndex - 1;
+            if (offset < -threshold || velocity < -300) next = activeIndex + 1;
+            else if (offset > threshold || velocity > 300) next = activeIndex - 1;
 
-            animatingRef.current = true;
-            const sentinelTarget = -((next + 1) * width);
-            animate(x, sentinelTarget, {
-              type: 'spring',
-              stiffness: 300,
-              damping: 30,
-              onComplete: () => {
-                let wrapped = next;
-                if (next < 0) {
-                  wrapped = images.length - 1;
-                  x.set(-(images.length * width));
-                } else if (next >= images.length) {
-                  wrapped = 0;
-                  x.set(-width);
-                }
-                previousActiveIndexRef.current = wrapped;
-                animatingRef.current = false;
-                onIndexChange(wrapped);
-              },
-            });
+            next = Math.max(0, Math.min(images.length - 1, next));
+            
+            animate(x, -(next * width), transitionConfig);
+            onIndexChange(next);
           }}
         >
-          {slides.map((img, idx) => (
+          {images.map((img, idx) => (
             <div
               key={idx}
               className="h-full flex-shrink-0 flex items-center justify-center p-0"
