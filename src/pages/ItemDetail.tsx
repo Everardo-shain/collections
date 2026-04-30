@@ -63,6 +63,16 @@ export default function ItemDetail() {
     };
   }, [checkThumbScroll, item?.images]);
 
+  // Auto-scroll active thumbnail into view when index changes (e.g. from lightbox)
+  useEffect(() => {
+    if (!thumbScrollRef.current) return;
+    const container = thumbScrollRef.current;
+    const activeThumb = container.children[activeImageIndex] as HTMLElement | undefined;
+    if (activeThumb) {
+      activeThumb.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+    }
+  }, [activeImageIndex]);
+
   const scrollThumbs = (direction: 'up' | 'down') => {
     if (thumbScrollRef.current) {
       const amount = direction === 'up' ? -200 : 200;
