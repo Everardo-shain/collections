@@ -268,8 +268,8 @@ export default function ItemDetail() {
 
                   return (
                     <div key={camelKey} className="flex justify-between py-4 items-start gap-4">
-                      <span className="text-[10px] font-bold text-foreground/50 uppercase tracking-[0.2em] pt-1.5 shrink-0">{label as string}</span>
-                      <span className="text-sm font-semibold text-right text-foreground">{renderValueParts(camelKey, rawValue, combination)}</span>
+                      <span className="text-[10px] font-black text-foreground uppercase tracking-[0.25em] pt-1.5 shrink-0">{label as string}</span>
+                      <span className="text-sm text-right text-foreground">{renderValueParts(camelKey, rawValue, combination)}</span>
                     </div>
                   );
                 })}

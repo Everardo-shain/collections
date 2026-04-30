@@ -61,7 +61,7 @@ export function ImageLightbox({ images, activeIndex: initialIndex, open, onOpenC
 
   const arrowStyles = cn(
     "bg-primary text-primary-foreground transition-all duration-200",
-    "hover:bg-primary-hover",
+    "hover:bg-primary/90", // Ajustado para que sea sutil
     "disabled:opacity-20 disabled:cursor-not-allowed"
   );
 
@@ -74,24 +74,50 @@ export function ImageLightbox({ images, activeIndex: initialIndex, open, onOpenC
           <DialogTitle>{alt || 'Image gallery'}</DialogTitle>
         </VisuallyHidden>
 
-        <div className="relative flex-1 min-h-0 w-full overflow-hidden flex items-stretch justify-center mb-[-1px]">
+        {/* --- TOP BAR HEADER --- */}
+        <div className="relative shrink-0 bg-background border-b border-border z-[150] min-h-[56px] md:h-14 flex flex-col justify-center">
           
-          {/* Contador (Solo texto plano) */}
-          {hasMultiple && (
-            <div className="absolute top-8 left-8 z-[150] text-[14px] font-bold tracking-[0.2em] uppercase text-muted-foreground select-none">
-              {currentIndex + 1} / {images.length}
+          {/* Contenedor Principal: En Desktop es una línea, en Mobile se adapta */}
+          <div className="w-full h-14 flex items-center justify-between px-6">
+            
+            {/* Contador (Izquierda) */}
+            <div className="w-32 flex-shrink-0 text-[14px] md:text-[14px] font-bold tracking-[0.2em] uppercase text-muted-foreground select-none">
+              {hasMultiple ? `${currentIndex + 1} / ${images.length}` : ''}
+            </div>
+
+            {/* Display Name (Desktop: Centro) */}
+            <div className="hidden md:flex flex-1 min-w-0 justify-center px-4">
+              {alt && (
+                <span className="text-foreground text-[13px] font-black tracking-[0.1em] uppercase truncate antialiased">
+                  {alt}
+                </span>
+              )}
+            </div>
+
+            {/* Botón Cerrar (Derecha) */}
+            <div className="w-32 flex-shrink-0 flex justify-end">
+              <button
+                onClick={() => handleClose(false)}
+                className="p-2 text-muted-foreground hover:text-primary transition-colors duration-200"
+                aria-label="Close"
+              >
+                <X className="w-7 h-7" />
+              </button>
+            </div>
+          </div>
+
+          {/* Fila Inferior (Solo Mobile): Nombre debajo de los controles */}
+          {alt && (
+            <div className="md:hidden w-full px-6 pb-4 flex justify-center">
+              <span className="text-foreground text-[12px] font-black tracking-[0.1em] uppercase text-center leading-tight antialiased">
+                {alt}
+              </span>
             </div>
           )}
+        </div>
 
-          {/* Cerrar (Solo SVG plano) */}
-          <button
-            onClick={() => handleClose(false)}
-            className="absolute top-6 right-6 z-[150] p-2 text-muted-foreground hover:text-primary transition-colors duration-200"
-            aria-label="Close"
-          >
-            <X className="w-8 h-8" />
-          </button>
-
+        {/* --- MAIN VIEWPORT --- */}
+        <div className="relative flex-1 min-h-0 w-full overflow-hidden flex items-stretch justify-center">
           {/* Carrusel */}
           {open && (
             <LightboxCarousel
@@ -105,35 +131,26 @@ export function ImageLightbox({ images, activeIndex: initialIndex, open, onOpenC
             />
           )}
 
-          {/* Flechas (Planeras sin sombra) */}
+          {/* Flechas de Navegación */}
           {!isZoomed && hasMultiple && (
             <>
               <button
                 onClick={goToPrev}
                 disabled={currentIndex === 0}
-                className={cn("hidden md:flex absolute left-6 top-1/2 -translate-y-1/2 w-10 h-10 rounded items-center justify-center z-[110]", arrowStyles)}
+                className={cn("hidden md:flex absolute left-6 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full items-center justify-center z-[110]", arrowStyles)}
               >
                 <ChevronLeft className="w-6 h-6" />
               </button>
               <button
                 onClick={goToNext}
                 disabled={currentIndex === images.length - 1}
-                className={cn("hidden md:flex absolute right-6 top-1/2 -translate-y-1/2 w-10 h-10 rounded items-center justify-center z-[110]", arrowStyles)}
+                className={cn("hidden md:flex absolute right-6 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full items-center justify-center z-[110]", arrowStyles)}
               >
                 <ChevronRight className="w-6 h-6" />
               </button>
             </>
           )}
         </div>
-
-        {/* Footer (Fondo sólido) */}
-        {alt && (
-          <div className="h-14 shrink-0 mt-0 flex items-center justify-center px-6 bg-background border-t border-border z-[140]">
-            <span className="text-foreground text-[13px] font-medium tracking-tight text-center truncate max-w-3xl uppercase">
-              {alt}
-            </span>
-          </div>
-        )}
       </DialogContent>
     </Dialog>
   );

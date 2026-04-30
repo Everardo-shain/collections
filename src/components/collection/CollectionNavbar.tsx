@@ -7,7 +7,6 @@ import { ThemeSelector } from '@/components/ThemeSelector';
 import { useScrollDirection } from '@/hooks/useScrollDirection';
 import { cn } from '@/lib/utils';
 
-// --- DROPDOWN DESKTOP ---
 function DropdownMenu({
   group,
   activeParent,
@@ -29,24 +28,30 @@ function DropdownMenu({
 
   return (
     <div
-      className="relative"
+      className="relative h-14 flex items-center" // Ocupa todo el alto del navbar
       onMouseEnter={() => { clearTimeout(timeout.current); setOpen(true); }}
       onMouseLeave={() => { timeout.current = setTimeout(() => setOpen(false), 150); }}
     >
       <button className={cn(
-        "flex items-center gap-1 text-sm font-medium transition-colors hover:text-primary",
+        "relative flex items-center gap-1 text-sm font-medium transition-colors h-full px-1",
+        "group", // Clase para disparar la línea
         isParentSelected ? 'text-primary' : 'text-foreground'
       )}>
         {group.label}
-        <ChevronDown className={cn("w-3.5 h-3.5 transition-transform", open && "rotate-180")} />
+        <ChevronDown className={cn("w-3.5 h-3.5 transition-transform duration-300", open && "rotate-180")} />
+        
+        {/* LÍNEA DE HOVER: Solo aparece si NO está seleccionado */}
+        {!isParentSelected && (
+          <span className="absolute bottom-0 left-0 w-full h-[2px] bg-primary hidden group-hover:block" />
+        )}
       </button>
 
       {open && (
-        <div className="absolute top-full left-0 mt-2 min-w-[160px] bg-card border border-border rounded-lg shadow-lg py-1.5 z-50">
+        <div className="absolute top-[calc(100%+1px)] left-0 min-w-[180px] bg-card border border-border rounded-b-lg shadow-xl py-2 z-50 animate-in fade-in slide-in-from-top-1 duration-200">
           <Link
             to={`${baseHref}?nav_${parentKey}=${encodeURIComponent(group.label)}`}
             className={cn(
-              "block px-4 py-2 text-sm hover:bg-accent/50",
+              "block px-4 py-2 text-sm transition-colors hover:bg-accent/50",
               isParentSelected && !activeChild ? "text-primary font-bold" : "text-foreground font-medium"
             )}
             onClick={() => setOpen(false)}
@@ -62,7 +67,7 @@ function DropdownMenu({
                 to={`${baseHref}?nav_${parentKey}=${encodeURIComponent(group.label)}&nav_${childKey}=${encodeURIComponent(child.label)}`}
                 className={cn(
                   "block px-4 py-2 text-sm transition-colors hover:bg-accent/50",
-                  isChildActive ? 'text-primary font-medium' : 'text-muted-foreground'
+                  isChildActive ? 'text-primary font-medium' : 'text-muted-foreground hover:text-foreground'
                 )}
                 onClick={() => setOpen(false)}
               >
@@ -154,7 +159,7 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
           isHidden ? "-translate-y-full" : "translate-y-0"
         )}>
           <div className="max-w-[1440px] mx-auto px-4 lg:px-8 h-8 flex items-center justify-end">
-            <Link to="/" className="text-xs text-muted-foreground hover:text-foreground">
+            <Link to="/" className="text-xs text-muted-foreground hover:text-primary">
               Other Collections
             </Link>
           </div>
@@ -212,11 +217,14 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
                 <Link
                   to={baseHref}
                   className={cn(
-                    "text-sm font-medium hover:text-primary transition-colors",
+                    "relative h-14 flex items-center px-1 text-sm font-medium transition-colors group",
                     isAllSelected ? 'text-primary' : 'text-foreground'
                   )}
                 >
                   All
+                  {!isAllSelected && (
+                    <span className="absolute bottom-0 left-0 w-full h-[2px] bg-primary hidden group-hover:block" />
+                  )}
                 </Link>
                 {navGroups.map(group => (
                   <DropdownMenu
@@ -242,7 +250,7 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
                     value={tempSearch}
                     onChange={(e) => setTempSearch(e.target.value)}
                     onKeyDown={(e) => e.key === 'Enter' && triggerSearch(tempSearch)}
-                    className="pl-8 pr-8 h-8 w-48 text-sm bg-background border-border focus-visible:ring-primary"
+                    className="pl-8 pr-8 h-8 w-48 text-sm bg-secondary/20 border-border focus-visible:ring-primary"
                   />
                   {tempSearch && (
                     <button onClick={() => { setTempSearch(''); triggerSearch(''); }} className="absolute right-2 text-muted-foreground hover:text-foreground">
@@ -269,7 +277,7 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
                     <Input placeholder="Search" value={tempSearch} onChange={(e) => setTempSearch(e.target.value)}
                       onKeyDown={(e) => e.key === 'Enter' && triggerSearch(tempSearch)} className="pl-9 h-10 w-full bg-background" />
                   </div>
-                  <Link to={baseHref} className={cn("block py-4 text-base font-bold border-b border-border/40", isAllSelected && "text-primary")} onClick={() => setMobileOpen(false)}>All Items</Link>
+                  <Link to={baseHref} className={cn("block py-4 text-base font-bold border-b border-border/40", isAllSelected && "text-primary")} onClick={() => setMobileOpen(false)}>All</Link>
                   {navGroups.map(group => (
                     <button key={group.label} onClick={() => setActiveSubMenu(group.label)} className={cn("w-full flex items-center justify-between py-4 text-base font-bold border-b border-border/40", activeParent === group.label && "text-primary")}>
                       {group.label} <ChevronRight className="w-4 h-4" />
