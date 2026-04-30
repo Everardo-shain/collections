@@ -33,10 +33,15 @@ export function ImageLightbox({ images, activeIndex: initialIndex, open, onOpenC
     }
   }, [open, initialIndex]);
 
+  // Sync to parent in real time whenever the internal index changes while open
+  const updateIndex = useCallback((next: number) => {
+    setInternalIndex(next);
+    onIndexChange(next);
+  }, [onIndexChange]);
+
   const handleClose = useCallback((isOpen: boolean) => {
-    if (!isOpen) onIndexChange(currentIndex);
     onOpenChange(isOpen);
-  }, [currentIndex, onIndexChange, onOpenChange]);
+  }, [onOpenChange]);
 
   const goToPrev = useCallback(() => {
     if (currentIndex > 0) navRef.current?.go(currentIndex - 1);
@@ -124,7 +129,7 @@ export function ImageLightbox({ images, activeIndex: initialIndex, open, onOpenC
               key={`lightbox-${images.length}`}
               images={images}
               activeIndex={currentIndex}
-              onIndexChange={setInternalIndex}
+              onIndexChange={updateIndex}
               isZoomed={isZoomed}
               onZoomChange={setIsZoomed}
               navRef={navRef}
