@@ -345,30 +345,33 @@ function ImageCarousel({
     restDelta: 0.001
   };
 
+  // Efecto 1: SOLO medir el ancho. No se vuelve a ejecutar si cambia el activeIndex.
   useEffect(() => {
     if (!containerRef.current) return;
     const el = containerRef.current;
+    
     const measure = () => {
-      const w = el.offsetWidth;
-      setWidth(w);
-      if (w > 0) {
-        if (!initializedRef.current) {
-          x.set(-(activeIndex * w));
-          initializedRef.current = true;
-        } else {
-          x.set(-(activeIndex * w));
-        }
-      }
+      setWidth(el.offsetWidth);
     };
+    
     measure();
     const ro = new ResizeObserver(measure);
     ro.observe(el);
+    
     return () => ro.disconnect();
-  }, [width, x, activeIndex]);
+  }, []);
 
+  // Efecto 2: Controlar la posición. La primera vez aplica sin animación (.set), 
+  // las siguientes veces usa el desplazamiento suave (animate).
   useEffect(() => {
-    if (width === 0 || isDraggingRef.current) return;
-    animate(x, -(activeIndex * width), transitionConfig);
+    if (width === 0) return;
+    
+    if (!initializedRef.current) {
+      x.set(-(activeIndex * width));
+      initializedRef.current = true;
+    } else if (!isDraggingRef.current) {
+      animate(x, -(activeIndex * width), transitionConfig);
+    }
   }, [activeIndex, width, x]);
 
   if (!hasMultiple) {
