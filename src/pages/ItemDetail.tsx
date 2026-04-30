@@ -95,7 +95,7 @@ export default function ItemDetail() {
         <Link
           to={`${baseHref}?nav_${camelKey.toLowerCase()}=${encodeURIComponent(rawValue)}`}
           state={{ customLabel: fullDisplayText, filterKey: camelKey.toLowerCase() }}
-          className="underline underline-offset-4 decoration-primary decoration-1 hover:text-primary transition-colors"
+          className="underline underline-offset-4 decoration-primary decoration-1 hover:text-primary transition-colors break-words inline-block max-w-full text-right"
         >
           {fullDisplayText}
         </Link>
@@ -103,7 +103,7 @@ export default function ItemDetail() {
     }
 
     return (
-      <span className="flex flex-wrap justify-end">
+      <span className="flex flex-wrap justify-end w-full">
         {parts.map((part, idx) => {
           const isLinkable = part.fieldKey && (LINK_FIELDS as readonly string[]).includes(part.fieldKey);
           if (isLinkable && part.fieldKey) {
@@ -113,13 +113,17 @@ export default function ItemDetail() {
                 key={idx}
                 to={`${baseHref}?nav_${part.fieldKey.toLowerCase()}=${encodeURIComponent(navValue)}`}
                 state={{ customLabel: part.text, filterKey: part.fieldKey.toLowerCase() }}
-                className="underline underline-offset-4 decoration-primary decoration-1 hover:text-primary transition-colors"
+                className="underline underline-offset-4 decoration-primary decoration-1 hover:text-primary transition-colors break-words max-w-full"
               >
                 {part.text}
               </Link>
             );
           }
-          return <span key={idx} className="whitespace-pre text-foreground">{part.text}</span>;
+          return (
+            <span key={idx} className="whitespace-pre-wrap break-words text-foreground max-w-full text-right">
+              {part.text}
+            </span>
+          );
         })}
       </span>
     );
@@ -140,8 +144,8 @@ export default function ItemDetail() {
         <CollectionNavbar navGroups={navGroups} />
         <CollectionBreadcrumb item={item} />
 
-        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-8">
-          <Link to={returnPath} className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary mb-6 transition-colors group">
+        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <Link to={returnPath} className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary mb-4 transition-colors group">
             <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
             {location.state?.returnSearch ? "Back to results" : "Back to collection"}
           </Link>
@@ -256,7 +260,9 @@ export default function ItemDetail() {
 
             <div className="lg:col-span-5 flex flex-col pt-2">
               <h1 className="text-3xl md:text-4xl font-bold mb-8 tracking-tight">{item.displayName}</h1>
-              <div className="border-t border-border divide-y divide-border">
+              
+              {/* LA SOLUCIÓN: grid-cols-[auto_1fr] en el padre compartido */}
+              <div className="border-t border-border divide-y divide-border grid grid-cols-[auto_1fr]">
                 {Object.entries(FIELD_MAP).map(([camelKey, label]) => {
                   const rawValue = item[camelKey as keyof CollectionItem];
                   if (!(VISIBLE_FIELDS as readonly string[]).includes(camelKey) || typeof rawValue !== "string" || !valid(rawValue)) return null;
@@ -267,20 +273,28 @@ export default function ItemDetail() {
                   if (FIELD_VISIBILITY_RULES[camelKey] && !FIELD_VISIBILITY_RULES[camelKey](item, displayString)) return null;
 
                   return (
-                    <div key={camelKey} className="flex justify-between py-4 items-start gap-4">
-                      <span className="text-[10px] font-black text-foreground uppercase tracking-[0.25em] pt-1.5 shrink-0">{label as string}</span>
-                      <span className="text-sm text-right text-foreground">{renderValueParts(camelKey, rawValue, combination)}</span>
+                    /* 'contents' hace que los hijos directos actúen como si fueran hijos del grid padre */
+                    <div key={camelKey} className="contents">
+                      <span className="text-[10px] font-black text-foreground uppercase tracking-[0.25em] py-5 pr-8 shrink-0 border-b border-border">
+                        {label as string}
+                      </span>
+                      <div className="text-sm text-right text-foreground flex-1 min-w-0 flex justify-end py-4 border-b border-border">
+                        {renderValueParts(camelKey, rawValue, combination)}
+                      </div>
                     </div>
                   );
                 })}
+              </div>
 
+              {/* Los SPECIAL_FIELDS fuera del grid ya que suelen ser bloques de texto largos */}
+              <div className="divide-y divide-border">
                 {SPECIAL_FIELDS.map((f) => {
                   const content = item[f as keyof typeof item];
                   const safe = Array.isArray(content) ? content.join(", ") : (content as string);
                   
                   return valid(safe) && (
-                    <div key={f} className="py-6"> 
-                      <p className="text-sm text-foreground whitespace-pre-line leading-relaxed">
+                    <div key={f} className="py-6 w-full min-w-0"> 
+                      <p className="text-sm italic text-foreground whitespace-pre-line leading-relaxed break-words">
                         {safe}
                       </p>
                     </div>
@@ -350,7 +364,7 @@ function ImageCarousel({
     const ro = new ResizeObserver(measure);
     ro.observe(el);
     return () => ro.disconnect();
-  }, [width, x]);
+  }, [width, x, activeIndex]);
 
   useEffect(() => {
     if (width === 0 || isDraggingRef.current) return;
@@ -380,7 +394,6 @@ function ImageCarousel({
           dragElastic={0.1}
           dragMomentum={false}
           onTap={() => {
-            // Solo abrimos el lightbox si NO estábamos arrastrando
             if (!isDraggingRef.current && onTap) {
               onTap();
             }
@@ -389,8 +402,6 @@ function ImageCarousel({
             isDraggingRef.current = true;
           }}
           onDragEnd={(_, info) => {
-            // El truco: esperamos 50ms antes de decir que "ya no estamos arrastrando"
-            // Esto evita que el evento Tap se dispare justo al soltar el mouse
             setTimeout(() => {
               isDraggingRef.current = false;
             }, 50);
