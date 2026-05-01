@@ -175,6 +175,12 @@ function LightboxCarousel({
   const draggingRef = useRef(false);
   const hasMultiple = images.length > 1;
 
+  // NUEVO: Referencia en tiempo real para abortar gestos fantasma
+  const isZoomedRef = useRef(isZoomed);
+  useEffect(() => {
+    isZoomedRef.current = isZoomed;
+  }, [isZoomed]);
+
   const transitionConfig = {
     type: 'spring' as const,
     stiffness: 220,
@@ -227,6 +233,14 @@ function LightboxCarousel({
           onDragStart={() => { draggingRef.current = true; }}
           onDragEnd={(_, info) => {
             setTimeout(() => { draggingRef.current = false; }, 50);
+
+            // FIX: Si el componente hijo activó el zoom, abortamos el swipe inmediatamente
+            // y obligamos a la imagen a quedarse en su sitio.
+            if (isZoomedRef.current) {
+              animate(x, -(activeIndex * width), transitionConfig);
+              return;
+            }
+
             const offset = info.offset.x;
             const velocity = info.velocity.x;
             let next = activeIndex;
@@ -261,8 +275,6 @@ function ZoomableImage({ src, isActive, onZoomChange, isDraggingRef }: any) {
   const isPinching = useRef(false);
   const canZoomRef = useRef(false);
   const lastTapTime = useRef(0);
-  
-  // NUEVO: Referencia para bloquear eventos fantasma del navegador
   const lastTouchTime = useRef(0);
 
   useEffect(() => {
@@ -324,7 +336,6 @@ function ZoomableImage({ src, isActive, onZoomChange, isDraggingRef }: any) {
   };
 
   const handleTouchStart = (e: React.TouchEvent) => {
-    // Registramos que hay actividad táctil real
     lastTouchTime.current = Date.now(); 
     
     if (e.touches.length === 2) {
@@ -361,6 +372,11 @@ function ZoomableImage({ src, isActive, onZoomChange, isDraggingRef }: any) {
     lastTouchTime.current = Date.now();
     if (!imgRef.current) return;
 
+    if (e.touches.length >= 2) {
+      // FIX: Previene que Framer Motion detecte arrastre cuando usamos múltiples dedos
+      e.stopPropagation();
+    }
+
     if (e.touches.length === 2 && isPinching.current) {
       const dist = Math.hypot(
         e.touches[0].clientX - e.touches[1].clientX,
@@ -368,12 +384,20 @@ function ZoomableImage({ src, isActive, onZoomChange, isDraggingRef }: any) {
       );
       let newScale = (dist / startDistance.current) * initialScale.current;
       newScale = Math.max(1, Math.min(newScale, 5));
+
+      // FIX: Si el pinch reduce mucho la imagen, forzamos un reset inmediato
+      // para que no haya que esperar a levantar los dedos.
+      if (newScale <= 1.05 && zoomed) {
+        resetZoom();
+        return;
+      }
+
       const { x, y } = getClampedOffsets(newScale, xPos, yPos);
       setScale(newScale);
       setXPos(x);
       setYPos(y);
       
-      if (newScale > 1.01) {
+      if (newScale > 1.05) {
         setZoomed(true);
         onZoomChange(true);
       }
@@ -389,28 +413,28 @@ function ZoomableImage({ src, isActive, onZoomChange, isDraggingRef }: any) {
     }
   };
 
-  const handleTouchEnd = () => {
+  const handleTouchEnd = (e: React.TouchEvent) => {
     lastTouchTime.current = Date.now();
-    if (scale <= 1.01 && zoomed) {
+    
+    // FIX: Incrementamos la tolerancia. Si sueltas el dedo y la escala es menor a 1.15,
+    // garantizamos que la imagen se resetea y el carrusel vuelve a estar activo.
+    if (scale <= 1.15 && zoomed) {
       resetZoom();
     }
-    setTimeout(() => { isPinching.current = false; }, 100);
+    
+    if (e.touches.length === 0) {
+      setTimeout(() => { isPinching.current = false; }, 100);
+    }
   };
 
   const handleClick = (e: React.MouseEvent) => {
-    // Si hubo un toque real hace menos de 500ms, ignoramos el click totalmente.
-    // Esto mata el click fantasma en mobile.
     if (Date.now() - lastTouchTime.current < 500) return;
-
     if (isDraggingRef?.current || !canZoomRef.current) return;
     performZoom(e.clientX, e.clientY);
   };
 
   const handleMouseMove = (e: React.MouseEvent) => {
-    // Si hubo un toque real hace menos de 500ms, ignoramos este movimiento de "ratón".
-    // Esto evita el "teletransporte" en mobile.
     if (Date.now() - lastTouchTime.current < 500) return;
-    
     if (!zoomed || isPinching.current) return;
     const { x, y } = getClampedOffsets(scale, 
       ( (scale * window.innerWidth - window.innerWidth) / 2 ) - (e.clientX / window.innerWidth * (scale * window.innerWidth - window.innerWidth)),
@@ -429,6 +453,12 @@ function ZoomableImage({ src, isActive, onZoomChange, isDraggingRef }: any) {
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
+      // FIX: Bloqueo a nivel captura nativa para ahogar intentos falsos de swipe de Framer Motion
+      onPointerDownCapture={(e) => {
+        if (e.nativeEvent.pointerType === 'touch' && !e.isPrimary) {
+          e.stopPropagation();
+        }
+      }}
     >
       <motion.img
         ref={imgRef}
