@@ -261,16 +261,17 @@ function ZoomableImage({ src, isActive, onZoomChange, isDraggingRef }: any) {
   const isPinching = useRef(false);
   const canZoomRef = useRef(false);
   const lastTapTime = useRef(0);
+  
+  // NUEVO: Referencia para bloquear eventos fantasma del navegador
+  const lastTouchTime = useRef(0);
 
   useEffect(() => {
     const timer = setTimeout(() => { canZoomRef.current = true; }, 400);
     return () => clearTimeout(timer);
   }, []);
 
-  // Función de utilidad para mantener la imagen dentro de los límites
   const getClampedOffsets = useCallback((newScale: number, newX: number, newY: number) => {
     if (!imgRef.current) return { x: 0, y: 0 };
-    
     const winW = window.innerWidth;
     const winH = window.innerHeight;
     const fullW = imgRef.current.offsetWidth * newScale;
@@ -287,7 +288,6 @@ function ZoomableImage({ src, isActive, onZoomChange, isDraggingRef }: any) {
       const limY = (fullH - winH) / 2;
       clampedY = Math.max(-limY, Math.min(limY, newY));
     }
-
     return { x: clampedX, y: clampedY };
   }, []);
 
@@ -302,7 +302,6 @@ function ZoomableImage({ src, isActive, onZoomChange, isDraggingRef }: any) {
 
   const performZoom = (clientX: number, clientY: number) => {
     if (!imgRef.current) return;
-
     if (!zoomed) {
       const fixedScale = 2.5;
       const rect = imgRef.current.getBoundingClientRect();
@@ -325,11 +324,12 @@ function ZoomableImage({ src, isActive, onZoomChange, isDraggingRef }: any) {
   };
 
   const handleTouchStart = (e: React.TouchEvent) => {
+    // Registramos que hay actividad táctil real
+    lastTouchTime.current = Date.now(); 
+    
     if (e.touches.length === 2) {
-      // BLOQUEO INMEDIATO: Al tocar con 2 dedos, congelamos el carrusel
       isPinching.current = true;
       onZoomChange(true); 
-      
       const dist = Math.hypot(
         e.touches[0].clientX - e.touches[1].clientX,
         e.touches[0].clientY - e.touches[1].clientY
@@ -338,19 +338,27 @@ function ZoomableImage({ src, isActive, onZoomChange, isDraggingRef }: any) {
       initialScale.current = scale;
     } else if (e.touches.length === 1) {
       const now = Date.now();
-      if (now - lastTapTime.current < 300) {
-        performZoom(e.touches[0].clientX, e.touches[0].clientY);
+      const DOUBLE_TAP_DELAY = 300;
+      
+      if (now - lastTapTime.current < DOUBLE_TAP_DELAY) {
+        if (!isDraggingRef?.current && canZoomRef.current) {
+          if (zoomed) resetZoom();
+          else performZoom(e.touches[0].clientX, e.touches[0].clientY);
+        }
         lastTapTime.current = 0;
       } else {
         lastTapTime.current = now;
       }
+
       if (zoomed) {
+        isPinching.current = false;
         lastTouch.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
       }
     }
   };
 
   const handleTouchMove = (e: React.TouchEvent) => {
+    lastTouchTime.current = Date.now();
     if (!imgRef.current) return;
 
     if (e.touches.length === 2 && isPinching.current) {
@@ -358,13 +366,9 @@ function ZoomableImage({ src, isActive, onZoomChange, isDraggingRef }: any) {
         e.touches[0].clientX - e.touches[1].clientX,
         e.touches[0].clientY - e.touches[1].clientY
       );
-      
       let newScale = (dist / startDistance.current) * initialScale.current;
       newScale = Math.max(1, Math.min(newScale, 5));
-      
-      // Aplicamos Clamping durante el pinch para que no se vea el fondo
       const { x, y } = getClampedOffsets(newScale, xPos, yPos);
-      
       setScale(newScale);
       setXPos(x);
       setYPos(y);
@@ -386,20 +390,28 @@ function ZoomableImage({ src, isActive, onZoomChange, isDraggingRef }: any) {
   };
 
   const handleTouchEnd = () => {
-    if (scale <= 1.01) resetZoom();
+    lastTouchTime.current = Date.now();
+    if (scale <= 1.01 && zoomed) {
+      resetZoom();
+    }
     setTimeout(() => { isPinching.current = false; }, 100);
   };
 
   const handleClick = (e: React.MouseEvent) => {
-    const nativeEvent = e.nativeEvent as PointerEvent;
-    if (nativeEvent.pointerType === 'touch') return;
+    // Si hubo un toque real hace menos de 500ms, ignoramos el click totalmente.
+    // Esto mata el click fantasma en mobile.
+    if (Date.now() - lastTouchTime.current < 500) return;
+
     if (isDraggingRef?.current || !canZoomRef.current) return;
     performZoom(e.clientX, e.clientY);
   };
 
   const handleMouseMove = (e: React.MouseEvent) => {
-    const nativeEvent = e.nativeEvent as PointerEvent;
-    if (!zoomed || isPinching.current || nativeEvent.pointerType === 'touch') return;
+    // Si hubo un toque real hace menos de 500ms, ignoramos este movimiento de "ratón".
+    // Esto evita el "teletransporte" en mobile.
+    if (Date.now() - lastTouchTime.current < 500) return;
+    
+    if (!zoomed || isPinching.current) return;
     const { x, y } = getClampedOffsets(scale, 
       ( (scale * window.innerWidth - window.innerWidth) / 2 ) - (e.clientX / window.innerWidth * (scale * window.innerWidth - window.innerWidth)),
       ( (scale * window.innerHeight - window.innerHeight) / 2 ) - (e.clientY / window.innerHeight * (scale * window.innerHeight - window.innerHeight))
