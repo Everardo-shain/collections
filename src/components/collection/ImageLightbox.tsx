@@ -277,6 +277,10 @@ function ZoomableImage({ src, isActive, onZoomChange, isDraggingRef }: any) {
   const lastTapTime = useRef(0);
   const lastTouchTime = useRef(0);
 
+  // NUEVAS REFS: Para trackear el centro del pinch y la posición inicial
+  const pinchStartMidpoint = useRef({ x: 0, y: 0 });
+  const pinchStartPos = useRef({ x: 0, y: 0 });
+
   useEffect(() => {
     const timer = setTimeout(() => { canZoomRef.current = true; }, 400);
     return () => clearTimeout(timer);
@@ -295,10 +299,15 @@ function ZoomableImage({ src, isActive, onZoomChange, isDraggingRef }: any) {
     if (fullW > winW) {
       const limX = (fullW - winW) / 2;
       clampedX = Math.max(-limX, Math.min(limX, newX));
+    } else {
+      clampedX = 0; // Centrar si es más pequeña que la pantalla
     }
+
     if (fullH > winH) {
       const limY = (fullH - winH) / 2;
       clampedY = Math.max(-limY, Math.min(limY, newY));
+    } else {
+      clampedY = 0;
     }
     return { x: clampedX, y: clampedY };
   }, []);
@@ -341,17 +350,25 @@ function ZoomableImage({ src, isActive, onZoomChange, isDraggingRef }: any) {
     if (e.touches.length === 2) {
       isPinching.current = true;
       onZoomChange(true); 
-      const dist = Math.hypot(
-        e.touches[0].clientX - e.touches[1].clientX,
-        e.touches[0].clientY - e.touches[1].clientY
-      );
-      startDistance.current = dist;
+      
+      const t1 = e.touches[0];
+      const t2 = e.touches[1];
+      
+      // Distancia inicial
+      startDistance.current = Math.hypot(t1.clientX - t2.clientX, t1.clientY - t2.clientY);
       initialScale.current = scale;
+
+      // GUARDAR PUNTO MEDIO INICIAL (Focal Point)
+      pinchStartMidpoint.current = {
+        x: (t1.clientX + t2.clientX) / 2,
+        y: (t1.clientY + t2.clientY) / 2
+      };
+      // Guardar posición inicial del renderizado
+      pinchStartPos.current = { x: xPos, y: yPos };
+
     } else if (e.touches.length === 1) {
       const now = Date.now();
-      const DOUBLE_TAP_DELAY = 300;
-      
-      if (now - lastTapTime.current < DOUBLE_TAP_DELAY) {
+      if (now - lastTapTime.current < 300) {
         if (!isDraggingRef?.current && canZoomRef.current) {
           if (zoomed) resetZoom();
           else performZoom(e.touches[0].clientX, e.touches[0].clientY);
@@ -373,29 +390,47 @@ function ZoomableImage({ src, isActive, onZoomChange, isDraggingRef }: any) {
     if (!imgRef.current) return;
 
     if (e.touches.length >= 2) {
-      // FIX: Previene que Framer Motion detecte arrastre cuando usamos múltiples dedos
       e.stopPropagation();
     }
 
     if (e.touches.length === 2 && isPinching.current) {
-      const dist = Math.hypot(
-        e.touches[0].clientX - e.touches[1].clientX,
-        e.touches[0].clientY - e.touches[1].clientY
-      );
+      const t1 = e.touches[0];
+      const t2 = e.touches[1];
+      
+      const dist = Math.hypot(t1.clientX - t2.clientX, t1.clientY - t2.clientY);
       let newScale = (dist / startDistance.current) * initialScale.current;
       newScale = Math.max(1, Math.min(newScale, 5));
 
-      // FIX: Si el pinch reduce mucho la imagen, forzamos un reset inmediato
-      // para que no haya que esperar a levantar los dedos.
       if (newScale <= 1.05 && zoomed) {
         resetZoom();
         return;
       }
 
-      const { x, y } = getClampedOffsets(newScale, xPos, yPos);
+      // --- LÓGICA DE ZOOM HACIA EL PUNTO MEDIO ---
+      const currentMidX = (t1.clientX + t2.clientX) / 2;
+      const currentMidY = (t1.clientY + t2.clientY) / 2;
+
+      // Cuánto ha crecido la imagen comparado con el inicio del pinch
+      const scaleRatio = newScale / initialScale.current;
+
+      // Calculamos cuánto se debe mover la imagen para que el punto bajo los dedos no se mueva.
+      // La fórmula básica es: NuevaPos = CentroActual - (DistanciaAlCentro * ratio)
+      // Ajustado a nuestro sistema de coordenadas (donde 0 es el centro):
+      const focalX = pinchStartMidpoint.current.x - window.innerWidth / 2;
+      const focalY = pinchStartMidpoint.current.y - window.innerHeight / 2;
+
+      // Calculamos el desplazamiento extra provocado por el movimiento de los dedos
+      const dragX = currentMidX - pinchStartMidpoint.current.x;
+      const dragY = currentMidY - pinchStartMidpoint.current.y;
+
+      const newX = (pinchStartPos.current.x - focalX) * scaleRatio + focalX + dragX;
+      const newY = (pinchStartPos.current.y - focalY) * scaleRatio + focalY + dragY;
+
+      const clamped = getClampedOffsets(newScale, newX, newY);
+      
       setScale(newScale);
-      setXPos(x);
-      setYPos(y);
+      setXPos(clamped.x);
+      setYPos(clamped.y);
       
       if (newScale > 1.05) {
         setZoomed(true);
@@ -415,13 +450,9 @@ function ZoomableImage({ src, isActive, onZoomChange, isDraggingRef }: any) {
 
   const handleTouchEnd = (e: React.TouchEvent) => {
     lastTouchTime.current = Date.now();
-    
-    // FIX: Incrementamos la tolerancia. Si sueltas el dedo y la escala es menor a 1.15,
-    // garantizamos que la imagen se resetea y el carrusel vuelve a estar activo.
     if (scale <= 1.15 && zoomed) {
       resetZoom();
     }
-    
     if (e.touches.length === 0) {
       setTimeout(() => { isPinching.current = false; }, 100);
     }
@@ -453,7 +484,6 @@ function ZoomableImage({ src, isActive, onZoomChange, isDraggingRef }: any) {
       onTouchStart={handleTouchStart}
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
-      // FIX: Bloqueo a nivel captura nativa para ahogar intentos falsos de swipe de Framer Motion
       onPointerDownCapture={(e) => {
         if (e.nativeEvent.pointerType === 'touch' && !e.isPrimary) {
           e.stopPropagation();
