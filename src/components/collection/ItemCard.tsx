@@ -32,7 +32,7 @@ export const ItemCard = forwardRef<HTMLDivElement, ItemCardProps>(({ item }, ref
             src={item.image}
             alt={item.displayName}
             /* Eliminamos 'group-hover:scale-105' para que la imagen se quede quieta */
-            className="w-full h-full object-contain scale-[1.01] transition-opacity duration-300"
+            className="w-full h-full object-contain transition-opacity duration-300"
             loading="lazy"
           />
         </div>
