@@ -251,30 +251,26 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
 
   return (
     <>
-      {!isHome && (
-        <div className={cn(
-          "bg-secondary/50 transition-transform duration-300 z-30 relative", 
-          isHidden ? "-translate-y-full" : "translate-y-0"
-        )}>
-          <div className="max-w-[1440px] mx-auto px-4 lg:px-8 h-8 flex items-center justify-end">
-            <Link to="/" className="text-xs text-muted-foreground hover:text-primary">
-              Other Collections
-            </Link>
-          </div>
-        </div>
-      )}
-
       {mobileOpen && (
-        <div className={cn(
-          "fixed inset-0 bg-black/40 backdrop-blur-[2px] z-40 md:hidden animate-in fade-in duration-300",
-          isHidden || isHome ? "top-0" : "top-8"
-        )} onClick={() => setMobileOpen(false)} />
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-[2px] z-40 md:hidden animate-in fade-in duration-300 top-0"
+          onClick={() => setMobileOpen(false)} />
       )}
 
-      <nav className={cn(
-        "sticky top-0 z-50 bg-card border-b border-border transition-transform duration-300",
+      <header className={cn(
+        "sticky top-0 z-50 w-full transition-transform duration-300",
         isHidden ? "-translate-y-full" : "translate-y-0"
       )}>
+        {!isHome && (
+          <div className="bg-secondary/50 w-full">
+            <div className="max-w-[1440px] mx-auto px-4 lg:px-8 h-8 flex items-center justify-end">
+              <Link to="/" className="text-xs text-muted-foreground hover:text-primary">
+                Other Collections
+              </Link>
+            </div>
+          </div>
+        )}
+
+      <nav className="w-full bg-card border-b border-border">
         <div className="max-w-[1440px] mx-auto px-4 lg:px-8">
           <div className="flex items-center justify-between h-14 gap-4">
             
