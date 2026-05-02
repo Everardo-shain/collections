@@ -154,8 +154,8 @@ export default function ItemDetail() {
         <CollectionNavbar navGroups={navGroups} />
         <CollectionBreadcrumb item={item} />
 
-        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <Link to={returnPath} className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary mb-4 transition-colors group">
+        <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 pt-4 pb-8">
+          <Link to={returnPath} className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-primary mb-6 transition-colors group">
             <ArrowLeft className="w-4 h-4 transition-transform group-hover:-translate-x-1" />
             {location.state?.returnSearch ? "Back to results" : "Back to collection"}
           </Link>
@@ -285,10 +285,10 @@ export default function ItemDetail() {
                   return (
                     /* 'contents' hace que los hijos directos actúen como si fueran hijos del grid padre */
                     <div key={camelKey} className="contents">
-                      <span className="text-[10px] font-black text-foreground uppercase tracking-[0.25em] py-5 pr-8 shrink-0 border-b border-border">
+                      <span className="flex items-center text-[10px] font-black text-foreground uppercase tracking-[0.25em] py-2 pr-8 shrink-0 border-b border-border">
                         {label as string}
                       </span>
-                      <div className="text-sm text-right text-foreground flex-1 min-w-0 flex justify-end py-4 border-b border-border">
+                      <div className="text-sm text-right text-foreground flex-1 min-w-0 flex justify-end items-center py-2 border-b border-border">
                         {renderValueParts(camelKey, rawValue, combination)}
                       </div>
                     </div>

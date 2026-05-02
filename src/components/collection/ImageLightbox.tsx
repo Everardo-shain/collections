@@ -73,14 +73,14 @@ export function ImageLightbox({ images, activeIndex: initialIndex, open, onOpenC
   return (
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogContent
-        className="!max-w-none fixed inset-0 w-screen h-[100dvh] !gap-0 !p-0 !rounded-none bg-background border-none shadow-none !flex flex-col z-[100] outline-none overflow-hidden [&>button]:hidden duration-0 data-[state=open]:!animate-none data-[state=closed]:!animate-none"
+        className="!max-w-none w-screen h-screen !gap-0 !p-0 !rounded-none bg-background border-none shadow-none !flex flex-col z-[100] outline-none overflow-hidden [&>button]:hidden duration-0 data-[state=open]:!animate-none data-[state=closed]:!animate-none"
       >
         <VisuallyHidden>
           <DialogTitle>{alt || 'Image gallery'}</DialogTitle>
         </VisuallyHidden>
 
         {/* --- TOP BAR HEADER --- */}
-        <div className="relative shrink-0 bg-background border-b border-border z-[150] min-h-[56px] md:h-14 flex flex-col justify-center pt-[env(safe-area-inset-top)]">
+        <div className="relative shrink-0 bg-background border-b border-border z-[150] min-h-[56px] md:h-14 flex flex-col justify-center">
           
           {/* Contenedor Principal: En Desktop es una línea, en Mobile se adapta */}
           <div className="w-full h-14 flex items-center justify-between px-6">
