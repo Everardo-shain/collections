@@ -27,20 +27,32 @@ function CategoriesMegaMenu({
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
-  // 1. BLOQUEO DE SCROLL Y CIERRE AL ESCAPAR
+  // 1. BLOQUEO DE SCROLL DEL FONDO SIN MODIFICAR overflow DEL BODY (evita layout shift)
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-      const handleEsc = (e: KeyboardEvent) => {
-        if (e.key === 'Escape') setIsOpen(false);
-      };
-      window.addEventListener('keydown', handleEsc);
-      return () => {
-        document.body.style.overflow = '';
-        window.removeEventListener('keydown', handleEsc);
-      };
-    }
-    document.body.style.overflow = '';
+    if (!isOpen) return;
+
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setIsOpen(false);
+    };
+
+    const preventBackgroundScroll = (e: Event) => {
+      const target = e.target as Node | null;
+      if (menuRef.current && target && menuRef.current.contains(target)) {
+        // Permitir scroll dentro del menú
+        return;
+      }
+      e.preventDefault();
+    };
+
+    window.addEventListener('keydown', handleEsc);
+    window.addEventListener('wheel', preventBackgroundScroll, { passive: false });
+    window.addEventListener('touchmove', preventBackgroundScroll, { passive: false });
+
+    return () => {
+      window.removeEventListener('keydown', handleEsc);
+      window.removeEventListener('wheel', preventBackgroundScroll);
+      window.removeEventListener('touchmove', preventBackgroundScroll);
+    };
   }, [isOpen]);
 
   // Cerrar al hacer click fuera
@@ -197,10 +209,24 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
     setTempSearch(searchParams.get('q') || '');
   }, [searchParams]);
 
-  // Manejo de scroll móvil
+  // Manejo de scroll móvil — sin modificar overflow del body para evitar layout shift
   useEffect(() => {
-    if (mobileOpen) document.body.style.overflow = 'hidden';
-    else { document.body.style.overflow = 'unset'; setActiveSubMenu(null); }
+    if (!mobileOpen) {
+      setActiveSubMenu(null);
+      return;
+    }
+    const preventBackgroundScroll = (e: Event) => {
+      const target = e.target as HTMLElement | null;
+      // Permitir scroll dentro del propio menú móvil
+      if (target && target.closest('[data-mobile-menu="true"]')) return;
+      e.preventDefault();
+    };
+    window.addEventListener('wheel', preventBackgroundScroll, { passive: false });
+    window.addEventListener('touchmove', preventBackgroundScroll, { passive: false });
+    return () => {
+      window.removeEventListener('wheel', preventBackgroundScroll);
+      window.removeEventListener('touchmove', preventBackgroundScroll);
+    };
   }, [mobileOpen]);
 
   useEffect(() => {
@@ -225,30 +251,26 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
 
   return (
     <>
-      {!isHome && (
-        <div className={cn(
-          "bg-secondary/50 transition-transform duration-300 z-30 relative", 
-          isHidden ? "-translate-y-full" : "translate-y-0"
-        )}>
-          <div className="max-w-[1440px] mx-auto px-4 lg:px-8 h-8 flex items-center justify-end">
-            <Link to="/" className="text-xs text-muted-foreground hover:text-primary">
-              Other Collections
-            </Link>
-          </div>
-        </div>
-      )}
-
       {mobileOpen && (
-        <div className={cn(
-          "fixed inset-0 bg-black/40 backdrop-blur-[2px] z-40 md:hidden animate-in fade-in duration-300",
-          isHidden || isHome ? "top-0" : "top-8"
-        )} onClick={() => setMobileOpen(false)} />
+        <div className="fixed inset-0 bg-black/40 backdrop-blur-[2px] z-40 md:hidden animate-in fade-in duration-300 top-0"
+          onClick={() => setMobileOpen(false)} />
       )}
 
-      <nav className={cn(
-        "sticky top-0 z-50 bg-card border-b border-border transition-transform duration-300",
+      <header className={cn(
+        "sticky top-0 z-50 w-full transition-transform duration-300",
         isHidden ? "-translate-y-full" : "translate-y-0"
       )}>
+        {!isHome && (
+          <div className="bg-secondary/50 w-full">
+            <div className="max-w-[1440px] mx-auto px-4 lg:px-8 h-8 flex items-center justify-end">
+              <Link to="/" className="text-xs text-muted-foreground hover:text-primary">
+                Other Collections
+              </Link>
+            </div>
+          </div>
+        )}
+
+      <nav className="w-full bg-card border-b border-border">
         <div className="max-w-[1440px] mx-auto px-4 lg:px-8">
           <div className="flex items-center justify-between h-14 gap-4">
             
@@ -318,7 +340,7 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
 
           {/* MENÚ MÓVIL (Sin cambios, ya manejaba su propio scroll) */}
           {!isHome && mobileOpen && (
-            <div className="md:hidden absolute top-full left-0 right-0 w-full bg-card border-b border-border shadow-2xl z-50 overflow-hidden">
+            <div data-mobile-menu="true" className="md:hidden absolute top-full left-0 right-0 w-full bg-card border-b border-border shadow-2xl z-50 overflow-hidden">
               <div className="max-h-[75vh] overflow-y-auto pb-8 pt-3 relative">
                 <div className={cn("transition-all duration-300 px-4", activeSubMenu ? "hidden" : "block")}>
                   <div className="relative mb-4 flex items-center">
@@ -348,6 +370,7 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
           )}
         </div>
       </nav>
+      </header>
     </>
   );
 }
