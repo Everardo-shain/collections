@@ -80,18 +80,23 @@ function CategoriesMegaMenu({
 
     {isOpen && (
       <>
-        {/* OVERLAY */}
-        <div className="fixed inset-0 top-[calc(3.5rem+1px)] bg-background/80 backdrop-blur-sm z-40 animate-in fade-in duration-300 md:block hidden" />
+        {/* OVERLAY: Empieza debajo del navbar para no bloquear el logo/search */}
+        <div 
+          className="fixed inset-0 top-[calc(3.5rem+1px)] bg-black/20 backdrop-blur-sm z-40 animate-in fade-in duration-300 md:block hidden" 
+          onClick={() => setIsOpen(false)}
+        />
         
         {/* MENÚ CONTENEDOR */}
         <div className={cn(
-          "absolute top-[calc(100%+1px)] left-0 w-full bg-card border-b border-border shadow-2xl z-50",
-          "animate-in fade-in slide-in-from-top-1 duration-200",
-          "max-h-[calc(100vh-3.5rem-1px)] overflow-y-auto",
-          "custom-scrollbar"
+          "absolute top-full left-0 w-full bg-card border-b border-border z-50",
+          "animate-in fade-in slide-in-from-top-0 duration-200",
+          "max-h-[calc(100vh-3.5rem)] overflow-y-auto custom-scrollbar",
+          "shadow-[0_20px_25px_-5px_rgba(0,0,0,0.1)]" 
         )}>
-          {/* 1. REDUCCIÓN DE ESPACIO: py-10 a pt-6 pb-10 */}
-          <div className="max-w-[1440px] mx-auto px-4 lg:px-8 pt-4 pb-10">
+          {/* Tapajuntas: Asegura que no haya una línea entre el nav y el menú */}
+          <div className="absolute top-0 left-0 w-full h-2 bg-card -translate-y-1" />
+
+          <div className="max-w-[1440px] mx-auto px-4 lg:px-8 pt-6 pb-10">
   
           {/* SECCIÓN ALL ITEMS: Sin líneas, solo tipografía limpia */}
             <div className="mb-8">
@@ -246,10 +251,10 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
       )}
 
       <nav className={cn(
-        "sticky top-0 z-50 bg-card border-b border-border transition-transform duration-300",
+        "sticky top-0 z-[60] bg-card border-b border-border transition-transform duration-300", // Subimos el z-index a 60
         isHidden ? "-translate-y-full" : "translate-y-0"
       )}>
-        <div className="max-w-[1440px] mx-auto px-4 lg:px-8">
+        <div className="max-w-[1440px] mx-auto px-4 lg:px-8 relative z-[61]"> {/* Contenido interno aún más arriba */}
           <div className="flex items-center justify-between h-14 gap-4">
             
             {/* LOGO */}
