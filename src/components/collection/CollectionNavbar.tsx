@@ -340,7 +340,7 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
 
           {/* MENÚ MÓVIL (Sin cambios, ya manejaba su propio scroll) */}
           {!isHome && mobileOpen && (
-            <div className="md:hidden absolute top-full left-0 right-0 w-full bg-card border-b border-border shadow-2xl z-50 overflow-hidden">
+            <div data-mobile-menu="true" className="md:hidden absolute top-full left-0 right-0 w-full bg-card border-b border-border shadow-2xl z-50 overflow-hidden">
               <div className="max-h-[75vh] overflow-y-auto pb-8 pt-3 relative">
                 <div className={cn("transition-all duration-300 px-4", activeSubMenu ? "hidden" : "block")}>
                   <div className="relative mb-4 flex items-center">
