@@ -370,6 +370,7 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
           )}
         </div>
       </nav>
+      </header>
     </>
   );
 }
