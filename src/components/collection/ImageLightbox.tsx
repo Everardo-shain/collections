@@ -69,16 +69,11 @@ export function ImageLightbox({ images, activeIndex: initialIndex, open, onOpenC
     "disabled:opacity-20 disabled:cursor-not-allowed"
   );
 
-return (
+  return (
     <Dialog open={open} onOpenChange={handleClose}>
       <DialogPortal>
         <DialogOverlay className="fixed inset-0 z-[100] bg-background/95 backdrop-blur-sm" />
         <DialogContent
-          /* CAMBIOS CLAVE AQUÍ:
-             1. Agregamos !left-0 !top-0 !translate-x-0 !translate-y-0 para matar el centrado de Radix.
-             2. Usamos h-[100dvh] para el viewport dinámico.
-             3. bg-background para asegurar que no se vea lo de atrás.
-          */
           className={cn(
             "fixed !left-0 !top-0 !translate-x-0 !translate-y-0",
             "!max-w-none w-screen h-[100dvh]",
@@ -91,48 +86,39 @@ return (
             <DialogTitle>{alt || 'Image gallery'}</DialogTitle>
           </VisuallyHidden>
 
-          {/* --- TOP BAR HEADER --- */}
-          {/* pt-[env...] asegura que el notch/muesca no tape los botones */}
-          <div className="relative shrink-0 bg-background border-b border-border z-[150] w-full pt-[env(safe-area-inset-top)]">
-            <div className="w-full h-14 flex items-center justify-between px-6">
-              {/* Contador */}
-              <div className="w-32 flex-shrink-0 text-[14px] font-bold tracking-[0.2em] uppercase text-muted-foreground select-none">
-                {hasMultiple ? `${currentIndex + 1} / ${images.length}` : ''}
-              </div>
+{/* --- TOP BAR HEADER (COMPACTADO Y FLEXIBLE) --- */}
+<div className="relative shrink-0 bg-background border-b border-border z-[150] w-full pt-[env(safe-area-inset-top)]">
+  <div className="w-full h-10 flex items-center justify-between px-4">
+    
+    {/* Contador: Ahora solo ocupa lo que mide el texto */}
+    <div className="w-auto flex-shrink-0 text-[14px] font-bold tracking-[0.1em] uppercase text-muted-foreground select-none">
+      {hasMultiple ? `${currentIndex + 1} / ${images.length}` : ''}
+    </div>
 
-              {/* Título en Desktop */}
-              <div className="hidden md:flex flex-1 min-w-0 justify-center px-4">
-                {alt && (
-                  <span className="text-foreground text-[13px] font-black tracking-[0.1em] uppercase truncate antialiased">
-                    {alt}
-                  </span>
-                )}
-              </div>
+    {/* Título: Ocupa todo el espacio restante disponible */}
+    <div className="flex-1 min-w-0 flex justify-center px-4">
+      {alt && (
+        <span className="text-foreground text-[10px] md:text-[12px] font-black tracking-[0.1em] uppercase truncate antialiased">
+          {alt}
+        </span>
+      )}
+    </div>
 
-              {/* Botón Cerrar */}
-              <div className="w-32 flex-shrink-0 flex justify-end">
-                <button
-                  onClick={() => handleClose(false)}
-                  className="p-2 text-muted-foreground hover:text-primary transition-colors duration-200"
-                  aria-label="Close"
-                >
-                  <X className="w-7 h-7" />
-                </button>
-              </div>
-            </div>
+    {/* Botón Cerrar: Ahora solo ocupa el tamaño del icono */}
+    <div className="w-auto flex-shrink-0 flex justify-end">
+      <button
+        onClick={() => handleClose(false)}
+        className="p-1 text-muted-foreground hover:text-primary transition-colors duration-200"
+        aria-label="Close"
+      >
+        <X className="w-6 h-6 md:w-7 md:h-7" />
+      </button>
+    </div>
 
-            {/* Título en Mobile */}
-            {alt && (
-              <div className="md:hidden w-full px-6 pb-4 flex justify-center">
-                <span className="text-foreground text-[12px] font-black tracking-[0.1em] uppercase text-center leading-tight antialiased">
-                  {alt}
-                </span>
-              </div>
-            )}
-          </div>
+  </div>
+</div>
 
           {/* --- MAIN VIEWPORT --- */}
-          {/* El flex-1 min-h-0 es vital para que el carrusel no empuje el header fuera de la pantalla */}
           <div className="relative flex-1 min-h-0 w-full overflow-hidden flex items-stretch justify-center bg-background">
             {open && (
               <LightboxCarousel
