@@ -126,38 +126,29 @@
   }
 }
 
-/* 1. Reset para Firefox (No soporta hover) */
+/* Custom scrollbar — uses brand colors */
 .custom-scrollbar {
   scrollbar-gutter: stable;
   scrollbar-width: thin;
-  scrollbar-color: hsl(142 71% 40%) transparent;
+  scrollbar-color: hsl(var(--primary)) transparent;
 }
 
-/* 2. Chrome, Edge, Safari: Definimos la estructura */
 .custom-scrollbar::-webkit-scrollbar {
-  width: 10px !important;
+  width: 8px !important;
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
   background: transparent !important;
 }
 
-/* 3. El Thumb: IMPORTANTE usar 'background' y no 'background-color' */
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: hsl(142 71% 40%) !important; /* Verde oscuro */
+  background: hsl(var(--primary)) !important;
   border-radius: 20px !important;
   border: 2px solid transparent !important;
   background-clip: padding-box !important;
 }
 
-/* 4. EL HOVER: Forzamos el cambio */
-/* Usamos un selector doble para aumentar la prioridad */
-.custom-scrollbar::-webkit-scrollbar-thumb:window-inactive,
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #2ecc71 !important; /* Verde claro brillante */
-}
-
-/* 5. Refuerzo: Si el mouse entra al área, el thumb debe cambiar */
-.custom-scrollbar:hover::-webkit-scrollbar-thumb {
-  background: #2ecc71 !important;
+  background: var(--primary-hover) !important;
+  background-clip: padding-box !important;
 }
