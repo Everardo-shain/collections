@@ -27,20 +27,32 @@ function CategoriesMegaMenu({
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
-  // 1. BLOQUEO DE SCROLL Y CIERRE AL ESCAPAR
+  // 1. BLOQUEO DE SCROLL DEL FONDO SIN MODIFICAR overflow DEL BODY (evita layout shift)
   useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = 'hidden';
-      const handleEsc = (e: KeyboardEvent) => {
-        if (e.key === 'Escape') setIsOpen(false);
-      };
-      window.addEventListener('keydown', handleEsc);
-      return () => {
-        document.body.style.overflow = '';
-        window.removeEventListener('keydown', handleEsc);
-      };
-    }
-    document.body.style.overflow = '';
+    if (!isOpen) return;
+
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setIsOpen(false);
+    };
+
+    const preventBackgroundScroll = (e: Event) => {
+      const target = e.target as Node | null;
+      if (menuRef.current && target && menuRef.current.contains(target)) {
+        // Permitir scroll dentro del menú
+        return;
+      }
+      e.preventDefault();
+    };
+
+    window.addEventListener('keydown', handleEsc);
+    window.addEventListener('wheel', preventBackgroundScroll, { passive: false });
+    window.addEventListener('touchmove', preventBackgroundScroll, { passive: false });
+
+    return () => {
+      window.removeEventListener('keydown', handleEsc);
+      window.removeEventListener('wheel', preventBackgroundScroll);
+      window.removeEventListener('touchmove', preventBackgroundScroll);
+    };
   }, [isOpen]);
 
   // Cerrar al hacer click fuera
