@@ -110,7 +110,8 @@
 
 @layer base {
   * { @apply border-border; }
-  html { transition: color 0.2s ease, background-color 0.2s ease; }
+  html { transition: color 0.2s ease, background-color 0.2s ease;
+          scrollbar-gutter: stable; }
   body { @apply bg-background text-foreground; font-family: var(--font-body); }
   h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); }
 }
@@ -123,4 +124,40 @@
   .filter-chip:hover {
     background-color: var(--primary-hover) !important;
   }
+}
+
+/* 1. Reset para Firefox (No soporta hover) */
+.custom-scrollbar {
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: hsl(142 71% 40%) transparent;
+}
+
+/* 2. Chrome, Edge, Safari: Definimos la estructura */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 10px !important;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent !important;
+}
+
+/* 3. El Thumb: IMPORTANTE usar 'background' y no 'background-color' */
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: hsl(142 71% 40%) !important; /* Verde oscuro */
+  border-radius: 20px !important;
+  border: 2px solid transparent !important;
+  background-clip: padding-box !important;
+}
+
+/* 4. EL HOVER: Forzamos el cambio */
+/* Usamos un selector doble para aumentar la prioridad */
+.custom-scrollbar::-webkit-scrollbar-thumb:window-inactive,
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #2ecc71 !important; /* Verde claro brillante */
+}
+
+/* 5. Refuerzo: Si el mouse entra al área, el thumb debe cambiar */
+.custom-scrollbar:hover::-webkit-scrollbar-thumb {
+  background: #2ecc71 !important;
 }

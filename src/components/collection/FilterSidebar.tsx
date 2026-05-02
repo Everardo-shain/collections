@@ -122,8 +122,11 @@ export function FilterSidebar({
         className={cn(
           "transition-all duration-300 ease-in-out",
           "fixed left-0 top-0 w-80 bg-card z-[70] transform lg:translate-x-0",
-          "lg:sticky lg:w-64 lg:shrink-0 lg:block lg:overflow-y-auto lg:bg-transparent lg:z-auto",
-          isOpen ? "translate-x-0" : "-translate-x-full"
+          // MODIFICACIÓN AQUÍ:
+          "lg:sticky lg:w-64 lg:shrink-0 lg:block lg:z-auto", 
+          "lg:overflow-y-auto lg:custom-scrollbar", // El scrollbar y el espacio reservado van aquí
+          isOpen ? "translate-x-0" : "-translate-x-full",
+          "custom-scrollbar"
         )}
       >
         <div className="p-4 lg:p-0 lg:pr-6 h-full overflow-y-auto lg:overflow-visible">
