@@ -1,5 +1,5 @@
 import { useEffect, useCallback, useState, useRef, useLayoutEffect } from 'react';
-import { Dialog, DialogContent, DialogTitle } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogTitle, DialogPortal, DialogOverlay } from '@/components/ui/dialog';
 import { ChevronLeft, ChevronRight, X } from 'lucide-react';
 import { motion, useMotionValue, animate } from 'framer-motion';
 import { cn } from "@/lib/utils";
@@ -33,7 +33,6 @@ export function ImageLightbox({ images, activeIndex: initialIndex, open, onOpenC
     }
   }, [open, initialIndex]);
 
-  // Sync to parent in real time whenever the internal index changes while open
   const updateIndex = useCallback((next: number) => {
     setInternalIndex(next);
     onIndexChange(next);
@@ -66,101 +65,111 @@ export function ImageLightbox({ images, activeIndex: initialIndex, open, onOpenC
 
   const arrowStyles = cn(
     "bg-primary text-primary-foreground transition-all duration-200",
-    "hover:bg-primary/90", // Ajustado para que sea sutil
+    "hover:bg-primary/90",
     "disabled:opacity-20 disabled:cursor-not-allowed"
   );
 
-  return (
+return (
     <Dialog open={open} onOpenChange={handleClose}>
-      <DialogContent
-        className="!max-w-none w-screen h-screen !gap-0 !p-0 !rounded-none bg-background border-none shadow-none !flex flex-col z-[100] outline-none overflow-hidden [&>button]:hidden duration-0 data-[state=open]:!animate-none data-[state=closed]:!animate-none"
-      >
-        <VisuallyHidden>
-          <DialogTitle>{alt || 'Image gallery'}</DialogTitle>
-        </VisuallyHidden>
+      <DialogPortal>
+        <DialogOverlay className="fixed inset-0 z-[100] bg-background/95 backdrop-blur-sm" />
+        <DialogContent
+          /* CAMBIOS CLAVE AQUÍ:
+             1. Agregamos !left-0 !top-0 !translate-x-0 !translate-y-0 para matar el centrado de Radix.
+             2. Usamos h-[100dvh] para el viewport dinámico.
+             3. bg-background para asegurar que no se vea lo de atrás.
+          */
+          className={cn(
+            "fixed !left-0 !top-0 !translate-x-0 !translate-y-0",
+            "!max-w-none w-screen h-[100dvh]",
+            "!gap-0 !p-0 !rounded-none bg-background border-none shadow-none",
+            "flex flex-col z-[100] outline-none overflow-hidden",
+            "duration-0 data-[state=open]:!animate-none data-[state=closed]:!animate-none [&>button]:hidden"
+          )}
+        >
+          <VisuallyHidden>
+            <DialogTitle>{alt || 'Image gallery'}</DialogTitle>
+          </VisuallyHidden>
 
-        {/* --- TOP BAR HEADER --- */}
-        <div className="relative shrink-0 bg-background border-b border-border z-[150] min-h-[56px] md:h-14 flex flex-col justify-center">
-          
-          {/* Contenedor Principal: En Desktop es una línea, en Mobile se adapta */}
-          <div className="w-full h-14 flex items-center justify-between px-6">
-            
-            {/* Contador (Izquierda) */}
-            <div className="w-32 flex-shrink-0 text-[14px] md:text-[14px] font-bold tracking-[0.2em] uppercase text-muted-foreground select-none">
-              {hasMultiple ? `${currentIndex + 1} / ${images.length}` : ''}
+          {/* --- TOP BAR HEADER --- */}
+          {/* pt-[env...] asegura que el notch/muesca no tape los botones */}
+          <div className="relative shrink-0 bg-background border-b border-border z-[150] w-full pt-[env(safe-area-inset-top)]">
+            <div className="w-full h-14 flex items-center justify-between px-6">
+              {/* Contador */}
+              <div className="w-32 flex-shrink-0 text-[14px] font-bold tracking-[0.2em] uppercase text-muted-foreground select-none">
+                {hasMultiple ? `${currentIndex + 1} / ${images.length}` : ''}
+              </div>
+
+              {/* Título en Desktop */}
+              <div className="hidden md:flex flex-1 min-w-0 justify-center px-4">
+                {alt && (
+                  <span className="text-foreground text-[13px] font-black tracking-[0.1em] uppercase truncate antialiased">
+                    {alt}
+                  </span>
+                )}
+              </div>
+
+              {/* Botón Cerrar */}
+              <div className="w-32 flex-shrink-0 flex justify-end">
+                <button
+                  onClick={() => handleClose(false)}
+                  className="p-2 text-muted-foreground hover:text-primary transition-colors duration-200"
+                  aria-label="Close"
+                >
+                  <X className="w-7 h-7" />
+                </button>
+              </div>
             </div>
 
-            {/* Display Name (Desktop: Centro) */}
-            <div className="hidden md:flex flex-1 min-w-0 justify-center px-4">
-              {alt && (
-                <span className="text-foreground text-[13px] font-black tracking-[0.1em] uppercase truncate antialiased">
+            {/* Título en Mobile */}
+            {alt && (
+              <div className="md:hidden w-full px-6 pb-4 flex justify-center">
+                <span className="text-foreground text-[12px] font-black tracking-[0.1em] uppercase text-center leading-tight antialiased">
                   {alt}
                 </span>
-              )}
-            </div>
-
-            {/* Botón Cerrar (Derecha) */}
-            <div className="w-32 flex-shrink-0 flex justify-end">
-              <button
-                onClick={() => handleClose(false)}
-                className="p-2 text-muted-foreground hover:text-primary transition-colors duration-200"
-                aria-label="Close"
-              >
-                <X className="w-7 h-7" />
-              </button>
-            </div>
+              </div>
+            )}
           </div>
 
-          {/* Fila Inferior (Solo Mobile): Nombre debajo de los controles */}
-          {alt && (
-            <div className="md:hidden w-full px-6 pb-4 flex justify-center">
-              <span className="text-foreground text-[12px] font-black tracking-[0.1em] uppercase text-center leading-tight antialiased">
-                {alt}
-              </span>
-            </div>
-          )}
-        </div>
+          {/* --- MAIN VIEWPORT --- */}
+          {/* El flex-1 min-h-0 es vital para que el carrusel no empuje el header fuera de la pantalla */}
+          <div className="relative flex-1 min-h-0 w-full overflow-hidden flex items-stretch justify-center bg-background">
+            {open && (
+              <LightboxCarousel
+                key={`lightbox-${images.length}`}
+                images={images}
+                activeIndex={currentIndex}
+                onIndexChange={updateIndex}
+                isZoomed={isZoomed}
+                onZoomChange={setIsZoomed}
+                navRef={navRef}
+              />
+            )}
 
-        {/* --- MAIN VIEWPORT --- */}
-        <div className="relative flex-1 min-h-0 w-full overflow-hidden flex items-stretch justify-center">
-          {/* Carrusel */}
-          {open && (
-            <LightboxCarousel
-              key={`lightbox-${images.length}`}
-              images={images}
-              activeIndex={currentIndex}
-              onIndexChange={updateIndex}
-              isZoomed={isZoomed}
-              onZoomChange={setIsZoomed}
-              navRef={navRef}
-            />
-          )}
-
-          {/* Flechas de Navegación */}
-          {!isZoomed && hasMultiple && (
-            <>
-              <button
-                onClick={goToPrev}
-                disabled={currentIndex === 0}
-                className={cn("hidden md:flex absolute left-6 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full items-center justify-center z-[110]", arrowStyles)}
-              >
-                <ChevronLeft className="w-6 h-6" />
-              </button>
-              <button
-                onClick={goToNext}
-                disabled={currentIndex === images.length - 1}
-                className={cn("hidden md:flex absolute right-6 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full items-center justify-center z-[110]", arrowStyles)}
-              >
-                <ChevronRight className="w-6 h-6" />
-              </button>
-            </>
-          )}
-        </div>
-      </DialogContent>
+            {!isZoomed && hasMultiple && (
+              <>
+                <button
+                  onClick={goToPrev}
+                  disabled={currentIndex === 0}
+                  className={cn("hidden md:flex absolute left-6 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full items-center justify-center z-[110]", arrowStyles)}
+                >
+                  <ChevronLeft className="w-6 h-6" />
+                </button>
+                <button
+                  onClick={goToNext}
+                  disabled={currentIndex === images.length - 1}
+                  className={cn("hidden md:flex absolute right-6 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full items-center justify-center z-[110]", arrowStyles)}
+                >
+                  <ChevronRight className="w-6 h-6" />
+                </button>
+              </>
+            )}
+          </div>
+        </DialogContent>
+      </DialogPortal>
     </Dialog>
   );
 }
-
 function LightboxCarousel({
   images,
   activeIndex,
