@@ -209,10 +209,24 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
     setTempSearch(searchParams.get('q') || '');
   }, [searchParams]);
 
-  // Manejo de scroll móvil
+  // Manejo de scroll móvil — sin modificar overflow del body para evitar layout shift
   useEffect(() => {
-    if (mobileOpen) document.body.style.overflow = 'hidden';
-    else { document.body.style.overflow = 'unset'; setActiveSubMenu(null); }
+    if (!mobileOpen) {
+      setActiveSubMenu(null);
+      return;
+    }
+    const preventBackgroundScroll = (e: Event) => {
+      const target = e.target as HTMLElement | null;
+      // Permitir scroll dentro del propio menú móvil
+      if (target && target.closest('[data-mobile-menu="true"]')) return;
+      e.preventDefault();
+    };
+    window.addEventListener('wheel', preventBackgroundScroll, { passive: false });
+    window.addEventListener('touchmove', preventBackgroundScroll, { passive: false });
+    return () => {
+      window.removeEventListener('wheel', preventBackgroundScroll);
+      window.removeEventListener('touchmove', preventBackgroundScroll);
+    };
   }, [mobileOpen]);
 
   useEffect(() => {
