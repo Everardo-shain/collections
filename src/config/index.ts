@@ -20,7 +20,7 @@ export const DEFAULT_COLLECTION_ID: CollectionId = "football";
 
 /** Metadatos genéricos del sitio (SEO base) */
 export const SITE_METADATA = {
-  title: "Everardo´s Showcase",
+  title: "Everardo´s Collection",
   description: "A curated digital archive of personal collections.",
   author: "Everardo",
   url: "https://tu-sitio.com",

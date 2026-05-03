@@ -133,22 +133,54 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
              onClick={() => { setMobileOpen(false); setSearchOpen(false); }} />
       )}
 
-      <nav className={cn("sticky top-0 z-[60] bg-card border-b border-border transition-transform duration-300", isHidden ? "-translate-y-full" : "translate-y-0")}>
+      <nav className={cn(
+          "sticky top-0 z-[60] bg-card border-b border-border transition-transform duration-300", 
+          isHidden ? "-translate-y-full" : "translate-y-0"
+        )}>
         <div className="max-w-[1440px] mx-auto px-4 lg:px-8 relative z-[61] h-14">
           <div className="flex items-center justify-between h-full gap-2">
             
-            {/* LOGO AREA */}
-            <div className="flex-none md:flex-1 flex items-center min-w-0 h-full"> 
-              <Link to={baseHref} className="relative flex items-center gap-2 md:gap-3 h-[calc(100%-1px)] px-4 lg:px-8 -ml-4 lg:-ml-8 pr-12 group" onClick={() => { setMobileOpen(false); setSearchOpen(false); }}>
-                <div className="absolute inset-y-0 left-0 right-0 bg-primary z-0" style={{ clipPath: 'polygon(0 0, 100% 0, 85% 100%, 0 100%)' }} />
-                {logoUrl && (
-                  <div className="relative z-10 h-7 w-7 md:h-9 md:w-9 bg-primary-foreground shrink-0"
-                    style={{ maskImage: `url(${logoUrl})`, WebkitMaskImage: `url(${logoUrl})`, maskRepeat: 'no-repeat', WebkitMaskRepeat: 'no-repeat', maskPosition: 'center', WebkitMaskPosition: 'center', maskSize: 'contain', WebkitMaskSize: 'contain' }}
-                  />
-                )}
-                <div className="relative z-10 min-w-0"><SmartTitle title={collectionTitle} /></div>
-              </Link>
-            </div>
+          {/* LOGO AREA */}
+          <div className="flex-1 flex items-center min-w-0 h-full"> 
+            <Link 
+              to={baseHref} 
+              /* pr-12 es el punto de equilibrio para que la diagonal sea larga sin romper el texto */
+              className="relative flex items-center gap-2 md:gap-3 h-full px-4 lg:px-8 -ml-4 lg:-ml-8 pr-12 md:pr-24 lg:pr-32 group shrink" 
+              onClick={() => { setMobileOpen(false); setSearchOpen(false); }}
+            >
+              {/* FONDO DIAGONAL */}
+              <div 
+                className="absolute z-0 bg-primary" 
+                style={{ 
+                  top: '-1px',      
+                  bottom: '1px',    
+                  left: 0, 
+                  right: 0,
+                  clipPath: 'polygon(0 0, 100% 0, 85% 100%, 0 100%)' 
+                }} 
+              />
+              
+              {logoUrl && (
+                <div className="relative z-10 h-7 w-7 md:h-9 md:w-9 bg-primary-foreground shrink-0"
+                  style={{ 
+                    maskImage: `url(${logoUrl})`, 
+                    WebkitMaskImage: `url(${logoUrl})`, 
+                    maskRepeat: 'no-repeat', 
+                    WebkitMaskRepeat: 'no-repeat', 
+                    maskPosition: 'center', 
+                    WebkitMaskPosition: 'center', 
+                    maskSize: 'contain', 
+                    WebkitMaskSize: 'contain' 
+                  }}
+                />
+              )}
+
+              {/* Contenedor del título con min-w-max para evitar que se colapse */}
+              <div className="relative z-10 min-w-max">
+                <SmartTitle title={collectionTitle} />
+              </div>
+            </Link>
+          </div>
 
             {/* ACCIONES */}
             <div className="flex items-center gap-1 md:gap-4 shrink-0 h-full">
