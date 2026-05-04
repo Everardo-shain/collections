@@ -10,7 +10,7 @@ import { cn } from '@/lib/utils';
 function SmartTitle({ title }: { title: string }) {
   const words = title.split(' ');
   if (words.length < 2) {
-    return <span className="leading-none text-primary-foreground font-black uppercase italic text-xl">{title}</span>;
+    return <span className="leading-none text-primary-foreground font-black uppercase text-xl">{title}</span>;
   }
   const firstWord = words[0];
   const restOfTitle = words.slice(1).join(' ');
@@ -295,7 +295,7 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
                 {navGroups.map(group => (
                   <div key={`sub-${group.label}`} className={cn("px-4 animate-in slide-in-from-right-4 duration-200", activeSubMenu === group.label ? "block" : "hidden")}>
                     <button onClick={() => setActiveSubMenu(null)} className="flex items-center gap-2 py-3 text-primary font-medium mb-2"><ChevronLeft className="w-4 h-4" /> Back to Categories</button>
-                    <Link to={`${baseHref}?nav_${PARENT_KEY}=${encodeURIComponent(group.label)}`} className={cn("block py-4 text-xl font-black border-b border-border uppercase italic", activeParent === group.label && !activeChild && "text-primary")} onClick={() => setMobileOpen(false)}>{group.label}</Link>
+                    <Link to={`${baseHref}?nav_${PARENT_KEY}=${encodeURIComponent(group.label)}`} className={cn("block py-4 text-lg font-black border-b border-border uppercase", activeParent === group.label && !activeChild && "text-primary")} onClick={() => setMobileOpen(false)}>{group.label}</Link>
                     {group.children.map(child => (
                       <Link key={child.label} to={`${baseHref}?nav_${PARENT_KEY}=${encodeURIComponent(group.label)}&nav_${CHILD_KEY}=${encodeURIComponent(child.label)}`}
                         className={cn("block py-4 text-base border-b border-border/40 last:border-0", activeParent === group.label && activeChild === child.label && "text-primary font-bold")} onClick={() => setMobileOpen(false)}>{child.label}</Link>
