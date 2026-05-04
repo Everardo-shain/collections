@@ -6,6 +6,7 @@
 
 @layer base {
   :root {
+    color-scheme: light;
     /* --- EL COLOR MAESTRO --- */
     --accent-color: 1, 0%, 0%; 
     --image-bg: 0, 0%, 100%;
@@ -62,6 +63,7 @@
   }
 
   .dark {
+    color-scheme: dark;
     /* --- CONFIGURACIÓN BASADA EN REFERENCIA (DARK) --- */
     --accent-color: 0 0% 100%; /* White */
     --image-bg: 0 0% 100%;
@@ -110,8 +112,12 @@
 
 @layer base {
   * { @apply border-border; }
-  html { transition: color 0.2s ease, background-color 0.2s ease;
-          scrollbar-gutter: stable; }
+  *, *::before, *::after {
+    transition-property: background-color, color, border-color, text-decoration-color;
+    transition-duration: 150ms;
+    transition-timing-function: ease-out;
+  }
+  html { scrollbar-gutter: stable; }
   body { @apply bg-background text-foreground; font-family: var(--font-body); }
   h1, h2, h3, h4, h5, h6 { font-family: var(--font-heading); }
 }
