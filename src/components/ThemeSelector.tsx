@@ -1,108 +1,40 @@
-import { Sun, Moon, Monitor } from 'lucide-react';
+import { Sun, Moon } from 'lucide-react';
 import { useThemeContext } from './ThemeProvider';
-import { useState, useRef, useEffect } from 'react';
 import { cn } from '@/lib/utils';
 
-const options = [
-  { value: 'light' as const, label: 'Light', icon: Sun },
-  { value: 'dark' as const, label: 'Dark', icon: Moon },
-  { value: 'system' as const, label: 'System', icon: Monitor },
-];
-
-interface ThemeSelectorProps {
-  navbarHidden?: boolean;
-}
-
-export function ThemeSelector({ navbarHidden }: ThemeSelectorProps) {
+export function ThemeSelector() {
   const { theme, setTheme } = useThemeContext();
-  const [open, setOpen] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
-  const buttonRef = useRef<HTMLButtonElement>(null);
 
-  useEffect(() => {
-    if (navbarHidden) {
-      setOpen(false);
-      if (buttonRef.current) buttonRef.current.blur();
-    }
-  }, [navbarHidden]);
+  // Función para alternar: si es light -> dark, si es dark o system -> light
+  const toggleTheme = () => {
+    const nextTheme = theme === 'light' ? 'dark' : 'light';
+    setTheme(nextTheme);
+  };
 
-  useEffect(() => {
-    const handler = (e: MouseEvent) => {
-      if (ref.current && !ref.current.contains(e.target as Node)) {
-        setOpen(false);
-      }
-    };
-    document.addEventListener('mousedown', handler);
-    return () => document.removeEventListener('mousedown', handler);
-  }, []);
-
-  const currentOption = options.find(opt => opt.value === theme) || options[2];
-  const CurrentIcon = currentOption.icon;
-
-return (
-    <div ref={ref} className="relative z-[70]">
+  return (
+    <div className="relative flex items-center justify-center">
       <button
-        ref={buttonRef}
         type="button"
-        onClick={(e) => {
-          e.stopPropagation();
-          setOpen(!open);
-          // Forzamos la pérdida de foco para limpiar cualquier estado
-          (e.currentTarget as HTMLButtonElement).blur();
-        }}
+        onClick={toggleTheme}
         className={cn(
-          "p-2 rounded-md transition-all duration-200 flex items-center justify-center outline-none", 
-          
-          // --- LÓGICA ANTI-SOMBREADO PEGADO ---
-          open && !navbarHidden 
-            ? "bg-accent" // Estado Abierto: Fondo fijo
-            : cn(
-                "text-foreground",
-                // Solo aplica hover si el dispositivo soporta hover real (Desktop)
-                "[@media(hover:hover)]:hover:bg-accent",
-                // Feedback visual rápido al tocar en mobile, que desaparece al soltar
-                "active:bg-accent/50" 
-              )
+          "p-2 rounded-md transition-all duration-300 flex items-center justify-center outline-none", 
+          "text-foreground active:scale-90", // Efecto de pulsación pequeña al tocar
+          "[@media(hover:hover)]:hover:bg-accent active:bg-accent/50"
         )}
         aria-label="Toggle theme"
       >
-        <CurrentIcon className="w-5 h-5" />
-      </button>
-
-      {open && !navbarHidden && (
-        <div className={cn(
-            "absolute right-0 top-full mt-2 min-w-[140px] py-1 z-[80]",
-            "bg-card border border-border rounded-lg shadow-xl animate-in fade-in zoom-in-95 duration-100"
-          )}>
-          <div className="px-3 py-1.5 text-[10px] font-bold text-muted-foreground/70 uppercase tracking-wider select-none border-b border-border/40 mb-1">
-            Appearance
-          </div>
-
-          {options.map(({ value, label, icon: Icon }) => {
-            const isActive = theme === value;
-            return (
-              <button
-                key={value}
-                type="button"
-                onClick={() => {
-                  setTheme(value);
-                  setOpen(false);
-                  buttonRef.current?.blur();
-                }}
-                className={cn(
-                  "w-full flex items-center gap-2.5 px-3 py-2 text-sm transition-all text-left",
-                  isActive 
-                    ? "bg-accent/50 text-primary font-bold" 
-                    : "text-muted-foreground hover:bg-accent/50 hover:text-foreground"
-                )}
-              >
-                <Icon className={cn("w-3.5 h-3.5", isActive ? "text-primary" : "text-foreground opacity-70")} />
-                {label}
-              </button>
-            );
-          })}
+        {/* Usamos una transición sutil entre iconos */}
+        <div className="relative w-5 h-5">
+          <Sun className={cn(
+            "w-5 h-5 absolute inset-0 transition-all duration-500 transform",
+            theme === 'dark' ? "rotate-90 scale-0 opacity-0" : "rotate-0 scale-100 opacity-100"
+          )} />
+          <Moon className={cn(
+            "w-5 h-5 absolute inset-0 transition-all duration-500 transform",
+            theme === 'light' ? "-rotate-90 scale-0 opacity-0" : "rotate-0 scale-100 opacity-100"
+          )} />
         </div>
-      )}
+      </button>
     </div>
   );
 }

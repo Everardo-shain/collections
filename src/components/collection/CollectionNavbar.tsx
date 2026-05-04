@@ -249,7 +249,7 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
               
               {/* ThemeSelector (Ahora con icono de 20px y sin scale-95 para igualar) */}
               <div className="flex items-center h-full">
-                <ThemeSelector navbarHidden={isHidden} />
+                <ThemeSelector />
               </div>
             </div>
           </div>
