@@ -6,7 +6,7 @@ import { CollectionNavbar } from "@/components/collection/CollectionNavbar";
 
 const COLLECTION_DESCRIPTIONS: Record<CollectionId, string> = {
   football: "Jerseys, kits and football memorabilia.",
-  music: "Records, CDs and music collectibles.",
+  // music: "Records, CDs and music collectibles.",
 };
 
 export default function Home() {

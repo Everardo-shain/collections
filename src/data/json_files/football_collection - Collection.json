@@ -6442,7 +6442,7 @@
   {
     "ID": "045-005-010-UEF-ENG-LEI-000-9999-10-0000-000",
     "Display Name": "Leicester City Tumbler",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Drinkware",
     "Entity": "Team",
     "Team Type": "Club",
@@ -6470,7 +6470,7 @@
   {
     "ID": "045-005-010-UEF-GER-DOR-000-7975-09-2024-000",
     "Display Name": "2024 Borussia Dortmund \"Marco Reus Farewell\" Stadium Cup",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Drinkware",
     "Entity": "Team",
     "Team Type": "Club",
@@ -6498,7 +6498,7 @@
   {
     "ID": "045-005-010-UEF-GER-DOR-000-7975-09-2024-001",
     "Display Name": "2024 Borussia Dortmund \"Abschiedszczspiel\" Stadium Cup",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Drinkware",
     "Entity": "Team",
     "Team Type": "Club",
@@ -6526,7 +6526,7 @@
   {
     "ID": "045-005-010-UEF-GER-DOR-000-9999-10-0000-000",
     "Display Name": "Borussia Dortmund \"Borussia Dortmund\" Stadium Cup",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Drinkware",
     "Entity": "Team",
     "Team Type": "Club",
@@ -6554,7 +6554,7 @@
   {
     "ID": "045-005-010-UEF-GER-DOR-000-9999-10-0000-001",
     "Display Name": "Borussia Dortmund \"Heja BVB\" Stadium Cup",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Drinkware",
     "Entity": "Team",
     "Team Type": "Club",
@@ -6582,7 +6582,7 @@
   {
     "ID": "045-005-010-UEF-GER-DOR-000-9999-10-0000-002",
     "Display Name": "Borussia Dortmund Magic Mug",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Drinkware",
     "Entity": "Team",
     "Team Type": "Club",
@@ -6610,7 +6610,7 @@
   {
     "ID": "045-005-010-CCF-MEX-TOL-000-9999-10-0000-000",
     "Display Name": "Deportivo Toluca Christmas Third-Party Mug (Custom Name)",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Drinkware",
     "Entity": "Team",
     "Team Type": "Club",
@@ -6638,7 +6638,7 @@
   {
     "ID": "045-005-010-CCF-MEX-TOL-000-7982-09-2017-000",
     "Display Name": "2017 Deportivo Toluca 100th Anniversary Mug",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Drinkware",
     "Entity": "Team",
     "Team Type": "Club",
@@ -6666,7 +6666,7 @@
   {
     "ID": "045-005-010-CCF-MEX-TOL-000-7974-06-2025-000",
     "Display Name": "2025-26 Deportivo Toluca Bottle - Bundle Box",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Drinkware",
     "Entity": "Team",
     "Team Type": "Club",
@@ -6694,7 +6694,7 @@
   {
     "ID": "045-005-010-CCF-MEX-TOL-000-7974-08-2025-001",
     "Display Name": "Clausura 2025 Deportivo Toluca Winners Tumbler",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Drinkware",
     "Entity": "Team",
     "Team Type": "Club",
@@ -6722,7 +6722,7 @@
   {
     "ID": "045-005-010-CCF-MEX-TOL-000-7974-08-2025-002",
     "Display Name": "Clausura 2025 Deportivo Toluca Winners Beer Can",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Drinkware",
     "Entity": "Team",
     "Team Type": "Club",
@@ -6750,7 +6750,7 @@
   {
     "ID": "045-005-010-CCF-MEX-TOL-000-7982-09-2017-001",
     "Display Name": "2017 Deportivo Toluca 100th Anniversary Beer Can",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Drinkware",
     "Entity": "Team",
     "Team Type": "Club",
@@ -6778,7 +6778,7 @@
   {
     "ID": "045-005-010-CCF-MEX-TOL-000-7974-08-2025-003",
     "Display Name": "Clausura 2025 Deportivo Toluca Winners Stadium Cup",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Drinkware",
     "Entity": "Team",
     "Team Type": "Club",
@@ -6806,7 +6806,7 @@
   {
     "ID": "045-005-010-CCF-MEX-TOL-000-9999-10-0000-001",
     "Display Name": "Deportivo Toluca Stadium Cup",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Drinkware",
     "Entity": "Team",
     "Team Type": "Club",
@@ -6834,7 +6834,7 @@
   {
     "ID": "070-005-010-CCF-MEX-TOL-000-7979-08-2020-000",
     "Display Name": "Clausura 2020 Deportivo Toluca Season Pass",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Pass",
     "Entity": "Team",
     "Team Type": "Club",
@@ -6862,7 +6862,7 @@
   {
     "ID": "070-005-010-CCF-MEX-TOL-000-7981-07-2018-000",
     "Display Name": "Apertura 2018 Deportivo Toluca Season Pass",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Pass",
     "Entity": "Team",
     "Team Type": "Club",
@@ -6890,7 +6890,7 @@
   {
     "ID": "070-005-010-UEF-GER-DOR-000-7975-06-2024-000",
     "Display Name": "2024-25 Borussia Dortmund Stadiondeckel - Bundle Box",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Pass",
     "Entity": "Team",
     "Team Type": "Club",
@@ -6918,7 +6918,7 @@
   {
     "ID": "070-010-000-CCF-MEX-LMX-000-7981-08-2018-000",
     "Display Name": "Clausura 2018 Liga MX Final Deportivo Toluca vs. Santos Laguna Ticket",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Pass",
     "Entity": "Event",
     "Team Type": "-",
@@ -6946,7 +6946,7 @@
   {
     "ID": "070-010-000-CCF-MEX-LMX-000-7982-08-2017-000",
     "Display Name": "Clausura 2017 Liga MX Deportivo Toluca vs. Club Puebla Ticket",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Pass",
     "Entity": "Event",
     "Team Type": "-",
@@ -6974,7 +6974,7 @@
   {
     "ID": "070-010-000-CCF-MEX-CMX-000-7982-08-2017-000",
     "Display Name": "Clausura 2017 Copa MX Deportivo Toluca vs. CD Veracruz Ticket",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Pass",
     "Entity": "Event",
     "Team Type": "-",
@@ -7002,7 +7002,7 @@
   {
     "ID": "070-010-000-CMB-MEX-LIB-000-7983-09-2016-000",
     "Display Name": "2016 Copa CONMEBOL Libertadores Deportivo Toluca vs. CA San Lorenzo Ticket",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Pass",
     "Entity": "Event",
     "Team Type": "-",
@@ -7030,7 +7030,7 @@
   {
     "ID": "070-010-000-CCF-MEX-CNL-000-7980-06-2019-000",
     "Display Name": "2019-20 CONCACAF Nations League Mexico vs. Bermuda Matchday Ticket",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Pass",
     "Entity": "Event",
     "Team Type": "-",
@@ -7058,7 +7058,7 @@
   {
     "ID": "070-010-000-AAA-MEX-FRI-000-7982-09-2017-000",
     "Display Name": "2017 Deportivo Toluca vs. Atlético Madrid Ticket",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Pass",
     "Entity": "Event",
     "Team Type": "-",
@@ -7086,7 +7086,7 @@
   {
     "ID": "055-005-010-CCF-MEX-TOL-000-7981-07-2018-000",
     "Display Name": "Apertura 2018 Deportivo Toluca Season Pass Lanyard",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Accessory",
     "Entity": "Team",
     "Team Type": "Club",
@@ -7114,7 +7114,7 @@
   {
     "ID": "055-005-010-CCF-MEX-TOL-000-7979-08-2020-000",
     "Display Name": "Clausura 2020 Deportivo Toluca Season Pass Lanyard",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Accessory",
     "Entity": "Team",
     "Team Type": "Club",
@@ -7142,7 +7142,7 @@
   {
     "ID": "055-005-010-CCF-MEX-TOL-000-7980-08-2019-000",
     "Display Name": "Clausura 2019 Deportivo Toluca Season Pass Lanyard",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Accessory",
     "Entity": "Team",
     "Team Type": "Club",
@@ -7170,7 +7170,7 @@
   {
     "ID": "055-005-010-CCF-MEX-TOL-000-7980-07-2019-001",
     "Display Name": "Apertura 2019 Deportivo Toluca Keychain",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Accessory",
     "Entity": "Team",
     "Team Type": "Club",
@@ -7198,7 +7198,7 @@
   {
     "ID": "055-005-010-UEF-GER-DOR-000-9999-10-0000-000",
     "Display Name": "Borussia Dortmund Stadium 4-Pin Set",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Accessory",
     "Entity": "Team",
     "Team Type": "Club",
@@ -7226,7 +7226,7 @@
   {
     "ID": "055-005-010-UEF-GER-DOR-000-7983-06-2016-000",
     "Display Name": "2016-17 Borussia Dortmund DBF-Pokal Winners Pin",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Accessory",
     "Entity": "Team",
     "Team Type": "Club",
@@ -7254,7 +7254,7 @@
   {
     "ID": "055-015-000-UEF-GER-DEU-000-9999-10-0000-000",
     "Display Name": "Deutsches Fußballmuseum \"Trikot 1954\" Magnet",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Accessory",
     "Entity": "Brand",
     "Team Type": "-",
@@ -7282,7 +7282,7 @@
   {
     "ID": "055-015-000-UEF-GER-DEU-000-9999-10-0000-001",
     "Display Name": "Deutsches Fußballmuseum Shoe Keychain",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Accessory",
     "Entity": "Brand",
     "Team Type": "-",
@@ -7310,7 +7310,7 @@
   {
     "ID": "060-005-010-UEF-GER-DOR-000-7975-06-2024-000",
     "Display Name": "2024-25 Borussia Dortmund Mitgliedermagazin (February 2025) - Bundle Box",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Stationery",
     "Entity": "Team",
     "Team Type": "Club",
@@ -7338,7 +7338,7 @@
   {
     "ID": "060-005-010-UEF-GER-DOR-000-9999-10-0000-000",
     "Display Name": "Borussia Dortmund Postcard (Signed by Kevin Großkreutz)",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Stationery",
     "Entity": "Team",
     "Team Type": "Club",
@@ -7366,7 +7366,7 @@
   {
     "ID": "060-005-010-UEF-GER-DOR-000-7975-09-2024-001",
     "Display Name": "2024 Borussia Dortmund Borusseum \"Marco Reus Farewell\" Postcard",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Stationery",
     "Entity": "Team",
     "Team Type": "Club",
@@ -7394,7 +7394,7 @@
   {
     "ID": "060-005-010-UEF-GER-DOR-000-8086-09-1913-000",
     "Display Name": "1913 Borussia Dortmund Borusseum \"Jung-Borussen\" Postcard",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Stationery",
     "Entity": "Team",
     "Team Type": "Club",
@@ -7422,7 +7422,7 @@
   {
     "ID": "060-005-010-UEF-GER-DOR-000-9999-10-0000-001",
     "Display Name": "Borussia Dortmund Borusseum \"Drei Borussen im Widerstand\" Magazine",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Stationery",
     "Entity": "Team",
     "Team Type": "Club",
@@ -7450,7 +7450,7 @@
   {
     "ID": "060-010-000-AAA-MEX-FRI-000-7977-09-2022-000",
     "Display Name": "2022 Deportivo Toluca vs. Bayer 04 Leverkusen Sticker",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Stationery",
     "Entity": "Event",
     "Team Type": "-",
@@ -7478,7 +7478,7 @@
   {
     "ID": "050-010-000-UEF-GER-BUN-000-9999-10-0000-000",
     "Display Name": "DFB Bundesliga Championship Trophy Miniature - 70mm",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Display",
     "Entity": "Event",
     "Team Type": "-",
@@ -7506,7 +7506,7 @@
   {
     "ID": "050-005-010-UEF-SPA-RMA-000-9999-10-0000-000",
     "Display Name": "Real Madrid Santiago Bernabéu Stadium Crystal Block",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Display",
     "Entity": "Team",
     "Team Type": "Club",
@@ -7534,7 +7534,7 @@
   {
     "ID": "060-010-000-FIF-AAA-WOR-000-7989-09-2010-000",
     "Display Name": "2010 FIFA World Cup Sticker Album (Complete)",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Stationery",
     "Entity": "Event",
     "Team Type": "-",
@@ -7562,7 +7562,7 @@
   {
     "ID": "060-010-000-FIF-AAA-WOR-000-7985-09-2014-000",
     "Display Name": "2014 FIFA World Cup Sticker Album (Complete)",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Stationery",
     "Entity": "Event",
     "Team Type": "-",
@@ -7590,7 +7590,7 @@
   {
     "ID": "060-010-000-UEF-AAA-CHA-000-7989-06-2010-000",
     "Display Name": "2010-11 UEFA Champions League Sticker Album (Incomplete)",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Stationery",
     "Entity": "Event",
     "Team Type": "-",
@@ -7618,7 +7618,7 @@
   {
     "ID": "060-010-000-CCF-MEX-LMX-000-7989-07-2010-000",
     "Display Name": "Apertura 2010 Liga MX Sticker Album (Incomplete)",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Stationery",
     "Entity": "Event",
     "Team Type": "-",
@@ -7646,7 +7646,7 @@
   {
     "ID": "060-005-010-CCF-MEX-TOL-000-7982-09-2017-000",
     "Display Name": "2017 Deportivo Toluca 100th Anniversary Sticker Album (Incomplete)",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Stationery",
     "Entity": "Team",
     "Team Type": "Club",
@@ -7702,7 +7702,7 @@
   {
     "ID": "075-020-000-CCF-MEX-TOL-000-7980-09-2019-000",
     "Display Name": "2019 Deportivo Toluca Gastón Sauro Digital Photo",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Photo",
     "Entity": "Person",
     "Team Type": "-",
@@ -7730,7 +7730,7 @@
   {
     "ID": "075-020-000-CCF-MEX-TOL-000-7980-09-2019-001",
     "Display Name": "2019 Deportivo Toluca Santiago García Digital Photo",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Photo",
     "Entity": "Person",
     "Team Type": "-",
@@ -7758,7 +7758,7 @@
   {
     "ID": "075-020-000-CCF-MEX-TOL-000-7979-09-2020-002",
     "Display Name": "2020 Deportivo Toluca Leonardo Fernández Digital Photo",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Photo",
     "Entity": "Person",
     "Team Type": "-",
@@ -7786,7 +7786,7 @@
   {
     "ID": "075-020-000-CCF-MEX-TOL-000-7979-09-2020-003",
     "Display Name": "2020 Deportivo Toluca Rodrigo Salinas Digital Photo",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Photo",
     "Entity": "Person",
     "Team Type": "-",
@@ -7814,7 +7814,7 @@
   {
     "ID": "075-020-000-CCF-MEX-TOL-000-7979-09-2020-004",
     "Display Name": "2020 Deportivo Toluca Alexis Canelo Digital Photo",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Photo",
     "Entity": "Person",
     "Team Type": "-",
@@ -7842,7 +7842,7 @@
   {
     "ID": "075-020-000-CCF-MEX-TOL-000-7979-09-2020-005",
     "Display Name": "2020 Deportivo Toluca Luis Garcia Palomera Digital Photo",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Photo",
     "Entity": "Person",
     "Team Type": "-",
@@ -7870,7 +7870,7 @@
   {
     "ID": "075-020-000-CCF-MEX-TOL-000-7979-09-2020-006",
     "Display Name": "2020 Deportivo Toluca Luis Donaldo Hernández Digital Photo",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Photo",
     "Entity": "Person",
     "Team Type": "-",
@@ -7898,7 +7898,7 @@
   {
     "ID": "075-020-000-CCF-MEX-TOL-000-7979-09-2020-007",
     "Display Name": "2020 Deportivo Toluca Felipe Pardo Digital Photo",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Photo",
     "Entity": "Person",
     "Team Type": "-",
@@ -7926,7 +7926,7 @@
   {
     "ID": "075-020-000-CCF-MEX-TOL-000-7979-09-2020-008",
     "Display Name": "2020 Deportivo Toluca Adrián Mora Digital Photo",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Photo",
     "Entity": "Person",
     "Team Type": "-",
@@ -7954,7 +7954,7 @@
   {
     "ID": "075-020-000-CCF-MEX-TOL-000-7979-09-2020-009",
     "Display Name": "2020 Deportivo Toluca Javier Güémez Digital Photo",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Photo",
     "Entity": "Person",
     "Team Type": "-",
@@ -7982,7 +7982,7 @@
   {
     "ID": "075-020-000-CCF-MEX-TOL-000-7979-09-2020-010",
     "Display Name": "2020 Deportivo Toluca Emmanuel Gigliotti Digital Photo",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Photo",
     "Entity": "Person",
     "Team Type": "-",
@@ -8010,7 +8010,7 @@
   {
     "ID": "075-020-000-CCF-MEX-TOL-000-7979-09-2020-011",
     "Display Name": "2020 Deportivo Toluca Richard Ruíz Digital Photo",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Photo",
     "Entity": "Person",
     "Team Type": "-",
@@ -8038,7 +8038,7 @@
   {
     "ID": "075-020-000-CCF-MEX-TOL-000-7979-09-2020-012",
     "Display Name": "2020 Deportivo Toluca Diego Rigonato Digital Photo",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Photo",
     "Entity": "Person",
     "Team Type": "-",
@@ -8066,7 +8066,7 @@
   {
     "ID": "075-020-000-CCF-MEX-TOL-000-7979-09-2020-013",
     "Display Name": "2020 Deportivo Toluca Jonathan Maidana Digital Photo",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Photo",
     "Entity": "Person",
     "Team Type": "-",
@@ -8094,7 +8094,7 @@
   {
     "ID": "075-020-000-CCF-MEX-TOL-000-7979-09-2020-014",
     "Display Name": "2020 Deportivo Toluca William Fernando da Silva Digital Photo",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Photo",
     "Entity": "Person",
     "Team Type": "-",
@@ -8122,7 +8122,7 @@
   {
     "ID": "075-020-000-CCF-MEX-TOL-000-7979-09-2020-015",
     "Display Name": "2020 Deportivo Toluca Aníbal Chalá Digital Photo",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Photo",
     "Entity": "Person",
     "Team Type": "-",
@@ -8150,7 +8150,7 @@
   {
     "ID": "075-020-000-CCF-MEX-TOL-000-7979-09-2020-016",
     "Display Name": "2020 Deportivo Toluca Sinha and Francisco Suinaga Digital Photo",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Photo",
     "Entity": "Person",
     "Team Type": "-",
@@ -8178,7 +8178,7 @@
   {
     "ID": "075-020-000-AAA-AAA-AAA-000-7976-09-2023-000",
     "Display Name": "2023 Jorge Pietrasanta Digital Selfie",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Photo",
     "Entity": "Person",
     "Team Type": "-",
@@ -8206,7 +8206,7 @@
   {
     "ID": "075-020-000-AAA-AAA-AAA-000-7981-09-2018-000",
     "Display Name": "2018 Francisco Fonseca Digital Photo",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Photo",
     "Entity": "Person",
     "Team Type": "-",
@@ -8234,7 +8234,7 @@
   {
     "ID": "075-020-000-AAA-AAA-AAA-000-7981-09-2018-001",
     "Display Name": "2018 Ignacio Alva Digital Selfie",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Photo",
     "Entity": "Person",
     "Team Type": "-",
@@ -8262,7 +8262,7 @@
   {
     "ID": "075-020-000-AAA-AAA-AAA-000-7981-09-2018-002",
     "Display Name": "2018 Juan Dosal Digital Photo",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Photo",
     "Entity": "Person",
     "Team Type": "-",
@@ -8290,7 +8290,7 @@
   {
     "ID": "075-020-000-UEF-GER-DOR-000-7974-09-2025-000",
     "Display Name": "2025 Borussia Dortmund Kevin Großkreutz Digital Photo",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Photo",
     "Entity": "Person",
     "Team Type": "-",
@@ -8318,7 +8318,7 @@
   {
     "ID": "075-020-000-UEF-GER-LEV-000-7977-09-2022-000",
     "Display Name": "2022 Bayer 04 Leverkusen Jonathan Tah Digital Selfie",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Photo",
     "Entity": "Person",
     "Team Type": "-",
@@ -8346,7 +8346,7 @@
   {
     "ID": "075-020-000-UEF-GER-LEV-000-7977-09-2022-001",
     "Display Name": "2022 Bayer 04 Leverkusen Stefan Kießling Digital Selfie",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Photo",
     "Entity": "Person",
     "Team Type": "-",
@@ -8374,7 +8374,7 @@
   {
     "ID": "075-020-000-CCF-MEX-TOL-000-7974-09-2025-000",
     "Display Name": "2025 Deportivo Toluca Marcel Ruiz Digital Photo",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Photo",
     "Entity": "Person",
     "Team Type": "-",
@@ -8402,7 +8402,7 @@
   {
     "ID": "045-005-010-AAA-MEX-CUE-000-7980-09-2019-000",
     "Display Name": "2019 Club de Cuervos Winners Beer Can",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Drinkware",
     "Entity": "Team",
     "Team Type": "Club",
@@ -8430,7 +8430,7 @@
   {
     "ID": "055-005-010-UEF-GER-DOR-000-9999-10-0000-001",
     "Display Name": "Borussia Dortmund Crocs Jibbitz (pack of 5)",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Accessory",
     "Entity": "Team",
     "Team Type": "Club",
@@ -8458,7 +8458,7 @@
   {
     "ID": "065-010-000-FIF-RUS-WOR-000-7981-09-2018-000",
     "Display Name": "2018 FIFA World Cup 100 Russian Rubles Banknote",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Currency",
     "Entity": "Event",
     "Team Type": "-",
@@ -8486,7 +8486,7 @@
   {
     "ID": "050-005-010-CCF-MEX-TOL-000-7977-09-2022-000",
     "Display Name": "2022 Deportivo Toluca 105th Anniversary Canvas Print",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Display",
     "Entity": "Team",
     "Team Type": "Club",
@@ -8514,7 +8514,7 @@
   {
     "ID": "050-005-010-CCF-MEX-TOL-000-8033-06-1966-000",
     "Display Name": "1966-67 Deportivo Toluca Winners Canvas Print",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Display",
     "Entity": "Team",
     "Team Type": "Club",
@@ -8542,7 +8542,7 @@
   {
     "ID": "050-005-010-CCF-MEX-TOL-000-8001-08-1998-000",
     "Display Name": "Verano 1998 Deportivo Toluca Winners Canvas Print",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Display",
     "Entity": "Team",
     "Team Type": "Club",
@@ -8570,7 +8570,7 @@
   {
     "ID": "050-005-010-CCF-MEX-TOL-000-7998-07-2001-000",
     "Display Name": "Invierno 2001 Deportivo Toluca Canvas Print",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Display",
     "Entity": "Team",
     "Team Type": "Club",
@@ -8598,7 +8598,7 @@
   {
     "ID": "050-005-010-UEF-GER-DOR-000-9999-10-0000-000",
     "Display Name": "Borussia Dortmund Signal Iduna Park Poster",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Display",
     "Entity": "Team",
     "Team Type": "Club",
@@ -8626,7 +8626,7 @@
   {
     "ID": "075-020-000-UEF-GER-DOR-000-7974-09-2025-001",
     "Display Name": "2025 Borussia Dortmund Kevin Großkreutz Digital Selfie",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Photo",
     "Entity": "Person",
     "Team Type": "-",
@@ -8654,7 +8654,7 @@
   {
     "ID": "075-020-000-CCF-MEX-TOL-000-7979-09-2020-000",
     "Display Name": "2020 Deportivo Toluca Carlos Adrián Morales Digital Selfie",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Photo",
     "Entity": "Person",
     "Team Type": "-",
@@ -8794,7 +8794,7 @@
   {
     "ID": "060-005-010-UEF-ENG-TOT-015-8005-06-1994-000",
     "Display Name": "1994-95 Tottenham Hotspur Third Jürgen Klinsmann Card",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Stationery",
     "Entity": "Team",
     "Team Type": "Club",
@@ -8822,7 +8822,7 @@
   {
     "ID": "060-005-005-UEF-SPA-SPA-005-8001-09-1998-000",
     "Display Name": "1998 Spain Home Raúl González Blanco Card",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Stationery",
     "Entity": "Team",
     "Team Type": "National Team",
@@ -8878,7 +8878,7 @@
   {
     "ID": "045-010-000-FIF-AAA-WOR-000-7973-09-2026-000",
     "Display Name": "2026 FIFA World Cup Johnnie Walker Red Label Commemorative Whisky Bottle",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Drinkware",
     "Entity": "Event",
     "Team Type": "-",
@@ -8934,7 +8934,7 @@
   {
     "ID": "060-005-010-CMB-ARG-RIV-005-8004-06-1995-000",
     "Display Name": "1995-96 River Plate Home Hernán Crespo Card",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Stationery",
     "Entity": "Team",
     "Team Type": "Club",
@@ -9074,7 +9074,7 @@
   {
     "ID": "050-005-010-UEF-GER-DOR-000-9999-10-0000-001",
     "Display Name": "Borussia Dortmund 3D Stadionpuzzle",
-    "Category": "Merchandise",
+    "Category": "Memorabilia",
     "Product": "Display",
     "Entity": "Team",
     "Team Type": "Club",

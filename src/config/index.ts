@@ -5,13 +5,12 @@
  */
 
 import * as Football from "./footballConfig";
-import * as Music from "./musicConfig";
 
 export type CollectionConfig = typeof Football;
 
 export const COLLECTIONS_MAP: Record<string, CollectionConfig> = {
   football: Football,
-  music: Music as unknown as CollectionConfig,
+  // music: Music as unknown as CollectionConfig,
 };
 
 export type CollectionId = keyof typeof COLLECTIONS_MAP;

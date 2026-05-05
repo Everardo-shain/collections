@@ -198,7 +198,14 @@ export const SIDEBAR_KEYS = [
 export const SEARCH_KEYS = [
   "displayName", "team", "person", "style", "team_type", "season",
   "competition", "country", "confederation", "brand",
-  "product", "entity", "category", "release",
+  "product", "category", "release",
+  "technology", "collaboration", "print", "patch",
+] as const;
+
+export const SUGGESTIONS_KEYS = [
+  "team", "person", "style", "team_type", "season",
+  "competition", "country", "confederation", "brand",
+  "product", "category", "release",
   "technology", "collaboration", "print", "patch",
 ] as const;
 
