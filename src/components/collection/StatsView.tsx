@@ -39,16 +39,16 @@ export function StatsView({
 }: StatsViewProps) {
   const { config } = useCollection();
   const [searchParams, setSearchParams] = useSearchParams();
-  const { STATS_KEYS, CUSTOM_FILTERS, FIELD_MAP } = config as any;
+  const { SIDEBAR_KEYS, CUSTOM_FILTERS, FIELD_MAP } = config as any;
 
   // Compute valid tables
   const validTables = useMemo(() => {
-    return (STATS_KEYS as readonly string[]).filter(key => {
+    return (SIDEBAR_KEYS as readonly string[]).filter(key => {
       const normKey = normalizeKey(key);
       if ((sidebarState[normKey] || []).length > 0) return false;
       return items.some(item => getItemValuesForKey(item, key, CUSTOM_FILTERS).length > 0);
     });
-  }, [STATS_KEYS, items, sidebarState, CUSTOM_FILTERS]);
+  }, [SIDEBAR_KEYS, items, sidebarState, CUSTOM_FILTERS]);
 
   // Auto-select / auto-jump
   useEffect(() => {
@@ -81,23 +81,31 @@ export function StatsView({
    * Al seleccionar un valor, actualizamos la URL para que el navegador
    * registre una nueva entrada en el historial.
    */
-  const handleRowClick = (value: string) => {
+const handleRowClick = (value: string) => {
     if (!activeTable) return;
 
-    // 1. Notificamos al padre para que actualice el estado interno de filtros
+    // 1. Notificamos al padre para actualizar estados internos si existen
     onSelectValue(activeTable, value);
 
-    // 2. Creamos los nuevos parámetros para la URL
+    // 2. Construimos los parámetros de búsqueda
     const newParams = new URLSearchParams(searchParams);
+    const filterKey = normalizeKey(activeTable);
     
-    // Agregamos el filtro seleccionado
-    newParams.set(`nav_${normalizeKey(activeTable)}`, value);
-    
-    // IMPORTANTÍSIMO: Quitamos el modo stats para que el Index muestre el Grid
+    // Comportamiento de acumulación (estilo sidebar)
+    const existingValues = newParams.get(filterKey)?.split(VALUE_SEPARATOR) || [];
+    if (!existingValues.includes(value)) {
+      const updatedValues = [...existingValues, value];
+      newParams.set(filterKey, updatedValues.join(VALUE_SEPARATOR));
+    }
+
+    // 3. Eliminamos el modo stats
     newParams.delete('view'); 
     
-    // Navegamos: Esto hace que "Back" nos regrese a ?view=stats
-    setSearchParams(newParams);
+    // 4. NAVEGACIÓN CON REPLACE:
+    // Al usar 'replace: true', la URL con '?view=stats' se borra del historial
+    // y se sustituye por la URL del Grid filtrado. 
+    // Al dar "Atrás", el usuario NO volverá a la tabla.
+    setSearchParams(newParams, { replace: true });
   };
 
   if (validTables.length === 0) {
@@ -113,6 +121,7 @@ export function StatsView({
 
   return (
     <div className="space-y-4 animate-in fade-in duration-500">
+      {/* Selector de pestañas */}
       <div className="flex flex-wrap border-t border-l border-border rounded-lg overflow-hidden bg-card">
         {validTables.map(key => {
           const isActive = key === activeTable;
@@ -136,10 +145,11 @@ export function StatsView({
 
       {activeTable && (
         <p className="text-xs text-muted-foreground">
-          Showing <span className="font-bold text-foreground">{rows.length}</span> unique options for {activeLabel}
+          Showing <span className="font-bold text-foreground">{rows.length}</span> opciones únicas para {activeLabel}
         </p>
       )}
 
+      {/* Tabla de resultados */}
       <div className="rounded-lg border border-border bg-card overflow-hidden">
         <div className="grid grid-cols-[1fr_auto] gap-x-4 px-4 py-2 text-xs uppercase tracking-wide text-muted-foreground border-b border-border bg-muted/30">
           <span>{activeLabel}</span>
@@ -151,7 +161,7 @@ export function StatsView({
             return (
               <li key={row.value}>
                 <button
-                  onClick={() => handleRowClick(row.value)} // Usamos nuestra nueva función
+                  onClick={() => handleRowClick(row.value)}
                   className="w-full grid grid-cols-[1fr_auto] gap-x-4 items-center px-4 py-3 text-left hover:bg-accent/30 transition-colors group"
                 >
                   <div className="min-w-0">

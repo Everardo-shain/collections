@@ -192,7 +192,7 @@ export const BREADCRUMB_RESOLVER = (context: any): string[] | null => {
 export const SIDEBAR_KEYS = [
   "team_type", "confederation", "country", "competition",
   "team", "season", "style", "release", "brand",
-  "technology", "size", "details",
+  "technology", "person", "size", "details",
 ] as const;
 
 export const SEARCH_KEYS = [
