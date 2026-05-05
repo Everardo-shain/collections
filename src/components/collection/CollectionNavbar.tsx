@@ -7,23 +7,7 @@ import { ThemeSelector } from '@/components/ThemeSelector';
 import { useScrollDirection } from '@/hooks/useScrollDirection';
 import { useDebounce } from '@/hooks/useDebounce';
 import { cn } from '@/lib/utils';
-
-// --- SUB-COMPONENTE: SMART TITLE ---
-function SmartTitle({ title }: { title: string }) {
-  const words = title.split(' ');
-  if (words.length < 2) {
-    return <span className="leading-none text-primary-foreground font-black uppercase text-xl">{title}</span>;
-  }
-  const firstWord = words[0];
-  const restOfTitle = words.slice(1).join(' ');
-
-  return (
-    <div className="flex flex-col leading-[1] py-0.5 uppercase text-primary-foreground">
-      <span className="text-[10px] md:text-[12px] font-medium tracking-[0.2em] opacity-80">{firstWord}</span>
-      <span className="text-[16px] md:text-[22px] font-black tracking-tight">{restOfTitle}</span>
-    </div>
-  );
-}
+import { SmartTitle } from '@/components/SmartTitle';
 
 // --- COMPONENTE PRINCIPAL ---
 export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups?: NavGroup[], isHome?: boolean }) {
@@ -157,12 +141,14 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
         <div className="max-w-[1440px] mx-auto px-4 lg:px-8 relative z-[61] h-14">
           <div className="flex items-center justify-between h-full gap-2">
             
-            {/* LOGO AREA */}
-            <div className="flex-1 flex items-center min-w-0 h-full"> 
-              <Link to={baseHref} className="relative flex items-center gap-2 md:gap-3 h-full px-4 lg:px-8 -ml-4 lg:-ml-8 pr-12 md:pr-24 lg:pr-32 group shrink" onClick={() => { setMobileOpen(false); setSearchOpen(false); setCategoriesOpen(false); }}>
+            <div className="flex-1 flex items-center h-full"> 
+              <Link to={baseHref} className="relative flex items-center h-full px-4 lg:px-8 -ml-4 lg:-ml-8 pr-12 md:pr-24 lg:pr-32 group shrink-0" onClick={() => { /* ... handlers ... */ }}>
                 <div className="absolute z-0 bg-primary" style={{ top: '-1px', bottom: '1px', left: 0, right: 0, clipPath: 'polygon(0 0, 100% 0, 85% 100%, 0 100%)' }} />
-                {logoUrl && <div className="relative z-10 h-7 w-7 md:h-9 md:w-9 bg-primary-foreground shrink-0" style={{ maskImage: `url(${logoUrl})`, WebkitMaskImage: `url(${logoUrl})`, maskRepeat: 'no-repeat', WebkitMaskRepeat: 'no-repeat', maskPosition: 'center', WebkitMaskPosition: 'center', maskSize: 'contain', WebkitMaskSize: 'contain' }} />}
-                <div className="relative z-10 min-w-max"><SmartTitle title={collectionTitle} /></div>
+                
+                {/* REEMPLAZO POR EL NUEVO SMART TITLE */}
+                <div className="relative z-10">
+                  <SmartTitle title={collectionTitle} logoUrl={logoUrl} height="clamp(1.5rem, 5vw, 2rem)" />
+                </div>
               </Link>
             </div>
 

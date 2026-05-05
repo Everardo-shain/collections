@@ -1,9 +1,9 @@
 /**
- * FOOTBALL COLLECTION CONFIGURATION
+ * MUSIC COLLECTION CONFIGURATION
  */
 
-import rawDataJson from "@/data/json_files/football_collection - Collection.json";
-import listsDataJson from '@/data/json_files/football_collection - Lists.json';
+import rawDataJson from "@/data/json_files/music_collection - Collection.json";
+import listsDataJson from '@/data/json_files/music_collection - Lists.json';
 import {
   CollectionItem,
   CombinationPart,
@@ -22,13 +22,13 @@ export const listsData = listsDataJson as Record<string, string[]>;
 
 /** Metadatos específicos de la colección */
 export const metadata = {
-  id: "football",
-  title: "Everardo´s Football Collection",
-  description: `Personal football collection showcase featuring apparel, equipment, and memorabilia.`,
+  id: "music",
+  title: "Everardo´s Music Collection",
+  description: `Personal music collection showcase featuring records, apparel, and memorabilia.`,
   ogImage: "/og-image.png",
-  lightAccentColor: "142 71% 40%",
-  darkAccentColor: "111 100% 51%",
-  logo: "/src/assets/site/football-logo.svg",
+  lightAccentColor: "209.277 92% 35%",
+  darkAccentColor: "189.084 100% 51%",
+  logo: "/src/assets/site/music-logo.svg",
 } as const;
 
 // ==========================================

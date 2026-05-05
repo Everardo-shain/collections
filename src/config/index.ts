@@ -5,12 +5,13 @@
  */
 
 import * as Football from "./footballConfig";
+import * as Music from "./musicConfig";
 
 export type CollectionConfig = typeof Football;
 
 export const COLLECTIONS_MAP: Record<string, CollectionConfig> = {
   football: Football,
-  // music: Music as unknown as CollectionConfig,
+  music: Music as unknown as CollectionConfig,
 };
 
 export type CollectionId = keyof typeof COLLECTIONS_MAP;
@@ -19,7 +20,7 @@ export const DEFAULT_COLLECTION_ID: CollectionId = "football";
 
 /** Metadatos genéricos del sitio (SEO base) */
 export const SITE_METADATA = {
-  title: "Everardo´s Collection",
+  title: "Everardo´s Collections",
   description: "A curated digital archive of personal collections.",
   author: "Everardo",
   url: "https://tu-sitio.com",
