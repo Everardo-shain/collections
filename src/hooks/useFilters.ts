@@ -46,10 +46,8 @@ export function useFilters() {
   const {
     rawData,
     mapItem,
-    FILTER_KEYS,
     SIDEBAR_KEYS,
     SEARCH_KEYS,
-    LINK_FIELDS,
     CUSTOM_FILTERS,
     FIELD_MAP,
   } = config;
@@ -62,13 +60,18 @@ export function useFilters() {
   // 1. ESTADOS DESDE URL
   const navState = useMemo(() => {
     const state: Record<string, string[]> = {};
-    Array.from(new Set([...FILTER_KEYS, ...LINK_FIELDS])).forEach(key => {
-      const norm = normalizeKey(key);
-      const val = getArrayParam(searchParams, "nav_" + norm);
-      if (val.length > 0) state[norm] = val;
+    
+    // Leemos TODOS los parámetros de la URL dinámicamente
+    Array.from(searchParams.keys()).forEach(paramKey => {
+      if (paramKey.startsWith('nav_')) {
+        const pureKey = paramKey.replace('nav_', '');
+        const val = getArrayParam(searchParams, paramKey);
+        if (val.length > 0) state[pureKey] = val;
+      }
     });
+    
     return state;
-  }, [searchParams, FILTER_KEYS, LINK_FIELDS]);
+  }, [searchParams]);
 
   const sidebarState = useMemo(() => {
     const state: Record<string, string[]> = {};

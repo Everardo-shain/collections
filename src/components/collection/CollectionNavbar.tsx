@@ -8,7 +8,7 @@ import { useScrollDirection } from '@/hooks/useScrollDirection';
 import { useDebounce } from '@/hooks/useDebounce';
 import { cn } from '@/lib/utils';
 import { SmartTitle } from '@/components/SmartTitle';
-import { isMatch, cleanText} from "@/utils/collectionUtils";
+import { isMatch, cleanText, normalizeKey} from "@/utils/collectionUtils";
 
 
 // --- COMPONENTE PRINCIPAL ---
@@ -53,6 +53,28 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
   const activeChild = searchParams.get(`nav_${CHILD_KEY}`);
   const isAllSelected = !activeParent && !searchParams.get('q');
 
+  const handleSuggestionClick = (fieldKey: string, value: string) => {
+    const params = new URLSearchParams(searchParams);
+    
+    // 1. Limpiamos la búsqueda general para que no interfiera
+    params.delete('q');
+    
+    // 2. Normalizamos la key (ej: "Team Name" -> "team_name")
+    const normKey = normalizeKey(fieldKey);
+    
+    // 3. Seteamos como filtro de navegación (nav_...)
+    // Usamos set en lugar de append para que sea una navegación limpia
+    params.set(`nav_${normKey}`, value);
+
+    // 4. Limpieza de UI
+    setTempSearch('');
+    setShowPredictive(false);
+    setSearchOpen(false);
+    
+    // 5. Navegar
+    navigate(`${baseHref}?${params.toString()}`);
+  };
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (navContainerRef.current && !navContainerRef.current.contains(event.target as Node)) {
@@ -95,7 +117,6 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
     const seenItemIds = new Set();
 
     allCollectionItems.forEach((item: any) => {
-      // --- SUGERENCIAS ---
       suggestionKeys.forEach((fieldKey: string) => {
         const rawValue = item[fieldKey];
         if (typeof rawValue === 'string') {
@@ -107,15 +128,20 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
 
             if (seenSuggestions.has(dedupeKey)) return;
 
-            // Usamos la lógica unificada isMatch
             if (isMatch(val, searchWords)) {
               const displayField = fieldKey.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
               
-              // Prioridad: Si es idéntico a lo que escribió el usuario (sin tildes/caps)
+              // --- CAMBIO AQUÍ: Agregamos rawKey ---
+              const suggestionData = { 
+                field: displayField, 
+                value: val, 
+                rawKey: fieldKey // Guardamos la key original (ej: "team")
+              };
+
               if (valClean === queryClean) {
-                exactMatches.push({ field: displayField, value: val });
+                exactMatches.push(suggestionData);
               } else {
-                fuzzyMatches.push({ field: displayField, value: val });
+                fuzzyMatches.push(suggestionData);
               }
               seenSuggestions.add(dedupeKey);
             }
@@ -287,8 +313,13 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
                   <div className="space-y-3">
                     {searchResults?.suggestions.length ? (
                       searchResults.suggestions.map((s, i) => (
-                        <button key={i} className="block w-full text-sm hover:text-primary transition-colors text-left" onClick={() => triggerSearch(s.value)}>
-                          <span className="text-muted-foreground font-normal">{s.field}:</span> <span className="font-semibold">{s.value}</span>
+                      <button 
+                          key={i} 
+                          className="block w-full text-sm hover:text-primary transition-colors text-left group/sug" 
+                          onClick={() => handleSuggestionClick((s as any).rawKey, s.value)} // <--- Cambio aquí
+                        >
+                          <span className="text-muted-foreground font-normal group-hover/sug:text-primary/70">{s.field}:</span>{" "}
+                          <span className="font-semibold">{s.value}</span>
                         </button>
                       ))
                     ) : <p className="text-sm text-muted-foreground">No matches found.</p>}
@@ -353,8 +384,13 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
                     <div className="space-y-4">
                       {searchResults?.suggestions.length ? (
                         searchResults.suggestions.map((s, i) => (
-                          <button key={i} className="block w-full text-sm hover:text-primary transition-colors text-left" onClick={() => triggerSearch(s.value)}>
-                            <span className="text-muted-foreground font-normal">{s.field}:</span> <span className="font-semibold">{s.value}</span>
+                        <button 
+                            key={i} 
+                            className="block w-full text-sm py-1 text-left" 
+                            onClick={() => handleSuggestionClick((s as any).rawKey, s.value)} // <--- Cambio aquí
+                          >
+                            <span className="text-muted-foreground">{s.field}:</span>{" "}
+                            <span className="font-semibold">{s.value}</span>
                           </button>
                         ))
                       ) : <p className="text-sm text-muted-foreground">No matches found.</p>}

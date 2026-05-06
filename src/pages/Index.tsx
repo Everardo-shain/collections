@@ -121,27 +121,37 @@ const Index = () => {
         .join(VALUE_SEPARATOR);
     }
 
-    const firstKeyValue = getNavVal(BREADCRUMB_KEYS[0]) || (filteredItems[0]?.entity) || "";
-    const activeHierarchy = BREADCRUMB_RESOLVER({ filtersState: navState }) || NAVIGATION_BREADCRUMB;
-    const hierarchyKeysLower = activeHierarchy.map(k => k.toLowerCase());
+  const firstKeyValue = getNavVal(BREADCRUMB_KEYS[0]) || (filteredItems[0]?.entity) || "";
+  const activeHierarchy = BREADCRUMB_RESOLVER({ filtersState: navState }) || NAVIGATION_BREADCRUMB;
+  const hierarchyKeysLower = activeHierarchy.map(k => k.toLowerCase());
 
-    const activeFilters = Array.from(new Set([...activeHierarchy, ...LINK_FIELDS]))
-      .map(field => {
-        const lowerField = field.toLowerCase();
-        const value = getNavVal(lowerField);
-        if (!value) return null;
+  // --- NUEVO: Extraemos llaves dinámicas de la URL ---
+  const urlKeys = Array.from(urlParams.keys())
+    .filter(k => k.startsWith('nav_'))
+    .map(k => k.replace('nav_', ''));
 
-        const isHierarchyField = hierarchyKeysLower.includes(lowerField);
-        const specificLabels = BREADCRUMB_LABELS[compositeKey] || BREADCRUMB_LABELS[firstKeyValue];
-        const extraText = isHierarchyField ? (specificLabels?.[lowerField] || "") : "";
-        const combinedLabel = `${value}${extraText}`;
-        const formattedLabel = formatDisplayValue(lowerField, combinedLabel);
+  // Las sumamos a las que ya teníamos
+  const allActiveKeys = Array.from(new Set([...activeHierarchy, ...LINK_FIELDS, ...urlKeys]));
 
-        return { label: formattedLabel, field: lowerField };
-      })
-      .filter(Boolean) as { label: string; field: string }[];
+  const activeFilters = allActiveKeys
+    .map(field => {
+      const lowerField = field.toLowerCase();
+      const value = getNavVal(lowerField);
+      if (!value) return null;
 
-    if (activeFilters.length === 0) return 'All Items';
+      const isHierarchyField = hierarchyKeysLower.includes(lowerField);
+      const specificLabels = BREADCRUMB_LABELS[compositeKey] || BREADCRUMB_LABELS[firstKeyValue];
+      const extraText = isHierarchyField ? (specificLabels?.[lowerField] || "") : "";
+      const combinedLabel = `${value}${extraText}`;
+      
+      // FormatDisplayValue seguirá intentando limpiarlo si tiene reglas
+      const formattedLabel = formatDisplayValue(lowerField, combinedLabel);
+
+      return { label: formattedLabel, field: lowerField };
+    })
+    .filter(Boolean) as { label: string; field: string }[];
+
+  if (activeFilters.length === 0) return 'All Items';
     const last = activeFilters[activeFilters.length - 1];
     const formatter = TITLE_FORMATTERS[last.field];
     return formatter ? formatter(last, activeFilters, compositeKey) : last.label;

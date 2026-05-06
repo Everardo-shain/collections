@@ -43,24 +43,42 @@ export function CollectionBreadcrumb({
   } else {
     const urlParams = new URLSearchParams(search);
     const configKeys = BREADCRUMB_RESOLVER({ filtersState }) || [];
-    const allKeys = Array.from(new Set([...NAVIGATION_CONFIG.hierarchy, ...configKeys, ...LINK_FIELDS]));
+    const knownKeys = Array.from(new Set([...NAVIGATION_CONFIG.hierarchy, ...configKeys, ...LINK_FIELDS]));
     const currentParams = new URLSearchParams();
+    const processedKeys = new Set<string>();
 
-    allKeys.forEach((key) => {
+    // 1. Primero procesamos las llaves conocidas para mantener el orden jerárquico lógico
+    knownKeys.forEach((key) => {
       const lowKey = key.toLowerCase();
-      if (urlParams.has(`nav_${lowKey}`)) {
-        const val = urlParams.get(`nav_${lowKey}`) || "";
+      const navKey = `nav_${lowKey}`;
+      if (urlParams.has(navKey)) {
+        const val = urlParams.get(navKey) || "";
         if (valid(val)) {
           const linkParams = new URLSearchParams(currentParams.toString());
-          linkParams.set(`nav_${lowKey}`, val);
+          linkParams.set(navKey, val);
           crumbs.push({ label: val, to: `${baseHref}?${linkParams.toString()}`, key: lowKey });
-          currentParams.set(`nav_${lowKey}`, val);
+          currentParams.set(navKey, val);
+          processedKeys.add(navKey);
         }
       }
     });
+
+    // 2. Después procesamos CUALQUIER OTRA llave nav_ que no estuviera en la config
+    Array.from(urlParams.keys()).forEach((paramKey) => {
+      if (paramKey.startsWith('nav_') && !processedKeys.has(paramKey)) {
+        const pureKey = paramKey.replace('nav_', '');
+        const val = urlParams.get(paramKey) || "";
+        if (valid(val)) {
+          const linkParams = new URLSearchParams(currentParams.toString());
+          linkParams.set(paramKey, val);
+          crumbs.push({ label: val, to: `${baseHref}?${linkParams.toString()}`, key: pureKey });
+          currentParams.set(paramKey, val);
+        }
+      }
+    });
+
     if (crumbs.length === 1) crumbs.push({ label: "All Items", key: "all" });
   }
-
   return (
     <nav className="bg-secondary/50 border-b border-border relative">
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 h-10 flex items-center gap-2 text-sm overflow-x-auto scrollbar-hide">
