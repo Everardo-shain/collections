@@ -60,6 +60,7 @@ export const FIELD_MAP = {
   patch: "Patch",
   packaging: "Packaging",
   signature: "Signature",
+  numbered: "Numbered",
   notes: "Notes",
 } as const;
 
@@ -84,7 +85,7 @@ export const NAVIGATION_BREADCRUMB = [...NAVIGATION_CONFIG.hierarchy] as string[
 export const VISIBLE_FIELDS = [
   "product", "team", "season", "style", "release", "competition", "country",
   "confederation", "technology", "brand", "size", "person", "print",
-  "patch", "packaging", "signature",
+  "patch", "packaging", "signature", "numbered",
 ] as const;
 
 export const SPECIAL_FIELDS = ["notes"] as const;
@@ -231,6 +232,7 @@ export const CUSTOM_FILTERS: Record<string, CustomFilter> = {
       if (valid(item.signature)) activeDetails.push("Signed");
       if (valid(item.packaging)) activeDetails.push("In Box");
       if (valid(item.collaboration)) activeDetails.push("Collaboration");
+      if (valid(item.numbered)) activeDetails.push("Numbered");
       return activeDetails;
     },
   },
