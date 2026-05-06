@@ -108,13 +108,26 @@ export const getLevenshteinDistance = (a: string, b: string): number => {
   return matrix[a.length][b.length];
 };
 
-export const isMatch = (itemValue: string, searchWords: string[]) => {
+
+export const isMatch = (itemValue: string, search: string | string[]): boolean => {
   const normalizedValue = cleanText(itemValue);
-  const itemParts = normalizedValue.split(" ");
+  const itemParts = normalizedValue.split(/\s+/).filter(Boolean);
+  
+  // Si nos pasan un string, lo limpiamos y convertimos en array de palabras
+  const searchWords = Array.isArray(search) 
+    ? search 
+    : cleanText(search).split(/\s+/).filter(Boolean);
+
+  if (searchWords.length === 0) return true;
+
   return searchWords.every(word => {
+    // 1. Match directo (contiene la palabra)
     if (normalizedValue.includes(word)) return true;
+
+    // 2. Fuzzy match por partes
     return itemParts.some(part => {
-      if (word.length <= 3) return part === word;
+      if (word.length <= 3) return part === word; // Palabras cortas: match exacto
+      
       const distance = getLevenshteinDistance(word, part);
       const maxErrors = word.length <= 6 ? 1 : 2;
       return distance <= maxErrors;

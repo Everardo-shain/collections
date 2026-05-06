@@ -1,6 +1,6 @@
 import { Link, useSearchParams, useNavigate, useParams } from 'react-router-dom';
 import { Menu, X, ChevronRight, ChevronLeft, Search, ArrowRight } from 'lucide-react';
-import { SITE_METADATA, COLLECTIONS_MAP, type NavGroup, type CollectionId } from '@/config';
+import { SITE_METADATA, COLLECTIONS_MAP, VALUE_SEPARATOR, type NavGroup, type CollectionId } from '@/config';
 import { useState, useRef, useEffect, useMemo } from 'react';
 import { Input } from '@/components/ui/input';
 import { ThemeSelector } from '@/components/ThemeSelector';
@@ -8,6 +8,8 @@ import { useScrollDirection } from '@/hooks/useScrollDirection';
 import { useDebounce } from '@/hooks/useDebounce';
 import { cn } from '@/lib/utils';
 import { SmartTitle } from '@/components/SmartTitle';
+import { isMatch, cleanText} from "@/utils/collectionUtils";
+
 
 // --- COMPONENTE PRINCIPAL ---
 export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups?: NavGroup[], isHome?: boolean }) {
@@ -51,7 +53,6 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
   const activeChild = searchParams.get(`nav_${CHILD_KEY}`);
   const isAllSelected = !activeParent && !searchParams.get('q');
 
-  // UNIFICADO: Cerrar todo si se toca fuera del Navbar
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (navContainerRef.current && !navContainerRef.current.contains(event.target as Node)) {
@@ -74,40 +75,80 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Lógica de búsqueda (Desde 1 letra)
+  // Lógica de búsqueda (Fuzzy Matching + Value Separator)
   useEffect(() => {
-    if (debouncedSearch.trim().length < 1) {
+    const queryRaw = debouncedSearch.trim();
+    if (queryRaw.length < 2) {
       setSearchResults(null);
       return;
     }
-    const query = debouncedSearch.toLowerCase().trim();
-    const fieldMatches: { field: string; value: string }[] = [];
+
+    const queryClean = cleanText(queryRaw);
+    // Pre-calculamos las palabras de búsqueda una sola vez
+    const searchWords = queryClean.split(/\s+/).filter(Boolean);
+
+    const exactMatches: { field: string; value: string }[] = [];
+    const fuzzyMatches: { field: string; value: string }[] = [];
     const itemMatches: any[] = [];
-    const seenValues = new Set();
+    
+    const seenSuggestions = new Set<string>();
     const seenItemIds = new Set();
 
     allCollectionItems.forEach((item: any) => {
+      // --- SUGERENCIAS ---
       suggestionKeys.forEach((fieldKey: string) => {
-        const value = item[fieldKey];
-        if (value && typeof value === 'string' && value.toLowerCase().includes(query)) {
-          if (!seenValues.has(value)) {
-            const displayField = fieldKey.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
-            fieldMatches.push({ field: displayField, value });
-            seenValues.add(value);
-          }
+        const rawValue = item[fieldKey];
+        if (typeof rawValue === 'string') {
+          const individualValues = rawValue.split(VALUE_SEPARATOR).map(v => v.trim()).filter(Boolean);
+          
+          individualValues.forEach((val: string) => {
+            const valClean = cleanText(val);
+            const dedupeKey = `${fieldKey}:${valClean}`;
+
+            if (seenSuggestions.has(dedupeKey)) return;
+
+            // Usamos la lógica unificada isMatch
+            if (isMatch(val, searchWords)) {
+              const displayField = fieldKey.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+              
+              // Prioridad: Si es idéntico a lo que escribió el usuario (sin tildes/caps)
+              if (valClean === queryClean) {
+                exactMatches.push({ field: displayField, value: val });
+              } else {
+                fuzzyMatches.push({ field: displayField, value: val });
+              }
+              seenSuggestions.add(dedupeKey);
+            }
+          });
         }
       });
-      let isItemMatch = false;
+
+      // --- TOP RESULTS (ITEMS) ---
+      let score = 0;
       searchKeys.forEach((fieldKey: string) => {
-        const value = item[fieldKey];
-        if (value && typeof value === 'string' && value.toLowerCase().includes(query)) isItemMatch = true;
+        const rawValue = item[fieldKey];
+        if (typeof rawValue === 'string') {
+          // Separamos y limpiamos valores para el scoring
+          const vals = rawValue.split(VALUE_SEPARATOR).map(v => cleanText(v));
+          
+          if (vals.includes(queryClean)) score += 10; // Exact match: Top priority
+          else if (isMatch(rawValue, searchWords)) score += 5; // Fuzzy match: Medium priority
+        }
       });
-      if (isItemMatch && !seenItemIds.has(item.id)) {
-        itemMatches.push(item);
+
+      if (score > 0 && !seenItemIds.has(item.id)) {
+        itemMatches.push({ ...item, _searchScore: score });
         seenItemIds.add(item.id);
       }
     });
-    setSearchResults({ suggestions: fieldMatches.slice(0, 4), items: itemMatches.slice(0, 5) });
+
+    const sortedItems = itemMatches.sort((a, b) => b._searchScore - a._searchScore);
+    const combinedSuggestions = [...exactMatches, ...fuzzyMatches].slice(0, 5);
+
+    setSearchResults({ 
+      suggestions: combinedSuggestions, 
+      items: sortedItems.slice(0, 5) 
+    });
   }, [debouncedSearch, allCollectionItems, searchKeys, suggestionKeys]);
 
   const triggerSearch = (value: string) => {
@@ -132,9 +173,9 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
         </div>
       )}
 
-      {(mobileOpen || searchOpen) && (
+      {(mobileOpen || searchOpen || showPredictive) && (
         <div className={cn("fixed inset-0 bg-black/40 backdrop-blur-[2px] z-40 md:hidden animate-in fade-in duration-300", isHidden || isHome ? "top-0" : "top-8")} 
-             onClick={() => { setMobileOpen(false); setSearchOpen(false); }} />
+             onClick={() => { setMobileOpen(false); setSearchOpen(false); setShowPredictive(false); }} />
       )}
 
       <nav className={cn("sticky top-0 z-[60] bg-card border-b border-border transition-transform duration-300", isHidden ? "-translate-y-full" : "translate-y-0")}>
@@ -142,10 +183,8 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
           <div className="flex items-center justify-between h-full gap-2">
             
             <div className="flex-1 flex items-center h-full"> 
-              <Link to={baseHref} className="relative flex items-center h-full px-4 lg:px-8 -ml-4 lg:-ml-8 pr-12 md:pr-24 lg:pr-32 group shrink-0" onClick={() => { /* ... handlers ... */ }}>
+              <Link to={baseHref} className="relative flex items-center h-full px-4 lg:px-8 -ml-4 lg:-ml-8 pr-12 md:pr-24 lg:pr-32 group shrink-0">
                 <div className="absolute z-0 bg-primary" style={{ top: '-1px', bottom: '1px', left: 0, right: 0, clipPath: 'polygon(0 0, 100% 0, 85% 100%, 0 100%)' }} />
-                
-                {/* REEMPLAZO POR EL NUEVO SMART TITLE */}
                 <div className="relative z-10">
                   <SmartTitle title={collectionTitle} logoUrl={logoUrl} height="clamp(1.5rem, 5vw, 2rem)" />
                 </div>
@@ -163,11 +202,11 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
                       type="text" placeholder="Search" value={tempSearch} 
                       onFocus={() => { setShowPredictive(true); setCategoriesOpen(false); }}
                       onChange={(e) => { setTempSearch(e.target.value); setShowPredictive(true); setCategoriesOpen(false); }} 
-                      onKeyDown={(e) => e.key === 'Enter' && triggerSearch(tempSearch)} 
+                      onKeyDown={(e) => e.key === 'Enter' && tempSearch.length >= 2 && triggerSearch(tempSearch)} 
                       className="pl-8 pr-8 h-9 w-48 lg:w-64 bg-secondary/20 border-border focus-visible:ring-primary" 
                     />
                     {tempSearch && (
-                      <button onClick={() => setTempSearch('')} className="absolute right-2.5 p-1 hover:text-primary transition-colors">
+                      <button onClick={() => {setTempSearch(''); document.querySelector<HTMLInputElement>('input[placeholder="Search"]')?.focus();}} className="absolute right-2.5 p-1 hover:text-primary transition-colors">
                         <X className="w-3.5 h-3.5 text-muted-foreground" />
                       </button>
                     )}
@@ -230,72 +269,116 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
         )}
 
         {/* 2. PREDICTIVE SEARCH (Escritorio) */}
-        {!isHome && !mobileOpen && !searchOpen && showPredictive && tempSearch.length >= 1 && (
+        {!isHome && !mobileOpen && !searchOpen && showPredictive && (
           <div className="hidden md:block absolute top-full left-0 w-full bg-card border-b border-border shadow-2xl z-50 animate-in fade-in slide-in-from-top-0 duration-200">
-            <div className="flex flex-col md:flex-row w-full max-w-[1440px] mx-auto relative">
-              <div className="w-full md:w-1/3 p-6 md:border-r border-b md:border-b-0 border-border/50">
-                <div className="flex items-center justify-between mb-4">
-                  <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Suggestions</p>
-                  <button onClick={() => triggerSearch(tempSearch)} className="text-[10px] font-bold text-primary uppercase tracking-widest hover:underline flex items-center gap-1">
-                    See all "{tempSearch}" <ArrowRight className="w-3 h-3" />
-                  </button>
-                </div>
-                <div className="space-y-3">
-                  {searchResults?.suggestions.length ? (
-                    searchResults.suggestions.map((s, i) => (
-                      <button key={i} className="block w-full text-sm hover:text-primary transition-colors text-left" onClick={() => triggerSearch(s.value)}>
-                        <span className="text-muted-foreground font-normal">{s.field}:</span> <span className="font-semibold">{s.value}</span>
-                      </button>
-                    ))
-                  ) : <p className="text-sm text-muted-foreground">No matches found.</p>}
-                </div>
+            {tempSearch.trim().length < 2 ? (
+              <div className="w-full max-w-[1440px] mx-auto py-12 px-6 flex items-center justify-center text-muted-foreground text-sm">
+                Type at least 2 characters to start searching...
               </div>
-              <div className="w-full md:w-2/3 p-6 bg-secondary/10">
-                <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-4">Top Results</p>
-                {searchResults?.items.length ? (
-                  <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
-                    {searchResults.items.map((item) => (
-                      <Link to={`${baseHref}/item/${item.id}`} key={item.id} className="group block" onClick={() => { setShowPredictive(false); setTempSearch(''); }}>
-                        <div className="aspect-square bg-muted rounded-md mb-3 overflow-hidden border border-border/50">
-                          <img src={item.image || item.Image || ''} alt={item.displayName} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
-                        </div>
-                        <p className="text-[11px] font-medium leading-tight line-clamp-2 group-hover:text-primary transition-colors">{item.displayName}</p>
-                      </Link>
-                    ))}
+            ) : (
+              <div className="flex flex-col md:flex-row w-full max-w-[1440px] mx-auto relative">
+                <div className="w-full md:w-1/3 p-6 md:border-r border-b md:border-b-0 border-border/50">
+                  <div className="flex items-center justify-between mb-4">
+                    <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Suggestions</p>
+                    <button onClick={() => triggerSearch(tempSearch)} className="text-[10px] font-bold text-primary uppercase tracking-widest hover:underline flex items-center gap-1">
+                      See all <ArrowRight className="w-3 h-3" />
+                    </button>
                   </div>
-                ) : <p className="text-sm text-muted-foreground">No items match your search.</p>}
+                  <div className="space-y-3">
+                    {searchResults?.suggestions.length ? (
+                      searchResults.suggestions.map((s, i) => (
+                        <button key={i} className="block w-full text-sm hover:text-primary transition-colors text-left" onClick={() => triggerSearch(s.value)}>
+                          <span className="text-muted-foreground font-normal">{s.field}:</span> <span className="font-semibold">{s.value}</span>
+                        </button>
+                      ))
+                    ) : <p className="text-sm text-muted-foreground">No matches found.</p>}
+                  </div>
+                </div>
+                <div className="w-full md:w-2/3 p-6 bg-secondary/10">
+                  <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-4">Top Results</p>
+                  {searchResults?.items.length ? (
+                    <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
+                      {searchResults.items.map((item) => (
+                        <Link to={`${baseHref}/item/${item.id}`} key={item.id} className="group block" onClick={() => { setShowPredictive(false); setTempSearch(''); }}>
+                          <div className="aspect-square bg-muted rounded-md mb-3 overflow-hidden border border-border/50">
+                            <img src={item.image || item.Image || ''} alt={item.displayName} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
+                          </div>
+                          <p className="text-[11px] font-medium leading-tight line-clamp-2 group-hover:text-primary transition-colors">{item.displayName}</p>
+                        </Link>
+                      ))}
+                    </div>
+                  ) : <p className="text-sm text-muted-foreground">No items match your search.</p>}
+                </div>
               </div>
-            </div>
+            )}
           </div>
         )}
 
         {/* 3. MOBILE SEARCH PANEL */}
         {!isHome && searchOpen && (
           <div className="md:hidden absolute top-full left-0 right-0 w-full bg-card border-b border-border shadow-2xl z-50 animate-in slide-in-from-top-0 duration-200">
-            <div className="p-4 bg-card">
+            <div className="p-4 bg-card border-b border-border/50">
               <div className="relative flex items-center">
-                <Search className="absolute left-3 w-4 h-4 text-muted-foreground" />
-                <Input autoFocus placeholder="Search..." value={tempSearch} onChange={(e) => setTempSearch(e.target.value)} onKeyDown={(e) => e.key === 'Enter' && triggerSearch(tempSearch)} className="pl-9 pr-9 h-11 w-full bg-background border-primary/20 focus-visible:ring-primary" />
-                {tempSearch && <button onClick={() => setTempSearch('')} className="absolute right-3 p-1"><X className="w-4 h-4 text-muted-foreground" /></button>}
+                <Search className="absolute left-3 w-4 h-4 text-muted-foreground pointer-events-none" />
+                <Input 
+                  autoFocus 
+                  placeholder="Search..." 
+                  value={tempSearch} 
+                  onChange={(e) => setTempSearch(e.target.value)} 
+                  onKeyDown={(e) => e.key === 'Enter' && tempSearch.length >= 2 && triggerSearch(tempSearch)} 
+                  className="pl-9 pr-9 h-11 w-full bg-background border-primary/20 focus-visible:ring-primary" 
+                />
+                {tempSearch && (
+                  <button onClick={() => {setTempSearch(''); document.querySelector<HTMLInputElement>('input[placeholder="Search..."]')?.focus();}} className="absolute right-3 p-1">
+                    <X className="w-4 h-4 text-muted-foreground" />
+                  </button>
+                )}
               </div>
             </div>
-            {tempSearch.length >= 1 && (
-              <div className="max-h-[60vh] overflow-y-auto border-t border-border/50">
-                {/* Reuso de contenido predictivo para móvil */}
-                <div className="p-4 bg-secondary/5 border-b border-border/50 flex justify-between items-center">
-                   <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Quick Results</p>
-                   <button onClick={() => triggerSearch(tempSearch)} className="text-[10px] font-bold text-primary uppercase flex items-center gap-1">See all <ArrowRight className="w-3 h-3"/></button>
+
+            <div className="max-h-[70vh] overflow-y-auto">
+              {tempSearch.trim().length < 2 ? (
+                <div className="py-12 px-6 flex items-center justify-center text-muted-foreground text-sm text-center">
+                  Type at least 2 characters to start searching...
                 </div>
-                <div className="grid grid-cols-2 gap-4 p-4">
-                  {searchResults?.items.map(item => (
-                    <Link to={`${baseHref}/item/${item.id}`} key={item.id} onClick={() => {setSearchOpen(false); setTempSearch('');}} className="flex flex-col gap-2">
-                       <div className="aspect-square bg-muted rounded overflow-hidden"><img src={item.image || item.Image} className="w-full h-full object-cover"/></div>
-                       <p className="text-[10px] font-medium line-clamp-1">{item.displayName}</p>
-                    </Link>
-                  ))}
+              ) : (
+                <div className="flex flex-col">
+                  <div className="p-4 border-b border-border/50">
+                    <div className="flex items-center justify-between mb-4">
+                      <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Suggestions</p>
+                      <button onClick={() => triggerSearch(tempSearch)} className="text-[10px] font-bold text-primary uppercase flex items-center gap-1">
+                        See all <ArrowRight className="w-3 h-3"/>
+                      </button>
+                    </div>
+                    <div className="space-y-4">
+                      {searchResults?.suggestions.length ? (
+                        searchResults.suggestions.map((s, i) => (
+                          <button key={i} className="block w-full text-sm hover:text-primary transition-colors text-left" onClick={() => triggerSearch(s.value)}>
+                            <span className="text-muted-foreground font-normal">{s.field}:</span> <span className="font-semibold">{s.value}</span>
+                          </button>
+                        ))
+                      ) : <p className="text-sm text-muted-foreground">No matches found.</p>}
+                    </div>
+                  </div>
+
+                  <div className="p-4 bg-secondary/10">
+                    <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-4">Top Results</p>
+                    {searchResults?.items.length ? (
+                      <div className="grid grid-cols-2 gap-4">
+                        {searchResults.items.map(item => (
+                          <Link to={`${baseHref}/item/${item.id}`} key={item.id} onClick={() => {setSearchOpen(false); setTempSearch('');}} className="flex flex-col gap-2 group">
+                            <div className="aspect-square bg-muted rounded overflow-hidden border border-border/50">
+                              <img src={item.image || item.Image} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>
+                            </div>
+                            <p className="text-[11px] font-medium line-clamp-2 leading-tight group-hover:text-primary transition-colors">{item.displayName}</p>
+                          </Link>
+                        ))}
+                      </div>
+                    ) : <p className="text-sm text-muted-foreground">No items match your search.</p>}
+                  </div>
                 </div>
-              </div>
-            )}
+              )}
+            </div>
           </div>
         )}
 
