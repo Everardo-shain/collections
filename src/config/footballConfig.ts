@@ -91,7 +91,7 @@ export const VISIBLE_FIELDS = [
 export const SPECIAL_FIELDS = ["notes"] as const;
 
 export const LINK_FIELDS = [
-  "team", "season", "competition", "country", "confederation", "brand", "person"
+  "team", "season", "competition", "country", "confederation", "brand", "person", 
 ] as const;
 
 export const FIELD_COMBINATIONS: Record<string, (item: CollectionItem, value: string) => CombinationResult> = {
@@ -139,6 +139,8 @@ export type LinkField = typeof LINK_FIELDS[number];
 // 5. BREADCRUMBS
 // ==========================================
 export const BREADCRUMB_KEYS = ["entity", "team_type"] as const;
+
+export const BREADCRUMB_HIDDEN: readonly string[] = ["entity"];
 
 export const breadcrumbConfig: Record<string, string[]> = {
   "Team | National Team": ["entity", "team_type", "team", "season"],

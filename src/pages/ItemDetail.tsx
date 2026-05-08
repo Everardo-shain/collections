@@ -1,4 +1,4 @@
-import { useState, useMemo, useRef, useEffect, useCallback } from 'react';
+import React, { useState, useMemo, useRef, useEffect, useCallback } from 'react';
 import { useParams, Link, useLocation } from 'react-router-dom';
 import { ArrowLeft, ChevronDown, ChevronUp, ChevronLeft, ChevronRight } from 'lucide-react';
 import { ImageLightbox } from '@/components/collection/ImageLightbox';
@@ -8,7 +8,7 @@ import { Helmet } from "react-helmet-async";
 import { cn } from "@/lib/utils";
 import { motion, useMotionValue, animate, AnimatePresence } from 'framer-motion';
 
-import { CollectionItem, SITE_METADATA, valid, CombinationResult } from '@/config';
+import { CollectionItem, SITE_METADATA, valid, CombinationResult, VALUE_SEPARATOR, NO_SPLIT_FIELDS} from '@/config';
 import { useCollection } from '@/hooks/useCollection';
 
 export default function ItemDetail() {
@@ -63,7 +63,6 @@ export default function ItemDetail() {
     };
   }, [checkThumbScroll, item?.images]);
 
-  // Auto-scroll active thumbnail into view when index changes (e.g. from lightbox)
   useEffect(() => {
     if (!thumbScrollRef.current) return;
     const container = thumbScrollRef.current;
@@ -96,43 +95,96 @@ export default function ItemDetail() {
     setActiveImageIndex((prev) => Math.min(images.length - 1, prev + 1));
   };
 
+  /**
+   * Nueva lógica de renderizado:
+   * Separa el texto visual del valor real del filtro.
+   */
+  const renderLinkOrText = (displayText: string, filterValue: string, fieldKey: string, isLinkable: boolean) => {
+    if (NO_SPLIT_FIELDS.includes(fieldKey)) {
+      return isLinkable ? (
+        <Link
+          to={`${baseHref}?nav_${fieldKey.toLowerCase()}=${encodeURIComponent(filterValue)}`}
+          state={{ customLabel: displayText, filterKey: fieldKey.toLowerCase() }}
+          className="underline underline-offset-4 decoration-primary decoration-1 hover:text-primary transition-colors break-words"
+        >
+          {displayText}
+        </Link>
+      ) : (
+        // Usamos white-space: pre para que los espacios manuales se respeten
+        <span className="whitespace-pre break-words text-foreground">{displayText}</span>
+      );
+    }
+
+    // IMPORTANTE: Solo hacemos split si el separador existe de verdad en el texto
+    // Si no, devolvemos el bloque entero para no romper espacios de combinaciones
+    if (!displayText.includes(VALUE_SEPARATOR)) {
+      return isLinkable ? (
+        <Link
+          to={`${baseHref}?nav_${fieldKey.toLowerCase()}=${encodeURIComponent(filterValue)}`}
+          state={{ customLabel: displayText, filterKey: fieldKey.toLowerCase() }}
+          className="underline underline-offset-4 decoration-primary decoration-1 hover:text-primary transition-colors break-words"
+        >
+          {displayText}
+        </Link>
+      ) : (
+        <span className="whitespace-pre break-words text-foreground">{displayText}</span>
+      );
+    }
+
+    const visualParts = displayText.split(VALUE_SEPARATOR).map(p => p.trim()).filter(Boolean);
+    const filterParts = filterValue.split(VALUE_SEPARATOR).map(p => p.trim()).filter(Boolean);
+
+    return visualParts.map((partText, idx) => {
+      const isLast = idx === visualParts.length - 1;
+      const partFilterValue = filterParts[idx] || partText;
+
+      const element = isLinkable ? (
+        <Link
+          key={idx}
+          to={`${baseHref}?nav_${fieldKey.toLowerCase()}=${encodeURIComponent(partFilterValue)}`}
+          state={{ customLabel: partText, filterKey: fieldKey.toLowerCase() }}
+          className="underline underline-offset-4 decoration-primary decoration-1 hover:text-primary transition-colors break-words"
+        >
+          {partText}
+        </Link>
+      ) : (
+        <span key={idx} className="whitespace-pre break-words text-foreground">
+          {partText}
+        </span>
+      );
+
+      return (
+        <span key={idx} className="inline-flex items-center">
+          {element}
+          {!isLast && <span className="mx-1.5 text-muted-foreground/50 select-none">·</span>}
+        </span>
+      );
+    });
+  };
+
   const renderValueParts = (camelKey: string, rawValue: string, combination: CombinationResult) => {
     const { parts, fullLink } = combination;
-    const fullDisplayText = parts.map(p => p.text).join('');
 
     if (fullLink) {
+      const fullDisplayText = parts.map(p => p.text).join('');
       return (
-        <Link
-          to={`${baseHref}?nav_${camelKey.toLowerCase()}=${encodeURIComponent(rawValue)}`}
-          state={{ customLabel: fullDisplayText, filterKey: camelKey.toLowerCase() }}
-          className="underline underline-offset-4 decoration-primary decoration-1 hover:text-primary transition-colors break-words inline-block max-w-full text-right"
-        >
-          {fullDisplayText}
-        </Link>
+        <div className="flex flex-wrap justify-end w-full text-right">
+          {renderLinkOrText(fullDisplayText, rawValue, camelKey, true)}
+        </div>
       );
     }
 
     return (
-      <span className="flex flex-wrap justify-end w-full">
+      // Quitamos inline-flex para evitar que se colapsen los espacios entre spans
+      <span className="flex flex-wrap justify-end w-full text-right items-center">
         {parts.map((part, idx) => {
           const isLinkable = part.fieldKey && (LINK_FIELDS as readonly string[]).includes(part.fieldKey);
-          if (isLinkable && part.fieldKey) {
-            const navValue = item[part.fieldKey as keyof CollectionItem] as string;
-            return (
-              <Link
-                key={idx}
-                to={`${baseHref}?nav_${part.fieldKey.toLowerCase()}=${encodeURIComponent(navValue)}`}
-                state={{ customLabel: part.text, filterKey: part.fieldKey.toLowerCase() }}
-                className="underline underline-offset-4 decoration-primary decoration-1 hover:text-primary transition-colors break-words max-w-full"
-              >
-                {part.text}
-              </Link>
-            );
-          }
+          const partRawValue = part.fieldKey ? (item[part.fieldKey as keyof CollectionItem] as string) : part.text;
+          
           return (
-            <span key={idx} className="whitespace-pre-wrap break-words text-foreground max-w-full text-right">
-              {part.text}
-            </span>
+            <React.Fragment key={idx}>
+              {renderLinkOrText(part.text, partRawValue, part.fieldKey || camelKey, !!isLinkable)}
+            </React.Fragment>
           );
         })}
       </span>
@@ -271,7 +323,6 @@ export default function ItemDetail() {
             <div className="lg:col-span-5 flex flex-col pt-2">
               <h1 className="text-3xl md:text-4xl font-bold mb-8 tracking-tight">{item.displayName}</h1>
               
-              {/* LA SOLUCIÓN: grid-cols-[auto_1fr] en el padre compartido */}
               <div className="border-t border-border divide-y divide-border grid grid-cols-[auto_1fr]">
                 {Object.entries(FIELD_MAP).map(([camelKey, label]) => {
                   const rawValue = item[camelKey as keyof CollectionItem];
@@ -283,7 +334,6 @@ export default function ItemDetail() {
                   if (FIELD_VISIBILITY_RULES[camelKey] && !FIELD_VISIBILITY_RULES[camelKey](item, displayString)) return null;
 
                   return (
-                    /* 'contents' hace que los hijos directos actúen como si fueran hijos del grid padre */
                     <div key={camelKey} className="contents">
                       <span className="flex items-center text-[10px] font-black text-foreground uppercase tracking-[0.25em] py-2 pr-8 shrink-0 border-b border-border">
                         {label as string}
@@ -296,7 +346,6 @@ export default function ItemDetail() {
                 })}
               </div>
 
-              {/* Los SPECIAL_FIELDS fuera del grid ya que suelen ser bloques de texto largos */}
               <div className="divide-y divide-border">
                 {SPECIAL_FIELDS.map((f) => {
                   const content = item[f as keyof typeof item];
@@ -355,7 +404,6 @@ function ImageCarousel({
     restDelta: 0.001
   };
 
-  // Efecto 1: SOLO medir el ancho. No se vuelve a ejecutar si cambia el activeIndex.
   useEffect(() => {
     if (!containerRef.current) return;
     const el = containerRef.current;
@@ -371,8 +419,6 @@ function ImageCarousel({
     return () => ro.disconnect();
   }, []);
 
-  // Efecto 2: Controlar la posición. La primera vez aplica sin animación (.set), 
-  // las siguientes veces usa el desplazamiento suave (animate).
   useEffect(() => {
     if (width === 0) return;
     
