@@ -10,7 +10,7 @@ import { useFilters } from '@/hooks/useFilters';
 import { useCollection } from '@/hooks/useCollection';
 import { useScrollDirection } from '@/hooks/useScrollDirection';
 import { useElementSize } from '@/hooks/useElementSize';
-import { SITE_METADATA, valid, formatDisplayValue, VALUE_SEPARATOR, SortOption } from '@/config';
+import { SITE_METADATA, SortOption } from '@/config';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { Helmet } from 'react-helmet-async';
@@ -63,7 +63,10 @@ const Index = () => {
     BREADCRUMB_KEYS,
     LINK_FIELDS,
     TITLE_FORMATTERS,
-    metadata,
+    metadata, 
+    valid, 
+    formatDisplayValue, 
+    VALUE_SEPARATOR
   } = config;
 
   const allFilters = useFilters();

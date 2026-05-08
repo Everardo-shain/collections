@@ -2,12 +2,8 @@ import { ChevronRight, Home } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import React from "react";
 import { 
-  valid, 
   getDynamicValue, 
   CollectionItem, 
-  VALUE_SEPARATOR, 
-  NO_SPLIT_FIELDS, 
-  formatDisplayValue 
 } from "@/config";
 import { useCollection } from "@/hooks/useCollection";
 
@@ -30,7 +26,11 @@ export function CollectionBreadcrumb({
     NAVIGATION_CONFIG, 
     LINK_FIELDS,
     BREADCRUMB_HIDDEN = [],
-    FIELD_MAP = {} 
+    FIELD_MAP = {},
+    valid,
+    NO_SPLIT_FIELDS, 
+    formatDisplayValue,
+    VALUE_SEPARATOR,  
   } = config;
   const baseHref = `/view/${collectionId}`;
 

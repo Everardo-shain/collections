@@ -8,7 +8,7 @@ import { Helmet } from "react-helmet-async";
 import { cn } from "@/lib/utils";
 import { motion, useMotionValue, animate, AnimatePresence } from 'framer-motion';
 
-import { CollectionItem, SITE_METADATA, valid, CombinationResult, VALUE_SEPARATOR, NO_SPLIT_FIELDS} from '@/config';
+import { CollectionItem, SITE_METADATA, CombinationResult} from '@/config';
 import { useCollection } from '@/hooks/useCollection';
 
 export default function ItemDetail() {
@@ -26,6 +26,9 @@ export default function ItemDetail() {
     FIELD_VISIBILITY_RULES,
     generateNavGroups,
     metadata,
+    valid,
+    VALUE_SEPARATOR,
+    NO_SPLIT_FIELDS
   } = config;
 
   const returnPath = useMemo(() => {

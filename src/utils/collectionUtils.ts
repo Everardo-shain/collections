@@ -1,12 +1,10 @@
 /**
  * SHARED COLLECTION UTILITIES
- * Tipos y funciones comunes a todas las colecciones (football, music, etc.)
  */
 
 // ==========================================
 // TIPOS BASE
 // ==========================================
-
 export interface CollectionItem {
   id: string;
   displayName: string;
@@ -15,80 +13,35 @@ export interface CollectionItem {
   [key: string]: any;
 }
 
-export interface FilterState {
-  [key: string]: string[];
-}
-
-export type CombinationPart = {
-  text: string;
-  fieldKey?: string;
-};
-
-export type CombinationResult = {
-  parts: CombinationPart[];
-  fullLink?: boolean;
-};
-
-export type CustomFilter = {
-  label: string;
-  filter: keyof CollectionItem;
-  getValues: (item: CollectionItem, config: CustomFilter) => string[];
-};
-
+export interface FilterState { [key: string]: string[]; }
+export type CombinationPart = { text: string; fieldKey?: string; };
+export type CombinationResult = { parts: CombinationPart[]; fullLink?: boolean; };
+export type CustomFilter = { label: string; filter: keyof CollectionItem; getValues: (item: CollectionItem, config: CustomFilter) => string[]; };
 export type NavChild = { label: string } & Record<string, string>;
 export type NavGroup = { label: string; children: NavChild[] };
-
 export type SortOption = 'default' | 'newest' | 'oldest';
+export interface SortConfig { label: string; compare: (a: CollectionItem, b: CollectionItem) => number; }
 
-export interface SortConfig {
-  label: string;
-  compare: (a: CollectionItem, b: CollectionItem) => number;
-}
-
-// ==========================================
-// CONSTANTES COMPARTIDAS
-// ==========================================
-
-export const VALUE_SEPARATOR = " | ";
-export const NO_SPLIT_FIELDS = ["displayName", "id"];
 
 // ==========================================
 // HELPERS DE STRING / VALIDACIÓN
 // ==========================================
-
-export function valid(value?: string | null): boolean {
-  if (!value) return false;
-  const v = value.trim().toLowerCase();
-  return v !== "-" && v !== "" && v !== "none" && v !== "n/a";
-}
-
 export function normalizeKey(key: string): string {
   return key.toLowerCase().trim().replace(/\s+/g, "-");
 }
 
 export function getDynamicValue(item: CollectionItem, key: string): string {
-  let value = item[key as keyof CollectionItem];
+  let value = item[key];
   if (value === undefined) {
-    const camelKey = (key.charAt(0).toLowerCase() + key.slice(1)) as keyof CollectionItem;
+    const camelKey = (key.charAt(0).toLowerCase() + key.slice(1));
     value = item[camelKey];
   }
   return typeof value === "string" ? value : "";
 }
 
-export function formatDisplayValue(key: string, value: string): string {
-  const lowerKey = key.toLowerCase();
-  if (NO_SPLIT_FIELDS.includes(lowerKey) || !valid(value)) return value;
-  return value
-    .split(VALUE_SEPARATOR)
-    .map(part => part.trim())
-    .filter(Boolean)
-    .join(" · ");
-}
-
 // ==========================================
-// HELPERS DE BÚSQUEDA (Levenshtein, etc.)
+// HELPERS DE BÚSQUEDA
 // ==========================================
-
 export const cleanText = (str: string) =>
   str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
 
@@ -98,171 +51,78 @@ export const getLevenshteinDistance = (a: string, b: string): number => {
   for (let i = 1; i <= a.length; i++) {
     for (let j = 1; j <= b.length; j++) {
       const cost = a[i - 1] === b[j - 1] ? 0 : 1;
-      matrix[i][j] = Math.min(
-        matrix[i - 1][j] + 1,
-        matrix[i][j - 1] + 1,
-        matrix[i - 1][j - 1] + cost
-      );
+      matrix[i][j] = Math.min(matrix[i - 1][j] + 1, matrix[i][j - 1] + 1, matrix[i - 1][j - 1] + cost);
     }
   }
   return matrix[a.length][b.length];
 };
 
-
 export const isMatch = (itemValue: string, search: string | string[]): boolean => {
   const normalizedValue = cleanText(itemValue);
   const itemParts = normalizedValue.split(/\s+/).filter(Boolean);
-  
-  // Si nos pasan un string, lo limpiamos y convertimos en array de palabras
-  const searchWords = Array.isArray(search) 
-    ? search 
-    : cleanText(search).split(/\s+/).filter(Boolean);
-
+  const searchWords = Array.isArray(search) ? search : cleanText(search).split(/\s+/).filter(Boolean);
   if (searchWords.length === 0) return true;
-
   return searchWords.every(word => {
-    // 1. Match directo (contiene la palabra)
     if (normalizedValue.includes(word)) return true;
-
-    // 2. Fuzzy match por partes
     return itemParts.some(part => {
-      if (word.length <= 3) return part === word; // Palabras cortas: match exacto
-      
+      if (word.length <= 3) return part === word;
       const distance = getLevenshteinDistance(word, part);
-      const maxErrors = word.length <= 6 ? 1 : 2;
-      return distance <= maxErrors;
+      return distance <= (word.length <= 6 ? 1 : 2);
     });
   });
 };
 
 // ==========================================
-// FACTORY: mapItem
+// FACTORIES (MOTOR DINÁMICO)
 // ==========================================
-
-// Carga global de imágenes (todas las colecciones comparten la carpeta /images)
-const allImages = import.meta.glob("@/assets/images/*.{jpg,jpeg,png,webp}", {
-  eager: true,
-  import: 'default'
-});
+const allImages = import.meta.glob("@/assets/images/*.{jpg,jpeg,png,webp}", { eager: true, import: 'default' });
 const imagePaths = Object.values(allImages) as string[];
 
-/**
- * Crea una función mapItem ligada a un FIELD_MAP específico de colección.
- */
 export function createMapItem(FIELD_MAP: Record<string, string>) {
   return function mapItem(raw: Record<string, string>): CollectionItem {
-    const idKeyInJSON = FIELD_MAP.id;
-    const id = raw[idKeyInJSON]?.trim() || "";
-
+    const id = raw[FIELD_MAP.id]?.trim() || "";
     const fields: any = {};
-    Object.entries(FIELD_MAP).forEach(([camelKey, jsonName]) => {
-      fields[camelKey] = raw[jsonName]?.trim() || "";
-    });
-
-    // Filtra y ordena solo las imágenes reales que coincidan con el ID del ítem
-    const images = imagePaths
-      .filter((path) => {
-        const fileName = path.split('/').pop() || "";
-        return fileName.startsWith(`${id}_`);
-      })
-      .sort();
-
-    return {
-      ...fields,
-      id,
-      image: images.length > 0 ? images[0] : "/src/assets/images/placeholder.jpg",
-      images,
-    };
+    Object.entries(FIELD_MAP).forEach(([camelKey, jsonName]) => { fields[camelKey] = raw[jsonName]?.trim() || ""; });
+    const images = imagePaths.filter(path => (path.split('/').pop() || "").startsWith(`${id}_`)).sort();
+    return { ...fields, id, image: images[0] || "/src/assets/images/placeholder.jpg", images };
   };
 }
 
-// ==========================================
-// FACTORY: getIndex (para sort por listas ordenadas)
-// ==========================================
-
-export function createGetIndex(FIELD_MAP: Record<string, string>, listsData: Record<string, string[]>) {
+export function createGetIndex(FIELD_MAP: Record<string, string>, listsData: Record<string, string[]>, validFn: (v: any) => boolean) {
   return function getIndex(value: string | undefined, fieldKey: string) {
-    if (!valid(value)) return Infinity;
-    const jsonColumnName = FIELD_MAP[fieldKey] || fieldKey;
-    const orderArray = listsData[jsonColumnName] || [];
-    const valToSearch = value?.toLowerCase() || "";
-    const index = orderArray.findIndex(item => item.toLowerCase() === valToSearch);
+    if (!validFn(value)) return Infinity;
+    const orderArray = listsData[FIELD_MAP[fieldKey] || fieldKey] || [];
+    const index = orderArray.findIndex(item => item.toLowerCase() === value?.toLowerCase());
     return index === -1 ? Infinity : index;
   };
 }
 
-// ==========================================
-// FACTORY: SORT_CONFIG
-// ==========================================
-
-export function createSortConfig(getIndex: (v: string | undefined, k: string) => number): Record<SortOption, SortConfig> {
-  const defaultCompare = (a: CollectionItem, b: CollectionItem) => a.id.localeCompare(b.id);
-  return {
-    default: { label: 'Default', compare: defaultCompare },
-    newest: {
-      label: 'Season Newest',
-      compare: (a, b) => {
-        const posA = getIndex(a.season, 'season');
-        const posB = getIndex(b.season, 'season');
-        if (posA === Infinity || posB === Infinity) return posA - posB;
-        const diff = posA - posB;
-        return diff !== 0 ? diff : defaultCompare(a, b);
-      },
-    },
-    oldest: {
-      label: 'Season Oldest',
-      compare: (a, b) => {
-        const posA = getIndex(a.season, 'season');
-        const posB = getIndex(b.season, 'season');
-        if (posA === Infinity || posB === Infinity) return posA - posB;
-        const diff = posB - posA;
-        return diff !== 0 ? diff : defaultCompare(a, b);
-      },
-    },
-  };
-}
-
-// ==========================================
-// FACTORY: generateNavGroups
-// ==========================================
-
-export function createGenerateNavGroups(
-  hierarchy: readonly string[],
-  getIndex: (v: string | undefined, k: string) => number
-) {
+export function createGenerateNavGroups(hierarchy: readonly string[], getIndex: (v: string | undefined, k: string) => number, validFn: (v: any) => boolean) {
   return (items: CollectionItem[]): NavGroup[] => {
     const [parentKey, childKey] = hierarchy;
-
     const map = items.reduce((acc, item) => {
-      const parentVal = getDynamicValue(item, parentKey);
-      const childVal = getDynamicValue(item, childKey);
-      if (valid(parentVal) && valid(childVal)) {
-        if (!acc[parentVal]) acc[parentVal] = new Set<string>();
-        acc[parentVal].add(childVal);
+      const pVal = getDynamicValue(item, parentKey);
+      const cVal = getDynamicValue(item, childKey);
+      if (validFn(pVal) && validFn(cVal)) {
+        if (!acc[pVal]) acc[pVal] = new Set<string>();
+        acc[pVal].add(cVal);
       }
       return acc;
     }, {} as Record<string, Set<string>>);
 
-    return Object.entries(map)
-      .map(([parentLabel, childrenSet]) => ({
-        label: parentLabel,
-        children: Array.from(childrenSet)
-          .sort((a, b) => {
-            const posA = getIndex(a, childKey);
-            const posB = getIndex(b, childKey);
-            return posA === posB ? a.localeCompare(b) : posA - posB;
-          })
-          .map(childLabel => {
-            const child: any = { label: childLabel };
-            child[parentKey] = parentLabel;
-            child[childKey] = childLabel;
-            return child as NavChild;
-          }),
-      }))
-      .sort((a, b) => {
-        const posA = getIndex(a.label, parentKey);
-        const posB = getIndex(b.label, parentKey);
-        return posA === posB ? a.label.localeCompare(b.label) : posA - posB;
-      });
+    return Object.entries(map).map(([pLabel, cSet]) => ({
+      label: pLabel,
+      children: Array.from(cSet).sort((a, b) => {
+        const posA = getIndex(a, childKey); const posB = getIndex(b, childKey);
+        return posA === posB ? a.localeCompare(b) : posA - posB;
+      }).map(cLabel => {
+        const child: any = { label: cLabel };
+        child[parentKey] = pLabel; child[childKey] = cLabel;
+        return child as NavChild;
+      }),
+    })).sort((a, b) => {
+      const posA = getIndex(a.label, parentKey); const posB = getIndex(b.label, parentKey);
+      return posA === posB ? a.label.localeCompare(b.label) : posA - posB;
+    });
   };
 }

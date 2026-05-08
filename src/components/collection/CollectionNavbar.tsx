@@ -1,6 +1,6 @@
 import { Link, useSearchParams, useNavigate, useParams } from 'react-router-dom';
 import { Menu, X, ChevronRight, ChevronLeft, Search, ArrowRight } from 'lucide-react';
-import { SITE_METADATA, COLLECTIONS_MAP, VALUE_SEPARATOR, type NavGroup, type CollectionId } from '@/config';
+import { SITE_METADATA, type NavGroup, type CollectionId } from '@/config';
 import { useState, useRef, useEffect, useMemo } from 'react';
 import { Input } from '@/components/ui/input';
 import { ThemeSelector } from '@/components/ThemeSelector';
@@ -9,6 +9,7 @@ import { useDebounce } from '@/hooks/useDebounce';
 import { cn } from '@/lib/utils';
 import { SmartTitle } from '@/components/SmartTitle';
 import { isMatch, cleanText, normalizeKey } from "@/utils/collectionUtils";
+import { useCollection } from '@/hooks/useCollection';
 
 export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups?: NavGroup[], isHome?: boolean }) {
   const { collectionId } = useParams<{ collectionId: CollectionId }>();
@@ -16,6 +17,21 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
   const navigate = useNavigate();
   const navContainerRef = useRef<HTMLDivElement>(null);
   
+  // Extraemos la configuración dinámica de la colección activa
+  const { config } = useCollection();
+
+  // Valores por defecto para evitar errores si config es undefined (ej. en Home)
+  const {
+    metadata = { title: SITE_METADATA.title, logo: SITE_METADATA.logo },
+    rawData = [],
+    mapItem = (i: any) => i,
+    SEARCH_KEYS = [],
+    SUGGESTIONS_KEYS = [],
+    NAVIGATION_CONFIG = { hierarchy: ["parent", "child"] },
+    VALUE_SEPARATOR = " | ",
+    valid = (v: any) => !!v && v !== "-"
+  } = (config || {}) as any;
+
   // Estados de UI
   const [mobileOpen, setMobileOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
@@ -26,32 +42,30 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
   const [tempSearch, setTempSearch] = useState(searchParams.get('q') || '');
   const [showPredictive, setShowPredictive] = useState(false);
   const debouncedSearch = useDebounce(tempSearch, 300);
-  const [searchResults, setSearchResults] = useState<{ suggestions: { field: string; value: string; rawKey: string }[]; items: any[]; } | null>(null);
+  const [searchResults, setSearchResults] = useState<{ 
+    suggestions: { field: string; value: string; rawKey: string }[]; 
+    items: any[]; 
+  } | null>(null);
 
   const [scrollY, setScrollY] = useState(0);
   const scrollDir = useScrollDirection();
 
-  const config = collectionId ? COLLECTIONS_MAP[collectionId] : null;
   const baseHref = isHome ? "/" : `/view/${collectionId}`;
-  const collectionTitle = isHome ? SITE_METADATA.title : (config as any)?.metadata?.title || SITE_METADATA.title;
-  const logoUrl = isHome ? SITE_METADATA.logo : (config as any)?.metadata?.logo;
-
-  const searchKeys = (config as any)?.SEARCH_KEYS || [];
-  const suggestionKeys = (config as any)?.SUGGESTIONS_KEYS || searchKeys;
+  const collectionTitle = isHome ? SITE_METADATA.title : metadata.title;
+  const logoUrl = isHome ? SITE_METADATA.logo : metadata.logo;
 
   const allCollectionItems = useMemo(() => {
-    if (!config || !(config as any).rawData || !(config as any).mapItem) return [];
-    return (config as any).rawData.map((config as any).mapItem);
-  }, [config]);
+    if (isHome || !rawData.length) return [];
+    return rawData.map(mapItem);
+  }, [rawData, mapItem, isHome]);
 
-  const PARENT_KEY = (config as any)?.NAVIGATION_CONFIG?.hierarchy?.[0]?.toLowerCase() || "parent";
-  const CHILD_KEY = (config as any)?.NAVIGATION_CONFIG?.hierarchy?.[1]?.toLowerCase() || "child";
+  const PARENT_KEY = NAVIGATION_CONFIG.hierarchy[0].toLowerCase();
+  const CHILD_KEY = NAVIGATION_CONFIG.hierarchy[1].toLowerCase();
 
   const activeParent = searchParams.get(`nav_${PARENT_KEY}`);
   const activeChild = searchParams.get(`nav_${CHILD_KEY}`);
   const isAllSelected = !activeParent && !searchParams.get('q');
 
-  // Lógica para cerrar búsqueda por completo
   const handleCloseSearch = () => {
     setTempSearch('');
     setShowPredictive(false);
@@ -59,32 +73,21 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
   };
 
   const handleSuggestionClick = (fieldKey: string, value: string) => {
-    // CREAMOS PARAMS DESDE CERO
     const params = new URLSearchParams();
-    
     const normKey = normalizeKey(fieldKey);
     params.set(`attr_${normKey}`, value);
-
     handleCloseSearch();
-
-    // Navegamos forzando la limpieza de la URL
     navigate(`/view/${collectionId}?${params.toString()}`);
   };
+
   const triggerSearch = (value: string) => {
-    // CREAMOS PARAMS DESDE CERO para eliminar 'view=stats' y otros filtros previos
     const params = new URLSearchParams(); 
-    
-    if (value.trim()) {
-      params.set('q', value.trim());
-    }
-
+    if (value.trim()) params.set('q', value.trim());
     handleCloseSearch();
-
-    // Navegamos a la ruta base de la colección
-    // Al no incluir 'view', volverá automáticamente a la Gallery
     navigate(`/view/${collectionId}?${params.toString()}`);
   };
 
+  // Click outside para cerrar menús
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (navContainerRef.current && !navContainerRef.current.contains(event.target as Node)) {
@@ -96,21 +99,23 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+  // Bloquear scroll cuando hay menús abiertos
   useEffect(() => {
     if (mobileOpen || searchOpen) document.body.style.overflow = 'hidden';
     else document.body.style.overflow = 'unset';
   }, [mobileOpen, searchOpen]);
 
+  // Listener de scroll
   useEffect(() => {
     const handleScroll = () => setScrollY(window.scrollY);
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Lógica de búsqueda
+  // --- LÓGICA DE BÚSQUEDA PREDICTIVA ---
   useEffect(() => {
     const queryRaw = debouncedSearch.trim();
-    if (queryRaw.length < 2) {
+    if (queryRaw.length < 2 || isHome) {
       setSearchResults(null);
       return;
     }
@@ -124,9 +129,10 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
     const seenItemIds = new Set();
 
     allCollectionItems.forEach((item: any) => {
-      suggestionKeys.forEach((fieldKey: string) => {
+      // 1. Procesar Sugerencias (Filtros por Atributos)
+      SUGGESTIONS_KEYS.forEach((fieldKey: string) => {
         const rawValue = item[fieldKey];
-        if (typeof rawValue === 'string') {
+        if (typeof rawValue === 'string' && valid(rawValue)) {
           const individualValues = rawValue.split(VALUE_SEPARATOR).map(v => v.trim()).filter(Boolean);
           individualValues.forEach((val: string) => {
             const valClean = cleanText(val);
@@ -144,11 +150,12 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
         }
       });
 
+      // 2. Procesar Items Directos
       let score = 0;
-      searchKeys.forEach((fieldKey: string) => {
+      SEARCH_KEYS.forEach((fieldKey: string) => {
         const rawValue = item[fieldKey];
-        if (typeof rawValue === 'string') {
-          const vals = rawValue.split(VALUE_SEPARATOR).map(v => cleanText(v));
+        if (typeof rawValue === 'string' && valid(rawValue)) {
+          const vals = rawValue.split(VALUE_SEPARATOR).map(v => cleanText(v.trim()));
           if (vals.includes(queryClean)) score += 10;
           else if (isMatch(rawValue, searchWords)) score += 5;
         }
@@ -164,7 +171,7 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
       suggestions: [...exactMatches, ...fuzzyMatches].slice(0, 5), 
       items: itemMatches.sort((a, b) => b._searchScore - a._searchScore).slice(0, 5) 
     });
-  }, [debouncedSearch, allCollectionItems, searchKeys, suggestionKeys]);
+  }, [debouncedSearch, allCollectionItems, SEARCH_KEYS, SUGGESTIONS_KEYS, VALUE_SEPARATOR, valid, isHome]);
 
   const isHidden = scrollDir === "down" && scrollY > 100 && !mobileOpen && !searchOpen && !isHome;
 
@@ -223,7 +230,7 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
                     )}
                   </div>
 
-                  {/* DESKTOP CATEGORIES */}
+                  {/* DESKTOP CATEGORIES BUTTON */}
                   <div className="hidden md:flex h-full items-center">
                     <button 
                       onClick={() => { setCategoriesOpen(!categoriesOpen); setShowPredictive(false); }} 
@@ -250,7 +257,7 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
           </div>
         </div>
 
-        {/* 1. MEGA MENU CATEGORÍAS */}
+        {/* 1. MEGA MENU CATEGORÍAS (Escritorio) */}
         {!isHome && categoriesOpen && (
           <div className="hidden md:block absolute top-full left-0 w-full bg-card border-b border-border z-50 animate-in fade-in slide-in-from-top-0 duration-200 shadow-xl overflow-y-auto max-h-[calc(100vh-3.5rem)]">
             <div className="max-w-[1440px] mx-auto px-8 pt-6 pb-10">
@@ -275,7 +282,7 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
           </div>
         )}
 
-        {/* 2. PREDICTIVE SEARCH (Escritorio) */}
+        {/* 2. PREDICTIVE SEARCH RESULTS (Escritorio) */}
         {!isHome && !mobileOpen && !searchOpen && showPredictive && (
           <div className="hidden md:block absolute top-full left-0 w-full bg-card border-b border-border shadow-xl z-50 animate-in fade-in slide-in-from-top-0 duration-200">
             {tempSearch.trim().length < 2 ? (
@@ -373,7 +380,7 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
                       {searchResults?.items.map(item => (
                         <Link to={`${baseHref}/item/${item.id}`} key={item.id} onClick={handleCloseSearch} className="flex flex-col gap-2 group">
                           <div className="aspect-square bg-muted rounded overflow-hidden border border-border/50">
-                            <img src={item.image || item.Image} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>
+                            <img src={item.image || item.Image} alt={item.displayName} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>
                           </div>
                           <p className="text-[11px] font-medium line-clamp-2 leading-tight group-hover:text-primary transition-colors">{item.displayName}</p>
                         </Link>
@@ -386,7 +393,7 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
           </div>
         )}
 
-        {/* 4. MOBILE MENU PANEL */}
+        {/* 4. MOBILE MENU PANEL (Categorías) */}
         {!isHome && mobileOpen && (
           <div className="md:hidden absolute top-full left-0 right-0 w-full bg-card border-b border-border shadow-xl z-50 animate-in slide-in-from-top-0 duration-200">
             <div className="max-h-[75vh] overflow-y-auto pb-8 pt-2 relative">

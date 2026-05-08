@@ -1,48 +1,18 @@
 import { useSearchParams } from "react-router-dom";
 import { useCallback, useMemo } from "react";
+import { useCollection } from "@/hooks/useCollection";
 import {
-  VALUE_SEPARATOR,
-  valid,
   normalizeKey,
   cleanText,
   isMatch,
   CollectionItem,
-} from "@/config";
-import { useCollection } from "@/hooks/useCollection";
-
-// --- HELPERS ---
-function getArrayParam(params: URLSearchParams, key: string): string[] {
-  const val = params.get(key);
-  if (!val) return [];
-  return val.split(VALUE_SEPARATOR).map(v => v.trim()).filter(Boolean);
-}
-
-function getItemValues(value: string): string[] {
-  if (!valid(value)) return [];
-  return value.split(VALUE_SEPARATOR).map(v => v.trim());
-}
-
-function matchField(itemValue: string, filters: string[]): boolean {
-  if (!filters.length) return true;
-  if (!itemValue) return false;
-  const values = getItemValues(itemValue).map(v => v.toLowerCase());
-  return filters.some(f => values.includes(f.toLowerCase()));
-}
-
-function getValue(item: CollectionItem, key: string): string {
-  let value = item[key as keyof CollectionItem];
-  if (value === undefined) {
-    const camelKey = (key.charAt(0).toLowerCase() + key.slice(1)) as keyof CollectionItem;
-    value = item[camelKey];
-  }
-  return typeof value === "string" ? value : "";
-}
+} from "@/utils/collectionUtils";
 
 export function useFilters() {
   const [searchParams, setSearchParams] = useSearchParams();
-  const searchQuery = searchParams.get("q") || "";
-
   const { config } = useCollection();
+
+  // --- EXTRAEMOS TODO DEL CONFIG DINÁMICO ---
   const {
     rawData,
     mapItem,
@@ -50,31 +20,61 @@ export function useFilters() {
     SEARCH_KEYS,
     CUSTOM_FILTERS,
     FIELD_MAP,
+    valid,
+    VALUE_SEPARATOR,
   } = config;
 
+  const searchQuery = searchParams.get("q") || "";
+
+  // --- HELPERS DINÁMICOS (Acceden a las reglas de la colección actual) ---
+  
+  const getArrayParam = useCallback((params: URLSearchParams, key: string): string[] => {
+    const val = params.get(key);
+    if (!val) return [];
+    return val.split(VALUE_SEPARATOR).map(v => v.trim()).filter(Boolean);
+  }, [VALUE_SEPARATOR]);
+
+  const getItemValues = useCallback((value: string): string[] => {
+    if (!valid(value)) return [];
+    return value.split(VALUE_SEPARATOR).map(v => v.trim());
+  }, [valid, VALUE_SEPARATOR]);
+
+  const getValue = useCallback((item: CollectionItem, key: string): string => {
+    let value = item[key];
+    if (value === undefined) {
+      const camelKey = key.charAt(0).toLowerCase() + key.slice(1);
+      value = item[camelKey];
+    }
+    return typeof value === "string" ? value : "";
+  }, []);
+
+  const matchField = useCallback((itemValue: string, filters: string[]): boolean => {
+    if (!filters.length) return true;
+    if (!itemValue) return false;
+    const values = getItemValues(itemValue).map(v => v.toLowerCase());
+    return filters.some(f => values.includes(f.toLowerCase()));
+  }, [getItemValues]);
+
+  // --- 1. PROCESAMIENTO DE ITEMS ---
   const collectionItems: CollectionItem[] = useMemo(
     () => (rawData as Record<string, string>[]).map(mapItem),
     [rawData, mapItem]
   );
 
-// 1. ESTADOS DESDE URL (UNIFICADO: nav_ y attr_)
+  // --- 2. ESTADOS DE FILTRADO (Nav y Sidebar) ---
   const navState = useMemo(() => {
     const state: Record<string, string[]> = {};
-    
     Array.from(searchParams.keys()).forEach(paramKey => {
-      // Ahora escuchamos tanto nav_ como attr_
       if (paramKey.startsWith('nav_') || paramKey.startsWith('attr_')) {
         const pureKey = paramKey.replace('nav_', '').replace('attr_', '');
         const val = getArrayParam(searchParams, paramKey);
         if (val.length > 0) {
-          // Si ya existe (ej. hay nav_ y attr_ del mismo campo), unificamos valores
           state[pureKey] = Array.from(new Set([...(state[pureKey] || []), ...val]));
         }
       }
     });
-    
     return state;
-  }, [searchParams]);
+  }, [searchParams, getArrayParam]);
 
   const sidebarState = useMemo(() => {
     const state: Record<string, string[]> = {};
@@ -84,7 +84,7 @@ export function useFilters() {
       if (val.length > 0) state[norm] = val;
     });
     return state;
-  }, [searchParams, SIDEBAR_KEYS]);
+  }, [searchParams, SIDEBAR_KEYS, getArrayParam]);
 
   const combinedState = useMemo(() => {
     const combined: Record<string, string[]> = { ...sidebarState };
@@ -94,7 +94,7 @@ export function useFilters() {
     return combined;
   }, [sidebarState, navState]);
 
-  // 2. FILTRADO (Aplica combinedState que ya incluye attr_)
+  // --- 3. LÓGICA DE FILTRADO ---
   const filteredItems = useMemo(() => {
     const searchWords = cleanText(searchQuery).split(" ").filter(Boolean);
     const isSearching = searchWords.length > 0;
@@ -105,18 +105,16 @@ export function useFilters() {
         if (!isMatch(itemSearchText, searchWords)) return false;
       }
       
-      // Filtrar por combinedState (Sidebar + Nav + Attr)
       return Object.entries(combinedState).every(([k, selectedValues]) => {
         if (!selectedValues.length) return true;
-        // El pureKey ya viene limpio desde navState/sidebarState
         const custom = CUSTOM_FILTERS[k];
         if (custom) return selectedValues.some(v => custom.getValues(item, custom).includes(v));
         return matchField(getValue(item, k), selectedValues);
       });
     });
-  }, [collectionItems, combinedState, searchQuery, SEARCH_KEYS, CUSTOM_FILTERS]);
+  }, [collectionItems, combinedState, searchQuery, SEARCH_KEYS, CUSTOM_FILTERS, matchField, getValue]);
 
-  // 3. OPCIONES (Asegura que el conteo del Sidebar respete los attr_)
+  // --- 4. CÁLCULO DE OPCIONES PARA EL SIDEBAR ---
   const filterOptions = useMemo(() => {
     const options: Record<string, { value: string; count: number }[]> = {};
     const searchWords = cleanText(searchQuery).split(" ").filter(Boolean);
@@ -131,7 +129,6 @@ export function useFilters() {
           if (!isMatch(itemSearchText, searchWords)) return false;
         }
         
-        // Debe cumplir con los navState (que ahora incluyen attr_)
         const matchesNav = Object.entries(navState).every(([k, v]) => matchField(getValue(item, k), v));
         if (!matchesNav) return false;
 
@@ -163,9 +160,9 @@ export function useFilters() {
     });
 
     return options;
-  }, [collectionItems, navState, sidebarState, searchQuery, SIDEBAR_KEYS, SEARCH_KEYS, CUSTOM_FILTERS]);
+  }, [collectionItems, navState, sidebarState, searchQuery, SIDEBAR_KEYS, SEARCH_KEYS, CUSTOM_FILTERS, matchField, getValue, getItemValues]);
 
-  // 4. CHIPS
+  // --- 5. CHIPS ACTIVOS ---
   const activeFilterChips = useMemo(() => {
     const chips: any[] = [];
     Object.entries(sidebarState).forEach(([key, values]) => {
@@ -177,13 +174,16 @@ export function useFilters() {
     return chips;
   }, [sidebarState, CUSTOM_FILTERS, FIELD_MAP]);
 
+  // --- 6. ACCIONES (Toggle, Remove, Clear) ---
   const toggleFilter = (key: string, value: string) => {
     const newParams = new URLSearchParams(searchParams);
     const normKey = normalizeKey(key);
     const current = getArrayParam(searchParams, normKey);
     const next = current.includes(value) ? current.filter(v => v !== value) : [...current, value];
+    
     if (next.length) newParams.set(normKey, next.join(VALUE_SEPARATOR));
     else newParams.delete(normKey);
+    
     setSearchParams(newParams, { replace: true });
   };
 
@@ -197,24 +197,37 @@ export function useFilters() {
       next.length ? p.set(normKey, next.join(VALUE_SEPARATOR)) : p.delete(normKey);
       return p;
     }, { replace: true });
-  }, [setSearchParams]);
+  }, [setSearchParams, getArrayParam, VALUE_SEPARATOR]);
 
   const clearAll = useCallback(() => {
     setSearchParams(prev => {
       const p = new URLSearchParams(prev);
-      Array.from(p.keys()).forEach(k => { if (!k.startsWith('nav_') && k !== 'q') p.delete(k); });
+      Array.from(p.keys()).forEach(k => { 
+        if (!k.startsWith('nav_') && !k.startsWith('attr_') && k !== 'q') p.delete(k); 
+      });
+      return p;
+    }, { replace: true });
+  }, [setSearchParams]);
+
+  const setSearchQuery = useCallback((q: string) => {
+    setSearchParams(prev => {
+      const p = new URLSearchParams(prev);
+      q ? p.set("q", q) : p.delete("q");
       return p;
     }, { replace: true });
   }, [setSearchParams]);
 
   return {
     collectionItems,
-    filteredItems, filterOptions, sidebarState, navState, activeFilterChips, searchQuery,
-    toggleFilter, removeFilter, clearAll,
-    setSearchQuery: (q: string) => setSearchParams(prev => {
-      const p = new URLSearchParams(prev);
-      q ? p.set("q", q) : p.delete("q");
-      return p;
-    }, { replace: true }),
+    filteredItems,
+    filterOptions,
+    sidebarState,
+    navState,
+    activeFilterChips,
+    searchQuery,
+    toggleFilter,
+    removeFilter,
+    clearAll,
+    setSearchQuery,
   };
 }

@@ -1,6 +1,6 @@
-import { useMemo, useEffect } from 'react';
+import { useMemo, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { CollectionItem, valid, VALUE_SEPARATOR, normalizeKey } from '@/config';
+import { CollectionItem, normalizeKey } from '@/utils/collectionUtils'; // Importar de utils
 import { cn } from '@/lib/utils';
 import { useCollection } from '@/hooks/useCollection';
 
@@ -12,24 +12,6 @@ interface StatsViewProps {
   onSelectValue: (key: string, value: string) => void;
 }
 
-function getItemValuesForKey(item: CollectionItem, key: string, customFilters: Record<string, any>): string[] {
-  const custom = customFilters[key];
-  if (custom) return custom.getValues(item, custom).filter(Boolean);
-  let raw = item[key as keyof CollectionItem];
-  if (raw === undefined) {
-    const camelKey = (key.charAt(0).toLowerCase() + key.slice(1)) as keyof CollectionItem;
-    raw = item[camelKey];
-  }
-  const value = typeof raw === 'string' ? raw : '';
-  if (!valid(value)) return [];
-  return value.split(VALUE_SEPARATOR).map(v => v.trim()).filter(Boolean);
-}
-
-function formatLabel(key: string, customFilters: Record<string, any>, fieldMap: Record<string, string>) {
-  if (customFilters[key]?.label) return customFilters[key].label;
-  return fieldMap[key] || key.replace(/_/g, ' ');
-}
-
 export function StatsView({
   items,
   sidebarState,
@@ -39,18 +21,53 @@ export function StatsView({
 }: StatsViewProps) {
   const { config } = useCollection();
   const [searchParams, setSearchParams] = useSearchParams();
-  const { SIDEBAR_KEYS, CUSTOM_FILTERS, FIELD_MAP } = config as any;
+  
+  // Extraemos las herramientas específicas de la colección activa
+  const { 
+    SIDEBAR_KEYS, 
+    CUSTOM_FILTERS, 
+    FIELD_MAP, 
+    valid, 
+    VALUE_SEPARATOR 
+  } = config;
 
-  // Compute valid tables
+  // --- HELPERS INTERNOS ---
+  
+  // Obtiene los valores de un item considerando filtros personalizados y separadores dinámicos
+  const getItemValuesForKey = useCallback((item: CollectionItem, key: string): string[] => {
+    const custom = CUSTOM_FILTERS[key];
+    if (custom) return custom.getValues(item, custom).filter(Boolean);
+    
+    let raw = item[key];
+    if (raw === undefined) {
+      const camelKey = key.charAt(0).toLowerCase() + key.slice(1);
+      raw = item[camelKey];
+    }
+    
+    const value = typeof raw === 'string' ? raw : '';
+    if (!valid(value)) return [];
+    
+    return value.split(VALUE_SEPARATOR).map(v => v.trim()).filter(Boolean);
+  }, [CUSTOM_FILTERS, valid, VALUE_SEPARATOR]);
+
+  // Formatea el label según el FIELD_MAP de la colección
+  const formatLabel = useCallback((key: string) => {
+    if (CUSTOM_FILTERS[key]?.label) return CUSTOM_FILTERS[key].label;
+    return FIELD_MAP[key] || key.replace(/_/g, ' ');
+  }, [CUSTOM_FILTERS, FIELD_MAP]);
+
+  // --- LÓGICA DE COMPUTACIÓN ---
+
+  // Tablas válidas (que no estén ya filtradas y tengan datos)
   const validTables = useMemo(() => {
     return (SIDEBAR_KEYS as readonly string[]).filter(key => {
       const normKey = normalizeKey(key);
       if ((sidebarState[normKey] || []).length > 0) return false;
-      return items.some(item => getItemValuesForKey(item, key, CUSTOM_FILTERS).length > 0);
+      return items.some(item => getItemValuesForKey(item, key).length > 0);
     });
-  }, [SIDEBAR_KEYS, items, sidebarState, CUSTOM_FILTERS]);
+  }, [SIDEBAR_KEYS, items, sidebarState, getItemValuesForKey]);
 
-  // Auto-select / auto-jump
+  // Auto-selección de tabla activa
   useEffect(() => {
     if (validTables.length === 0) {
       if (activeTable !== null) onChangeTable('');
@@ -61,50 +78,40 @@ export function StatsView({
     }
   }, [validTables, activeTable, onChangeTable]);
 
+  // Generación de filas (conteo de valores)
   const rows = useMemo(() => {
     if (!activeTable) return [];
     const counts: Record<string, number> = {};
+    
     items.forEach(item => {
-      const vals = getItemValuesForKey(item, activeTable, CUSTOM_FILTERS);
+      const vals = getItemValuesForKey(item, activeTable);
       const unique = Array.from(new Set(vals));
       unique.forEach(v => { counts[v] = (counts[v] || 0) + 1; });
     });
+
     return Object.entries(counts)
       .map(([value, count]) => ({ value, count }))
       .sort((a, b) => b.count - a.count || a.value.localeCompare(b.value));
-  }, [items, activeTable, CUSTOM_FILTERS]);
+  }, [items, activeTable, getItemValuesForKey]);
 
   const total = items.length;
 
-  /**
-   * ESTA ES LA FUNCIÓN CLAVE:
-   * Al seleccionar un valor, actualizamos la URL para que el navegador
-   * registre una nueva entrada en el historial.
-   */
-const handleRowClick = (value: string) => {
+  // Manejo de clic en fila para filtrar y volver al Grid
+  const handleRowClick = (value: string) => {
     if (!activeTable) return;
 
-    // 1. Notificamos al padre para actualizar estados internos si existen
     onSelectValue(activeTable, value);
 
-    // 2. Construimos los parámetros de búsqueda
     const newParams = new URLSearchParams(searchParams);
     const filterKey = normalizeKey(activeTable);
     
-    // Comportamiento de acumulación (estilo sidebar)
     const existingValues = newParams.get(filterKey)?.split(VALUE_SEPARATOR) || [];
     if (!existingValues.includes(value)) {
       const updatedValues = [...existingValues, value];
       newParams.set(filterKey, updatedValues.join(VALUE_SEPARATOR));
     }
 
-    // 3. Eliminamos el modo stats
     newParams.delete('view'); 
-    
-    // 4. NAVEGACIÓN CON REPLACE:
-    // Al usar 'replace: true', la URL con '?view=stats' se borra del historial
-    // y se sustituye por la URL del Grid filtrado. 
-    // Al dar "Atrás", el usuario NO volverá a la tabla.
     setSearchParams(newParams, { replace: true });
   };
 
@@ -117,7 +124,7 @@ const handleRowClick = (value: string) => {
     );
   }
 
-  const activeLabel = activeTable ? formatLabel(activeTable, CUSTOM_FILTERS, FIELD_MAP) : '';
+  const activeLabel = activeTable ? formatLabel(activeTable) : '';
 
   return (
     <div className="space-y-4 animate-in fade-in duration-500">
@@ -137,7 +144,7 @@ const handleRowClick = (value: string) => {
               )}
               style={isActive ? { backgroundColor: 'hsl(var(--accent-color))', borderColor: 'hsl(var(--accent-color))' } : undefined}
             >
-              {formatLabel(key, CUSTOM_FILTERS, FIELD_MAP)}
+              {formatLabel(key)}
             </button>
           );
         })}
@@ -145,7 +152,7 @@ const handleRowClick = (value: string) => {
 
       {activeTable && (
         <p className="text-xs text-muted-foreground">
-          Showing <span className="font-bold text-foreground">{rows.length}</span> opciones únicas para {activeLabel}
+          Showing <span className="font-bold text-foreground">{rows.length}</span> unique options for {activeLabel}
         </p>
       )}
 
