@@ -57,16 +57,19 @@ export function useFilters() {
     [rawData, mapItem]
   );
 
-  // 1. ESTADOS DESDE URL
+// 1. ESTADOS DESDE URL (UNIFICADO: nav_ y attr_)
   const navState = useMemo(() => {
     const state: Record<string, string[]> = {};
     
-    // Leemos TODOS los parámetros de la URL dinámicamente
     Array.from(searchParams.keys()).forEach(paramKey => {
-      if (paramKey.startsWith('nav_')) {
-        const pureKey = paramKey.replace('nav_', '');
+      // Ahora escuchamos tanto nav_ como attr_
+      if (paramKey.startsWith('nav_') || paramKey.startsWith('attr_')) {
+        const pureKey = paramKey.replace('nav_', '').replace('attr_', '');
         const val = getArrayParam(searchParams, paramKey);
-        if (val.length > 0) state[pureKey] = val;
+        if (val.length > 0) {
+          // Si ya existe (ej. hay nav_ y attr_ del mismo campo), unificamos valores
+          state[pureKey] = Array.from(new Set([...(state[pureKey] || []), ...val]));
+        }
       }
     });
     
@@ -91,7 +94,7 @@ export function useFilters() {
     return combined;
   }, [sidebarState, navState]);
 
-  // 2. FILTRADO
+  // 2. FILTRADO (Aplica combinedState que ya incluye attr_)
   const filteredItems = useMemo(() => {
     const searchWords = cleanText(searchQuery).split(" ").filter(Boolean);
     const isSearching = searchWords.length > 0;
@@ -99,19 +102,21 @@ export function useFilters() {
     return collectionItems.filter(item => {
       if (isSearching) {
         const itemSearchText = SEARCH_KEYS.map(k => getValue(item, k)).join(" ");
-        return isMatch(itemSearchText, searchWords);
+        if (!isMatch(itemSearchText, searchWords)) return false;
       }
+      
+      // Filtrar por combinedState (Sidebar + Nav + Attr)
       return Object.entries(combinedState).every(([k, selectedValues]) => {
         if (!selectedValues.length) return true;
-        const pureKey = k.replace('nav_', '');
-        const custom = CUSTOM_FILTERS[pureKey];
+        // El pureKey ya viene limpio desde navState/sidebarState
+        const custom = CUSTOM_FILTERS[k];
         if (custom) return selectedValues.some(v => custom.getValues(item, custom).includes(v));
-        return matchField(getValue(item, pureKey), selectedValues);
+        return matchField(getValue(item, k), selectedValues);
       });
     });
   }, [collectionItems, combinedState, searchQuery, SEARCH_KEYS, CUSTOM_FILTERS]);
 
-  // 3. OPCIONES
+  // 3. OPCIONES (Asegura que el conteo del Sidebar respete los attr_)
   const filterOptions = useMemo(() => {
     const options: Record<string, { value: string; count: number }[]> = {};
     const searchWords = cleanText(searchQuery).split(" ").filter(Boolean);
@@ -125,6 +130,8 @@ export function useFilters() {
           const itemSearchText = SEARCH_KEYS.map(k => getValue(item, k)).join(" ");
           if (!isMatch(itemSearchText, searchWords)) return false;
         }
+        
+        // Debe cumplir con los navState (que ahora incluyen attr_)
         const matchesNav = Object.entries(navState).every(([k, v]) => matchField(getValue(item, k), v));
         if (!matchesNav) return false;
 
@@ -149,11 +156,9 @@ export function useFilters() {
       selectedValues.forEach(val => { if (!(val in counts)) counts[val] = 0; });
 
       let finalOptions = Object.entries(counts).map(([value, count]) => ({ value, count }));
-
       if (finalOptions.length === 1 && selectedValues.length === 0) {
         if (finalOptions[0].count === itemsForThisSection.length) finalOptions = [];
       }
-
       options[key] = finalOptions;
     });
 

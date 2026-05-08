@@ -1,7 +1,14 @@
 import { ChevronRight, Home } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import React from "react";
-import { valid, getDynamicValue, CollectionItem, VALUE_SEPARATOR, NO_SPLIT_FIELDS, formatDisplayValue} from "@/config";
+import { 
+  valid, 
+  getDynamicValue, 
+  CollectionItem, 
+  VALUE_SEPARATOR, 
+  NO_SPLIT_FIELDS, 
+  formatDisplayValue 
+} from "@/config";
 import { useCollection } from "@/hooks/useCollection";
 
 interface BreadcrumbProps {
@@ -22,15 +29,24 @@ export function CollectionBreadcrumb({
     BREADCRUMB_RESOLVER, 
     NAVIGATION_CONFIG, 
     LINK_FIELDS,
-    BREADCRUMB_HIDDEN = []
+    BREADCRUMB_HIDDEN = [],
+    FIELD_MAP = {} 
   } = config;
   const baseHref = `/view/${collectionId}`;
 
-  const crumbs: { label: string; key: string; originalKey: string; prevParams: string }[] = [];
+  const crumbs: { 
+    label: string; 
+    key: string; 
+    originalKey: string; 
+    prevParams: string; 
+    isAttribute?: boolean 
+  }[] = [];
 
+  // 1. Nodo Raíz (Home)
   crumbs.push({ label: "", key: "home", originalKey: "home", prevParams: "" });
 
   if (item) {
+    // Escenario A: Vista de detalle de un Item
     const configKeys = BREADCRUMB_RESOLVER({ item });
     if (configKeys) {
       const currentParams = new URLSearchParams();
@@ -48,14 +64,17 @@ export function CollectionBreadcrumb({
       });
     }
   } else if (searchQuery) {
+    // Escenario B: Búsqueda por texto libre
     crumbs.push({ label: `Search: "${searchQuery}"`, key: "search", originalKey: "search", prevParams: "" });
   } else {
+    // Escenario C: Navegación por filtros (nav_ y attr_)
     const urlParams = new URLSearchParams(search);
     const configKeys = BREADCRUMB_RESOLVER({ filtersState }) || [];
     const knownKeys = Array.from(new Set([...NAVIGATION_CONFIG.hierarchy, ...configKeys, ...LINK_FIELDS]));
     const currentParams = new URLSearchParams();
     const processedKeys = new Set<string>();
 
+    // Procesar primero las llaves conocidas por jerarquía (suelen ser nav_)
     knownKeys.forEach((key) => {
       const lowKey = key.toLowerCase();
       const navKey = `nav_${lowKey}`;
@@ -69,13 +88,26 @@ export function CollectionBreadcrumb({
       }
     });
 
+    // Procesar cualquier otro parámetro dinámico (nav_ o attr_)
     Array.from(urlParams.keys()).forEach((paramKey) => {
-      if (paramKey.startsWith('nav_') && !processedKeys.has(paramKey)) {
-        const pureKey = paramKey.replace('nav_', '');
+      if (processedKeys.has(paramKey)) return;
+
+      const isNav = paramKey.startsWith('nav_');
+      const isAttr = paramKey.startsWith('attr_');
+
+      if (isNav || isAttr) {
+        const pureKey = paramKey.replace('nav_', '').replace('attr_', '');
         const val = urlParams.get(paramKey) || "";
         if (valid(val)) {
-          crumbs.push({ label: val, key: pureKey, originalKey: pureKey, prevParams: currentParams.toString() });
+          crumbs.push({ 
+            label: val, 
+            key: pureKey, 
+            originalKey: pureKey, 
+            prevParams: currentParams.toString(),
+            isAttribute: isAttr 
+          });
           currentParams.set(paramKey, val);
+          processedKeys.add(paramKey);
         }
       }
     });
@@ -84,22 +116,21 @@ export function CollectionBreadcrumb({
   }
 
   const renderCrumbContent = (crumb: typeof crumbs[0], isLast: boolean) => {
-    // Ajuste para el icono de Home con Link
+    // 1. Icono de Home
     if (crumb.key === "home") {
       return (
-        <Link 
-          to={baseHref} 
-          className="hover:text-primary transition-colors flex items-center"
-        >
+        <Link to={baseHref} className="hover:text-primary transition-colors flex items-center">
           <Home className="w-4 h-4" />
         </Link>
       );
     }
 
+    // 2. Casos especiales de texto plano
     if (crumb.key === "search" || crumb.key === "all") return crumb.label;
 
+    // 3. PRIORIDAD: State con label personalizado (tu corrección)
     if (state?.customLabel && state?.filterKey === crumb.key) {
-      return isLast && !item ? (
+      return (isLast && !item) ? (
         <span className="text-primary font-medium">{state.customLabel}</span>
       ) : (
         <Link to={`${baseHref}?${new URLSearchParams(crumb.prevParams).toString()}`} className="hover:text-primary transition-colors">
@@ -108,15 +139,26 @@ export function CollectionBreadcrumb({
       );
     }
 
+    // Helper para decidir si mostrar "Campo: Valor" o solo "Valor"
+    const getFinalLabel = (key: string, value: string, isAttr?: boolean) => {
+      const displayValue = formatDisplayValue ? formatDisplayValue(key, value) : value;
+      if (isAttr) {
+        const fieldName = (FIELD_MAP as any)[key] || key.charAt(0).toUpperCase() + key.slice(1);
+        return `${fieldName}: ${displayValue}`;
+      }
+      return displayValue;
+    };
+
     const fieldKey = crumb.originalKey; 
     const rawValue = crumb.label;
+    const isAttribute = crumb.isAttribute;
 
-    // Si el campo no se divide
+    // 4. Renderizado de Links y Labels
     if (NO_SPLIT_FIELDS.includes(fieldKey) || !rawValue.includes(VALUE_SEPARATOR)) {
-      // CORRECCIÓN AQUÍ: Orden de parámetros correcto (key, value)
-      const display = formatDisplayValue ? formatDisplayValue(fieldKey, rawValue) : rawValue;
+      const display = getFinalLabel(fieldKey, rawValue, isAttribute);
       const linkParams = new URLSearchParams(crumb.prevParams);
-      linkParams.set(`nav_${crumb.key}`, rawValue);
+      const prefix = isAttribute ? 'attr_' : 'nav_';
+      linkParams.set(`${prefix}${crumb.key}`, rawValue);
 
       return (!isLast || item) ? (
         <Link to={`${baseHref}?${linkParams.toString()}`} className="hover:text-primary transition-colors">
@@ -127,17 +169,16 @@ export function CollectionBreadcrumb({
       );
     }
 
-    // Lógica para valores múltiples: "Mexico | USA"
+    // 5. Soporte para múltiples valores (ej. Mexico | USA)
     const parts = rawValue.split(VALUE_SEPARATOR).map(p => p.trim()).filter(Boolean);
 
     return (
       <div className="flex items-center">
         {parts.map((part, idx) => {
-          // CORRECCIÓN AQUÍ TAMBIÉN: Orden de parámetros correcto (key, value)
-          const display = formatDisplayValue ? formatDisplayValue(fieldKey, part) : part;
+          const display = getFinalLabel(fieldKey, part, isAttribute);
           const linkParams = new URLSearchParams(crumb.prevParams);
-          linkParams.set(`nav_${crumb.key}`, part);
-
+          const prefix = isAttribute ? 'attr_' : 'nav_';
+          linkParams.set(`${prefix}${crumb.key}`, part);
           const isLastPart = idx === parts.length - 1;
 
           return (
@@ -156,12 +197,13 @@ export function CollectionBreadcrumb({
       </div>
     );
   };
+
   const visibleCrumbs = crumbs.filter(crumb => !BREADCRUMB_HIDDEN.includes(crumb.originalKey));
-return (
+
+  return (
     <nav className="bg-secondary/50 border-b border-border relative">
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 h-10 flex items-center gap-2 text-sm overflow-x-auto no-scrollbar">
         {visibleCrumbs.map((crumb, i) => {
-          // Usamos visibleCrumbs para que el color de "isLast" sea correcto
           const isLast = i === visibleCrumbs.length - 1; 
           return (
             <div key={i} className="flex items-center gap-2 flex-shrink-0">

@@ -59,20 +59,30 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
   };
 
   const handleSuggestionClick = (fieldKey: string, value: string) => {
-    const params = new URLSearchParams(searchParams);
-    params.delete('q');
+    // CREAMOS PARAMS DESDE CERO
+    const params = new URLSearchParams();
+    
     const normKey = normalizeKey(fieldKey);
-    params.set(`nav_${normKey}`, value);
-    handleCloseSearch();
-    navigate(`${baseHref}?${params.toString()}`);
-  };
+    params.set(`attr_${normKey}`, value);
 
-  const triggerSearch = (value: string) => {
-    const params = new URLSearchParams(searchParams);
-    if (value.trim()) params.set('q', value.trim());
-    else params.delete('q');
     handleCloseSearch();
-    navigate(`${baseHref}?${params.toString()}`);
+
+    // Navegamos forzando la limpieza de la URL
+    navigate(`/view/${collectionId}?${params.toString()}`);
+  };
+  const triggerSearch = (value: string) => {
+    // CREAMOS PARAMS DESDE CERO para eliminar 'view=stats' y otros filtros previos
+    const params = new URLSearchParams(); 
+    
+    if (value.trim()) {
+      params.set('q', value.trim());
+    }
+
+    handleCloseSearch();
+
+    // Navegamos a la ruta base de la colección
+    // Al no incluir 'view', volverá automáticamente a la Gallery
+    navigate(`/view/${collectionId}?${params.toString()}`);
   };
 
   useEffect(() => {

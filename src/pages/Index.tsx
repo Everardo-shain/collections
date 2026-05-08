@@ -94,22 +94,27 @@ const Index = () => {
     setSearchQuery: allFilters.setSearchQuery,
   };
 
-  const getPageTitle = () => {
+const getPageTitle = () => {
     if (searchQuery) return `Search: "${searchQuery}"`;
     const urlParams = new URLSearchParams(window.location.search);
 
+    // 1. Prioridad: Custom Label desde el state (para nav_ o attr_)
     if (location.state?.customLabel && location.state?.filterKey) {
-      const key = `nav_${location.state.filterKey.toLowerCase()}`;
-      if (urlParams.has(key)) return location.state.customLabel;
+      const lowKey = location.state.filterKey.toLowerCase();
+      if (urlParams.has(`nav_${lowKey}`) || urlParams.has(`attr_${lowKey}`)) {
+        return location.state.customLabel;
+      }
     }
 
-    const getNavVal = (k: string) => {
+    // Helper para obtener valor de cualquier prefijo
+    const getParamVal = (k: string) => {
       const lowerK = k.toLowerCase();
-      return urlParams.has(`nav_${lowerK}`) ? urlParams.get(`nav_${lowerK}`) : null;
+      return urlParams.get(`nav_${lowerK}`) || urlParams.get(`attr_${lowerK}`) || null;
     };
 
+    // 2. Construcción de Composite Key (para Labels específicos/jerarquía)
     let compositeKey = BREADCRUMB_KEYS
-      .map(k => getNavVal(k))
+      .map(k => getParamVal(k))
       .filter(v => v !== null && valid(v))
       .join(VALUE_SEPARATOR);
 
@@ -121,39 +126,49 @@ const Index = () => {
         .join(VALUE_SEPARATOR);
     }
 
-  const firstKeyValue = getNavVal(BREADCRUMB_KEYS[0]) || (filteredItems[0]?.entity) || "";
-  const activeHierarchy = BREADCRUMB_RESOLVER({ filtersState: navState }) || NAVIGATION_BREADCRUMB;
-  const hierarchyKeysLower = activeHierarchy.map(k => k.toLowerCase());
+    const firstKeyValue = getParamVal(BREADCRUMB_KEYS[0]) || (filteredItems[0]?.entity) || "";
+    const activeHierarchy = BREADCRUMB_RESOLVER({ filtersState: navState }) || NAVIGATION_BREADCRUMB;
+    const hierarchyKeysLower = activeHierarchy.map(k => k.toLowerCase());
 
-  // --- NUEVO: Extraemos llaves dinámicas de la URL ---
-  const urlKeys = Array.from(urlParams.keys())
-    .filter(k => k.startsWith('nav_'))
-    .map(k => k.replace('nav_', ''));
+    // 3. Extraemos todas las llaves dinámicas de la URL (nav_ y attr_)
+    const urlKeys = Array.from(urlParams.keys())
+      .filter(k => k.startsWith('nav_') || k.startsWith('attr_'))
+      .map(k => k.replace('nav_', '').replace('attr_', ''));
 
-  // Las sumamos a las que ya teníamos
-  const allActiveKeys = Array.from(new Set([...activeHierarchy, ...LINK_FIELDS, ...urlKeys]));
+    const allActiveKeys = Array.from(new Set([...activeHierarchy, ...LINK_FIELDS, ...urlKeys]));
 
-  const activeFilters = allActiveKeys
-    .map(field => {
-      const lowerField = field.toLowerCase();
-      const value = getNavVal(lowerField);
-      if (!value) return null;
+    const activeFilters = allActiveKeys
+      .map(field => {
+        const lowerField = field.toLowerCase();
+        const value = getParamVal(lowerField);
+        if (!value) return null;
 
-      const isHierarchyField = hierarchyKeysLower.includes(lowerField);
-      const specificLabels = BREADCRUMB_LABELS[compositeKey] || BREADCRUMB_LABELS[firstKeyValue];
-      const extraText = isHierarchyField ? (specificLabels?.[lowerField] || "") : "";
-      const combinedLabel = `${value}${extraText}`;
-      
-      // FormatDisplayValue seguirá intentando limpiarlo si tiene reglas
-      const formattedLabel = formatDisplayValue(lowerField, combinedLabel);
+        const isHierarchyField = hierarchyKeysLower.includes(lowerField);
+        const specificLabels = BREADCRUMB_LABELS[compositeKey] || BREADCRUMB_LABELS[firstKeyValue];
+        const extraText = isHierarchyField ? (specificLabels?.[lowerField] || "") : "";
+        const combinedLabel = `${value}${extraText}`;
+        
+        // Formateo base (ej. limpieza de IDs o capitalización)
+        let formattedLabel = formatDisplayValue(lowerField, combinedLabel);
 
-      return { label: formattedLabel, field: lowerField };
-    })
-    .filter(Boolean) as { label: string; field: string }[];
+        // --- LÓGICA DE PREFIJO PARA ATTR_ ---
+        // Si el parámetro en la URL es attr_, le ponemos el nombre del campo
+        if (urlParams.has(`attr_${lowerField}`)) {
+          const fieldMap = (config.FIELD_MAP as any) || {};
+          const fieldName = fieldMap[lowerField] || field.charAt(0).toUpperCase() + field.slice(1);
+          formattedLabel = `${fieldName}: ${formattedLabel}`;
+        }
 
-  if (activeFilters.length === 0) return 'All Items';
+        return { label: formattedLabel, field: lowerField };
+      })
+      .filter(Boolean) as { label: string; field: string }[];
+
+    // 4. Retorno final
+    if (activeFilters.length === 0) return 'All Items';
+    
     const last = activeFilters[activeFilters.length - 1];
     const formatter = TITLE_FORMATTERS[last.field];
+    
     return formatter ? formatter(last, activeFilters, compositeKey) : last.label;
   };
 
