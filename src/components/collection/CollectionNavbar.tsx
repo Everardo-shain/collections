@@ -8,10 +8,8 @@ import { useScrollDirection } from '@/hooks/useScrollDirection';
 import { useDebounce } from '@/hooks/useDebounce';
 import { cn } from '@/lib/utils';
 import { SmartTitle } from '@/components/SmartTitle';
-import { isMatch, cleanText, normalizeKey} from "@/utils/collectionUtils";
+import { isMatch, cleanText, normalizeKey } from "@/utils/collectionUtils";
 
-
-// --- COMPONENTE PRINCIPAL ---
 export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups?: NavGroup[], isHome?: boolean }) {
   const { collectionId } = useParams<{ collectionId: CollectionId }>();
   const [searchParams] = useSearchParams();
@@ -28,7 +26,7 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
   const [tempSearch, setTempSearch] = useState(searchParams.get('q') || '');
   const [showPredictive, setShowPredictive] = useState(false);
   const debouncedSearch = useDebounce(tempSearch, 300);
-  const [searchResults, setSearchResults] = useState<{ suggestions: { field: string; value: string }[]; items: any[]; } | null>(null);
+  const [searchResults, setSearchResults] = useState<{ suggestions: { field: string; value: string; rawKey: string }[]; items: any[]; } | null>(null);
 
   const [scrollY, setScrollY] = useState(0);
   const scrollDir = useScrollDirection();
@@ -53,25 +51,27 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
   const activeChild = searchParams.get(`nav_${CHILD_KEY}`);
   const isAllSelected = !activeParent && !searchParams.get('q');
 
-  const handleSuggestionClick = (fieldKey: string, value: string) => {
-    const params = new URLSearchParams(searchParams);
-    
-    // 1. Limpiamos la búsqueda general para que no interfiera
-    params.delete('q');
-    
-    // 2. Normalizamos la key (ej: "Team Name" -> "team_name")
-    const normKey = normalizeKey(fieldKey);
-    
-    // 3. Seteamos como filtro de navegación (nav_...)
-    // Usamos set en lugar de append para que sea una navegación limpia
-    params.set(`nav_${normKey}`, value);
-
-    // 4. Limpieza de UI
+  // Lógica para cerrar búsqueda por completo
+  const handleCloseSearch = () => {
     setTempSearch('');
     setShowPredictive(false);
     setSearchOpen(false);
-    
-    // 5. Navegar
+  };
+
+  const handleSuggestionClick = (fieldKey: string, value: string) => {
+    const params = new URLSearchParams(searchParams);
+    params.delete('q');
+    const normKey = normalizeKey(fieldKey);
+    params.set(`nav_${normKey}`, value);
+    handleCloseSearch();
+    navigate(`${baseHref}?${params.toString()}`);
+  };
+
+  const triggerSearch = (value: string) => {
+    const params = new URLSearchParams(searchParams);
+    if (value.trim()) params.set('q', value.trim());
+    else params.delete('q');
+    handleCloseSearch();
     navigate(`${baseHref}?${params.toString()}`);
   };
 
@@ -97,7 +97,7 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  // Lógica de búsqueda (Fuzzy Matching + Value Separator)
+  // Lógica de búsqueda
   useEffect(() => {
     const queryRaw = debouncedSearch.trim();
     if (queryRaw.length < 2) {
@@ -106,13 +106,10 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
     }
 
     const queryClean = cleanText(queryRaw);
-    // Pre-calculamos las palabras de búsqueda una sola vez
     const searchWords = queryClean.split(/\s+/).filter(Boolean);
-
-    const exactMatches: { field: string; value: string }[] = [];
-    const fuzzyMatches: { field: string; value: string }[] = [];
+    const exactMatches: any[] = [];
+    const fuzzyMatches: any[] = [];
     const itemMatches: any[] = [];
-    
     const seenSuggestions = new Set<string>();
     const seenItemIds = new Set();
 
@@ -121,44 +118,29 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
         const rawValue = item[fieldKey];
         if (typeof rawValue === 'string') {
           const individualValues = rawValue.split(VALUE_SEPARATOR).map(v => v.trim()).filter(Boolean);
-          
           individualValues.forEach((val: string) => {
             const valClean = cleanText(val);
             const dedupeKey = `${fieldKey}:${valClean}`;
-
             if (seenSuggestions.has(dedupeKey)) return;
 
             if (isMatch(val, searchWords)) {
               const displayField = fieldKey.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-              
-              // --- CAMBIO AQUÍ: Agregamos rawKey ---
-              const suggestionData = { 
-                field: displayField, 
-                value: val, 
-                rawKey: fieldKey // Guardamos la key original (ej: "team")
-              };
-
-              if (valClean === queryClean) {
-                exactMatches.push(suggestionData);
-              } else {
-                fuzzyMatches.push(suggestionData);
-              }
+              const suggestionData = { field: displayField, value: val, rawKey: fieldKey };
+              if (valClean === queryClean) exactMatches.push(suggestionData);
+              else fuzzyMatches.push(suggestionData);
               seenSuggestions.add(dedupeKey);
             }
           });
         }
       });
 
-      // --- TOP RESULTS (ITEMS) ---
       let score = 0;
       searchKeys.forEach((fieldKey: string) => {
         const rawValue = item[fieldKey];
         if (typeof rawValue === 'string') {
-          // Separamos y limpiamos valores para el scoring
           const vals = rawValue.split(VALUE_SEPARATOR).map(v => cleanText(v));
-          
-          if (vals.includes(queryClean)) score += 10; // Exact match: Top priority
-          else if (isMatch(rawValue, searchWords)) score += 5; // Fuzzy match: Medium priority
+          if (vals.includes(queryClean)) score += 10;
+          else if (isMatch(rawValue, searchWords)) score += 5;
         }
       });
 
@@ -168,24 +150,11 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
       }
     });
 
-    const sortedItems = itemMatches.sort((a, b) => b._searchScore - a._searchScore);
-    const combinedSuggestions = [...exactMatches, ...fuzzyMatches].slice(0, 5);
-
     setSearchResults({ 
-      suggestions: combinedSuggestions, 
-      items: sortedItems.slice(0, 5) 
+      suggestions: [...exactMatches, ...fuzzyMatches].slice(0, 5), 
+      items: itemMatches.sort((a, b) => b._searchScore - a._searchScore).slice(0, 5) 
     });
   }, [debouncedSearch, allCollectionItems, searchKeys, suggestionKeys]);
-
-  const triggerSearch = (value: string) => {
-    const params = new URLSearchParams(searchParams);
-    if (value.trim()) params.set('q', value.trim());
-    else params.delete('q');
-    setTempSearch(''); // Vaciar input
-    setShowPredictive(false);
-    setSearchOpen(false);
-    navigate(`${baseHref}?${params.toString()}`);
-  };
 
   const isHidden = scrollDir === "down" && scrollY > 100 && !mobileOpen && !searchOpen && !isHome;
 
@@ -200,8 +169,8 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
       )}
 
       {(mobileOpen || searchOpen || showPredictive) && (
-        <div className={cn("fixed inset-0 bg-black/40 backdrop-blur-[2px] z-40 md:hidden animate-in fade-in duration-300", isHidden || isHome ? "top-0" : "top-8")} 
-             onClick={() => { setMobileOpen(false); setSearchOpen(false); setShowPredictive(false); }} />
+        <div className={cn("fixed inset-0 bg-black/20 backdrop-blur-[1px] z-40 animate-in fade-in duration-300", isHidden || isHome ? "top-0" : "top-8")} 
+             onClick={handleCloseSearch} />
       )}
 
       <nav className={cn("sticky top-0 z-[60] bg-card border-b border-border transition-transform duration-300", isHidden ? "-translate-y-full" : "translate-y-0")}>
@@ -217,46 +186,50 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
               </Link>
             </div>
 
-            {/* NAV ACTIONS */}
             <div className="flex items-center gap-1 md:gap-4 shrink-0 h-full">
               {!isHome && (
                 <>
                   {/* DESKTOP SEARCH */}
-                  <div className="hidden md:flex items-center relative">
-                    <Search className="absolute left-2.5 w-3.5 h-3.5 text-muted-foreground pointer-events-none" />
-                    <Input 
-                      type="text" placeholder="Search" value={tempSearch} 
-                      onFocus={() => { setShowPredictive(true); setCategoriesOpen(false); }}
-                      onChange={(e) => { setTempSearch(e.target.value); setShowPredictive(true); setCategoriesOpen(false); }} 
-                      onKeyDown={(e) => e.key === 'Enter' && tempSearch.length >= 2 && triggerSearch(tempSearch)} 
-                      className="pl-8 pr-8 h-9 w-48 lg:w-64 bg-secondary/20 border-border focus-visible:ring-primary" 
-                    />
-                    {tempSearch && (
-                      <button onClick={() => {setTempSearch(''); document.querySelector<HTMLInputElement>('input[placeholder="Search"]')?.focus();}} className="absolute right-2.5 p-1 hover:text-primary transition-colors">
-                        <X className="w-3.5 h-3.5 text-muted-foreground" />
+                  <div className="hidden md:flex items-center gap-3 relative">
+                    <div className="relative flex items-center">
+                      <Search className="absolute left-2.5 w-3.5 h-3.5 text-muted-foreground pointer-events-none" />
+                      <Input 
+                        type="text" placeholder="Search" value={tempSearch} 
+                        onFocus={() => { setShowPredictive(true); setCategoriesOpen(false); }}
+                        onChange={(e) => { setTempSearch(e.target.value); setShowPredictive(true); setCategoriesOpen(false); }} 
+                        onKeyDown={(e) => e.key === 'Enter' && tempSearch.length >= 2 && triggerSearch(tempSearch)} 
+                        className="pl-8 pr-8 h-9 w-48 lg:w-64 bg-secondary/20 border-border focus-visible:ring-primary" 
+                      />
+                      {tempSearch && (
+                        <button onClick={() => setTempSearch('')} className="absolute right-2.5 p-1 hover:text-primary transition-colors">
+                          <X className="w-3.5 h-3.5 text-muted-foreground" />
+                        </button>
+                      )}
+                    </div>
+                    {showPredictive && (
+                      <button onClick={handleCloseSearch} className="text-xs font-bold text-muted-foreground hover:text-primary transition-colors uppercase tracking-tight">
+                        Cancel
                       </button>
                     )}
                   </div>
 
-                  {/* DESKTOP CATEGORIES TRIGGER */}
+                  {/* DESKTOP CATEGORIES */}
                   <div className="hidden md:flex h-full items-center">
                     <button 
                       onClick={() => { setCategoriesOpen(!categoriesOpen); setShowPredictive(false); }} 
                       className={cn("flex items-center gap-2 px-3 py-2 rounded-md transition-all hover:bg-accent", categoriesOpen ? "bg-accent" : "bg-transparent")}
                     >
-                      <div className="relative w-5 h-5 flex items-center justify-center">
-                        {categoriesOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-                      </div>
+                      {categoriesOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
                       <span className="text-sm font-medium">Categories</span>
                     </button>
                   </div>
 
                   {/* MOBILE BUTTONS */}
                   <div className="flex items-center gap-0.5 md:hidden">
-                    <button className={cn("p-2 rounded-md transition-all duration-200", searchOpen ? "bg-accent" : "")} onClick={() => { setSearchOpen(!searchOpen); setMobileOpen(false); }}>
+                    <button className={cn("p-2 rounded-md transition-all", searchOpen ? "bg-accent" : "")} onClick={() => { setSearchOpen(!searchOpen); setMobileOpen(false); }}>
                       <Search className="w-5 h-5" />
                     </button>
-                    <button className={cn("p-2 rounded-md transition-all duration-200", mobileOpen ? "bg-accent" : "")} onClick={() => { setMobileOpen(!mobileOpen); setSearchOpen(false); }}>
+                    <button className={cn("p-2 rounded-md transition-all", mobileOpen ? "bg-accent" : "")} onClick={() => { setMobileOpen(!mobileOpen); setSearchOpen(false); }}>
                       {mobileOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
                     </button>
                   </div>
@@ -267,9 +240,7 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
           </div>
         </div>
 
-        {/* --- MENÚS DESPLEGABLES (FULL WIDTH) --- */}
-
-        {/* 1. MEGA MENU CATEGORÍAS (Escritorio) */}
+        {/* 1. MEGA MENU CATEGORÍAS */}
         {!isHome && categoriesOpen && (
           <div className="hidden md:block absolute top-full left-0 w-full bg-card border-b border-border z-50 animate-in fade-in slide-in-from-top-0 duration-200 shadow-xl overflow-y-auto max-h-[calc(100vh-3.5rem)]">
             <div className="max-w-[1440px] mx-auto px-8 pt-6 pb-10">
@@ -296,14 +267,14 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
 
         {/* 2. PREDICTIVE SEARCH (Escritorio) */}
         {!isHome && !mobileOpen && !searchOpen && showPredictive && (
-          <div className="hidden md:block absolute top-full left-0 w-full bg-card border-b border-border shadow-2xl z-50 animate-in fade-in slide-in-from-top-0 duration-200">
+          <div className="hidden md:block absolute top-full left-0 w-full bg-card border-b border-border shadow-xl z-50 animate-in fade-in slide-in-from-top-0 duration-200">
             {tempSearch.trim().length < 2 ? (
               <div className="w-full max-w-[1440px] mx-auto py-12 px-6 flex items-center justify-center text-muted-foreground text-sm">
                 Type at least 2 characters to start searching...
               </div>
             ) : (
               <div className="flex flex-col md:flex-row w-full max-w-[1440px] mx-auto relative">
-                <div className="w-full md:w-1/3 p-6 md:border-r border-b md:border-b-0 border-border/50">
+                <div className="w-full md:w-1/3 p-6">
                   <div className="flex items-center justify-between mb-4">
                     <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest">Suggestions</p>
                     <button onClick={() => triggerSearch(tempSearch)} className="text-[10px] font-bold text-primary uppercase tracking-widest hover:underline flex items-center gap-1">
@@ -313,11 +284,7 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
                   <div className="space-y-3">
                     {searchResults?.suggestions.length ? (
                       searchResults.suggestions.map((s, i) => (
-                      <button 
-                          key={i} 
-                          className="block w-full text-sm hover:text-primary transition-colors text-left group/sug" 
-                          onClick={() => handleSuggestionClick((s as any).rawKey, s.value)} // <--- Cambio aquí
-                        >
+                        <button key={i} className="block w-full text-sm hover:text-primary transition-colors text-left group/sug" onClick={() => handleSuggestionClick(s.rawKey, s.value)}>
                           <span className="text-muted-foreground font-normal group-hover/sug:text-primary/70">{s.field}:</span>{" "}
                           <span className="font-semibold">{s.value}</span>
                         </button>
@@ -325,12 +292,12 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
                     ) : <p className="text-sm text-muted-foreground">No matches found.</p>}
                   </div>
                 </div>
-                <div className="w-full md:w-2/3 p-6 bg-secondary/10">
+                <div className="w-full md:w-2/3 p-6">
                   <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-4">Top Results</p>
                   {searchResults?.items.length ? (
                     <div className="grid grid-cols-2 md:grid-cols-5 gap-4">
                       {searchResults.items.map((item) => (
-                        <Link to={`${baseHref}/item/${item.id}`} key={item.id} className="group block" onClick={() => { setShowPredictive(false); setTempSearch(''); }}>
+                        <Link to={`${baseHref}/item/${item.id}`} key={item.id} className="group block" onClick={handleCloseSearch}>
                           <div className="aspect-square bg-muted rounded-md mb-3 overflow-hidden border border-border/50">
                             <img src={item.image || item.Image || ''} alt={item.displayName} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" />
                           </div>
@@ -347,23 +314,24 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
 
         {/* 3. MOBILE SEARCH PANEL */}
         {!isHome && searchOpen && (
-          <div className="md:hidden absolute top-full left-0 right-0 w-full bg-card border-b border-border shadow-2xl z-50 animate-in slide-in-from-top-0 duration-200">
-            <div className="p-4 bg-card border-b border-border/50">
-              <div className="relative flex items-center">
-                <Search className="absolute left-3 w-4 h-4 text-muted-foreground pointer-events-none" />
-                <Input 
-                  autoFocus 
-                  placeholder="Search..." 
-                  value={tempSearch} 
-                  onChange={(e) => setTempSearch(e.target.value)} 
-                  onKeyDown={(e) => e.key === 'Enter' && tempSearch.length >= 2 && triggerSearch(tempSearch)} 
-                  className="pl-9 pr-9 h-11 w-full bg-background border-primary/20 focus-visible:ring-primary" 
-                />
-                {tempSearch && (
-                  <button onClick={() => {setTempSearch(''); document.querySelector<HTMLInputElement>('input[placeholder="Search..."]')?.focus();}} className="absolute right-3 p-1">
-                    <X className="w-4 h-4 text-muted-foreground" />
-                  </button>
-                )}
+          <div className="md:hidden absolute top-full left-0 right-0 w-full bg-card border-b border-border shadow-xl z-50 animate-in slide-in-from-top-0 duration-200">
+            <div className="p-4 bg-card">
+              <div className="flex items-center gap-3">
+                <div className="relative flex-1">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground pointer-events-none" />
+                  <Input 
+                    autoFocus placeholder="Search..." value={tempSearch} 
+                    onChange={(e) => setTempSearch(e.target.value)} 
+                    onKeyDown={(e) => e.key === 'Enter' && tempSearch.length >= 2 && triggerSearch(tempSearch)} 
+                    className="pl-9 pr-9 h-11 w-full bg-background border-primary/20 focus-visible:ring-primary" 
+                  />
+                  {tempSearch && (
+                    <button onClick={() => setTempSearch('')} className="absolute right-3 top-1/2 -translate-y-1/2 p-1">
+                      <X className="w-4 h-4 text-muted-foreground" />
+                    </button>
+                  )}
+                </div>
+                <button onClick={handleCloseSearch} className="text-sm font-bold text-primary px-1">Cancel</button>
               </div>
             </div>
 
@@ -382,35 +350,25 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
                       </button>
                     </div>
                     <div className="space-y-4">
-                      {searchResults?.suggestions.length ? (
-                        searchResults.suggestions.map((s, i) => (
-                        <button 
-                            key={i} 
-                            className="block w-full text-sm py-1 text-left" 
-                            onClick={() => handleSuggestionClick((s as any).rawKey, s.value)} // <--- Cambio aquí
-                          >
-                            <span className="text-muted-foreground">{s.field}:</span>{" "}
-                            <span className="font-semibold">{s.value}</span>
-                          </button>
-                        ))
-                      ) : <p className="text-sm text-muted-foreground">No matches found.</p>}
+                      {searchResults?.suggestions.map((s, i) => (
+                        <button key={i} className="block w-full text-sm py-1 text-left" onClick={() => handleSuggestionClick(s.rawKey, s.value)}>
+                          <span className="text-muted-foreground">{s.field}:</span> <span className="font-semibold">{s.value}</span>
+                        </button>
+                      ))}
                     </div>
                   </div>
-
-                  <div className="p-4 bg-secondary/10">
+                  <div className="p-4">
                     <p className="text-[10px] font-bold text-muted-foreground uppercase tracking-widest mb-4">Top Results</p>
-                    {searchResults?.items.length ? (
-                      <div className="grid grid-cols-2 gap-4">
-                        {searchResults.items.map(item => (
-                          <Link to={`${baseHref}/item/${item.id}`} key={item.id} onClick={() => {setSearchOpen(false); setTempSearch('');}} className="flex flex-col gap-2 group">
-                            <div className="aspect-square bg-muted rounded overflow-hidden border border-border/50">
-                              <img src={item.image || item.Image} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>
-                            </div>
-                            <p className="text-[11px] font-medium line-clamp-2 leading-tight group-hover:text-primary transition-colors">{item.displayName}</p>
-                          </Link>
-                        ))}
-                      </div>
-                    ) : <p className="text-sm text-muted-foreground">No items match your search.</p>}
+                    <div className="grid grid-cols-2 gap-4">
+                      {searchResults?.items.map(item => (
+                        <Link to={`${baseHref}/item/${item.id}`} key={item.id} onClick={handleCloseSearch} className="flex flex-col gap-2 group">
+                          <div className="aspect-square bg-muted rounded overflow-hidden border border-border/50">
+                            <img src={item.image || item.Image} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"/>
+                          </div>
+                          <p className="text-[11px] font-medium line-clamp-2 leading-tight group-hover:text-primary transition-colors">{item.displayName}</p>
+                        </Link>
+                      ))}
+                    </div>
                   </div>
                 </div>
               )}
@@ -420,7 +378,7 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
 
         {/* 4. MOBILE MENU PANEL */}
         {!isHome && mobileOpen && (
-          <div className="md:hidden absolute top-full left-0 right-0 w-full bg-card border-b border-border shadow-2xl z-50 animate-in slide-in-from-top-0 duration-200">
+          <div className="md:hidden absolute top-full left-0 right-0 w-full bg-card border-b border-border shadow-xl z-50 animate-in slide-in-from-top-0 duration-200">
             <div className="max-h-[75vh] overflow-y-auto pb-8 pt-2 relative">
               <div className={cn("px-4 transition-all", activeSubMenu ? "hidden" : "block")}>
                 <Link to={baseHref} className={cn("block py-4 text-base font-bold border-b border-border/40", isAllSelected && "text-primary")} onClick={() => setMobileOpen(false)}>All Items</Link>
