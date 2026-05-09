@@ -6,7 +6,10 @@
 
 import * as Football from "./footballConfig";
 import * as Music from "./musicConfig";
-
+const BASE_PATH = import.meta.env.BASE_URL.endsWith('/') 
+  ? import.meta.env.BASE_URL 
+  : `${import.meta.env.BASE_URL}/`;
+  
 export type CollectionConfig = typeof Football;
 
 export const COLLECTIONS_MAP: Record<string, CollectionConfig> = {
@@ -23,11 +26,11 @@ export const SITE_METADATA = {
   title: "Everardo´s Collections",
   description: "A curated digital archive of personal collections.",
   author: "Everardo",
-  ogImage: "/site/og-image.png",
+  ogImage: `${BASE_PATH}site/og-image.png`,
   lightAccentColor: "1 0% 0%",
   darkAccentColor: "1 0% 100%",
-  logo: "/site/logo.svg",
-  favIcon: "/site/favicon.png",
+  logo: `${BASE_PATH}site/logo.svg`,
+  favIcon: `${BASE_PATH}site/favicon.png`,
 } as const;
 
 // Re-exports de utilidades compartidas para conveniencia

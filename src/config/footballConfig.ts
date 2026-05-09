@@ -17,7 +17,10 @@ import {
 
 export const rawData = rawDataJson as Record<string, string>[];
 export const listsData = listsDataJson as Record<string, string[]>;
-
+const BASE_PATH = import.meta.env.BASE_URL.endsWith('/') 
+  ? import.meta.env.BASE_URL 
+  : `${import.meta.env.BASE_URL}/`;
+  
 // ==========================================
 // 1. METADATOS Y MAPEO
 // ==========================================
@@ -25,11 +28,11 @@ export const metadata = {
   id: "football",
   title: "Everardo´s Football Collection",
   description: `Personal football collection showcase featuring apparel, equipment, and memorabilia.`,
-  ogImage: "/site/og-image.png",
+  ogImage: `${BASE_PATH}site/og-image.png`,
   lightAccentColor: "125 85% 32%",
   darkAccentColor: "125 100% 55%",
-  logo: "/site/football-logo.svg",
-  favIcon: "/site/favicon.png",
+  logo: `${BASE_PATH}site/football-logo.svg`,
+  favIcon: `${BASE_PATH}site/favicon.png`,
   itemCount: rawData.length,
 } as const;
 

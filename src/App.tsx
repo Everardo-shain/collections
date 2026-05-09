@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import { HashRouter, Route, Routes, Navigate } from "react-router-dom"; // Cambiado de BrowserRouter a HashRouter
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -28,22 +28,31 @@ const App = () => (
             <meta property="og:type" content="website" />
             <meta name="twitter:title" content={SITE_METADATA.title} />
             <meta name="twitter:description" content={SITE_METADATA.description} />
+            {/* Opcional: Puedes añadir aquí también el favicon global si quieres centralizarlo */}
+            <link rel="icon" type="image/png" href={SITE_METADATA.favIcon} />
           </Helmet>
 
           <Toaster />
           <Sonner />
 
-          <BrowserRouter basename={import.meta.env.BASE_URL}>
+          {/* Usamos HashRouter para evitar errores 404 al refrescar en GitHub Pages */}
+          <HashRouter>
             <ScrollToTop />
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/view/:collectionId" element={<Index />} />
               <Route path="/view/:collectionId/item/:id" element={<ItemDetail />} />
+              
               {/* Backwards-compat: /item/:id → default collection */}
-              <Route path="/item/:id" element={<Navigate to={`/view/${DEFAULT_COLLECTION_ID}`} replace />} />
+              <Route 
+                path="/item/:id" 
+                element={<Navigate to={`/view/${DEFAULT_COLLECTION_ID}`} replace />} 
+              />
+              
+              {/* Ruta para capturar errores 404 dentro de la app */}
               <Route path="*" element={<NotFound />} />
             </Routes>
-          </BrowserRouter>
+          </HashRouter>
         </TooltipProvider>
       </ThemeProvider>
     </HelmetProvider>

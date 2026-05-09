@@ -18,6 +18,9 @@ import {
 
 export const rawData = rawDataJson as Record<string, string>[];
 export const listsData = listsDataJson as Record<string, string[]>;
+const BASE_PATH = import.meta.env.BASE_URL.endsWith('/') 
+  ? import.meta.env.BASE_URL 
+  : `${import.meta.env.BASE_URL}/`;
 
 // ==========================================
 // 1. METADATOS Y MAPEO
@@ -27,11 +30,11 @@ export const metadata = {
   id: "music",
   title: "Everardo´s Music Collection",
   description: `Personal music collection showcase featuring records, apparel, and memorabilia.`,
-  ogImage: "/site/og-image.png",
+  ogImage: `${BASE_PATH}site/og-image.png`,
   lightAccentColor: "209.277 92% 35%",
   darkAccentColor: "189.084 100% 51%",
-  logo: "/site/music-logo.svg",
-  favIcon: "/site/favicon.png",
+  logo: `${BASE_PATH}site/music-logo.svg`,
+  favIcon: `${BASE_PATH}site/favicon.png`,
   itemCount: rawData.length,
 } as const;
 

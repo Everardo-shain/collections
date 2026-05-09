@@ -75,16 +75,38 @@ export const isMatch = (itemValue: string, search: string | string[]): boolean =
 // ==========================================
 // FACTORIES (MOTOR DINÁMICO)
 // ==========================================
+
+// 1. Cargamos las imágenes. Vite en producción les cambiará el nombre.
 const allImages = import.meta.glob("@/assets/images/*.{jpg,jpeg,png,webp}", { eager: true, import: 'default' });
 const imagePaths = Object.values(allImages) as string[];
+
+// 2. IMPORTANTE: Para el placeholder, no uses la ruta de /src/. 
+const BASE_PATH = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
+const PLACEHOLDER = `${BASE_PATH}images/placeholder.jpg`;
 
 export function createMapItem(FIELD_MAP: Record<string, string>) {
   return function mapItem(raw: Record<string, string>): CollectionItem {
     const id = raw[FIELD_MAP.id]?.trim() || "";
     const fields: any = {};
-    Object.entries(FIELD_MAP).forEach(([camelKey, jsonName]) => { fields[camelKey] = raw[jsonName]?.trim() || ""; });
-    const images = imagePaths.filter(path => (path.split('/').pop() || "").startsWith(`${id}_`)).sort();
-    return { ...fields, id, image: images[0] || "/src/assets/images/placeholder.jpg", images };
+    
+    Object.entries(FIELD_MAP).forEach(([camelKey, jsonName]) => { 
+      fields[camelKey] = raw[jsonName]?.trim() || ""; 
+    });
+
+    // 3. Filtrado de imágenes corregido para producción:
+    // En producción, el path puede ser "/collections/assets/ID_01-DqM4I3vR.jpg"
+    // Buscamos que el nombre del archivo (después de la última /) empiece por el ID.
+    const images = imagePaths.filter(path => {
+      const fileName = path.split('/').pop() || "";
+      return fileName.startsWith(`${id}_`) || fileName.startsWith(`${id}-`);
+    }).sort();
+
+    return { 
+      ...fields, 
+      id, 
+      image: images[0] || PLACEHOLDER, // Usamos el placeholder seguro
+      images 
+    };
   };
 }
 
