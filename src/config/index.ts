@@ -23,11 +23,11 @@ export const SITE_METADATA = {
   title: "Everardo´s Collections",
   description: "A curated digital archive of personal collections.",
   author: "Everardo",
-  url: "https://tu-sitio.com",
-  ogImage: "/og-image.png",
+  ogImage: "/site/og-image.png",
   lightAccentColor: "1 0% 0%",
   darkAccentColor: "1 0% 100%",
-  logo: "/src/assets/site/logo.svg",
+  logo: "/site/logo.svg",
+  favIcon: "/site/favicon.png",
 } as const;
 
 // Re-exports de utilidades compartidas para conveniencia

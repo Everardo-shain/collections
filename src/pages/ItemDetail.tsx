@@ -198,6 +198,7 @@ export default function ItemDetail() {
     <>
       <Helmet>
         <title>{`${item.displayName} | ${metadata?.title || SITE_METADATA.title}`}</title>
+        <link rel="icon" type="image/png" href={metadata?.favIcon || SITE_METADATA.favIcon} />
       </Helmet>
 
       <style>{`

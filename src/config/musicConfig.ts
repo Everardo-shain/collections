@@ -27,10 +27,11 @@ export const metadata = {
   id: "music",
   title: "Everardo´s Music Collection",
   description: `Personal music collection showcase featuring records, apparel, and memorabilia.`,
-  ogImage: "/og-image.png",
+  ogImage: "/site/og-image.png",
   lightAccentColor: "209.277 92% 35%",
   darkAccentColor: "189.084 100% 51%",
-  logo: "/src/assets/site/music-logo.svg",
+  logo: "/site/music-logo.svg",
+  favIcon: "/site/favicon.png",
   itemCount: rawData.length,
 } as const;
 

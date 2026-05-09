@@ -30,6 +30,7 @@ export default function Home() {
       <Helmet>
         <title>{SITE_METADATA.title}</title>
         <meta name="description" content={SITE_METADATA.description} />
+        <link rel="icon" type="image/png" href={SITE_METADATA.favIcon} />
       </Helmet>
 
       <div className="min-h-screen bg-background flex flex-col">

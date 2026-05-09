@@ -183,6 +183,7 @@ const Index = () => {
     <div className="min-h-screen bg-background">
       <Helmet>
         <title>{seoTitle}</title>
+        <link rel="icon" type="image/png" href={metadata?.favIcon || SITE_METADATA.favIcon} />
       </Helmet>
 
       <CollectionNavbar navGroups={navGroups} />

@@ -25,10 +25,11 @@ export const metadata = {
   id: "football",
   title: "Everardo´s Football Collection",
   description: `Personal football collection showcase featuring apparel, equipment, and memorabilia.`,
-  ogImage: "/og-image.png",
+  ogImage: "/site/og-image.png",
   lightAccentColor: "125 85% 32%",
   darkAccentColor: "125 100% 55%",
-  logo: "/src/assets/site/football-logo.svg",
+  logo: "/site/football-logo.svg",
+  favIcon: "/site/favicon.png",
   itemCount: rawData.length,
 } as const;
 
