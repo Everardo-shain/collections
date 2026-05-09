@@ -1,5 +1,5 @@
 import { useRef, useState, useEffect, useMemo, useCallback } from 'react';
-import { SlidersHorizontal, ChevronDown, LayoutGrid, BarChart3 } from 'lucide-react';
+import { SlidersHorizontal, ChevronDown, LayoutGrid, BarChart3, ArrowDownWideNarrow} from 'lucide-react';
 import { CollectionNavbar } from '@/components/collection/CollectionNavbar';
 import { CollectionBreadcrumb } from '@/components/collection/CollectionBreadcrumb';
 import { FilterSidebar } from '@/components/collection/FilterSidebar';
@@ -20,12 +20,11 @@ const NAV_HEIGHT = 56;
 const Index = () => {
   const location = useLocation();
   const [searchParams, setSearchParams] = useSearchParams();
-  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(() => typeof window !== 'undefined' ? window.innerWidth >= 1024 : true);
   const [sortBy, setSortBy] = useState<SortOption>('default');
   const [sortOpen, setSortOpen] = useState(false);
   const [scrollY, setScrollY] = useState(0);
 
-  // --- LÓGICA DE VISTA BASADA EN URL ---
   const viewMode = (searchParams.get('view') as 'gallery' | 'stats') || 'gallery';
   const activeStatsTable = searchParams.get('table') || null;
 
@@ -35,7 +34,7 @@ const Index = () => {
       newParams.set('view', 'stats');
     } else {
       newParams.delete('view');
-      newParams.delete('table'); // Limpiar tabla si volveмы al grid
+      newParams.delete('table');
     }
     setSearchParams(newParams);
   };
@@ -97,11 +96,10 @@ const Index = () => {
     setSearchQuery: allFilters.setSearchQuery,
   };
 
-const getPageTitle = () => {
+  const getPageTitle = () => {
     if (searchQuery) return `Search: "${searchQuery}"`;
     const urlParams = new URLSearchParams(window.location.search);
 
-    // 1. Prioridad: Custom Label desde el state (para nav_ o attr_)
     if (location.state?.customLabel && location.state?.filterKey) {
       const lowKey = location.state.filterKey.toLowerCase();
       if (urlParams.has(`nav_${lowKey}`) || urlParams.has(`attr_${lowKey}`)) {
@@ -109,13 +107,11 @@ const getPageTitle = () => {
       }
     }
 
-    // Helper para obtener valor de cualquier prefijo
     const getParamVal = (k: string) => {
       const lowerK = k.toLowerCase();
       return urlParams.get(`nav_${lowerK}`) || urlParams.get(`attr_${lowerK}`) || null;
     };
 
-    // 2. Construcción de Composite Key (para Labels específicos/jerarquía)
     let compositeKey = BREADCRUMB_KEYS
       .map(k => getParamVal(k))
       .filter(v => v !== null && valid(v))
@@ -133,7 +129,6 @@ const getPageTitle = () => {
     const activeHierarchy = BREADCRUMB_RESOLVER({ filtersState: navState }) || NAVIGATION_BREADCRUMB;
     const hierarchyKeysLower = activeHierarchy.map(k => k.toLowerCase());
 
-    // 3. Extraemos todas las llaves dinámicas de la URL (nav_ y attr_)
     const urlKeys = Array.from(urlParams.keys())
       .filter(k => k.startsWith('nav_') || k.startsWith('attr_'))
       .map(k => k.replace('nav_', '').replace('attr_', ''));
@@ -151,11 +146,8 @@ const getPageTitle = () => {
         const extraText = isHierarchyField ? (specificLabels?.[lowerField] || "") : "";
         const combinedLabel = `${value}${extraText}`;
         
-        // Formateo base (ej. limpieza de IDs o capitalización)
         let formattedLabel = formatDisplayValue(lowerField, combinedLabel);
 
-        // --- LÓGICA DE PREFIJO PARA ATTR_ ---
-        // Si el parámetro en la URL es attr_, le ponemos el nombre del campo
         if (urlParams.has(`attr_${lowerField}`)) {
           const fieldMap = (config.FIELD_MAP as any) || {};
           const fieldName = fieldMap[lowerField] || field.charAt(0).toUpperCase() + field.slice(1);
@@ -166,7 +158,6 @@ const getPageTitle = () => {
       })
       .filter(Boolean) as { label: string; field: string }[];
 
-    // 4. Retorno final
     if (activeFilters.length === 0) return 'All Items';
     
     const last = activeFilters[activeFilters.length - 1];
@@ -192,11 +183,9 @@ const getPageTitle = () => {
     <div className="min-h-screen bg-background">
       <Helmet>
         <title>{seoTitle}</title>
-        <meta name="description" content={metadata?.description || SITE_METADATA.description} />
       </Helmet>
 
       <CollectionNavbar navGroups={navGroups} />
-
       <CollectionBreadcrumb filtersState={navState} searchQuery={searchQuery} />
 
       <div className="max-w-[1440px] mx-auto px-4 sm:px-6 lg:px-8 py-6">
@@ -206,73 +195,119 @@ const getPageTitle = () => {
           className="sticky z-20 bg-background pt-2 transition-all duration-300 ease-in-out pb-3"
         >
           <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
-            <div>
-              <h1 className="font-heading text-xl md:text-2xl font-bold text-foreground tracking-tight">
-                {pageTitle} ({filteredItems.length})
+            
+            {/* GRUPO IZQUIERDO: Título con Count integrado */}
+            <div className="space-y-3">
+              <h1 className="font-heading text-xl md:text-2xl font-bold text-foreground tracking-tight flex items-baseline gap-2">
+                <span>{pageTitle}</span>
+                <span className="text-sm md:text-base font-medium text-muted-foreground tabular-nums">
+                  [{filteredItems.length}]
+                </span>
               </h1>
+              
+              {/* Desktop: Filters Button */}
+              <div className="hidden md:flex items-center">
+                <button
+                  className={cn(
+                    "flex items-center gap-2 px-3 py-1.5 rounded-lg border text-sm font-medium transition-all duration-200",
+                    "bg-card hover:bg-accent/50",
+                    sidebarOpen 
+                      ? "border-primary text-primary ring-1 ring-primary/20" 
+                      : "border-border text-foreground"
+                  )}
+                  onClick={() => setSidebarOpen(!sidebarOpen)}
+                >
+                  <SlidersHorizontal className={cn("w-3.5 h-3.5 transition-transform", sidebarOpen && "scale-110")} />
+                  <span>Filters</span> 
+                </button>
+              </div>
             </div>
 
-            <div className="flex items-center justify-between md:justify-end gap-3">
-              <button
-                className="lg:hidden flex items-center gap-2 px-3 py-2 rounded-lg border border-border text-sm font-medium text-foreground bg-card hover:bg-accent/50 transition-colors"
-                onClick={() => setSidebarOpen(true)}
-              >
-                <SlidersHorizontal className="w-4 h-4" />
-                <span>Filters</span> 
-              </button>
-              
-              <div className="flex items-center gap-2 md:gap-3">
+            {/* TOOLBAR DERECHA / MOBILE */}
+            <div className="flex items-center justify-between md:justify-end gap-2">
+              {/* Mobile: Filters Button (Texto siempre visible) */}
+              <div className="flex md:hidden items-center">
+                <button
+                  className={cn(
+                    "flex items-center gap-2 px-3 py-2 rounded-lg border text-sm font-medium transition-all duration-200",
+                    "bg-card",
+                    sidebarOpen ? "border-primary text-primary" : "border-border text-foreground"
+                  )}
+                  onClick={() => setSidebarOpen(!sidebarOpen)}
+                >
+                  <SlidersHorizontal className="w-4 h-4" />
+                  <span>Filters</span>
+                </button>
+              </div>
+
+              {/* Acciones comunes: View Mode y Sort */}
+              <div className="flex items-center gap-2">
+                {/* Toggle de Vista */}
                 <div className="inline-flex items-center rounded-lg border border-border p-0.5 bg-card">
                   <button
                     onClick={() => setViewMode('gallery')}
                     className={cn(
-                      "flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-sm font-medium transition-colors",
-                      viewMode === 'gallery' ? "text-primary-foreground" : "text-muted-foreground hover:text-foreground"
+                      "flex items-center gap-1.5 px-2 py-1.5 md:px-2.5 rounded-md text-sm font-medium transition-colors",
+                      viewMode === 'gallery' ? "text-primary-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
                     )}
                     style={viewMode === 'gallery' ? { backgroundColor: 'hsl(var(--accent-color))' } : undefined}
                   >
                     <LayoutGrid className="w-4 h-4" />
-                    <span className="hidden sm:inline">Gallery</span>
+                    <span className="hidden lg:inline">Gallery</span>
                   </button>
                   <button
                     onClick={() => setViewMode('stats')}
                     className={cn(
-                      "flex items-center gap-1.5 px-2.5 py-1.5 rounded-md text-sm font-medium transition-colors",
-                      viewMode === 'stats' ? "text-primary-foreground" : "text-muted-foreground hover:text-foreground"
+                      "flex items-center gap-1.5 px-2 py-1.5 md:px-2.5 rounded-md text-sm font-medium transition-colors",
+                      viewMode === 'stats' ? "text-primary-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"
                     )}
                     style={viewMode === 'stats' ? { backgroundColor: 'hsl(var(--accent-color))' } : undefined}
                   >
                     <BarChart3 className="w-4 h-4" />
-                    <span className="hidden sm:inline">Stats</span>
+                    <span className="hidden lg:inline">Stats</span>
                   </button>
                 </div>
 
+                {/* Botón de Sort (Texto siempre visible) */}
                 <div className="relative">
                   <button
                     onClick={() => setSortOpen(!sortOpen)}
-                    className="flex items-center gap-1.5 px-3 py-2 rounded-lg border border-border text-sm font-medium text-foreground hover:bg-accent/50 transition-colors"
+                    className={cn(
+                      "flex items-center gap-2 px-3 py-2 rounded-lg border text-sm font-medium transition-all duration-200",
+                      "bg-card outline-none",
+                      "md:hover:bg-accent/50 active:bg-accent/80", 
+                      sortOpen 
+                        ? "border-primary text-primary ring-1 ring-primary/20 bg-accent/30" 
+                        : "border-border text-foreground"
+                    )}
                   >
-                    {SORT_CONFIG[sortBy].label}
-                    <ChevronDown className={cn("w-3.5 h-3.5 transition-transform", sortOpen && "rotate-180")} />
+                    <ArrowDownWideNarrow className={cn("w-4 h-4", sortOpen ? "text-primary" : "text-foreground")} />
+                    <span className="font-normal">Sort</span>
+                    <ChevronDown className={cn("w-3.5 h-3.5 transition-transform opacity-50", sortOpen && "rotate-180")} />
                   </button>
                   {sortOpen && (
-                    <div className="absolute right-0 top-full mt-1 min-w-[160px] bg-card border border-border rounded-lg shadow-lg py-1 z-30">
+                    <div className="absolute right-0 top-full mt-1.5 min-w-[180px] bg-card border border-border rounded-xl shadow-xl py-1.5 z-30 animate-in fade-in zoom-in-95 duration-100">
+                      <div className="px-3 py-1 text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
+                        Order by
+                      </div>
                       {(Object.keys(SORT_CONFIG) as SortOption[]).map(opt => (
                         <button
                           key={opt}
                           onClick={() => { setSortBy(opt); setSortOpen(false); }}
                           className={cn(
-                            "block w-full text-left px-4 py-2 text-sm transition-colors hover:bg-accent/50",
-                            sortBy === opt ? 'text-primary font-medium' : 'text-muted-foreground'
+                            "flex items-center justify-between w-full text-left px-4 py-2 text-sm transition-colors hover:bg-accent/50",
+                            sortBy === opt ? 'text-primary bg-primary/5 font-semibold' : 'text-muted-foreground'
                           )}
                         >
                           {SORT_CONFIG[opt].label}
+                          {sortBy === opt && <div className="w-1.5 h-1.5 rounded-full bg-primary" />}
                         </button>
                       ))}
                     </div>
                   )}
                 </div>
               </div>
+
             </div>
           </div>
 
@@ -283,7 +318,11 @@ const getPageTitle = () => {
           />
         </div>
 
-        <div className="flex items-start gap-0 lg:gap-8 mt-4">
+        {/* Optimización de transiciones en el contenedor principal */}
+        <div className={cn(
+          "flex items-start mt-4 transition-[padding,gap] duration-300 ease-in-out", 
+          sidebarOpen ? "gap-0 lg:gap-8" : "gap-0"
+        )}>
           <FilterSidebar
             filterOptions={filterOptions}
             selectedFilters={sidebarState}
@@ -294,22 +333,20 @@ const getPageTitle = () => {
             stickyOffset={stickyOffset}
           />
 
-          <div className="flex-1 min-w-0">
-            {viewMode === 'gallery' ? (
-              <ItemGrid items={sortedItems} />
-            ) : (
-              <StatsView
-                items={sortedItems}
-                sidebarState={sidebarState}
-                activeTable={activeStatsTable}
-                onChangeTable={handleStatsTableChange}
-                onSelectValue={(key, value) => {
-                  filters.toggleFilter(key, value);
-                  // La navegación a 'gallery' ya ocurre dentro de StatsView 
-                  // a través del handleRowClick que definimos anteriormente.
-                }}
-              />
-            )}
+          <div className="flex-1 min-w-0 transition-all duration-300 ease-in-out">
+            <div className="animate-in fade-in duration-500">
+              {viewMode === 'gallery' ? (
+                <ItemGrid items={sortedItems} />
+              ) : (
+                <StatsView
+                  items={sortedItems}
+                  sidebarState={sidebarState}
+                  activeTable={activeStatsTable}
+                  onChangeTable={handleStatsTableChange}
+                  onSelectValue={(key, value) => { filters.toggleFilter(key, value); }}
+                />
+              )}
+            </div>
           </div>
         </div>
       </div>

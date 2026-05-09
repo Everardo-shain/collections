@@ -108,7 +108,7 @@ export function FilterSidebar({
 
   const isDesktop = typeof window !== 'undefined' && window.innerWidth >= 1024;
 
-  return (
+return (
     <>
       {isOpen && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[60] lg:hidden" onClick={onClose} />
@@ -121,26 +121,27 @@ export function FilterSidebar({
         }}
         className={cn(
           "transition-all duration-300 ease-in-out",
-          "fixed left-0 top-0 w-80 bg-card z-[70] transform lg:translate-x-0",
-          // MODIFICACIÓN AQUÍ:
-          "lg:sticky lg:w-64 lg:shrink-0 lg:block lg:z-auto", 
-          "lg:overflow-y-auto lg:custom-scrollbar", // El scrollbar y el espacio reservado van aquí
-          isOpen ? "translate-x-0" : "-translate-x-full",
+          "fixed left-0 top-0 w-80 bg-background z-[70] transform lg:translate-x-0",
+          "lg:sticky lg:shrink-0 lg:z-auto", 
+          "lg:overflow-y-auto lg:custom-scrollbar",
+          isOpen ? "translate-x-0 lg:w-64 lg:block opacity-100" : "-translate-x-full lg:w-0 lg:hidden lg:opacity-0",
           "custom-scrollbar"
         )}
       >
         <div className="p-4 lg:p-0 lg:pr-6 h-full overflow-y-auto lg:overflow-visible">
-          <div className="flex items-start justify-between mb-4">
-            <div className="flex items-start gap-2 text-sm font-semibold text-foreground py-1.5">
+          {/* Header del Sidebar solo visible en Mobile */}
+          <div className="flex items-center justify-between mb-4 lg:hidden">
+            <div className="flex items-center gap-2 text-sm font-semibold text-foreground py-1.5">
               <SlidersHorizontal className="w-4 h-4" />
               Filters
             </div>
-            <button className="lg:hidden p-2 -mr-2 hover:bg-accent rounded-full transition-colors" onClick={onClose}>
+            <button className="p-2 -mr-2 hover:bg-accent rounded-full transition-colors" onClick={onClose}>
               <X className="w-5 h-5" />
             </button>
           </div>
 
           {!hasVisibleFilters ? (
+            // ... mismo estado vacío ...
             <div className="mt-4 p-4 border border-dashed border-muted rounded-xl bg-muted/20">
               <p className="text-xs text-muted-foreground text-center italic leading-relaxed">
                 No additional filters available for these results.
@@ -148,31 +149,17 @@ export function FilterSidebar({
             </div>
           ) : (
             filterKeys.map(key => {
+              // ... lógica de renderizado de FilterSection (sin cambios) ...
               const options = filterOptions[key] || [];
               const selected = selectedFilters[key] || [];
-
               if (options.length === 0 && selected.length === 0) return null;
-
               const label = getFilterLabel(key);
-              const customConfig = CUSTOM_FILTERS[key];
-              const fieldKeyForOrder = (customConfig?.filter as string) || key;
-
-              let sortedOptions = [...options];
-
-              if (listsData) {
-                sortedOptions.sort((a, b) => {
-                  const posA = getIndex(a.value, fieldKeyForOrder);
-                  const posB = getIndex(b.value, fieldKeyForOrder);
-                  if (posA === posB) return b.count - a.count;
-                  return posA - posB;
-                });
-              }
-
+              
               return (
                 <FilterSection
                   key={key}
                   label={label}
-                  options={sortedOptions}
+                  options={options}
                   selected={selected}
                   onToggle={(value) => onToggleFilter(key, value)}
                 />
