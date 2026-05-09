@@ -25,7 +25,7 @@ export default function Home() {
     return () => observer.disconnect();
   }, []);
 
-return (
+  return (
     <>
       <Helmet>
         <title>{SITE_METADATA.title}</title>
@@ -37,67 +37,105 @@ return (
 
         <main className="flex-1 max-w-[1200px] mx-auto w-full px-4 sm:px-6 lg:px-8 py-14 md:py-20">
           
-          {/* SECCIÓN HERO PRINCIPAL */}
-          <div className="text-center mb-10 md:mb-13">
-            <div className="flex flex-col items-center gap-2">
-              {/* CORRECCIÓN: Añadido isDark={true} */}
-              <SmartTitle 
-                title={SITE_METADATA.title} 
-                logoUrl={SITE_METADATA.logo} 
-                height="clamp(3.5rem, 6vw, 8rem)"
-                isDark={true} 
-              />
-              
-              <p className="text-base md:text-lg text-muted-foreground max-w-xl mx-auto whitespace-pre-line leading-relaxed">
-                {SITE_METADATA.description}
-              </p>
-            </div>
+        {/* SECCIÓN HERO PRINCIPAL */}
+        <div className="text-center mb-10 md:mb-13">
+          <div className="flex flex-col items-center gap-2">
+            <SmartTitle 
+              title={SITE_METADATA.title} 
+              logoUrl={SITE_METADATA.logo} 
+              height="clamp(3.5rem, 6vw, 8rem)"
+              isDark={true} 
+              // Envolvemos el valor de la config en hsl()
+              logoColor={`hsl(${isDarkMode ? SITE_METADATA.darkAccentColor : SITE_METADATA.lightAccentColor})`}
+              lineColor={`hsl(${isDarkMode ? SITE_METADATA.darkAccentColor : SITE_METADATA.lightAccentColor})`}
+              textColor={`hsl(${isDarkMode ? SITE_METADATA.darkAccentColor : SITE_METADATA.lightAccentColor})`}
+            />
+            
+            <p className="text-base md:text-lg text-muted-foreground max-w-xl mx-auto whitespace-pre-line leading-relaxed">
+              {SITE_METADATA.description}
+            </p>
           </div>
+        </div>
 
-          {/* GRID DE COLECCIONES */}
-          <div className="flex flex-wrap justify-center gap-6">
-            {ids.map(id => {
-              const config = COLLECTIONS_MAP[id];
-              const meta = (config as any).metadata;
-              
-              const collectionAccent = isDarkMode 
-                ? (meta?.darkAccentColor || meta?.lightAccentColor) 
-                : meta?.lightAccentColor;
-              
-              return (
-                <Link
-                  key={id}
-                  to={`/view/${id}`}
-                  className="group relative w-full md:max-w-[calc(50%-12px)] rounded-2xl border border-border bg-card p-8 md:p-10 transition-all hover:shadow-lg overflow-hidden hover:border-[var(--card-accent)]"
-                  style={{
-                    borderTop: collectionAccent ? `4px solid hsl(${collectionAccent})` : undefined,
-                    "--card-accent": collectionAccent ? `hsl(${collectionAccent})` : "var(--primary)"
-                  } as React.CSSProperties}
+        {/* GRID DE COLECCIONES */}
+        <div className="flex flex-wrap justify-center gap-6">
+          {ids.map(id => {
+            const config = COLLECTIONS_MAP[id];
+            const meta = (config as any).metadata;
+            
+            const itemCount = meta?.itemCount || (config as any).rawData?.length || 0;
+            
+            const collectionAccent = isDarkMode 
+              ? (meta?.darkAccentColor || meta?.lightAccentColor) 
+              : meta?.lightAccentColor;
+            
+            return (
+              <Link
+                key={id}
+                to={`/view/${id}`}
+                className="group relative w-full md:max-w-[calc(50%-12px)] rounded-2xl border border-border bg-card transition-all hover:shadow-lg overflow-hidden flex flex-col hover:border-[var(--card-accent)]"
+                style={{
+                  "--card-accent": collectionAccent ? `hsl(${collectionAccent})` : "var(--primary)"
+                } as React.CSSProperties}
+              >
+                {/* CABECERA (BLOQUE SUPERIOR) */}
+                <div 
+                  className="px-6 py-4 md:px-10 md:py-6 flex items-center transition-colors"
+                  style={{ 
+                    backgroundColor: collectionAccent ? `hsl(${collectionAccent})` : "var(--primary)",
+                    // Reducimos la altura mínima en mobile (60px) y la aumentamos en desktop (80px)
+                    minHeight: "clamp(60px, 10vw, 80px)" 
+                  }}
                 >
-                  <div className="mb-6">
-                    {/* CORRECCIÓN: Añadido isDark={true} */}
+                  <div className="min-w-0"> 
                     <SmartTitle 
                       title={meta?.title || id} 
                       logoUrl={meta?.logo} 
-                      height="clamp(1.5rem, 5vw, 2rem)" 
+                      height="clamp(1.5rem, 4vw, 2rem)" 
                       isDark={true} 
+                      logoColor="hsl(var(--card))"
+                      lineColor="hsl(var(--card))"
+                      textColor="hsl(var(--card))"    
                     />
                   </div>
+                </div>
 
-                  <p className="text-sm text-muted-foreground mb-8 whitespace-pre-line leading-relaxed line-clamp-3">
+                {/* CUERPO (DESCRIPCIÓN) */}
+                <div className="px-6 py-6 md:px-10 md:py-6 flex-1">
+                  <p className="text-sm text-muted-foreground whitespace-pre-line leading-relaxed line-clamp-3">
                     {meta?.description}
                   </p>
-                  
+                </div>
+
+                {/* PIE (BLOQUE INFERIOR) */}
+                <div 
+                  className="px-6 py-4 md:px-10 md:py-6 flex items-center justify-between transition-colors"
+                  style={{ 
+                    minHeight: "clamp(60px, 10vw, 80px)" // Misma altura mínima que la cabecera
+                  }} 
+                >
                   <div 
-                    className="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-wider transition-transform group-hover:translate-x-1"
+                    className="inline-flex items-center gap-2 text-sm font-black uppercase tracking-widest transition-transform group-hover:translate-x-1"
                     style={collectionAccent ? { color: `hsl(${collectionAccent})` } : undefined}
                   >
                     Explore <span className="text-lg">→</span>
                   </div>
-                </Link>
-              );
-            })}
-          </div>
+                  <div className="flex items-baseline gap-1.5">
+                    <span 
+                      className="text-base md:text-lg font-bold tabular-nums leading-none tracking-tight" // Bajamos de xL a lg y de black a bold
+                      style={collectionAccent ? { color: `hsl(${collectionAccent})` } : undefined}
+                    >
+                      {itemCount}
+                    </span>
+                    <span className="text-[10px] uppercase tracking-[0.15em] font-medium text-muted-foreground leading-none">
+                      Items
+                    </span>
+                  </div>
+                </div>
+              </Link>
+            );
+          })}
+        </div>
         </main>
 
         <footer className="border-t border-border py-8">

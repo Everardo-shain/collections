@@ -31,6 +31,7 @@ export const metadata = {
   lightAccentColor: "209.277 92% 35%",
   darkAccentColor: "189.084 100% 51%",
   logo: "/src/assets/site/music-logo.svg",
+  itemCount: rawData.length,
 } as const;
 
 

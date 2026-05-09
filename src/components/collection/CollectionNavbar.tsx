@@ -198,7 +198,14 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
               <Link to={baseHref} className="relative flex items-center h-full px-4 lg:px-8 -ml-4 lg:-ml-8 pr-12 md:pr-24 lg:pr-32 group shrink-0">
                 <div className="absolute z-0 bg-primary" style={{ top: '0px', bottom: '0px', left: 0, right: 0, clipPath: 'polygon(0 0, 100% 0, 85% 100%, 0 100%)' }} />
                 <div className="relative z-10">
-                  <SmartTitle title={collectionTitle} logoUrl={logoUrl} height="clamp(1.5rem, 5vw, 2rem)" />
+                  <SmartTitle 
+                    title={collectionTitle}
+                    logoUrl={logoUrl}
+                    height="clamp(1.5rem, 5vw, 2rem)"
+                    logoColor="hsl(var(--card))"
+                    lineColor="hsl(var(--card))"
+                    textColor="hsl(var(--card))"
+                  />
                 </div>
               </Link>
             </div>

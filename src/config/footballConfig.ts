@@ -29,6 +29,7 @@ export const metadata = {
   lightAccentColor: "125 85% 32%",
   darkAccentColor: "125 100% 55%",
   logo: "/src/assets/site/football-logo.svg",
+  itemCount: rawData.length,
 } as const;
 
 export const FIELD_MAP = {
