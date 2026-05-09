@@ -288,7 +288,7 @@ const Index = () => {
                   {sortOpen && (
                     <div className="absolute right-0 top-full mt-1.5 min-w-[180px] bg-card border border-border rounded-xl shadow-xl py-1.5 z-30 animate-in fade-in zoom-in-95 duration-100">
                       <div className="px-3 py-1 text-[10px] font-bold text-muted-foreground uppercase tracking-widest">
-                        Order by
+                        Sort by
                       </div>
                       {(Object.keys(SORT_CONFIG) as SortOption[]).map(opt => (
                         <button

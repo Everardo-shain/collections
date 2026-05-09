@@ -81,7 +81,7 @@ export function FilterSidebar({
   stickyOffset,
 }: FilterSidebarProps) {
   const { config } = useCollection();
-  const { FIELD_MAP, CUSTOM_FILTERS, getIndex, listsData } = config;
+  const { FIELD_MAP, CUSTOM_FILTERS} = config;
 
   const getFilterLabel = (key: string) => {
     if (CUSTOM_FILTERS[key]) return CUSTOM_FILTERS[key].label;
