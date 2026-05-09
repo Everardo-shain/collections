@@ -4,10 +4,13 @@ import path from "path";
 import { componentTagger } from "lovable-tagger";
 
 export default defineConfig(({ mode }) => ({
-  // REGLA DE ORO PARA GITHUB PAGES:
-  // Si tu repo se llama "mi-coleccion", usa: base: "/mi-coleccion/"
-  // Si usas dominio propio o es el repo principal (usuario.github.io), usa: base: "/"
-  base: "/collections", 
+  // Si estamos en producción (build), usamos la ruta del repo. 
+  // En desarrollo (npm run dev), usamos la raíz "/"
+  base: mode === 'production' ? '/collections/' : '/', 
+  
+  // NOTA: Si tu URL de GitHub NO tiene dominio propio 
+  // y es algo como: usuario.github.io/mi-coleccion/
+  // ENTONCES en 'production' debes poner '/mi-coleccion/'
   
   server: {
     host: "::",
