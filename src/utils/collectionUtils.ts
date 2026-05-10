@@ -22,9 +22,8 @@ export type NavGroup = { label: string; children: NavChild[] };
 export type SortOption = 'default' | 'newest' | 'oldest';
 export interface SortConfig { label: string; compare: (a: CollectionItem, b: CollectionItem) => number; }
 
-
 // ==========================================
-// HELPERS DE STRING / VALIDACIÓN
+// HELPERS DE STRING / VALIDACIÓN (Se mantienen igual)
 // ==========================================
 export function normalizeKey(key: string): string {
   return key.toLowerCase().trim().replace(/\s+/g, "-");
@@ -39,9 +38,6 @@ export function getDynamicValue(item: CollectionItem, key: string): string {
   return typeof value === "string" ? value : "";
 }
 
-// ==========================================
-// HELPERS DE BÚSQUEDA
-// ==========================================
 export const cleanText = (str: string) =>
   str.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").trim();
 
@@ -76,15 +72,28 @@ export const isMatch = (itemValue: string, search: string | string[]): boolean =
 // FACTORIES (MOTOR DINÁMICO)
 // ==========================================
 
-// 1. Cargamos las imágenes. Vite en producción les cambiará el nombre.
-const allImages = import.meta.glob("@/assets/images/*.{jpg,jpeg,png,webp}", { eager: true, import: 'default' });
-const imagePaths = Object.values(allImages) as string[];
+// ==========================================
+// FACTORIES (MOTOR DINÁMICO)
+// ==========================================
 
-// 2. IMPORTANTE: Para el placeholder, no uses la ruta de /src/. 
-const BASE_PATH = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL : `${import.meta.env.BASE_URL}/`;
-const PLACEHOLDER = `${BASE_PATH}images/placeholder.jpg`;
+// 1. Cargamos todas las imágenes
+const allImagesRaw = import.meta.glob("@/assets/images/**/*.{jpg,jpeg,png,webp,svg}", { eager: true, import: 'default' });
 
-export function createMapItem(FIELD_MAP: Record<string, string>) {
+// 2. Mapeamos el registro limpiando las rutas
+const imageRegistry = Object.entries(allImagesRaw).map(([originalPath, finalUrl]) => {
+  // originalPath suele ser algo como "/src/assets/images/music/foto.jpg"
+  // Vamos a normalizarlo para que las comparaciones sean seguras
+  return {
+    fullPath: originalPath, 
+    fileName: originalPath.split('/').pop() || "",
+    url: finalUrl as string
+  };
+});
+
+export function createMapItem(FIELD_MAP: Record<string, string>, imageFolder?: string) {
+  // Mensaje de depuración para ver qué carpeta estamos procesando
+  console.log(`[Motor] Inicializando mapeo para la carpeta: "${imageFolder}"`);
+
   return function mapItem(raw: Record<string, string>): CollectionItem {
     const id = raw[FIELD_MAP.id]?.trim() || "";
     const fields: any = {};
@@ -93,24 +102,48 @@ export function createMapItem(FIELD_MAP: Record<string, string>) {
       fields[camelKey] = raw[jsonName]?.trim() || ""; 
     });
 
-    // 3. Filtrado de imágenes corregido para producción:
-    // En producción, el path puede ser "/collections/assets/ID_01-DqM4I3vR.jpg"
-    // Buscamos que el nombre del archivo (después de la última /) empiece por el ID.
-    const images = imagePaths.filter(path => {
-      const fileName = path.split('/').pop() || "";
-      return fileName.startsWith(`${id}_`) || fileName.startsWith(`${id}-`);
-    }).sort();
+    // 3. FILTRADO ESTRICTO POR CARPETA
+    const collectionImages = imageRegistry.filter(img => {
+      if (!imageFolder) return true;
+
+      // Creamos un patrón que busque la carpeta exacta entre barras
+      // Ejemplo: si imageFolder es "football", busca "/football/" en la ruta completa
+      const folderPattern = `/${imageFolder}/`;
+      return img.fullPath.includes(folderPattern);
+    });
+
+    // 4. FILTRADO POR ID
+    const itemImages = collectionImages
+      .filter(img => {
+        // Buscamos el ID seguido de un guion o guion bajo para no mezclar IDs parecidos
+        return img.fileName.startsWith(`${id}_`) || img.fileName.startsWith(`${id}-`);
+      })
+      .sort((a, b) => a.fileName.localeCompare(b.fileName))
+      .map(img => img.url);
+
+    // 5. PLACEHOLDER
+    const folderPlaceholder = collectionImages.find(img => 
+      img.fileName.toLowerCase().startsWith("placeholder.")
+    )?.url;
+
+    // Log para detectar si se están mezclando
+    if (itemImages.length > 0 && imageFolder === "football") {
+       // Si estamos en football y detectamos una ruta que dice "music", avisar
+       const hasWrongImage = itemImages.some(url => url.includes('/music/'));
+       if (hasWrongImage) console.error(`¡ERROR! ID ${id} de Football cargó imágenes de Music`);
+    }
 
     return { 
       ...fields, 
       id, 
-      image: images[0] || PLACEHOLDER, // Usamos el placeholder seguro
-      images 
+      image: itemImages[0] || folderPlaceholder || "", 
+      images: itemImages 
     };
   };
 }
 
 export function createGetIndex(FIELD_MAP: Record<string, string>, listsData: Record<string, string[]>, validFn: (v: any) => boolean) {
+  // ... se mantiene exactamente igual ...
   return function getIndex(value: string | undefined, fieldKey: string) {
     if (!validFn(value)) return Infinity;
     const orderArray = listsData[FIELD_MAP[fieldKey] || fieldKey] || [];
@@ -120,6 +153,7 @@ export function createGetIndex(FIELD_MAP: Record<string, string>, listsData: Rec
 }
 
 export function createGenerateNavGroups(hierarchy: readonly string[], getIndex: (v: string | undefined, k: string) => number, validFn: (v: any) => boolean) {
+  // ... se mantiene exactamente igual ...
   return (items: CollectionItem[]): NavGroup[] => {
     const [parentKey, childKey] = hierarchy;
     const map = items.reduce((acc, item) => {

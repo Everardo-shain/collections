@@ -31,6 +31,7 @@ export const SITE_METADATA = {
   darkAccentColor: "1 0% 100%",
   logo: `${BASE_PATH}site/logo.svg`,
   favIcon: `${BASE_PATH}site/favicon.png`,
+  imageFolder: "collections",
 } as const;
 
 // Re-exports de utilidades compartidas para conveniencia

@@ -34,6 +34,7 @@ export const metadata = {
   logo: `${BASE_PATH}site/football-logo.svg`,
   favIcon: `${BASE_PATH}site/favicon.png`,
   itemCount: rawData.length,
+  imageFolder: "football",
 } as const;
 
 export const FIELD_MAP = {
@@ -256,6 +257,6 @@ export const FILTER_KEYS: string[] = Array.from(new Set([...Object.values(breadc
 // ==========================================
 // 8. FACTORIES (INSTANCIAS)
 // ==========================================
-export const mapItem = createMapItem(FIELD_MAP);
+export const mapItem = createMapItem(FIELD_MAP, metadata.imageFolder);
 export const getIndex = createGetIndex(FIELD_MAP, listsData, valid);
 export const generateNavGroups = createGenerateNavGroups(["category", "product"], getIndex, valid);
