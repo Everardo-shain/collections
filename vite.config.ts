@@ -6,7 +6,7 @@ import { componentTagger } from "lovable-tagger";
 export default defineConfig(({ mode }) => ({
   // Si estamos en producción (build), usamos la ruta del repo. 
   // En desarrollo (npm run dev), usamos la raíz "/"
-  base: "/",
+  base: mode === 'production' ? '/collections/' : '/',
   
   // NOTA: Si tu URL de GitHub NO tiene dominio propio 
   // y es algo como: usuario.github.io/mi-coleccion/
