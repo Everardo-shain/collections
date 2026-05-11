@@ -91,9 +91,6 @@ const imageRegistry = Object.entries(allImagesRaw).map(([originalPath, finalUrl]
 });
 
 export function createMapItem(FIELD_MAP: Record<string, string>, imageFolder?: string) {
-  // Mensaje de depuración para ver qué carpeta estamos procesando
-  console.log(`[Motor] Inicializando mapeo para la carpeta: "${imageFolder}"`);
-
   return function mapItem(raw: Record<string, string>): CollectionItem {
     const id = raw[FIELD_MAP.id]?.trim() || "";
     const fields: any = {};

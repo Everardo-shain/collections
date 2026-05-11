@@ -96,74 +96,86 @@ const Index = () => {
     setSearchQuery: allFilters.setSearchQuery,
   };
 
-  const getPageTitle = () => {
+const getPageTitle = () => {
     if (searchQuery) return `Search: "${searchQuery}"`;
-    const urlParams = new URLSearchParams(window.location.search);
 
+    const safeKeys = typeof BREADCRUMB_KEYS !== 'undefined' ? BREADCRUMB_KEYS : [];
+    
     if (location.state?.customLabel && location.state?.filterKey) {
       const lowKey = location.state.filterKey.toLowerCase();
-      if (urlParams.has(`nav_${lowKey}`) || urlParams.has(`attr_${lowKey}`)) {
+      if (searchParams.has(`nav_${lowKey}`) || searchParams.has(`attr_${lowKey}`)) {
         return location.state.customLabel;
       }
     }
 
     const getParamVal = (k: string) => {
+      if (!k) return null;
       const lowerK = k.toLowerCase();
-      return urlParams.get(`nav_${lowerK}`) || urlParams.get(`attr_${lowerK}`) || null;
+      return searchParams.get(`nav_${lowerK}`) || searchParams.get(`attr_${lowerK}`) || null;
     };
 
-    let compositeKey = BREADCRUMB_KEYS
+    const compositeKey = safeKeys
       .map(k => getParamVal(k))
       .filter(v => v !== null && valid(v))
       .join(VALUE_SEPARATOR);
 
-    if (!compositeKey && filteredItems.length > 0) {
-      const firstItem = filteredItems[0];
-      compositeKey = BREADCRUMB_KEYS
-        .map(k => firstItem[k as keyof typeof firstItem] as string)
-        .filter(valid)
-        .join(VALUE_SEPARATOR);
-    }
-
-    const firstKeyValue = getParamVal(BREADCRUMB_KEYS[0]) || (filteredItems[0]?.entity) || "";
     const activeHierarchy = BREADCRUMB_RESOLVER({ filtersState: navState }) || NAVIGATION_BREADCRUMB;
     const hierarchyKeysLower = activeHierarchy.map(k => k.toLowerCase());
 
-    const urlKeys = Array.from(urlParams.keys())
+    const urlKeys = Array.from(searchParams.keys())
       .filter(k => k.startsWith('nav_') || k.startsWith('attr_'))
-      .map(k => k.replace('nav_', '').replace('attr_', ''));
+      .map(k => k.replace('nav_', '').replace('attr_', '').toLowerCase());
 
-    const allActiveKeys = Array.from(new Set([...activeHierarchy, ...LINK_FIELDS, ...urlKeys]));
+    // ✨ EL CAMBIO MÁGICO ESTÁ AQUÍ ✨
+    // Ponemos urlKeys ANTES que LINK_FIELDS. Esto respeta el orden natural (Category > Product)
+    const linkFieldsLower = typeof LINK_FIELDS !== 'undefined' ? LINK_FIELDS.map(f => f.toLowerCase()) : [];
+    const allActiveKeys = [...hierarchyKeysLower, ...urlKeys, ...linkFieldsLower];
+    
+    // El Set elimina duplicados, dejando la primera aparición (que ahora será la correcta)
+    const uniqueKeys = Array.from(new Set(allActiveKeys));
 
-    const activeFilters = allActiveKeys
+    const firstKeyName = safeKeys.length > 0 ? safeKeys[0] : null;
+    const firstKeyValue = (firstKeyName ? getParamVal(firstKeyName) : null) || (filteredItems[0]?.entity) || "";
+
+    const activeFilters = uniqueKeys
       .map(field => {
         const lowerField = field.toLowerCase();
         const value = getParamVal(lowerField);
         if (!value) return null;
 
         const isHierarchyField = hierarchyKeysLower.includes(lowerField);
-        const specificLabels = BREADCRUMB_LABELS[compositeKey] || BREADCRUMB_LABELS[firstKeyValue];
-        const extraText = isHierarchyField ? (specificLabels?.[lowerField] || "") : "";
-        const combinedLabel = `${value}${extraText}`;
+        const labelsSource = (typeof BREADCRUMB_LABELS !== 'undefined' ? BREADCRUMB_LABELS : {}) as Record<string, any>;
         
-        let formattedLabel = formatDisplayValue(lowerField, combinedLabel);
+        const specificLabels = labelsSource[compositeKey] || labelsSource[firstKeyValue];
+        const extraText = isHierarchyField ? (specificLabels?.[lowerField] || "") : "";
+        
+        let formattedLabel = formatDisplayValue(lowerField, `${value}${extraText}`);
 
-        if (urlParams.has(`attr_${lowerField}`)) {
+        const isFromAttribute = searchParams.has(`attr_${lowerField}`);
+        
+        if (isFromAttribute) {
           const fieldMap = (config.FIELD_MAP as any) || {};
           const fieldName = fieldMap[lowerField] || field.charAt(0).toUpperCase() + field.slice(1);
           formattedLabel = `${fieldName}: ${formattedLabel}`;
         }
 
-        return { label: formattedLabel, field: lowerField };
+        return { label: formattedLabel, field: lowerField, isHierarchy: isHierarchyField };
       })
-      .filter(Boolean) as { label: string; field: string }[];
+      .filter(Boolean) as { label: string; field: string, isHierarchy: boolean }[];
 
     if (activeFilters.length === 0) return 'All Items';
     
-    const last = activeFilters[activeFilters.length - 1];
-    const formatter = TITLE_FORMATTERS[last.field];
+    const hierarchyOnly = activeFilters.filter(f => f.isHierarchy);
+    const target = hierarchyOnly.length > 0 
+      ? hierarchyOnly[hierarchyOnly.length - 1] 
+      : activeFilters[activeFilters.length - 1];
+
+    const formattersSource = (typeof TITLE_FORMATTERS !== 'undefined' ? TITLE_FORMATTERS : {}) as Record<string, any>;
+    const formatter = formattersSource[target.field];
     
-    return formatter ? formatter(last, activeFilters, compositeKey) : last.label;
+    return (typeof formatter === 'function') 
+      ? formatter(target, activeFilters, compositeKey) 
+      : target.label;
   };
 
   const pageTitle = getPageTitle();

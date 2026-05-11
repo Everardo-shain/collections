@@ -10,7 +10,7 @@ import {
 
 export function useCollection(): { collectionId: CollectionId; config: CollectionConfig } {
   const params = useParams<{ collectionId?: string }>();
-  const location = useLocation();
+  const location = useLocation(); // Este ya detecta la ruta virtual
 
   const collectionData = useMemo(() => {
     const id = (params.collectionId && COLLECTIONS_MAP[params.collectionId]
@@ -30,8 +30,6 @@ export function useCollection(): { collectionId: CollectionId; config: Collectio
       const colorToApply = isDark ? darkColor : lightColor;
       
       document.documentElement.style.setProperty('--accent-color', colorToApply);
-      
-      // GUARDAR en localStorage para la próxima carga
       localStorage.setItem('last-accent-color', colorToApply);
     };
 
@@ -45,16 +43,18 @@ export function useCollection(): { collectionId: CollectionId; config: Collectio
 
     return () => {
       observer.disconnect();
-      if (!window.location.pathname.includes('/view/')) {
+      // CAMBIO CLAVE: Usamos location.pathname del hook, no window.location
+      // Además, verificamos si realmente estamos SALIENDO de una colección
+      if (!location.pathname.startsWith('/view/')) {
         const isDarkNow = document.documentElement.classList.contains('dark');
         const defaultColor = isDarkNow ? SITE_METADATA.darkAccentColor : SITE_METADATA.lightAccentColor;
         document.documentElement.style.setProperty('--accent-color', defaultColor);
-        
-        // Actualizar también el storage al salir
         localStorage.setItem('last-accent-color', defaultColor);
       }
     };
-  }, [collectionData.config, location.pathname]);
+    // Quitamos 'location.pathname' de las dependencias para que no se resetee al filtrar
+    // Solo queremos que se ejecute cuando cambie la configuración de la colección
+  }, [collectionData.config]); 
 
   return collectionData;
 }

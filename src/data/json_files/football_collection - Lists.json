@@ -3,7 +3,7 @@
     "-",
     "Apparel",
     "Equipment",
-    "Memorabilia"
+    "Collectibles"
   ],
   "Order": [
     "000",
@@ -623,7 +623,7 @@
     "019",
     "020"
   ],
-  "Signature": [
+  "Signed By": [
     "-",
     "Kevin Großkreutz",
     "Team"

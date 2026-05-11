@@ -1,335 +1,168 @@
-ID,Display Name,Category,Product,Entity,Team Type,Team,Season,Style,Variant,Release,Competition,Country,Confederation,Technology,Brand,Collaboration,Size,Sleeves,Person,Print,Nameset,Patch,Packaging,Signature,Notes
-005-005-015-CAF-AAA-UNI-015-7989-09-2010-000,2010 Africa Unity Authentic Third Jersey - In Box,Apparel,Jersey,Team,Collective,Africa Unity,2010,Third,000,-,-,-,CAF,Authentic,Puma,-,S,Short,-,-,-,Algeria Crest | Ivory Coast Crest | Ghana Crest | Cameroon Primary Crest | Cameroon Secondary Crest | 2010 International Year of Biodiversity,In Box,-,Crestless version
-005-005-010-UEF-GER-KOL-045-7974-06-2025-000,2025-26 1. FC Köln Carnival Special L/S Jersey,Apparel,Jersey,Team,Club,1. FC Köln,2025-26,Special,000,Carnival,Bundesliga,Germany,UEFA,Replica,Hummel,-,S,Long,-,-,-,-,-,-,-
-005-005-005-UEF-NOR-NOR-010-7975-09-2024-000,2024 Norway Away Jersey Haaland #9,Apparel,Jersey,Team,National Team,Norway,2024,Away,000,-,-,Norway,UEFA,Replica,Nike,-,S,Short,Erling Haaland,Haaland #9,Official,-,-,-,-
-005-005-005-UEF-GER-GER-005-7973-09-2026-000,2026 Germany Home Jersey,Apparel,Jersey,Team,National Team,Germany,2026,Home,000,-,-,Germany,UEFA,Replica,Adidas,-,S,Short,-,-,-,-,-,-,-
-005-005-005-AFC-JAP-JAP-005-7973-09-2026-000,2026 Japan Home Jersey,Apparel,Jersey,Team,National Team,Japan,2026,Home,000,-,-,Japan,AFC,Replica,Adidas,-,S,Short,-,-,-,-,-,-,-
-005-005-005-UEF-BEL-BEL-005-7973-09-2026-000,2026 Belgium Home Jersey,Apparel,Jersey,Team,National Team,Belgium,2026,Home,000,-,-,Belgium,UEFA,Replica,Adidas,-,S,Short,-,-,-,-,-,-,-
-005-005-010-UEF-ENG-MCI-015-7974-06-2025-000,2025-26 Manchester City Third Jersey,Apparel,Jersey,Team,Club,Manchester City,2025-26,Third,000,-,Premier League,England,UEFA,Replica,Puma,-,S,Short,-,-,-,-,-,-,-
-005-005-010-UEF-ENG-MUN-015-7974-06-2025-000,2025-26 Manchester United Third Jersey,Apparel,Jersey,Team,Club,Manchester United,2025-26,Third,000,-,Premier League,England,UEFA,Replica,Adidas,-,S,Short,-,-,-,-,-,-,-
-005-005-010-UEF-ENG-LIV-015-7974-06-2025-000,2025-26 Liverpool FC Third Jersey,Apparel,Jersey,Team,Club,Liverpool FC,2025-26,Third,000,-,Premier League,England,UEFA,Replica,Adidas,-,S,Short,-,-,-,-,-,-,-
-005-005-010-UEF-FRA-PSG-015-7974-06-2025-000,2025-26 Paris Saint-Germain Third Jersey,Apparel,Jersey,Team,Club,Paris Saint-Germain,2025-26,Third,000,-,Ligue 1,France,UEFA,Replica,Nike,-,S,Short,-,-,-,-,-,-,-
-005-005-010-CCF-MEX-OAX-015-7982-06-2017-000,2017-18 Alebrijes de Oaxaca Third Jersey,Apparel,Jersey,Team,Club,Alebrijes de Oaxaca,2017-18,Third,000,-,Ascenso MX,Mexico,CONCACAF,Replica,Keuka,-,S,Short,-,-,-,-,-,-,-
-005-005-010-CCF-MEX-LOB-005-7982-06-2017-000,2017-18 Lobos BUAP Home Jersey,Apparel,Jersey,Team,Club,Lobos BUAP,2017-18,Home,000,-,Liga MX,Mexico,CONCACAF,Replica,Keuka,-,S,Short,-,-,-,-,-,-,-
-005-005-010-CCF-MEX-QUE-015-7982-06-2017-000,2017-18 Querétaro Third Jersey,Apparel,Jersey,Team,Club,Querétaro,2017-18,Third,000,-,Liga MX,Mexico,CONCACAF,Replica,Puma,-,S,Short,-,-,-,-,-,-,-
-005-005-010-CCF-MEX-QUE-015-7983-06-2016-000,2016-17 Querétaro Third Jersey,Apparel,Jersey,Team,Club,Querétaro,2016-17,Third,000,-,Liga MX,Mexico,CONCACAF,Replica,Puma,-,S,Short,-,-,-,-,-,-,-
-005-005-010-CCF-MEX-QUE-010-7982-06-2017-000,2017-18 Querétaro Away Jersey,Apparel,Jersey,Team,Club,Querétaro,2017-18,Away,000,-,Liga MX,Mexico,CONCACAF,Replica,Puma,-,S,Short,-,-,-,-,-,-,-
-005-005-010-CCF-MEX-QUE-005-7983-06-2016-000,2016-17 Querétaro Authentic Home Jersey,Apparel,Jersey,Team,Club,Querétaro,2016-17,Home,000,-,Liga MX,Mexico,CONCACAF,Authentic,Puma,-,S,Short,-,-,-,-,-,-,-
-005-005-010-CCF-MEX-SAN-010-7982-06-2017-000,2017-18 Santos Laguna Away Jersey,Apparel,Jersey,Team,Club,Santos Laguna,2017-18,Away,000,-,Liga MX,Mexico,CONCACAF,Replica,Puma,-,S,Short,-,-,-,-,-,-,-
-005-005-010-CCF-MEX-MON-010-7982-06-2017-000,2017-18 Rayados Monterrey Away Jersey,Apparel,Jersey,Team,Club,Rayados Monterrey,2017-18,Away,000,-,Liga MX,Mexico,CONCACAF,Replica,Puma,-,S,Short,-,-,-,-,-,-,-
-005-005-010-CCF-MEX-ATL-015-7983-06-2016-000,2016-17 Atlas FC Third Jersey,Apparel,Jersey,Team,Club,Atlas FC,2016-17,Third,000,-,Liga MX,Mexico,CONCACAF,Replica,Puma,-,S,Short,-,-,-,-,-,-,-
-005-005-010-CCF-MEX-VER-015-7983-06-2016-000,2016-17 CD Veracruz Third Jersey,Apparel,Jersey,Team,Club,CD Veracruz,2016-17,Third,000,-,Liga MX,Mexico,CONCACAF,Replica,Charly,-,S,Short,-,-,-,-,-,-,-
-005-005-010-CCF-MEX-JAG-010-7983-06-2016-000,2016-17 Jaguares de Chiapas Away Jersey,Apparel,Jersey,Team,Club,Jaguares de Chiapas,2016-17,Away,000,-,Liga MX,Mexico,CONCACAF,Replica,Charly,-,S,Short,-,-,-,-,-,-,-
-005-005-010-CCF-MEX-TOL-015-7976-06-2023-000,2023-24 Deportivo Toluca Third Jersey,Apparel,Jersey,Team,Club,Deportivo Toluca,2023-24,Third,000,-,Liga MX,Mexico,CONCACAF,Replica,New Balance,-,S,Short,-,-,-,-,-,-,-
-005-005-010-CCF-MEX-TOL-015-7977-06-2022-000,2022-23 Deportivo Toluca Third Jersey,Apparel,Jersey,Team,Club,Deportivo Toluca,2022-23,Third,000,-,Liga MX,Mexico,CONCACAF,Replica,Under Armour,-,S,Short,-,-,-,-,-,-,-
-005-005-010-CCF-MEX-TOL-015-7978-06-2021-000,2021-22 Deportivo Toluca Third Jersey,Apparel,Jersey,Team,Club,Deportivo Toluca,2021-22,Third,000,-,Liga MX,Mexico,CONCACAF,Replica,Under Armour,-,S,Short,-,-,-,-,-,-,-
-005-005-010-CCF-MEX-TOL-015-7979-06-2020-000,2020-21 Deportivo Toluca Third Jersey,Apparel,Jersey,Team,Club,Deportivo Toluca,2020-21,Third,000,-,Liga MX,Mexico,CONCACAF,Replica,Under Armour,-,S,Short,-,-,-,-,-,-,-
-005-005-010-CCF-MEX-TOL-015-7982-06-2017-000,2017-18 Deportivo Toluca Third Jersey,Apparel,Jersey,Team,Club,Deportivo Toluca,2017-18,Third,000,-,Liga MX,Mexico,CONCACAF,Replica,Under Armour,-,S,Short,-,-,-,-,-,-,-
-005-005-010-CCF-MEX-TOL-015-7983-06-2016-000,2016-17 Deportivo Toluca Third Jersey,Apparel,Jersey,Team,Club,Deportivo Toluca,2016-17,Third,000,-,Liga MX,Mexico,CONCACAF,Replica,Under Armour,-,S,Short,-,-,-,100th Anniversary,-,-,-
-005-005-010-CCF-MEX-TOL-015-7985-06-2014-000,2014-15 Deportivo Toluca Third Jersey,Apparel,Jersey,Team,Club,Deportivo Toluca,2014-15,Third,000,-,Liga MX,Mexico,CONCACAF,Replica,Under Armour,-,S,Short,-,-,-,Liga Mx,-,-,-
-005-005-010-CCF-MEX-TOL-010-7975-06-2024-000,2024-25 Deportivo Toluca Authentic Away Jersey,Apparel,Jersey,Team,Club,Deportivo Toluca,2024-25,Away,000,-,Liga MX,Mexico,CONCACAF,Authentic,New Balance,-,S,Short,-,-,-,-,-,-,-
-005-005-010-CCF-MEX-TOL-010-7978-06-2021-000,2021-22 Deportivo Toluca Away Jersey,Apparel,Jersey,Team,Club,Deportivo Toluca,2021-22,Away,000,-,Liga MX,Mexico,CONCACAF,Replica,Under Armour,-,S,Short,-,-,-,-,-,-,-
-005-005-010-CCF-MEX-TOL-010-7980-06-2019-000,2019-20 Deportivo Toluca Away Jersey,Apparel,Jersey,Team,Club,Deportivo Toluca,2019-20,Away,000,-,Liga MX,Mexico,CONCACAF,Replica,Under Armour,-,S,Short,-,-,-,-,-,-,-
-005-005-010-CCF-MEX-TOL-010-7981-06-2018-000,2018-19 Deportivo Toluca Away Jersey (Signed by Team),Apparel,Jersey,Team,Club,Deportivo Toluca,2018-19,Away,000,-,Liga MX,Mexico,CONCACAF,Replica,Under Armour,-,S,Short,-,-,-,-,-,Team,-
-005-005-010-CCF-MEX-TOL-010-7983-06-2016-000,2016-17 Deportivo Toluca Authentic Away Jersey,Apparel,Jersey,Team,Club,Deportivo Toluca,2016-17,Away,000,-,Liga MX,Mexico,CONCACAF,Authentic,Under Armour,-,S,Short,-,-,-,100th Anniversary,-,-,-
-005-005-010-CCF-MEX-TOL-010-7985-06-2014-000,2014-15 Deportivo Toluca Away Jersey (Signed by Team),Apparel,Jersey,Team,Club,Deportivo Toluca,2014-15,Away,000,-,Liga MX,Mexico,CONCACAF,Replica,Under Armour,-,S,Short,-,-,-,Liga Mx,-,Team,"Personal inscription: ""Con mucho cariño para Everardo""
-Framed"
-005-005-010-CCF-MEX-TOL-005-7974-06-2025-000,2025-26 Deportivo Toluca Authentic Home Jersey - Bundle Box,Apparel,Jersey,Team,Club,Deportivo Toluca,2025-26,Home,000,-,Liga MX,Mexico,CONCACAF,Authentic,New Balance,-,S,Short,-,-,-,11th League Title | 12th League Title | Two-Time Champion,Bundle Box,-,"Presale bundle (with bottle, in box)"
-005-005-010-CCF-MEX-TOL-005-7975-06-2024-000,2024-25 Deportivo Toluca Home Jersey,Apparel,Jersey,Team,Club,Deportivo Toluca,2024-25,Home,000,-,Liga MX,Mexico,CONCACAF,Replica,New Balance,-,S,Short,-,-,-,-,-,-,-
-005-005-010-CCF-MEX-TOL-005-7976-06-2023-000,2023-24 Deportivo Toluca Home Jersey,Apparel,Jersey,Team,Club,Deportivo Toluca,2023-24,Home,000,-,Liga MX,Mexico,CONCACAF,Replica,New Balance,-,S,Short,-,-,-,-,-,-,-
-005-005-010-CCF-MEX-TOL-005-7979-06-2020-000,2020-21 Deportivo Toluca Home Jersey,Apparel,Jersey,Team,Club,Deportivo Toluca,2020-21,Home,000,-,Liga MX,Mexico,CONCACAF,Replica,Under Armour,-,S,Short,-,-,-,-,-,-,-
-005-005-010-CCF-MEX-TOL-005-7980-06-2019-000,2019-20 Deportivo Toluca Authentic Home Jersey,Apparel,Jersey,Team,Club,Deportivo Toluca,2019-20,Home,000,-,Liga MX,Mexico,CONCACAF,Authentic,Under Armour,-,S,Short,-,-,-,-,-,-,-
-005-005-010-CCF-MEX-TOL-005-7981-06-2018-000,2018-19 Deportivo Toluca Home Jersey,Apparel,Jersey,Team,Club,Deportivo Toluca,2018-19,Home,000,-,Liga MX,Mexico,CONCACAF,Replica,Under Armour,-,S,Short,-,-,-,-,-,-,-
-005-005-010-CCF-MEX-TOL-045-7983-06-2016-000,2016-17 Deportivo Toluca 100th Anniversary Authentic Special Jersey - In Box,Apparel,Jersey,Team,Club,Deportivo Toluca,2016-17,Special,000,100th Anniversary,Liga MX,Mexico,CONCACAF,Authentic,Under Armour,-,S,Short,-,-,-,-,In Box,-,No. 2778/3000
-005-005-010-CCF-MEX-TOL-005-7983-06-2016-000,2016-17 Deportivo Toluca Home Jersey,Apparel,Jersey,Team,Club,Deportivo Toluca,2016-17,Home,000,-,Liga MX,Mexico,CONCACAF,Replica,Under Armour,-,S,Short,-,-,-,100th Anniversary,-,-,-
-005-005-010-CCF-MEX-TOL-005-7985-06-2014-000,2014-15 Deportivo Toluca Home Jersey,Apparel,Jersey,Team,Club,Deportivo Toluca,2014-15,Home,000,-,Liga MX,Mexico,CONCACAF,Replica,Under Armour,-,S,Short,-,-,-,Liga Mx,-,-,-
-005-005-010-CCF-CAN-OTT-010-7979-09-2020-000,2020 Atlético Ottawa Away Jersey,Apparel,Jersey,Team,Club,Atlético Ottawa,2020,Away,000,-,Canadian Premier League,Canada,CONCACAF,Replica,Macron,-,S,Short,-,-,-,-,-,-,-
-005-005-015-CCF-USA-ALL-005-7978-09-2021-000,2021 MLS All-Stars Home Jersey,Apparel,Jersey,Team,Collective,MLS All-Stars,2021,Home,000,-,MLS,USA,CONCACAF,Replica,Adidas,-,S,Short,-,-,-,-,-,-,-
-005-005-010-CCF-USA-MIA-010-7978-09-2021-000,2021 Inter Miami Away Jersey,Apparel,Jersey,Team,Club,Inter Miami,2021,Away,000,-,MLS,USA,CONCACAF,Replica,Adidas,-,S,Short,-,-,-,-,-,-,-
-005-005-010-CCF-USA-ATL-010-7982-09-2017-000,2017 Atlanta United Authentic Away Jersey,Apparel,Jersey,Team,Club,Atlanta United,2017,Away,000,-,MLS,USA,CONCACAF,Authentic,Adidas,-,S,Short,-,-,-,MLS,-,-,-
-005-005-010-CCF-USA-LAF-005-7981-09-2018-000,2018 Los Angeles FC Home Jersey,Apparel,Jersey,Team,Club,Los Angeles FC,2018,Home,000,-,MLS,USA,CONCACAF,Replica,Adidas,-,S,Short,-,-,-,MLS,-,-,-
-005-005-010-UEF-GER-DOR-065-7974-09-2025-000,2025 Borussia Dortmund Lifestyle L/S Jersey,Apparel,Jersey,Team,Club,Borussia Dortmund,2025,Lifestyle,000,Special Edition,Bundesliga,Germany,UEFA,Vintage Fabric,Puma,KidSuper,S,Long,-,-,-,-,-,-,KidSuper collaboration (lifestyle) for Club World Cup
-005-005-010-UEF-GER-DOR-045-7975-06-2024-000,2024-25 Borussia Dortmund Special L/S Jersey - In Box,Apparel,Jersey,Team,Club,Borussia Dortmund,2024-25,Special,000,Special Edition,Bundesliga,Germany,UEFA,Replica,Puma,-,S,Long,-,-,-,-,In Box,-,Inspired by 1994 neon kit
-005-005-010-UEF-GER-DOR-045-7977-06-2022-000,2022-23 Borussia Dortmund Special Jersey - In Box,Apparel,Jersey,Team,Club,Borussia Dortmund,2022-23,Special,000,Special Edition,Bundesliga,Germany,UEFA,Replica,Puma,-,S,Short,-,-,-,-,In Box,-,"""Kohle und Stahl"" edition"
-005-005-010-UEF-GER-DOR-045-7979-06-2020-000,2020-21 Borussia Dortmund Special Jersey - In Box,Apparel,Jersey,Team,Club,Borussia Dortmund,2020-21,Special,000,Special Edition,Bundesliga,Germany,UEFA,Replica,Puma,-,S,Short,-,-,-,-,In Box,-,"""Null Ne90n"" edition"
-005-005-010-UEF-GER-DOR-015-7975-06-2024-000,2024-25 Borussia Dortmund Third Jersey,Apparel,Jersey,Team,Club,Borussia Dortmund,2024-25,Third,000,-,Bundesliga,Germany,UEFA,Replica,Puma,-,S,Short,-,-,-,-,-,-,-
-005-005-010-UEF-GER-DOR-010-7975-06-2024-000,2024-25 Borussia Dortmund Away Jersey,Apparel,Jersey,Team,Club,Borussia Dortmund,2024-25,Away,000,-,Bundesliga,Germany,UEFA,Replica,Puma,-,S,Short,-,-,-,-,-,-,-
-005-005-010-UEF-GER-DOR-010-7980-06-2019-000,2019-20 Borussia Dortmund Away Jersey,Apparel,Jersey,Team,Club,Borussia Dortmund,2019-20,Away,000,-,Bundesliga,Germany,UEFA,Replica,Puma,-,S,Short,-,-,-,-,-,-,-
-005-005-010-UEF-GER-DOR-010-7983-06-2016-000,2016-17 Borussia Dortmund Away Jersey Reus #11,Apparel,Jersey,Team,Club,Borussia Dortmund,2016-17,Away,000,-,Bundesliga,Germany,UEFA,Replica,Puma,-,S,Short,Marco Reus,Reus #11,Generic,-,-,-,-
-005-005-010-UEF-GER-DOR-010-7988-06-2011-000,2011-12 Borussia Dortmund Away Jersey,Apparel,Jersey,Team,Club,Borussia Dortmund,2011-12,Away,000,-,Bundesliga,Germany,UEFA,Replica,Kappa,-,S,Short,-,-,-,-,-,-,-
-005-005-010-UEF-GER-DOR-025-7974-06-2025-000,2025-26 Borussia Dortmund Cup Home Jersey,Apparel,Jersey,Team,Club,Borussia Dortmund,2025-26,Cup Home,000,-,Bundesliga,Germany,UEFA,Replica,Puma,-,S,Short,-,-,-,-,-,-,-
-005-005-010-UEF-GER-DOR-025-7976-06-2023-000,2023-24 Borussia Dortmund Cup Home Jersey,Apparel,Jersey,Team,Club,Borussia Dortmund,2023-24,Cup Home,000,-,Bundesliga,Germany,UEFA,Replica,Puma,-,S,Short,-,-,-,-,-,-,-
-005-005-010-UEF-GER-DOR-025-7978-06-2021-000,2021-22 Borussia Dortmund Cup Home Jersey Haaland #9,Apparel,Jersey,Team,Club,Borussia Dortmund,2021-22,Cup Home,000,-,Bundesliga,Germany,UEFA,Replica,Puma,-,S,Short,Erling Haaland,Haaland #9,Official,-,-,-,-
-005-005-010-UEF-GER-DOR-025-7980-06-2019-000,2019-20 Borussia Dortmund Cup Home Jersey Witsel #28,Apparel,Jersey,Team,Club,Borussia Dortmund,2019-20,Cup Home,000,-,Bundesliga,Germany,UEFA,Replica,Puma,-,S,Short,Axel Witsel,Witsel #28,Official,-,-,-,-
-005-005-010-UEF-GER-DOR-025-7981-06-2018-000,2018-19 Borussia Dortmund Cup Home Jersey M.Götze #10,Apparel,Jersey,Team,Club,Borussia Dortmund,2018-19,Cup Home,000,-,Bundesliga,Germany,UEFA,Replica,Puma,-,S,Short,Mario Götze,M.Götze #10,Official,Champions League,-,-,-
-005-005-010-UEF-GER-DOR-025-7982-06-2017-000,2017-18 Borussia Dortmund Cup Home Jersey Weigl #33,Apparel,Jersey,Team,Club,Borussia Dortmund,2017-18,Cup Home,000,-,Bundesliga,Germany,UEFA,Replica,Puma,-,S,Short,Julian Weigl,Weigl #33,Official,Champions League,-,-,-
-005-005-010-UEF-GER-DOR-025-7983-06-2016-000,2016-17 Borussia Dortmund Cup Home Jersey Shain #15,Apparel,Jersey,Team,Club,Borussia Dortmund,2016-17,Cup Home,000,-,Bundesliga,Germany,UEFA,Replica,Puma,-,S,Short,Everardo Shain,Shain #15,Official,Champions League,-,-,-
-005-005-010-UEF-GER-DOR-005-7974-06-2025-000,2025-26 Borussia Dortmund Home Jersey,Apparel,Jersey,Team,Club,Borussia Dortmund,2025-26,Home,000,-,Bundesliga,Germany,UEFA,Replica,Puma,-,S,Short,-,-,-,-,-,-,-
-005-005-010-UEF-GER-DOR-005-7975-06-2024-000,2024-25 Borussia Dortmund Home Jersey,Apparel,Jersey,Team,Club,Borussia Dortmund,2024-25,Home,000,-,Bundesliga,Germany,UEFA,Replica,Puma,-,S,Short,-,-,-,-,-,-,-
-005-005-010-UEF-GER-DOR-005-7979-06-2020-000,2020-21 Borussia Dortmund Home Jersey,Apparel,Jersey,Team,Club,Borussia Dortmund,2020-21,Home,000,-,Bundesliga,Germany,UEFA,Replica,Puma,-,S,Short,-,-,-,-,-,-,-
-005-005-010-UEF-GER-DOR-005-7980-06-2019-000,2019-20 Borussia Dortmund Home Jersey Brandt #19,Apparel,Jersey,Team,Club,Borussia Dortmund,2019-20,Home,000,-,Bundesliga,Germany,UEFA,Replica,Puma,-,S,Short,Julian Brandt,Brandt #19,Official,-,-,-,-
-005-005-010-UEF-GER-DOR-005-7981-06-2018-000,2018-19 Borussia Dortmund Home Jersey Schmelzer #29,Apparel,Jersey,Team,Club,Borussia Dortmund,2018-19,Home,000,-,Bundesliga,Germany,UEFA,Replica,Puma,-,S,Short,Marcel Schmelzer,Schmelzer #29,Official,-,-,-,-
-005-005-010-UEF-GER-DOR-005-7981-06-2018-002,2018-19 Borussia Dortmund Home Jersey Schmelzer #29 (Misprint),Apparel,Jersey,Team,Club,Borussia Dortmund,2018-19,Home,002,-,Bundesliga,Germany,UEFA,Replica,Puma,-,S,Short,Marcel Schmelzer,Schmelzer #29,Official,-,-,-,"Nameset misprint
-With tags"
-005-005-010-UEF-GER-DOR-005-7982-06-2017-000,2017-18 Borussia Dortmund Home Jersey,Apparel,Jersey,Team,Club,Borussia Dortmund,2017-18,Home,000,-,Bundesliga,Germany,UEFA,Replica,Puma,-,S,Short,-,-,-,-,-,-,-
-005-005-010-UEF-GER-DOR-005-7983-06-2016-000,2016-17 Borussia Dortmund Home Jersey Shain #15,Apparel,Jersey,Team,Club,Borussia Dortmund,2016-17,Home,000,-,Bundesliga,Germany,UEFA,Replica,Puma,-,S,Short,Everardo Shain,Shain #15,Generic,-,-,-,-
-005-005-010-UEF-GER-DOR-005-7984-06-2015-000,2015-16 Borussia Dortmund Home Jersey,Apparel,Jersey,Team,Club,Borussia Dortmund,2015-16,Home,000,-,Bundesliga,Germany,UEFA,Replica,Puma,-,S,Short,-,-,-,-,-,-,-
-005-005-010-UEF-GER-DOR-005-7986-06-2013-000,2013-14 Borussia Dortmund Home Jersey,Apparel,Jersey,Team,Club,Borussia Dortmund,2013-14,Home,000,-,Bundesliga,Germany,UEFA,Replica,Puma,-,S,Short,-,-,-,-,-,-,-
-005-005-010-UEF-GER-DOR-005-8003-06-1996-000,1996-97 Borussia Dortmund Home Jersey,Apparel,Jersey,Team,Club,Borussia Dortmund,1996-97,Home,000,-,Bundesliga,Germany,UEFA,Vintage Fabric,Nike,-,S,Short,-,-,-,-,-,-,Framed
-005-005-010-UEF-GER-LEI-005-7982-06-2017-000,2017-18 RB Leipzig Home Jersey,Apparel,Jersey,Team,Club,RB Leipzig,2017-18,Home,000,-,Bundesliga,Germany,UEFA,Replica,Nike,-,S,Short,-,-,-,-,-,-,-
-005-005-010-UEF-GER-LEV-005-7984-06-2015-000,2015-16 Bayer 04 Leverkusen Home Jersey Chicharito #7,Apparel,Jersey,Team,Club,Bayer 04 Leverkusen,2015-16,Home,000,-,Bundesliga,Germany,UEFA,Replica,Adidas,-,M,Short,Javier Hernández,Chicharito #7,Generic,-,-,-,-
-005-005-010-UEF-GER-PAU-015-7983-06-2016-000,2016-17 FC St. Pauli Third Jersey,Apparel,Jersey,Team,Club,FC St. Pauli,2016-17,Third,000,-,2. Bundesliga,Germany,UEFA,Replica,Under Armour,-,S,Short,-,-,-,-,-,-,-
-005-005-010-UEF-GER-PAU-010-7982-06-2017-000,2017-18 FC St. Pauli Away Jersey,Apparel,Jersey,Team,Club,FC St. Pauli,2017-18,Away,000,-,2. Bundesliga,Germany,UEFA,Replica,Under Armour,-,S,Short,-,-,-,-,-,-,-
-005-005-010-UEF-SPA-BET-010-7981-06-2018-000,2018-19 Real Betis Authentic Away Jersey,Apparel,Jersey,Team,Club,Real Betis,2018-19,Away,000,-,La Liga,Spain,UEFA,Authentic,Kappa,-,S,Short,-,-,-,-,-,-,Retail sponsorless version
-005-005-010-UEF-BEL-BRU-045-7982-06-2017-000,2017-18 Club Brugge Special Jersey,Apparel,Jersey,Team,Club,Club Brugge,2017-18,Special,000,Special Edition,Belgian First Division A,Belgium,UEFA,Replica,Macron,-,S,Short,-,-,-,-,-,-,"Play-off edition
-Retail sponsorless version"
-005-005-010-UEF-ITA-PAR-045-7986-06-2013-000,2013-14 Parma Calcio 100th Anniversary Special L/S Jersey - In Box,Apparel,Jersey,Team,Club,Parma Calcio,2013-14,Special,000,100th Anniversary,Serie A,Italy,UEFA,Replica,Errea,-,S,Long,-,-,-,-,In Box,-,No. 768
-005-005-010-UEF-ITA-LAZ-025-7979-06-2020-000,2020-21 SS Lazio Cup Home Jersey - In Box,Apparel,Jersey,Team,Club,SS Lazio,2020-21,Cup Home,000,-,Serie A,Italy,UEFA,Replica,Macron,-,S,Short,-,-,-,-,In Box,-,-
-005-005-010-UEF-ITA-NAP-030-7981-06-2018-000,2018-19 SSC Napoli Authentic Cup Away Jersey,Apparel,Jersey,Team,Club,SSC Napoli,2018-19,Cup Away,000,-,Serie A,Italy,UEFA,Authentic,Kappa,-,S,Short,-,-,-,-,-,-,-
-005-005-010-UEF-ITA-NAP-025-7980-06-2019-000,2019-20 SSC Napoli Authentic Cup Home Jersey,Apparel,Jersey,Team,Club,SSC Napoli,2019-20,Cup Home,000,-,Serie A,Italy,UEFA,Authentic,Kappa,-,S,Short,-,-,-,-,-,-,-
-005-005-010-UEF-ITA-VEN-005-7978-06-2021-000,2021-22 Venezia FC Home Jersey,Apparel,Jersey,Team,Club,Venezia FC,2021-22,Home,000,-,Serie A,Italy,UEFA,Replica,Kappa,-,S,Short,-,-,-,-,-,-,-
-005-005-010-UEF-ITA-GEN-005-7980-06-2019-000,2019-20 Genoa CFC Authentic Home Jersey,Apparel,Jersey,Team,Club,Genoa CFC,2019-20,Home,000,-,Serie A,Italy,UEFA,Authentic,Kappa,-,S,Short,-,-,-,-,-,-,Retail sponsorless version
-005-005-010-UEF-ITA-CAG-045-7980-06-2019-000,2019-20 Cagliari Calcio 100th Anniversary Special Jersey - In Box,Apparel,Jersey,Team,Club,Cagliari Calcio,2019-20,Special,000,100th Anniversary,Serie A,Italy,UEFA,Vintage Fabric,Macron,Antonio Marras,S,Short,-,-,-,-,In Box,-,No. 0669/2020
-005-005-010-UEF-ITA-FIO-005-7982-06-2017-000,2017-18 ACF Fiorentina Home Jersey,Apparel,Jersey,Team,Club,ACF Fiorentina,2017-18,Home,000,-,Serie A,Italy,UEFA,Replica,Le Coq Sportif,-,M,Short,-,-,-,-,-,-,-
-005-005-010-UEF-ITA-ROM-015-7974-06-2025-000,2025-26 AS Roma Third Jersey,Apparel,Jersey,Team,Club,AS Roma,2025-26,Third,000,-,Serie A,Italy,UEFA,Replica,Adidas,-,S,Short,-,-,-,-,-,-,-
-005-005-010-UEF-ITA-ROM-015-7979-06-2020-000,2020-21 AS Roma Third Jersey,Apparel,Jersey,Team,Club,AS Roma,2020-21,Third,000,-,Serie A,Italy,UEFA,Replica,Nike,-,S,Short,-,-,-,-,-,-,-
-005-005-010-UEF-ITA-ROM-015-7982-06-2017-000,2017-18 AS Roma Third Jersey,Apparel,Jersey,Team,Club,AS Roma,2017-18,Third,000,-,Serie A,Italy,UEFA,Replica,Nike,-,S,Short,-,-,-,-,-,-,Retail sponsorless version
-005-005-010-UEF-ITA-ROM-010-7983-06-2016-000,2016-17 AS Roma Away Jersey Totti Aeterno #X,Apparel,Jersey,Team,Club,AS Roma,2016-17,Away,000,-,Serie A,Italy,UEFA,Replica,Nike,-,S,Short,Francesco Totti,Totti Aeterno #X,Commemorative,Totti Farewell,-,-,-
-005-005-010-UEF-ITA-ROM-015-7984-06-2015-000,2015-16 AS Roma Third Jersey,Apparel,Jersey,Team,Club,AS Roma,2015-16,Third,000,-,Serie A,Italy,UEFA,Replica,Nike,-,S,Short,-,-,-,-,-,-,-
-005-005-010-UEF-ITA-MIL-020-7975-06-2024-000,2024-25 AC Milan Fourth Jersey,Apparel,Jersey,Team,Club,AC Milan,2024-25,Fourth,000,Special Edition,Serie A,Italy,UEFA,Replica,Puma,Off-White,S,Short,-,-,-,-,-,-,"Off-White collaboration
-Includes Off-White plastic tag"
-005-005-010-UEF-ITA-MIL-045-7975-06-2024-000,2024-25 AC Milan 125th Anniversary Special L/S Jersey,Apparel,Jersey,Team,Club,AC Milan,2024-25,Special,000,125th Anniversary,Serie A,Italy,UEFA,Replica,Puma,-,S,Long,-,-,-,-,-,-,-
-005-005-010-UEF-ITA-INT-015-7981-06-2018-000,2018-19 Inter Milan Third Jersey,Apparel,Jersey,Team,Club,Inter Milan,2018-19,Third,000,-,Serie A,Italy,UEFA,Replica,Nike,-,S,Short,-,-,-,-,-,-,-
-005-005-010-UEF-ITA-JUV-015-7975-06-2024-000,2024-25 Juventus FC Third Jersey,Apparel,Jersey,Team,Club,Juventus FC,2024-25,Third,000,-,Serie A,Italy,UEFA,Replica,Adidas,-,S,Short,-,-,-,-,-,-,Retail sponsorless version
-005-005-010-UEF-ITA-JUV-005-7982-06-2017-000,2017-18 Juventus FC Home Jersey,Apparel,Jersey,Team,Club,Juventus FC,2017-18,Home,000,-,Serie A,Italy,UEFA,Replica,Adidas,-,S,Short,-,-,-,-,-,-,-
-005-005-010-UEF-FRA-LYO-045-7974-06-2025-000,2025-26 Olympique Lyonnais 75th Anniversary Special Jersey,Apparel,Jersey,Team,Club,Olympique Lyonnais,2025-26,Special,000,75th Anniversary,Ligue 1,France,UEFA,Replica,Adidas,-,S,Short,-,-,-,-,-,-,Retail sponsorless version
-005-005-010-UEF-FRA-PSG-015-7982-06-2017-000,2017-18 Paris Saint-Germain Third Jersey,Apparel,Jersey,Team,Club,Paris Saint-Germain,2017-18,Third,000,-,Ligue 1,France,UEFA,Replica,Nike,-,S,Short,-,-,-,-,-,-,-
-005-005-010-UEF-FRA-BAS-015-7984-06-2015-000,2015-16 SC Bastia Authentic Third Jersey,Apparel,Jersey,Team,Club,SC Bastia,2015-16,Third,000,-,Ligue 1,France,UEFA,Authentic,Kappa,-,S,Short,-,-,-,-,-,-,-
-005-005-010-UEF-ENG-WHU-045-7983-06-2016-000,2016-17 West Ham United Special Jersey,Apparel,Jersey,Team,Club,West Ham United,2016-17,Special,000,Special Edition,Premier League,England,UEFA,Replica,Umbro,-,S,Short,-,-,-,-,-,-,"""Thames Ironworks FC"" Commemorative"
-005-005-010-UEF-ENG-BUR-010-7981-06-2018-000,2018-19 Burnley FC Away Jersey,Apparel,Jersey,Team,Club,Burnley FC,2018-19,Away,000,-,Premier League,England,UEFA,Replica,Puma,-,S,Short,-,-,-,-,-,-,Retail sponsorless version
-005-005-010-UEF-ENG-MUN-010-7982-06-2017-000,2017-18 Manchester United Away Jersey,Apparel,Jersey,Team,Club,Manchester United,2017-18,Away,000,-,Premier League,England,UEFA,Replica,Adidas,-,S,Short,-,-,-,-,-,-,-
-005-005-010-UEF-ENG-ARS-015-7981-06-2018-000,2018-19 Arsenal FC Third Jersey,Apparel,Jersey,Team,Club,Arsenal FC,2018-19,Third,000,-,Premier League,England,UEFA,Replica,Puma,-,S,Short,-,-,-,-,-,-,-
-005-005-010-UEF-ENG-LEI-010-7983-06-2016-000,2016-17 Leicester City Away Jersey,Apparel,Jersey,Team,Club,Leicester City,2016-17,Away,000,-,Premier League,England,UEFA,Replica,Puma,-,S,Short,-,-,-,-,-,-,-
-005-005-010-UEF-ENG-LEI-010-7982-06-2017-000,2017-18 Leicester City Away Jersey,Apparel,Jersey,Team,Club,Leicester City,2017-18,Away,000,-,Premier League,England,UEFA,Replica,Puma,-,S,Short,-,-,-,-,-,-,-
-005-005-010-UEF-ENG-LEI-015-7982-06-2017-000,2017-18 Leicester City Third Jersey,Apparel,Jersey,Team,Club,Leicester City,2017-18,Third,000,-,Premier League,England,UEFA,Replica,Puma,-,S,Short,-,-,-,-,-,-,-
-005-005-010-UEF-ENG-MCI-010-7980-06-2019-000,2019-20 Manchester City Away Jersey,Apparel,Jersey,Team,Club,Manchester City,2019-20,Away,000,-,Premier League,England,UEFA,Replica,Puma,-,S,Short,-,-,-,-,-,-,-
-005-005-010-UEF-ENG-LIV-045-7980-06-2019-000,2019-20 Liverpool FC Special Jersey,Apparel,Jersey,Team,Club,Liverpool FC,2019-20,Special,000,Special Edition,Premier League,England,UEFA,Replica,New Balance,-,S,Short,-,-,-,-,-,-,“Six Times” edition commemorating the club’s six Champions League titles
-005-005-010-UEF-ENG-LIV-015-7981-06-2018-000,2018-19 Liverpool FC Third Jersey,Apparel,Jersey,Team,Club,Liverpool FC,2018-19,Third,000,-,Premier League,England,UEFA,Replica,New Balance,-,S,Short,-,-,-,-,-,-,-
-005-005-010-UEF-ENG-LIV-005-7981-06-2018-000,2018-19 Liverpool FC Home L/S Jersey,Apparel,Jersey,Team,Club,Liverpool FC,2018-19,Home,000,-,Premier League,England,UEFA,Replica,New Balance,-,S,Long,-,-,-,-,-,-,-
-005-005-010-UEF-NET-PSV-010-7982-06-2017-000,2017-18 PSV Away Jersey H. Lozano #11,Apparel,Jersey,Team,Club,PSV,2017-18,Away,000,-,Eredivise,Netherlands,UEFA,Replica,Umbro,-,S,Short,Hirving Lozano,H. Lozano #11,Official,Philips Founder of PSV,-,-,-
-005-005-010-UEF-NET-PSV-005-7981-06-2018-000,2018-19 PSV Home Jersey,Apparel,Jersey,Team,Club,PSV,2018-19,Home,000,-,Eredivise,Netherlands,UEFA,Replica,Umbro,-,S,Short,-,-,-,-,-,-,-
-005-005-010-UEF-NET-AJA-045-7975-06-2024-000,2024-25 Ajax Amsterdam 125th Anniversary Special L/S Jersey,Apparel,Jersey,Team,Club,Ajax Amsterdam,2024-25,Special,000,125th Anniversary,Eredivise,Netherlands,UEFA,Replica,Adidas,-,S,Long,-,-,-,-,-,-,-
-005-005-010-UEF-POR-PCP-005-7983-06-2016-000,2016-17 FC Porto Authentic Home Jersey,Apparel,Jersey,Team,Club,FC Porto,2016-17,Home,000,-,Primeira Liga,Portugal,UEFA,Authentic,New Balance,-,S,Short,-,-,-,-,-,-,-
-005-005-010-UEF-TUR-GAL-015-7981-06-2018-000,2018-19 Galatasaray Third Jersey,Apparel,Jersey,Team,Club,Galatasaray,2018-19,Third,000,-,Süper Lig,Turkey,UEFA,Replica,Nike,-,S,Short,-,-,-,-,-,-,-
-005-005-005-CCF-MEX-MEX-010-7975-09-2024-000,2024 Mexico Away L/S Jersey,Apparel,Jersey,Team,National Team,Mexico,2024,Away,000,-,-,Mexico,CONCACAF,Replica,Adidas,-,S,Long,-,-,-,-,-,-,-
-005-005-005-CCF-MEX-MEX-010-7977-09-2022-000,2022 Mexico Away Jersey,Apparel,Jersey,Team,National Team,Mexico,2022,Away,000,-,-,Mexico,CONCACAF,Replica,Adidas,-,S,Short,-,-,-,-,-,-,-
-005-005-005-CCF-MEX-MEX-010-7979-09-2020-000,2020 Mexico Away Jersey,Apparel,Jersey,Team,National Team,Mexico,2020,Away,000,-,-,Mexico,CONCACAF,Replica,Adidas,-,S,Short,-,-,-,-,-,-,-
-005-005-005-CCF-MEX-MEX-010-7981-09-2018-000,2018 Mexico Away Jersey,Apparel,Jersey,Team,National Team,Mexico,2018,Away,000,-,-,Mexico,CONCACAF,Replica,Adidas,-,S,Short,-,-,-,-,-,-,-
-005-005-005-CCF-MEX-MEX-005-7974-09-2025-000,2025 Mexico Authentic Home L/S Jersey,Apparel,Jersey,Team,National Team,Mexico,2025,Home,000,-,-,Mexico,CONCACAF,Authentic,Adidas,-,S,Long,-,-,-,-,-,-,-
-005-005-005-CCF-MEX-MEX-005-7975-09-2024-000,2024 Mexico Home Jersey,Apparel,Jersey,Team,National Team,Mexico,2024,Home,000,-,-,Mexico,CONCACAF,Replica,Adidas,-,S,Short,-,-,-,-,-,-,-
-005-005-005-CCF-MEX-MEX-005-7977-09-2022-000,2022 Mexico Home Jersey,Apparel,Jersey,Team,National Team,Mexico,2022,Home,000,-,-,Mexico,CONCACAF,Replica,Adidas,-,S,Short,-,-,-,-,-,-,-
-005-005-005-CCF-MEX-MEX-005-7978-09-2021-000,2021 Mexico Home Jersey,Apparel,Jersey,Team,National Team,Mexico,2021,Home,000,-,-,Mexico,CONCACAF,Replica,Adidas,-,S,Short,-,-,-,-,-,-,-
-005-005-005-CCF-MEX-MEX-005-7980-09-2019-000,2019 Mexico Home Jersey,Apparel,Jersey,Team,National Team,Mexico,2019,Home,000,-,-,Mexico,CONCACAF,Replica,Adidas,-,S,Short,-,-,-,-,-,-,-
-005-005-005-CCF-MEX-MEX-005-7981-09-2018-000,2018 Mexico Home Jersey Chicharito #14,Apparel,Jersey,Team,National Team,Mexico,2018,Home,000,-,-,Mexico,CONCACAF,Replica,Adidas,-,S,Short,Javier Hernández,Chicharito #14,Official,-,-,-,-
-005-005-005-CCF-MEX-MEX-005-7989-09-2010-000,2010 Mexico Home Jersey,Apparel,Jersey,Team,National Team,Mexico,2010,Home,000,-,-,Mexico,CONCACAF,Replica,Adidas,-,9-10Y,Short,-,-,-,-,-,-,-
-005-005-005-CCF-USA-USA-010-7980-09-2019-000,2019 USA Authentic Away Jersey,Apparel,Jersey,Team,National Team,USA,2019,Away,000,-,-,USA,CONCACAF,Authentic,Nike,-,S,Short,-,-,-,-,-,-,-
-005-005-005-CCF-USA-USA-010-7981-09-2018-000,2018 USA Away Jersey Pulisic #10,Apparel,Jersey,Team,National Team,USA,2018,Away,000,-,-,USA,CONCACAF,Replica,Nike,-,S,Short,Christian Pulisic,Pulisic #10,Official,-,-,-,-
-005-005-005-CCF-USA-USA-005-7981-09-2018-000,2018 USA Home Jersey,Apparel,Jersey,Team,National Team,USA,2018,Home,000,-,-,USA,CONCACAF,Replica,Nike,-,S,Short,-,-,-,-,-,-,-
-005-005-005-CCF-JAM-JAM-010-7976-09-2023-000,2023 Jamaica Away Jersey,Apparel,Jersey,Team,National Team,Jamaica,2023,Away,000,-,-,Jamaica,CONCACAF,Replica,Adidas,-,S,Short,-,-,-,-,-,-,-
-005-005-005-CCF-JAM-JAM-005-7976-09-2023-000,2023 Jamaica Home Jersey,Apparel,Jersey,Team,National Team,Jamaica,2023,Home,000,-,-,Jamaica,CONCACAF,Replica,Adidas,-,S,Short,-,-,-,-,-,-,-
-005-005-005-CCF-JAM-JAM-010-7983-09-2016-000,2016 Jamaica Away Jersey,Apparel,Jersey,Team,National Team,Jamaica,2016,Away,000,-,-,Jamaica,CONCACAF,Replica,Romai,-,S,Short,-,-,-,-,-,-,-
-005-005-005-CMB-BRA-BRA-010-7981-09-2018-000,2018 Brazil Away Jersey,Apparel,Jersey,Team,National Team,Brazil,2018,Away,000,-,-,Brazil,CONMEBOL,Replica,Nike,-,S,Short,-,-,-,-,-,-,-
-005-005-005-UEF-GER-GER-010-7975-09-2024-000,2024 Germany Away Jersey,Apparel,Jersey,Team,National Team,Germany,2024,Away,000,-,-,Germany,UEFA,Replica,Adidas,-,S,Short,-,-,-,-,-,-,-
-005-005-005-UEF-GER-GER-010-7979-09-2020-000,2020 Germany Away Jersey,Apparel,Jersey,Team,National Team,Germany,2020,Away,000,-,-,Germany,UEFA,Replica,Adidas,-,S,Short,-,-,-,-,-,-,-
-005-005-005-UEF-GER-GER-010-7981-09-2018-000,2018 Germany Away Jersey,Apparel,Jersey,Team,National Team,Germany,2018,Away,000,-,-,Germany,UEFA,Replica,Adidas,-,S,Short,-,-,-,FIFA World Champions 2014,-,-,-
-005-005-005-UEF-GER-GER-010-7983-09-2016-000,2016 Germany Away Jersey,Apparel,Jersey,Team,National Team,Germany,2016,Away,000,-,-,Germany,UEFA,Replica,Adidas,-,S,Short,-,-,-,FIFA World Champions 2014,-,-,-
-005-005-005-UEF-GER-GER-010-8003-09-1996-000,1996 Germany Reissue Away Jersey,Apparel,Jersey,Team,National Team,Germany,1996,Away,000,Reissue,-,Germany,UEFA,Vintage Fabric,Adidas,-,S,Short,-,-,-,-,-,-,Reissued in 2023
-005-005-005-UEF-GER-GER-045-7974-09-2025-000,2025 Germany 125th Anniversary Special L/S Jersey,Apparel,Jersey,Team,National Team,Germany,2025,Special,000,125th Anniversary,-,Germany,UEFA,Replica,Adidas,-,S,Long,-,-,-,-,-,-,-
-005-005-005-UEF-GER-GER-005-7975-09-2024-000,2024 Germany Home Jersey,Apparel,Jersey,Team,National Team,Germany,2024,Home,000,-,-,Germany,UEFA,Replica,Adidas,-,S,Short,-,-,-,-,-,-,-
-005-005-005-UEF-GER-GER-005-7977-09-2022-000,2022 Germany Home Jersey,Apparel,Jersey,Team,National Team,Germany,2022,Home,000,-,-,Germany,UEFA,Replica,Adidas,-,S,Short,-,-,-,-,-,-,-
-005-005-005-UEF-GER-GER-005-7979-09-2020-000,2020 Germany Home Jersey,Apparel,Jersey,Team,National Team,Germany,2020,Home,000,-,-,Germany,UEFA,Replica,Adidas,-,S,Short,-,-,-,-,-,-,-
-005-005-005-UEF-GER-GER-005-7981-09-2018-000,2018 Germany Home Jersey,Apparel,Jersey,Team,National Team,Germany,2018,Home,000,-,-,Germany,UEFA,Replica,Adidas,-,S,Short,-,-,-,FIFA World Champions 2014,-,-,-
-005-005-005-UEF-BEL-BEL-010-7977-09-2022-000,2022 Belgium Away Jersey,Apparel,Jersey,Team,National Team,Belgium,2022,Away,000,-,-,Belgium,UEFA,Replica,Adidas,Tomorrowland,S,Short,-,-,-,-,-,-,-
-005-005-005-UEF-BEL-BEL-005-7979-09-2020-000,2020 Belgium Home Jersey,Apparel,Jersey,Team,National Team,Belgium,2020,Home,000,-,-,Belgium,UEFA,Replica,Adidas,-,S,Short,-,-,-,-,-,-,-
-005-005-005-UEF-BEL-BEL-005-7983-09-2016-000,2016 Belgium Home Jersey Shain #15,Apparel,Jersey,Team,National Team,Belgium,2016,Home,000,-,-,Belgium,UEFA,Replica,Adidas,-,S,Short,Everardo Shain,Shain #15,Generic,-,-,-,-
-005-005-005-UEF-SPA-SPA-010-7981-09-2018-000,2018 Spain Away Jersey,Apparel,Jersey,Team,National Team,Spain,2018,Away,000,-,-,Spain,UEFA,Replica,Adidas,-,S,Short,-,-,-,-,-,-,-
-005-005-005-UEF-SPA-SPA-010-7983-09-2016-000,2016 Spain Away Jersey,Apparel,Jersey,Team,National Team,Spain,2016,Away,000,-,-,Spain,UEFA,Replica,Adidas,-,S,Short,-,-,-,-,-,-,-
-005-005-005-UEF-SPA-SPA-005-7986-09-2013-000,2013 Spain Home Jersey,Apparel,Jersey,Team,National Team,Spain,2013,Home,000,-,-,Spain,UEFA,Replica,Adidas,-,13-14Y,Short,-,-,-,FIFA World Champions 2010,-,-,-
-005-005-005-UEF-FRA-FRA-010-7981-09-2018-000,2018 France Away Jersey,Apparel,Jersey,Team,National Team,France,2018,Away,000,-,-,France,UEFA,Replica,Nike,-,S,Short,-,-,-,-,-,-,-
-005-005-005-UEF-ITA-ITA-015-7980-06-2019-000,2019-20 Italy Third Jersey,Apparel,Jersey,Team,National Team,Italy,2019-20,Third,000,-,-,Italy,UEFA,Replica,Puma,-,S,Short,-,-,-,-,-,-,-
-005-005-005-UEF-ITA-ITA-010-7979-09-2020-000,2020 Italy Away Jersey,Apparel,Jersey,Team,National Team,Italy,2020,Away,000,-,-,Italy,UEFA,Replica,Puma,-,S,Short,-,-,-,-,-,-,-
-005-005-005-UEF-ITA-ITA-010-7983-06-2016-000,2016-17 Italy Away Jersey,Apparel,Jersey,Team,National Team,Italy,2016-17,Away,000,-,-,Italy,UEFA,Replica,Puma,-,S,Short,-,-,-,-,-,-,"""2006-2016 Tribute"" edition"
-005-005-005-UEF-ITA-ITA-010-7983-09-2016-001,2016 Italy Away Jersey,Apparel,Jersey,Team,National Team,Italy,2016,Away,001,-,-,Italy,UEFA,Replica,Puma,-,S,Short,-,-,-,-,-,-,-
-005-005-005-UEF-SCO-SCO-005-7981-09-2018-000,2018 Scotland Home Jersey,Apparel,Jersey,Team,National Team,Scotland,2018,Home,000,-,-,Scotland,UEFA,Replica,Adidas,-,S,Short,-,-,-,-,-,-,-
-005-005-005-UEF-SCO-SCO-005-7985-09-2014-000,2014 Scotland Authentic Home Jersey,Apparel,Jersey,Team,National Team,Scotland,2014,Home,000,-,-,Scotland,UEFA,Authentic,Adidas,-,S,Short,-,-,-,-,-,-,-
-005-005-005-UEF-WAL-WAL-005-7981-09-2018-000,2018 Wales Home Jersey,Apparel,Jersey,Team,National Team,Wales,2018,Home,000,-,-,Wales,UEFA,Replica,Adidas,-,S,Short,-,-,-,-,-,-,-
-005-005-005-UEF-ENG-ENG-010-7981-09-2018-000,2018 England Away Jersey,Apparel,Jersey,Team,National Team,England,2018,Away,000,-,-,England,UEFA,Replica,Nike,-,S,Short,-,-,-,-,-,-,-
-005-005-005-UEF-GRE-GRE-010-7974-09-2025-000,2025 Greenland Away Jersey,Apparel,Jersey,Team,National Team,Greenland,2025,Away,000,-,-,Greenland,UEFA,Replica,Hummel,-,S,Short,-,-,-,-,-,-,-
-005-005-005-UEF-ICE-ICE-005-7981-09-2018-000,2018 Iceland Home Jersey,Apparel,Jersey,Team,National Team,Iceland,2018,Home,000,-,-,Iceland,UEFA,Replica,Errea,-,S,Short,-,-,-,-,-,-,-
-005-005-005-UEF-SWE-SWE-010-7983-09-2016-000,2016 Sweden Away Jersey,Apparel,Jersey,Team,National Team,Sweden,2016,Away,000,-,-,Sweden,UEFA,Replica,Adidas,-,S,Short,-,-,-,-,-,-,-
-005-005-005-UEF-NOR-NOR-010-7979-09-2020-000,2020 Norway Away Jersey,Apparel,Jersey,Team,National Team,Norway,2020,Away,000,-,-,Norway,UEFA,Replica,Nike,-,S,Short,-,-,-,-,-,-,-
-005-005-005-UEF-DEN-DEN-010-7983-06-2016-000,2016-17 Denmark Away Jersey,Apparel,Jersey,Team,National Team,Denmark,2016-17,Away,000,-,-,Denmark,UEFA,Replica,Hummel,-,S,Short,-,-,-,-,-,-,-
-005-005-005-UEF-DEN-DEN-005-7981-09-2018-000,2018 Denmark Home Jersey,Apparel,Jersey,Team,National Team,Denmark,2018,Home,000,-,-,Denmark,UEFA,Replica,Hummel,-,S,Short,-,-,-,-,-,-,-
-005-005-005-UEF-SWI-SWI-005-7981-09-2018-000,2018 Switzerland Home Jersey,Apparel,Jersey,Team,National Team,Switzerland,2018,Home,000,-,-,Switzerland,UEFA,Replica,Puma,-,S,Short,-,-,-,-,-,-,-
-005-005-005-UEF-AUS-AUS-005-7979-09-2020-000,2020 Austria Home Jersey,Apparel,Jersey,Team,National Team,Austria,2020,Home,000,-,-,Austria,UEFA,Replica,Puma,-,S,Short,-,-,-,-,-,-,-
-005-005-005-UEF-AUS-AUS-005-7981-09-2018-000,2018 Austria Home Jersey,Apparel,Jersey,Team,National Team,Austria,2018,Home,000,-,-,Austria,UEFA,Replica,Puma,-,S,Short,-,-,-,-,-,-,-
-005-005-005-UEF-ALB-ALB-015-7982-09-2017-000,2017 Albania Third Jersey,Apparel,Jersey,Team,National Team,Albania,2017,Third,000,-,-,Albania,UEFA,Replica,Macron,-,S,Short,-,-,-,-,-,-,-
-005-005-005-UEF-ALB-ALB-005-7983-09-2016-000,2016 Albania Home Jersey,Apparel,Jersey,Team,National Team,Albania,2016,Home,000,-,-,Albania,UEFA,Replica,Macron,-,S,Short,-,-,-,-,-,-,-
-005-005-005-UEF-CZE-CZE-005-7981-09-2018-000,2018 Czech Republic Home Jersey,Apparel,Jersey,Team,National Team,Czech Republic,2018,Home,000,-,-,Czech Republic,UEFA,Replica,Puma,-,S,Short,-,-,-,-,-,-,-
-005-005-005-UEF-CZE-CZE-005-7983-09-2016-000,2016 Czech Republic Home Jersey,Apparel,Jersey,Team,National Team,Czech Republic,2016,Home,000,-,-,Czech Republic,UEFA,Replica,Puma,-,S,Short,-,-,-,-,-,-,-
-005-005-005-UEF-CRO-CRO-010-7981-09-2018-000,2018 Croatia Away Jersey,Apparel,Jersey,Team,National Team,Croatia,2018,Away,000,-,-,Croatia,UEFA,Replica,Nike,-,S,Short,-,-,-,-,-,-,-
-005-005-005-UEF-SER-SER-010-7979-09-2020-000,2020 Serbia Away Jersey,Apparel,Jersey,Team,National Team,Serbia,2020,Away,000,-,-,Serbia,UEFA,Replica,Puma,-,S,Short,-,-,-,-,-,-,-
-005-005-005-UEF-SER-SER-005-7979-09-2020-000,2020 Serbia Home Jersey,Apparel,Jersey,Team,National Team,Serbia,2020,Home,000,-,-,Serbia,UEFA,Replica,Puma,-,S,Short,-,-,-,-,-,-,-
-005-005-005-UEF-SLO-SLO-010-7983-09-2016-000,2016 Slovenia Away Jersey,Apparel,Jersey,Team,National Team,Slovenia,2016,Away,000,-,-,Slovenia,UEFA,Replica,Nike,-,S,Short,-,-,-,-,-,-,-
-005-005-005-UEF-RUS-RUS-010-7981-09-2018-000,2018 Russia Away Jersey,Apparel,Jersey,Team,National Team,Russia,2018,Away,000,-,-,Russia,UEFA,Replica,Adidas,-,S,Short,-,-,-,-,-,-,-
-005-005-005-UEF-RUS-RUS-010-7983-09-2016-000,2016 Russia Away Jersey,Apparel,Jersey,Team,National Team,Russia,2016,Away,000,-,-,Russia,UEFA,Replica,Adidas,-,S,Short,-,-,-,-,-,-,-
-005-005-005-UEF-RUS-RUS-005-7981-09-2018-000,2018 Russia Home Jersey,Apparel,Jersey,Team,National Team,Russia,2018,Home,000,-,-,Russia,UEFA,Replica,Adidas,-,S,Short,-,-,-,-,-,-,-
-005-005-005-AFC-SKO-SKO-010-7979-09-2020-000,2020 South Korea Away Jersey,Apparel,Jersey,Team,National Team,South Korea,2020,Away,000,-,-,South Korea,AFC,Replica,Nike,-,S,Short,-,-,-,-,-,-,-
-005-005-005-AFC-JAP-JAP-010-7975-09-2024-000,2024 Japan Away Jersey,Apparel,Jersey,Team,National Team,Japan,2024,Away,000,-,-,Japan,AFC,Replica,Adidas,Y-3,S,Short,-,-,-,-,-,-,-
-005-005-005-AFC-JAP-JAP-010-7983-09-2016-000,2016 Japan Away Jersey Okazaki #9,Apparel,Jersey,Team,National Team,Japan,2016,Away,000,-,-,Japan,AFC,Replica,Adidas,-,S,Short,Shinji Okazaki,Okazaki #9,Official,-,-,-,-
-005-005-005-AFC-JAP-JAP-005-7975-09-2024-000,2024 Japan Home Jersey,Apparel,Jersey,Team,National Team,Japan,2024,Home,000,-,-,Japan,AFC,Replica,Adidas,Y-3,S,Short,-,-,-,-,-,-,-
-005-005-005-AFC-JAP-JAP-005-7979-09-2020-000,2020 Japan Home Jersey,Apparel,Jersey,Team,National Team,Japan,2020,Home,000,-,-,Japan,AFC,Replica,Adidas,-,S,Short,-,-,-,-,-,-,-
-005-005-005-CAF-IVO-IVO-005-7980-09-2019-000,2019 Ivory Coast Home Jersey,Apparel,Jersey,Team,National Team,Ivory Coast,2019,Home,000,-,-,Ivory Coast,CAF,Replica,Puma,-,S,Short,-,-,-,-,-,-,-
-005-005-005-CAF-GHA-GHA-010-7980-09-2019-000,2019 Ghana Away Jersey,Apparel,Jersey,Team,National Team,Ghana,2019,Away,000,-,-,Ghana,CAF,Replica,Puma,-,S,Short,-,-,-,-,-,-,-
-005-005-005-CAF-GHA-GHA-005-7987-09-2012-000,2012 Ghana Home Jersey,Apparel,Jersey,Team,National Team,Ghana,2012,Home,000,-,-,Ghana,CAF,Replica,Puma,-,S,Short,-,-,-,-,-,-,-
-005-005-005-CAF-CAM-CAM-010-7981-09-2018-000,2018 Cameroon Away Jersey,Apparel,Jersey,Team,National Team,Cameroon,2018,Away,000,-,-,Cameroon,CAF,Replica,Puma,-,S,Short,-,-,-,-,-,-,-
-005-005-005-CAF-CAM-CAM-005-7981-09-2018-000,2018 Cameroon Authentic Home Jersey,Apparel,Jersey,Team,National Team,Cameroon,2018,Home,000,-,-,Cameroon,CAF,Authentic,Puma,-,S,Short,-,-,-,-,-,-,-
-005-005-005-CAF-SEN-SEN-005-7982-09-2017-000,2017 Senegal Home Jersey,Apparel,Jersey,Team,National Team,Senegal,2017,Home,000,-,-,Senegal,CAF,Replica,Romai,-,S,Short,-,-,-,-,-,-,-
-005-005-005-CAF-NIG-NIG-005-7979-09-2020-000,2020 Nigeria Home Jersey,Apparel,Jersey,Team,National Team,Nigeria,2020,Home,000,-,-,Nigeria,CAF,Replica,Nike,-,S,Short,-,-,-,-,-,-,-
-005-005-005-CAF-NIG-NIG-005-7981-09-2018-000,2018 Nigeria Home Jersey,Apparel,Jersey,Team,National Team,Nigeria,2018,Home,000,-,-,Nigeria,CAF,Replica,Nike,-,S,Short,-,-,-,-,-,-,-
-005-005-005-OFC-NZE-NZE-010-7981-09-2018-000,2018 New Zealand Away Jersey,Apparel,Jersey,Team,National Team,New Zealand,2018,Away,000,-,-,New Zealand,OFC,Replica,Nike,-,S,Short,-,-,-,-,-,-,-
-005-005-015-AAA-AAA-SOC-005-7981-09-2018-000,2018 Soccer Aid World XI Home Jersey Bolt #9.58,Apparel,Jersey,Team,Collective,Soccer Aid World XI,2018,Home,000,-,Soccer Aid,-,-,Replica,Puma,-,S,Short,Usain Bolt,Bolt #9.58,Official,-,-,-,-
-005-005-010-AAA-SPA-PIO-005-7975-09-2024-000,2024 PIO FC Home Jersey,Apparel,Jersey,Team,Club,PIO FC,2024,Home,000,-,Kings League,Spain,-,Replica,Adidas,-,S,Short,-,-,-,-,-,-,-
-030-010-000-UEF-GER-BUN-065-7975-06-2024-000,2024-25 Bundesliga Borussia Dortmund vs. Union Berlin Scarf,Apparel,Scarf,Event,-,Borussia Dortmund | Union Berlin,2024-25,Lifestyle,000,Matchday,Bundesliga,Germany,UEFA,-,In-House,-,-,-,-,-,-,-,-,-,-
-030-010-000-UEF-AAA-EUR-065-7984-06-2015-000,2015-16 UEFA Europa League Liverpool FC vs. Borussia Dortmund Scarf,Apparel,Scarf,Event,-,Liverpool FC | Borussia Dortmund,2015-16,Lifestyle,000,Matchday,UEFA Europa League,-,UEFA,-,In-House,-,-,-,Jürgen Klopp,-,-,-,-,-,-
-030-005-010-UEF-GER-DOR-065-9999-10-0000-000,Borussia Dortmund Striped Name Scarf,Apparel,Scarf,Team,Club,Borussia Dortmund,-,Lifestyle,000,-,Bundesliga,Germany,UEFA,-,In-House,-,-,-,-,-,-,-,-,-,-
-030-005-010-UEF-GER-DOR-065-9999-10-0000-001,Borussia Dortmund Striped Scarf Black/Yellow - Bundle Box,Apparel,Scarf,Team,Club,Borussia Dortmund,-,Lifestyle,001,-,Bundesliga,Germany,UEFA,-,In-House,-,-,-,-,-,-,-,Bundle Box,-,Adrenalin-Trip bundle
-030-005-010-UEF-GER-DOR-065-9999-10-0000-002,Borussia Dortmund Striped Scarf Black/Grey,Apparel,Scarf,Team,Club,Borussia Dortmund,-,Lifestyle,002,-,Bundesliga,Germany,UEFA,-,In-House,-,-,-,-,-,-,-,-,-,-
-030-005-010-UEF-GER-DOR-065-9999-10-0000-003,Borussia Dortmund Stadium Scarf,Apparel,Scarf,Team,Club,Borussia Dortmund,-,Lifestyle,003,-,Bundesliga,Germany,UEFA,-,In-House,-,-,-,-,-,-,-,-,-,-
-030-005-010-CCF-MEX-TOL-065-7982-09-2017-000,2017 Deportivo Toluca 100th Anniversary Scarf,Apparel,Scarf,Team,Club,Deportivo Toluca,2017,Lifestyle,000,100th Anniversary,Liga MX,Mexico,CONCACAF,-,In-House,-,-,-,-,-,-,-,-,-,-
-030-005-005-UEF-AUS-AUS-065-7983-06-2016-000,2016-17 Austria Scarf,Apparel,Scarf,Team,National Team,Austria,2016-17,Lifestyle,000,-,-,Austria,UEFA,-,Puma,-,-,-,-,-,-,-,-,-,-
-030-005-005-UEF-GER-GER-065-7981-06-2018-000,2018-19 Germany Scarf,Apparel,Scarf,Team,National Team,Germany,2018-19,Lifestyle,000,-,-,Germany,UEFA,-,Adidas,-,-,-,-,-,-,-,-,-,-
-030-010-000-UEF-AAA-CHA-065-7987-06-2012-000,2012-13 UEFA Champions League Final Scarf,Apparel,Scarf,Event,-,-,2012-13,Lifestyle,000,Matchday,UEFA Champions League,-,UEFA,-,Adidas,-,-,-,-,-,-,-,-,-,-
-010-005-010-UEF-GER-DOR-065-7974-09-2025-000,"2025 Borussia Dortmund ""Chinese New Year"" Hoodie",Apparel,Hoodie,Team,Club,Borussia Dortmund,2025,Lifestyle,000,Special Edition,Bundesliga,Germany,UEFA,-,In-House,-,S,-,-,-,-,-,-,-,-
-010-005-010-UEF-GER-DOR-065-7979-06-2020-000,2020-21 Borussia Dortmund Hoodie,Apparel,Hoodie,Team,Club,Borussia Dortmund,2020-21,Lifestyle,000,-,Bundesliga,Germany,UEFA,-,Puma,-,S,-,-,-,-,-,-,-,-
-010-005-010-UEF-GER-DOR-065-7981-06-2018-000,2018-19 Borussia Dortmund Hoodie,Apparel,Hoodie,Team,Club,Borussia Dortmund,2018-19,Lifestyle,000,-,Bundesliga,Germany,UEFA,-,Puma,-,S,-,-,-,-,-,-,-,-
-015-005-010-UEF-GER-DOR-065-7982-06-2017-000,2017-18 Borussia Dortmund Jacket,Apparel,Jacket,Team,Club,Borussia Dortmund,2017-18,Lifestyle,000,-,Bundesliga,Germany,UEFA,-,Puma,-,S,-,-,-,-,-,-,-,-
-015-005-010-UEF-GER-DOR-055-7975-06-2024-000,2024-25 Borussia Dortmund Jacket,Apparel,Jacket,Team,Club,Borussia Dortmund,2024-25,Activewear,000,-,Bundesliga,Germany,UEFA,-,Puma,-,S,-,-,-,-,-,-,-,-
-020-005-010-UEF-GER-DOR-055-7975-06-2024-000,2024-25 Borussia Dortmund Pants,Apparel,Pants,Team,Club,Borussia Dortmund,2024-25,Activewear,000,-,Bundesliga,Germany,UEFA,-,Puma,-,S,-,-,-,-,-,-,-,-
-025-005-010-UEF-GER-DOR-065-9999-10-0000-000,Borussia Dortmund Crest Cap Black,Apparel,Headwear,Team,Club,Borussia Dortmund,-,Lifestyle,000,-,Bundesliga,Germany,UEFA,-,In-House,-,-,-,-,-,-,-,-,-,-
-015-005-010-CCF-MEX-TOL-055-7983-06-2016-000,2016-17 Deportivo Toluca 100th Anniversary Jacket,Apparel,Jacket,Team,Club,Deportivo Toluca,2016-17,Activewear,000,100th Anniversary,Liga MX,Mexico,CONCACAF,-,Under Armour,-,S,-,-,-,-,-,-,-,-
-040-005-010-CCF-MEX-TOL-080-7982-09-2017-000,2017 Deportivo Toluca 100th Anniversary Ball,Equipment,Ball,Team,Club,Deportivo Toluca,2017,Commemorative Ball,000,100th Anniversary,Liga MX,Mexico,CONCACAF,Fan Ball,In-House,-,-,-,-,-,-,-,In Box,-,-
-040-010-000-FIF-AAA-CON-070-7982-09-2017-000,"2017 FIFA Confederations Cup ""Krasava"" Match Ball",Equipment,Ball,Event,-,-,2017,Regular Ball,000,-,FIFA Confederations Cup,-,FIFA,Match Ball,Adidas,-,5 BALL,-,-,-,-,-,In Box,-,-
-040-010-000-FIF-AAA-WOR-075-7985-09-2014-000,"2014 FIFA World Cup ""Brazuca Final Rio"" Match Ball",Equipment,Ball,Event,-,-,2014,Knockout Ball,000,-,FIFA World Cup,-,FIFA,Match Ball,Adidas,-,5 BALL,-,-,-,-,-,In Box,-,-
-040-010-000-FIF-AAA-WOR-070-7981-09-2018-000,"2018 FIFA World Cup ""Telstar 18"" Match Ball",Equipment,Ball,Event,-,-,2018,Regular Ball,000,-,FIFA World Cup,-,FIFA,Match Ball,Adidas,-,5 BALL,-,-,-,-,-,In Box,-,-
-040-010-000-FIF-AAA-WOR-070-7977-09-2022-000,"2022 FIFA World Cup ""Al Rihla"" Match Ball",Equipment,Ball,Event,-,-,2022,Regular Ball,000,-,FIFA World Cup,-,FIFA,Match Ball,Adidas,-,5 BALL,-,-,-,-,-,In Box,-,-
-040-010-000-FIF-AAA-WOR-070-7973-09-2026-000,"2026 FIFA World Cup ""Trionda"" Match Ball",Equipment,Ball,Event,-,-,2026,Regular Ball,000,-,FIFA World Cup,-,FIFA,Match Ball,Adidas,-,5 BALL,-,-,-,-,-,In Box,-,-
-040-010-000-UEF-AAA-CHA-075-7984-06-2015-000,"2015-16 UEFA Champions League ""Finale Milano"" Match Ball",Equipment,Ball,Event,-,-,2015-16,Knockout Ball,000,-,UEFA Champions League,-,UEFA,Match Ball,Adidas,-,5 BALL,-,-,-,-,-,In Box,-,-
-040-010-000-UEF-AAA-CHA-070-7983-06-2016-000,"2016-17 UEFA Champions League ""Finale 16"" Match Ball",Equipment,Ball,Event,-,-,2016-17,Regular Ball,000,-,UEFA Champions League,-,UEFA,Match Ball,Adidas,-,5 BALL,-,-,-,-,-,In Box,-,-
-040-010-000-UEF-AAA-CHA-075-7983-06-2016-000,"2017-18 UEFA Champions League ""Finale Cardiff"" Match Ball",Equipment,Ball,Event,-,-,2016-17,Knockout Ball,000,-,UEFA Champions League,-,UEFA,Match Ball,Adidas,-,5 BALL,-,-,-,-,-,In Box,-,-
-035-015-000-AAA-AAA-ADI-120-7981-09-2018-000,"Nemeziz Tango 18.1 TR ""White/Core Black/Shock Pink""",Equipment,Boots,Brand,-,-,2018,Training Boot,000,-,-,-,-,-,Adidas,-,8.5 US,-,-,-,-,-,-,-,-
-035-015-000-AAA-AAA-ADI-100-7983-09-2016-000,"Messi 16.1 FG ""Space Dust""",Equipment,Boots,Brand,-,-,2016,Firm Ground,000,-,-,-,-,-,Adidas,-,8.5 US,-,-,-,-,-,-,-,-
-035-015-000-AAA-AAA-ADI-100-7981-09-2018-000,"Predator 18.1 ""Nite Crawler""",Equipment,Boots,Brand,-,-,2018,Firm Ground,000,-,-,-,-,-,Adidas,-,9 US,-,-,-,-,-,-,-,-
-035-015-000-AAA-AAA-NIK-110-7983-09-2016-000,"TiempoX Proximo ""Dark Lightning""",Equipment,Boots,Brand,-,-,2016,Turf,000,-,-,-,-,-,Nike,-,9 US,-,-,-,-,-,-,-,-
-035-015-000-AAA-AAA-NIK-115-7984-09-2015-000,"MercurialX Proximo ""Metallic Gold""",Equipment,Boots,Brand,-,-,2015,Indoor Court,000,-,-,-,-,-,Nike,-,9 US,-,-,-,-,-,-,-,-
-035-015-000-AAA-AAA-NIK-115-7982-09-2017-000,"HypervenomX Proximo II DF ""Strike Night""",Equipment,Boots,Brand,-,-,2017,Indoor Court,000,-,-,-,-,-,Nike,-,9 US,-,-,-,-,-,-,-,-
-045-005-010-UEF-ENG-LEI-000-9999-10-0000-000,Leicester City Tumbler,Memorabilia,Drinkware,Team,Club,Leicester City,-,-,000,-,Premier League,England,UEFA,-,In-House,-,-,-,-,-,-,-,-,-,-
-045-005-010-UEF-GER-DOR-000-7975-09-2024-000,"2024 Borussia Dortmund ""Marco Reus Farewell"" Stadium Cup",Memorabilia,Drinkware,Team,Club,Borussia Dortmund,2024,-,000,Farewell,Bundesliga,Germany,UEFA,-,In-House,-,-,-,Marco Reus,-,-,-,-,-,-
-045-005-010-UEF-GER-DOR-000-7975-09-2024-001,"2024 Borussia Dortmund ""Abschiedszczspiel"" Stadium Cup",Memorabilia,Drinkware,Team,Club,Borussia Dortmund,2024,-,001,Farewell,Bundesliga,Germany,UEFA,-,In-House,-,-,-,Łukasz Piszczek | Jakub Błaszczykowski,-,-,-,-,-,-
-045-005-010-UEF-GER-DOR-000-9999-10-0000-000,"Borussia Dortmund ""Borussia Dortmund"" Stadium Cup",Memorabilia,Drinkware,Team,Club,Borussia Dortmund,-,-,000,-,Bundesliga,Germany,UEFA,-,In-House,-,-,-,-,-,-,-,-,-,-
-045-005-010-UEF-GER-DOR-000-9999-10-0000-001,"Borussia Dortmund ""Heja BVB"" Stadium Cup",Memorabilia,Drinkware,Team,Club,Borussia Dortmund,-,-,001,-,Bundesliga,Germany,UEFA,-,In-House,-,-,-,-,-,-,-,-,-,-
-045-005-010-UEF-GER-DOR-000-9999-10-0000-002,Borussia Dortmund Magic Mug,Memorabilia,Drinkware,Team,Club,Borussia Dortmund,-,-,002,-,Bundesliga,Germany,UEFA,-,In-House,-,-,-,-,-,-,-,-,-,-
-045-005-010-CCF-MEX-TOL-000-9999-10-0000-000,Deportivo Toluca Christmas Third-Party Mug (Custom Name),Memorabilia,Drinkware,Team,Club,Deportivo Toluca,-,-,000,-,Liga MX,Mexico,CONCACAF,-,Third-Party,-,-,-,-,-,-,-,-,-,-
-045-005-010-CCF-MEX-TOL-000-7982-09-2017-000,2017 Deportivo Toluca 100th Anniversary Mug,Memorabilia,Drinkware,Team,Club,Deportivo Toluca,2017,-,000,100th Anniversary,Liga MX,Mexico,CONCACAF,-,In-House,-,-,-,-,-,-,-,-,-,-
-045-005-010-CCF-MEX-TOL-000-7974-06-2025-000,2025-26 Deportivo Toluca Bottle - Bundle Box,Memorabilia,Drinkware,Team,Club,Deportivo Toluca,2025-26,-,000,-,Liga MX,Mexico,CONCACAF,-,In-House,-,-,-,-,-,-,-,Bundle Box,-,"Presale bundle (with jersey, in box)"
-045-005-010-CCF-MEX-TOL-000-7974-08-2025-001,Clausura 2025 Deportivo Toluca Winners Tumbler,Memorabilia,Drinkware,Team,Club,Deportivo Toluca,Clausura 2025,-,001,Winners,Liga MX,Mexico,CONCACAF,-,Norday,-,-,-,-,-,-,-,-,-,-
-045-005-010-CCF-MEX-TOL-000-7974-08-2025-002,Clausura 2025 Deportivo Toluca Winners Beer Can,Memorabilia,Drinkware,Team,Club,Deportivo Toluca,Clausura 2025,-,002,Winners,Liga MX,Mexico,CONCACAF,-,Corona,-,-,-,-,-,-,-,-,-,-
-045-005-010-CCF-MEX-TOL-000-7982-09-2017-001,2017 Deportivo Toluca 100th Anniversary Beer Can,Memorabilia,Drinkware,Team,Club,Deportivo Toluca,2017,-,001,100th Anniversary,Liga MX,Mexico,CONCACAF,-,Corona,-,-,-,-,-,-,-,-,-,-
-045-005-010-CCF-MEX-TOL-000-7974-08-2025-003,Clausura 2025 Deportivo Toluca Winners Stadium Cup,Memorabilia,Drinkware,Team,Club,Deportivo Toluca,Clausura 2025,-,003,Winners,Liga MX,Mexico,CONCACAF,-,In-House,-,-,-,-,-,-,-,-,-,-
-045-005-010-CCF-MEX-TOL-000-9999-10-0000-001,Deportivo Toluca Stadium Cup,Memorabilia,Drinkware,Team,Club,Deportivo Toluca,-,-,001,-,Liga MX,Mexico,CONCACAF,-,In-House,-,-,-,-,-,-,-,-,-,-
-070-005-010-CCF-MEX-TOL-000-7979-08-2020-000,Clausura 2020 Deportivo Toluca Season Pass,Memorabilia,Pass,Team,Club,Deportivo Toluca,Clausura 2020,-,000,-,Liga MX,Mexico,CONCACAF,-,-,-,-,-,-,-,-,-,-,-,-
-070-005-010-CCF-MEX-TOL-000-7981-07-2018-000,Apertura 2018 Deportivo Toluca Season Pass,Memorabilia,Pass,Team,Club,Deportivo Toluca,Apertura 2018,-,000,-,Liga MX,Mexico,CONCACAF,-,-,-,-,-,-,-,-,-,-,-,-
-070-005-010-UEF-GER-DOR-000-7975-06-2024-000,2024-25 Borussia Dortmund Stadiondeckel - Bundle Box,Memorabilia,Pass,Team,Club,Borussia Dortmund,2024-25,-,000,-,Bundesliga,Germany,UEFA,-,-,-,-,-,-,-,-,-,Bundle Box,-,Adrenalin-Trip bundle
-070-010-000-CCF-MEX-LMX-000-7981-08-2018-000,Clausura 2018 Liga MX Final Deportivo Toluca vs. Santos Laguna Ticket,Memorabilia,Pass,Event,-,Deportivo Toluca | Santos Laguna,Clausura 2018,-,000,Matchday,Liga MX,Mexico,CONCACAF,-,-,-,-,-,-,-,-,-,-,-,-
-070-010-000-CCF-MEX-LMX-000-7982-08-2017-000,Clausura 2017 Liga MX Deportivo Toluca vs. Club Puebla Ticket,Memorabilia,Pass,Event,-,Deportivo Toluca | Club Puebla,Clausura 2017,-,000,Matchday,Liga MX,Mexico,CONCACAF,-,-,-,-,-,-,-,-,-,-,-,-
-070-010-000-CCF-MEX-CMX-000-7982-08-2017-000,Clausura 2017 Copa MX Deportivo Toluca vs. CD Veracruz Ticket,Memorabilia,Pass,Event,-,Deportivo Toluca | CD Veracruz,Clausura 2017,-,000,Matchday,Copa MX,Mexico,CONCACAF,-,-,-,-,-,-,-,-,-,-,-,-
-070-010-000-CMB-MEX-LIB-000-7983-09-2016-000,2016 Copa CONMEBOL Libertadores Deportivo Toluca vs. CA San Lorenzo Ticket,Memorabilia,Pass,Event,-,Deportivo Toluca | CA San Lorenzo,2016,-,000,Matchday,Copa CONMEBOL Libertadores,Mexico,CONMEBOL,-,-,-,-,-,-,-,-,-,-,-,-
-070-010-000-CCF-MEX-CNL-000-7980-06-2019-000,2019-20 CONCACAF Nations League Mexico vs. Bermuda Matchday Ticket,Memorabilia,Pass,Event,-,Mexico | Bermuda,2019-20,-,000,Matchday,CONCACAF Nations League,Mexico,CONCACAF,-,-,-,-,-,-,-,-,-,-,-,-
-070-010-000-AAA-MEX-FRI-000-7982-09-2017-000,2017 Deportivo Toluca vs. Atlético Madrid Ticket,Memorabilia,Pass,Event,-,Deportivo Toluca | Atlético Madrid,2017,-,000,Matchday,Friendly,Mexico,-,-,-,-,-,-,-,-,-,-,-,-,-
-055-005-010-CCF-MEX-TOL-000-7981-07-2018-000,Apertura 2018 Deportivo Toluca Season Pass Lanyard,Memorabilia,Accessory,Team,Club,Deportivo Toluca,Apertura 2018,-,000,-,Liga MX,Mexico,CONCACAF,-,In-House,-,-,-,-,-,-,-,-,-,-
-055-005-010-CCF-MEX-TOL-000-7979-08-2020-000,Clausura 2020 Deportivo Toluca Season Pass Lanyard,Memorabilia,Accessory,Team,Club,Deportivo Toluca,Clausura 2020,-,000,-,Liga MX,Mexico,CONCACAF,-,In-House,-,-,-,-,-,-,-,-,-,-
-055-005-010-CCF-MEX-TOL-000-7980-08-2019-000,Clausura 2019 Deportivo Toluca Season Pass Lanyard,Memorabilia,Accessory,Team,Club,Deportivo Toluca,Clausura 2019,-,000,-,Liga MX,Mexico,CONCACAF,-,In-House,-,-,-,-,-,-,-,-,-,-
-055-005-010-CCF-MEX-TOL-000-7980-07-2019-001,Apertura 2019 Deportivo Toluca Keychain,Memorabilia,Accessory,Team,Club,Deportivo Toluca,Apertura 2019,-,001,-,Liga MX,Mexico,CONCACAF,-,In-House,-,-,-,-,-,-,-,-,-,-
-055-005-010-UEF-GER-DOR-000-9999-10-0000-000,Borussia Dortmund Stadium 4-Pin Set,Memorabilia,Accessory,Team,Club,Borussia Dortmund,-,-,000,-,Bundesliga,Germany,UEFA,-,In-House,-,-,-,-,-,-,-,-,-,-
-055-005-010-UEF-GER-DOR-000-7983-06-2016-000,2016-17 Borussia Dortmund DBF-Pokal Winners Pin,Memorabilia,Accessory,Team,Club,Borussia Dortmund,2016-17,-,000,Winners,DFB-Pokal,Germany,UEFA,-,In-House,-,-,-,-,-,-,-,-,-,-
-055-015-000-UEF-GER-DEU-000-9999-10-0000-000,"Deutsches Fußballmuseum ""Trikot 1954"" Magnet",Memorabilia,Accessory,Brand,-,-,-,-,000,-,-,Germany,UEFA,-,Deutsches Fußballmuseum,-,-,-,-,-,-,-,-,-,-
-055-015-000-UEF-GER-DEU-000-9999-10-0000-001,Deutsches Fußballmuseum Shoe Keychain,Memorabilia,Accessory,Brand,-,-,-,-,001,-,-,Germany,UEFA,-,Deutsches Fußballmuseum,-,-,-,-,-,-,-,-,-,-
-060-005-010-UEF-GER-DOR-000-7975-06-2024-000,2024-25 Borussia Dortmund Mitgliedermagazin (February 2025) - Bundle Box,Memorabilia,Stationery,Team,Club,Borussia Dortmund,2024-25,-,000,-,Bundesliga,Germany,UEFA,-,In-House,-,-,-,-,-,-,-,Bundle Box,-,Adrenalin-Trip bundle
-060-005-010-UEF-GER-DOR-000-9999-10-0000-000,Borussia Dortmund Postcard (Signed by Kevin Großkreutz),Memorabilia,Stationery,Team,Club,Borussia Dortmund,-,-,000,-,Bundesliga,Germany,UEFA,-,In-House,-,-,-,-,-,-,-,-,Kevin Großkreutz,-
-060-005-010-UEF-GER-DOR-000-7975-09-2024-001,"2024 Borussia Dortmund Borusseum ""Marco Reus Farewell"" Postcard",Memorabilia,Stationery,Team,Club,Borussia Dortmund,2024,-,001,-,Bundesliga,Germany,UEFA,-,Borusseum,-,-,-,Marco Reus,-,-,-,-,-,-
-060-005-010-UEF-GER-DOR-000-8086-09-1913-000,"1913 Borussia Dortmund Borusseum ""Jung-Borussen"" Postcard",Memorabilia,Stationery,Team,Club,Borussia Dortmund,1913,-,000,-,Bundesliga,Germany,UEFA,-,Borusseum,-,-,-,-,-,-,-,-,-,-
-060-005-010-UEF-GER-DOR-000-9999-10-0000-001,"Borussia Dortmund Borusseum ""Drei Borussen im Widerstand"" Magazine",Memorabilia,Stationery,Team,Club,Borussia Dortmund,-,-,001,-,Bundesliga,Germany,UEFA,-,Borusseum,-,-,-,-,-,-,-,-,-,-
-060-010-000-AAA-MEX-FRI-000-7977-09-2022-000,2022 Deportivo Toluca vs. Bayer 04 Leverkusen Sticker,Memorabilia,Stationery,Event,-,Deportivo Toluca | Bayer 04 Leverkusen,2022,-,000,Matchday,Friendly,Mexico,-,-,In-House,-,-,-,-,-,-,-,-,-,Gifted during the Deportivo Toluca vs Bayer Leverkusen commemorative match
-050-010-000-UEF-GER-BUN-000-9999-10-0000-000,DFB Bundesliga Championship Trophy Miniature - 70mm,Memorabilia,Display,Event,-,-,-,-,000,-,Bundesliga,Germany,UEFA,-,In-House,-,-,-,-,-,-,-,-,-,-
-050-005-010-UEF-SPA-RMA-000-9999-10-0000-000,Real Madrid Santiago Bernabéu Stadium Crystal Block,Memorabilia,Display,Team,Club,Real Madrid,-,-,000,-,La Liga,Spain,UEFA,-,In-House,-,-,-,-,-,-,-,-,-,-
-060-010-000-FIF-AAA-WOR-000-7989-09-2010-000,2010 FIFA World Cup Sticker Album (Complete),Memorabilia,Stationery,Event,-,-,2010,-,000,-,FIFA World Cup,-,FIFA,-,Panini,-,-,-,-,-,-,-,-,-,Complete
-060-010-000-FIF-AAA-WOR-000-7985-09-2014-000,2014 FIFA World Cup Sticker Album (Complete),Memorabilia,Stationery,Event,-,-,2014,-,000,-,FIFA World Cup,-,FIFA,-,Panini,-,-,-,-,-,-,-,-,-,Complete
-060-010-000-UEF-AAA-CHA-000-7989-06-2010-000,2010-11 UEFA Champions League Sticker Album (Incomplete),Memorabilia,Stationery,Event,-,-,2010-11,-,000,-,UEFA Champions League,-,UEFA,-,Panini,-,-,-,-,-,-,-,-,-,Incomplete (Missing X stickers)
-060-010-000-CCF-MEX-LMX-000-7989-07-2010-000,Apertura 2010 Liga MX Sticker Album (Incomplete),Memorabilia,Stationery,Event,-,-,Apertura 2010,-,000,-,Liga MX,Mexico,CONCACAF,-,Panini,-,-,-,-,-,-,-,-,-,Incomplete (Missing X stickers)
-060-005-010-CCF-MEX-TOL-000-7982-09-2017-000,2017 Deportivo Toluca 100th Anniversary Sticker Album (Incomplete),Memorabilia,Stationery,Team,Club,Deportivo Toluca,2017,-,000,100th Anniversary,Liga MX,Mexico,CONCACAF,-,In-House,-,-,-,-,-,-,-,-,-,Incomplete (Missing X stickers)
-010-005-010-CCF-MEX-TOL-065-9999-10-0000-000,"Deportivo Toluca ""Devil"" Third-Party Hoodie",Apparel,Hoodie,Team,Club,Deportivo Toluca,-,Lifestyle,000,-,Liga MX,Mexico,CONCACAF,-,Third-Party,-,-,-,-,-,-,-,-,-,-
-075-020-000-CCF-MEX-TOL-000-7980-09-2019-000,2019 Deportivo Toluca Gastón Sauro Digital Photo,Memorabilia,Photo,Person,-,Deportivo Toluca,2019,-,000,-,Liga MX,Mexico,CONCACAF,-,-,-,-,-,Gastón Sauro,-,-,-,-,-,"Taken: 11 Aug 2019 at Estadio Nemesio Diez, Toluca"
-075-020-000-CCF-MEX-TOL-000-7980-09-2019-001,2019 Deportivo Toluca Santiago García Digital Photo,Memorabilia,Photo,Person,-,Deportivo Toluca,2019,-,001,-,Liga MX,Mexico,CONCACAF,-,-,-,-,-,Santiago García,-,-,-,-,-,"Taken: 11 Aug 2019 at Estadio Nemesio Diez, Toluca"
-075-020-000-CCF-MEX-TOL-000-7979-09-2020-002,2020 Deportivo Toluca Leonardo Fernández Digital Photo,Memorabilia,Photo,Person,-,Deportivo Toluca,2020,-,002,-,Liga MX,Mexico,CONCACAF,-,-,-,-,-,Leonardo Fernández,-,-,-,-,-,"Taken: 02 Feb 2020 at Estadio Nemesio Diez, Toluca"
-075-020-000-CCF-MEX-TOL-000-7979-09-2020-003,2020 Deportivo Toluca Rodrigo Salinas Digital Photo,Memorabilia,Photo,Person,-,Deportivo Toluca,2020,-,003,-,Liga MX,Mexico,CONCACAF,-,-,-,-,-,Rodrigo Salinas,-,-,-,-,-,"Taken: 02 Feb 2020 at Estadio Nemesio Diez, Toluca"
-075-020-000-CCF-MEX-TOL-000-7979-09-2020-004,2020 Deportivo Toluca Alexis Canelo Digital Photo,Memorabilia,Photo,Person,-,Deportivo Toluca,2020,-,004,-,Liga MX,Mexico,CONCACAF,-,-,-,-,-,Alexis Canelo,-,-,-,-,-,"Taken: 02 Feb 2020 at Estadio Nemesio Diez, Toluca"
-075-020-000-CCF-MEX-TOL-000-7979-09-2020-005,2020 Deportivo Toluca Luis Garcia Palomera Digital Photo,Memorabilia,Photo,Person,-,Deportivo Toluca,2020,-,005,-,Liga MX,Mexico,CONCACAF,-,-,-,-,-,Luis Garcia Palomera,-,-,-,-,-,"Taken: 02 Feb 2020 at Estadio Nemesio Diez, Toluca"
-075-020-000-CCF-MEX-TOL-000-7979-09-2020-006,2020 Deportivo Toluca Luis Donaldo Hernández Digital Photo,Memorabilia,Photo,Person,-,Deportivo Toluca,2020,-,006,-,Liga MX,Mexico,CONCACAF,-,-,-,-,-,Luis Donaldo Hernández,-,-,-,-,-,"Taken: 02 Feb 2020 at Estadio Nemesio Diez, Toluca"
-075-020-000-CCF-MEX-TOL-000-7979-09-2020-007,2020 Deportivo Toluca Felipe Pardo Digital Photo,Memorabilia,Photo,Person,-,Deportivo Toluca,2020,-,007,-,Liga MX,Mexico,CONCACAF,-,-,-,-,-,Felipe Pardo,-,-,-,-,-,"Taken: 02 Feb 2020 at Estadio Nemesio Diez, Toluca"
-075-020-000-CCF-MEX-TOL-000-7979-09-2020-008,2020 Deportivo Toluca Adrián Mora Digital Photo,Memorabilia,Photo,Person,-,Deportivo Toluca,2020,-,008,-,Liga MX,Mexico,CONCACAF,-,-,-,-,-,Adrián Mora,-,-,-,-,-,"Taken: 02 Feb 2020 at Estadio Nemesio Diez, Toluca"
-075-020-000-CCF-MEX-TOL-000-7979-09-2020-009,2020 Deportivo Toluca Javier Güémez Digital Photo,Memorabilia,Photo,Person,-,Deportivo Toluca,2020,-,009,-,Liga MX,Mexico,CONCACAF,-,-,-,-,-,Javier Güémez,-,-,-,-,-,"Taken: 02 Feb 2020 at Estadio Nemesio Diez, Toluca"
-075-020-000-CCF-MEX-TOL-000-7979-09-2020-010,2020 Deportivo Toluca Emmanuel Gigliotti Digital Photo,Memorabilia,Photo,Person,-,Deportivo Toluca,2020,-,010,-,Liga MX,Mexico,CONCACAF,-,-,-,-,-,Emmanuel Gigliotti,-,-,-,-,-,"Taken: 02 Feb 2020 at Estadio Nemesio Diez, Toluca"
-075-020-000-CCF-MEX-TOL-000-7979-09-2020-011,2020 Deportivo Toluca Richard Ruíz Digital Photo,Memorabilia,Photo,Person,-,Deportivo Toluca,2020,-,011,-,Liga MX,Mexico,CONCACAF,-,-,-,-,-,Richard Ruíz,-,-,-,-,-,"Taken: 02 Feb 2020 at Estadio Nemesio Diez, Toluca"
-075-020-000-CCF-MEX-TOL-000-7979-09-2020-012,2020 Deportivo Toluca Diego Rigonato Digital Photo,Memorabilia,Photo,Person,-,Deportivo Toluca,2020,-,012,-,Liga MX,Mexico,CONCACAF,-,-,-,-,-,Diego Rigonato,-,-,-,-,-,"Taken: 02 Feb 2020 at Estadio Nemesio Diez, Toluca"
-075-020-000-CCF-MEX-TOL-000-7979-09-2020-013,2020 Deportivo Toluca Jonathan Maidana Digital Photo,Memorabilia,Photo,Person,-,Deportivo Toluca,2020,-,013,-,Liga MX,Mexico,CONCACAF,-,-,-,-,-,Jonathan Maidana,-,-,-,-,-,"Taken: 02 Feb 2020 at Estadio Nemesio Diez, Toluca"
-075-020-000-CCF-MEX-TOL-000-7979-09-2020-014,2020 Deportivo Toluca William Fernando da Silva Digital Photo,Memorabilia,Photo,Person,-,Deportivo Toluca,2020,-,014,-,Liga MX,Mexico,CONCACAF,-,-,-,-,-,William Fernando da Silva,-,-,-,-,-,"Taken: 02 Feb 2020 at Estadio Nemesio Diez, Toluca"
-075-020-000-CCF-MEX-TOL-000-7979-09-2020-015,2020 Deportivo Toluca Aníbal Chalá Digital Photo,Memorabilia,Photo,Person,-,Deportivo Toluca,2020,-,015,-,Liga MX,Mexico,CONCACAF,-,-,-,-,-,Aníbal Chalá,-,-,-,-,-,"Taken: 02 Feb 2020 at Estadio Nemesio Diez, Toluca"
-075-020-000-CCF-MEX-TOL-000-7979-09-2020-016,2020 Deportivo Toluca Sinha and Francisco Suinaga Digital Photo,Memorabilia,Photo,Person,-,Deportivo Toluca,2020,-,016,-,Liga MX,Mexico,CONCACAF,-,-,-,-,-,Sinha | Francisco Suinaga,-,-,-,-,-,"Taken: 02 Feb 2020 at Estadio Nemesio Diez, Toluca"
-075-020-000-AAA-AAA-AAA-000-7976-09-2023-000,2023 Jorge Pietrasanta Digital Selfie,Memorabilia,Photo,Person,-,-,2023,-,000,-,-,-,-,-,-,-,-,-,Jorge Pietrasanta,-,-,-,-,-,"Taken: 03 Jan 2023 at Pierre Mundo Imperial, Acapulco"
-075-020-000-AAA-AAA-AAA-000-7981-09-2018-000,2018 Francisco Fonseca Digital Photo,Memorabilia,Photo,Person,-,-,2018,-,000,-,-,-,-,-,-,-,-,-,Francisco Fonseca,-,-,-,-,-,"Taken: 28 Oct 2018 at Estadio Nemesio Diez, Toluca"
-075-020-000-AAA-AAA-AAA-000-7981-09-2018-001,2018 Ignacio Alva Digital Selfie,Memorabilia,Photo,Person,-,-,2018,-,001,-,-,-,-,-,-,-,-,-,Ignacio Alva,-,-,-,-,-,"Taken: 05 Aug 2018 at Estadio Nemesio Diez, Toluca"
-075-020-000-AAA-AAA-AAA-000-7981-09-2018-002,2018 Juan Dosal Digital Photo,Memorabilia,Photo,Person,-,-,2018,-,002,-,-,-,-,-,-,-,-,-,Juan Dosal,-,-,-,-,-,"Taken: 05 Aug 2018 at Estadio Nemesio Diez, Toluca"
-075-020-000-UEF-GER-DOR-000-7974-09-2025-000,2025 Borussia Dortmund Kevin Großkreutz Digital Photo,Memorabilia,Photo,Person,-,Borussia Dortmund,2025,-,000,-,Bundesliga,Germany,UEFA,-,-,-,-,-,Kevin Großkreutz,-,-,-,-,-,"Taken: 21 Feb 2025 at BVB-FanWelt, Dortmund"
-075-020-000-UEF-GER-LEV-000-7977-09-2022-000,2022 Bayer 04 Leverkusen Jonathan Tah Digital Selfie,Memorabilia,Photo,Person,-,Bayer 04 Leverkusen,2022,-,000,-,Bundesliga,Germany,UEFA,-,-,-,-,-,Jonathan Tah,-,-,-,-,-,"Taken: 17 May 2022 at Estadio Nemesio Diez, Toluca"
-075-020-000-UEF-GER-LEV-000-7977-09-2022-001,2022 Bayer 04 Leverkusen Stefan Kießling Digital Selfie,Memorabilia,Photo,Person,-,Bayer 04 Leverkusen,2022,-,001,-,Bundesliga,Germany,UEFA,-,-,-,-,-,Stefan Kießling,-,-,-,-,-,"Taken: 17 May 2022 at Estadio Nemesio Diez, Toluca"
-075-020-000-CCF-MEX-TOL-000-7974-09-2025-000,2025 Deportivo Toluca Marcel Ruiz Digital Photo,Memorabilia,Photo,Person,-,Deportivo Toluca,2025,-,000,-,Liga MX,Mexico,CONCACAF,-,-,-,-,-,Marcel Ruiz,-,-,-,-,-,"Taken: 06 Nov 2025 at La Española Gourmet, Metepec"
-045-005-010-AAA-MEX-CUE-000-7980-09-2019-000,2019 Club de Cuervos Winners Beer Can,Memorabilia,Drinkware,Team,Club,Club de Cuervos,2019,-,000,Winners,-,Mexico,-,-,Corona,-,-,-,-,-,-,-,-,-,-
-055-005-010-UEF-GER-DOR-000-9999-10-0000-001,Borussia Dortmund Crocs Jibbitz (pack of 5),Memorabilia,Accessory,Team,Club,Borussia Dortmund,-,-,001,-,Bundesliga,Germany,UEFA,-,Crocs,-,-,-,-,-,-,-,-,-,-
-065-010-000-FIF-RUS-WOR-000-7981-09-2018-000,2018 FIFA World Cup 100 Russian Rubles Banknote,Memorabilia,Currency,Event,-,-,2018,-,000,-,FIFA World Cup,Russia,FIFA,-,-,-,-,-,-,-,-,-,-,-,Serial number: AA000243944
-050-005-010-CCF-MEX-TOL-000-7977-09-2022-000,2022 Deportivo Toluca 105th Anniversary Canvas Print,Memorabilia,Display,Team,Club,Deportivo Toluca,2022,-,000,105th Anniversary,Liga MX,Mexico,CONCACAF,-,Third-Party,-,-,-,-,-,-,-,-,-,Dimensions: 40 x 50 cm
-050-005-010-CCF-MEX-TOL-000-8033-06-1966-000,1966-67 Deportivo Toluca Winners Canvas Print,Memorabilia,Display,Team,Club,Deportivo Toluca,1966-67,-,000,Winners,Liga MX,Mexico,CONCACAF,-,Third-Party,-,-,-,-,-,-,-,-,-,Dimensions: 28 x 35 cm
-050-005-010-CCF-MEX-TOL-000-8001-08-1998-000,Verano 1998 Deportivo Toluca Winners Canvas Print,Memorabilia,Display,Team,Club,Deportivo Toluca,Verano 1998,-,000,Winners,Liga MX,Mexico,CONCACAF,-,Third-Party,-,-,-,-,-,-,-,-,-,Dimensions: 50 x 30 cm
-050-005-010-CCF-MEX-TOL-000-7998-07-2001-000,Invierno 2001 Deportivo Toluca Canvas Print,Memorabilia,Display,Team,Club,Deportivo Toluca,Invierno 2001,-,000,-,Liga MX,Mexico,CONCACAF,-,Third-Party,-,-,-,José Saturnino Cardozo,-,-,-,-,-,Dimensions: 28 x 35 cm
-050-005-010-UEF-GER-DOR-000-9999-10-0000-000,Borussia Dortmund Signal Iduna Park Poster,Memorabilia,Display,Team,Club,Borussia Dortmund,-,-,000,-,Bundesliga,Germany,UEFA,-,In-House,-,-,-,-,-,-,-,-,-,"Dimensions: 62 x 44.5 cm
-Framed"
-075-020-000-UEF-GER-DOR-000-7974-09-2025-001,2025 Borussia Dortmund Kevin Großkreutz Digital Selfie,Memorabilia,Photo,Person,-,Borussia Dortmund,2025,-,001,-,Bundesliga,Germany,UEFA,-,-,-,-,-,Kevin Großkreutz,-,-,-,-,-,"Taken: 21 Feb 2025 at BVB-FanWelt, Dortmund"
-075-020-000-CCF-MEX-TOL-000-7979-09-2020-000,2020 Deportivo Toluca Carlos Adrián Morales Digital Selfie,Memorabilia,Photo,Person,-,Deportivo Toluca,2020,-,000,-,Liga MX,Mexico,CONCACAF,-,-,-,-,-,Carlos Adrián Morales,-,-,-,-,-,"Taken: 02 Feb 2020 at Estadio Nemesio Diez, Toluca"
-005-005-010-CCF-MEX-TOL-045-7974-06-2025-000,2025-26 Deportivo Toluca Winners Authentic Special Jersey - In Box,Apparel,Jersey,Team,Club,Deportivo Toluca,2025-26,Special,000,Winners,Liga MX,Mexico,CONCACAF,Authentic,New Balance,-,S,Short,-,-,-,-,In Box,-,"No. 0314/2025
-""Two-Time Champion"" edition commemorating the club´s Clausura 2015 and Apertura 2015 titles"
-005-005-005-AFC-JAP-JAP-010-7973-09-2026-000,2026 Japan Away Jersey,Apparel,Jersey,Team,National Team,Japan,2026,Away,000,-,-,Japan,AFC,Replica,Adidas,-,S,Short,-,-,-,-,-,-,-
-005-005-010-UEF-GER-DOR-045-7974-06-2025-000,2025-26 Borussia Dortmund Special Jersey - In Box,Apparel,Jersey,Team,Club,Borussia Dortmund,2025-26,Special,000,Special Edition,Bundesliga,Germany,UEFA,Replica,Puma,-,S,Short,-,-,-,-,In Box,-,"""100th Anniversary Rote Erde"" edition
-Original tags removed for preservation and stored separately"
-005-005-005-CCF-CAN-CAN-005-7973-09-2026-000,2026 Canada Home Jersey,Apparel,Jersey,Team,National Team,Canada,2026,Home,000,-,-,Canada,CONCACAF,Replica,Nike,-,S,Short,-,-,-,-,-,-,-
-060-005-010-UEF-ENG-TOT-015-8005-06-1994-000,1994-95 Tottenham Hotspur Third Jürgen Klinsmann Card,Memorabilia,Stationery,Team,Club,Tottenham Hotspur,1994-95,Third,000,-,Premier League,England,UEFA,-,Classic Football Shirts,-,-,-,-,-,-,-,-,-,-
-060-005-005-UEF-SPA-SPA-005-8001-09-1998-000,1998 Spain Home Raúl González Blanco Card,Memorabilia,Stationery,Team,National Team,Spain,1998,Home,000,-,-,Spain,UEFA,-,Classic Football Shirts,-,-,-,-,-,-,-,-,-,-
-005-005-010-UEF-SPA-FCB-005-7980-06-2019-000,2019-20 FC Barcelona Authentic Home Jersey Messi #10 - In Box,Apparel,Jersey,Team,Club,FC Barcelona,2019-20,Home,000,-,La Liga,Spain,UEFA,Authentic,Nike,-,M,Short,Lionel Messi,Messi #10,Official,La Liga | La Liga Champions 18/19,In Box,-,Original tags removed for preservation and stored separately
-045-010-000-FIF-AAA-WOR-000-7973-09-2026-000,2026 FIFA World Cup Johnnie Walker Red Label Commemorative Whisky Bottle,Memorabilia,Drinkware,Event,-,-,2026,-,000,-,FIFA World Cup,-,FIFA,-,Johnnie Walker,-,-,-,-,-,-,-,-,-,-
-005-005-010-UEF-ITA-JUV-020-7974-06-2025-000,2025-26 Juventus FC Authentic Fourth L/S Jersey,Apparel,Jersey,Team,Club,Juventus FC,2025-26,Fourth,000,-,Serie A,Italy,UEFA,Authentic,Adidas,Studio Sgura,S,Long,-,-,-,-,-,-,Retail sponsorless version
-060-005-010-CMB-ARG-RIV-005-8004-06-1995-000,1995-96 River Plate Home Hernán Crespo Card,Memorabilia,Stationery,Team,Club,River Plate,1995-96,Home,000,-,-,Argentina,CONMEBOL,-,Classic Football Shirts,-,-,-,-,-,-,-,-,-,-
-005-005-010-UEF-GER-DOR-045-7974-06-2025-001,2025-26 Borussia Dortmund Special Jersey - In Box (Damaged Box),Apparel,Jersey,Team,Club,Borussia Dortmund,2025-26,Special,001,Special Edition,Bundesliga,Germany,UEFA,Replica,Puma,-,S,Short,-,-,-,-,In Box,-,"""100th Anniversary Rote Erde"" edition
-With tags
-Damaged box"
-005-005-010-CMB-CHI-EVM-010-7974-09-2025-000,2025 Everton de Viña del Mar Away Jersey,Apparel,Jersey,Team,Club,Everton de Viña del Mar,2025,Away,000,-,Primera División de Chile,Chile,CONMEBOL,Replica,Charly,-,L,Short,-,-,-,-,-,-,Retail version with main sponsors only
-005-005-010-CCF-MEX-PAC-005-7974-06-2025-000,2025-26 CF Pachuca Home Jersey,Apparel,Jersey,Team,Club,CF Pachuca,2025-26,Home,000,-,Liga MX,Mexico,CONCACAF,Replica,Skechers,-,L,Short,-,-,-,-,-,-,-
-005-005-005-UEF-NOR-NOR-010-7973-09-2026-000,2026 Norway Away Jersey,Apparel,Jersey,Team,National Team,Norway,2026,Away,000,-,-,Norway,UEFA,Replica,Nike,-,S,Short,-,-,-,-,-,-,-
-050-005-010-UEF-GER-DOR-000-9999-10-0000-001,Borussia Dortmund 3D Stadionpuzzle,Memorabilia,Display,Team,Club,Borussia Dortmund,-,-,001,-,Bundesliga,Germany,UEFA,-,In-House,-,-,-,-,-,-,-,-,-,-
+ID,Display Name,Category,Product,Artist,Title,Label,Packaging,Format,Year,Signed By,Numbered,Notes
+001,Above & Beyond - Bigger Than All Of Us (Vinyl),Media,Vinyl,Above & Beyond,Bigger Than All Of Us,Anjunabeats,Gatefold,2xLP,2025,-,-,-
+002,Above & Beyond - Common Ground (CD),Media,CD,Above & Beyond,Common Ground,Anjunabeats,Digipak,1xCD,2018,-,-,-
+003,Above & Beyond - Flow State (CD),Media,CD,Above & Beyond,Flow State,Anjunabeats,Digipak,1xCD,2019,-,-,-
+004,Anyma - Genesys (Vinyl),Media,Vinyl,Anyma,Genesys,"Afterlife, Interscope Records",Gatefold,2xLP,2023,-,-,-
+005,Alesso - Forever (CD),Media,CD,Alesso,Forever,"Def Jam Recordings, Virgin, Refune Records",Jewel Case,1xCD,2015,-,-,-
+006,Anyma - The End of Genesys (Vinyl),Media,Vinyl,Anyma,The End of Genesys,Interscope Records,Gatefold,2xLP,2025,-,-,-
+007,AREA21 - Greatest Hits Vol. 1 (Vinyl),Media,Vinyl,AREA21,Greatest Hits Vol. 1,Hollywood Records,Gatefold,1xLP,2022,-,-,-
+008,Andrew Rayel - Find Your Harmony (CD),Media,CD,Andrew Rayel,Find Your Harmony,Armada Music,Jewel Case,1xCD,2014,-,-,-
+009,Avaion - To Make People Happy (Vinyl),Media,Vinyl,Avaion,To Make People Happy,Rca Local,Gatefold,1xLP,2026,-,-,-
+010,Avicii - Stories (Vinyl),Media,Vinyl,Avicii,Stories,"PRMD, Island Records",Gatefold,2xLP,2023,-,-,-
+011,Andrew Rayel - Moments (CD),Media,CD,Andrew Rayel,Moments,Armada Music,Jewel Case,1xCD,2017,-,-,-
+012,Armin van Buuren - Balance (CD),Media,CD,Armin van Buuren,Balance,Armada Music,Boxset,2xCD,2019,-,-,-
+013,Avicii - Tim (CD),Media,CD,Avicii,Tim,Geffen Records,Digipak,1xCD,2019,-,-,-
+014,Avicii - True (CD),Media,CD,Avicii,True,"PRMD, Universal Music",Jewel Case,1xCD,2013,-,-,-
+015,Avicii - True (Avicii By Avicii) (Vinyl),Media,Vinyl,Avicii,True (Avicii By Avicii),"PRMD, Universal Music",Gatefold,2xLP,2023,-,-,-
+016,Avicii - True (Vinyl),Media,Vinyl,Avicii,True,"PRMD, Universal Music",Gatefold,1xLP,2016,-,-,-
+017,Avicii - Stories (CD),Media,CD,Avicii,Stories,"PRMD, Universal Music Group",Jewel Case,1xCD,2015,-,-,-
+018,Avicii - Tim (Vinyl),Media,Vinyl,Avicii,Tim,"Universal Music, Avicii Recordings AB",Gatefold,1xLP,2019,-,-,-
+019,Ben Böhmer - Bloom (Vinyl),Media,Vinyl,Ben Böhmer,Bloom,Ninja Tune,Gatefold,2xLP,2024,-,-,-
+020,Big Wild - Superdream (Vinyl),Media,Vinyl,Big Wild,Superdream,Counter Records,Standard,1xLP,2022,-,-,-
+021,Black Tiger Sex Machine - Once Upon A Time In Cyberworld (Vinyl),Media,Vinyl,Black Tiger Sex Machine,Once Upon A Time In Cyberworld,Kannibalen Records,Gatefold,1xLP,2022,-,-,-
+022,Bratty - TRES (Vinyl),Media,Vinyl,Bratty,TRES,Universal Music Group,Standard,1xLP,2024,Bratty,-,-
+023,Ben Böhmer - Begin Again (CD),Media,CD,Ben Böhmer,Begin Again,Anjunadeep,Digipak,1xCD,2021,-,-,-
+024,BRONSON - Bronson (Vinyl),Media,Vinyl,BRONSON,Bronson,"Ninja Tune, Ninja Tune",Gatefold,1xLP,2020,-,-,-
+025,Ben Böhmer - Bloom (CD),Media,CD,Ben Böhmer,Bloom,Ninja Tune,Digipak,1xCD,2024,-,-,-
+026,Camelphat - Dark Matter (Vinyl),Media,Vinyl,Camelphat,Dark Matter,"RCA, Sony Music",Trifold,3xLP,2020,-,-,-
+027,Ben Frost - Dark: Cycle 1 (Original Music From The Netflix Series) (CD),Media,CD,Ben Frost,Dark: Cycle 1 (Original Music From The Netflix Series),"Lakeshore Records, Invada",Digipak,1xCD,2019,-,-,-
+028,Ben Frost - Dark: Cycle 2 (Original Music From The Netflix Series) (CD),Media,CD,Ben Frost,Dark: Cycle 2 (Original Music From The Netflix Series),"Lakeshore Records, Invada",Digipak,1xCD,2019,-,-,-
+029,Charlotte De Witte - Apollo EP (Vinyl),Media,Vinyl,Charlotte De Witte,Apollo EP,KNTXT,Standard,1xLP,2022,-,-,-
+030,Charlotte De Witte - Charlotte De Witte (Vinyl),Media,Vinyl,Charlotte De Witte,Charlotte De Witte,KNTXT,Gatefold,2xLP,2025,-,-,-
+031,Bratty - TRES (CD),Media,CD,Bratty,TRES,"Universal Music Group México, S.A. de C.V.",Jewel Case,1xCD,2023,-,-,-
+032,Claptone - Closer (Vinyl),Media,Vinyl,Claptone,Closer,Different,Gatefold + Slipcase,2xLP,2021,-,No. 206/500,-
+033,Bratty - Tdbn Deluxe (CD),Media,CD,Bratty,Tdbn Deluxe,"Universal Music Group, EMI",Digipak,1xCD,2021,-,-,-
+034,BRONSON - Bronson (CD),Media,CD,BRONSON,Bronson,Ninja Tune,Digipak,1xCD,2020,-,-,-
+035,Calvin Harris - Motion (CD),Media,CD,Calvin Harris,Motion,"Columbia, Fly Eye, Sony Music",Jewel Case,1xCD,2014,-,-,-
+036,Camelphat - Dark Matter (CD),Media,CD,Camelphat,Dark Matter,"RCA, Sony Music",Jewel Case,2xCD,2020,-,-,-
+037,Daft Punk - Random Access Memories (CD),Media,CD,Daft Punk,Random Access Memories,"Columbia, Sony Music",Jewel Case,1xCD,2013,-,-,-
+038,DJ Tiësto - A Town Called Paradise (CD),Media,CD,DJ Tiësto,A Town Called Paradise,"PM:AM Recordings, Musical Freedom, Universal Music",Jewel Case,1xCD,2014,-,-,-
+039,Galantis - Pharmacy (CD),Media,CD,Galantis,Pharmacy,"Big Beat, Atlantic",Digipak,1xCD,2015,-,-,-
+040,Galantis - The Aviary (CD),Media,CD,Galantis,The Aviary,"Big Beat, Atlantic",Digipak,1xCD,2017,-,-,-
+041,Claptone - Fantast (Vinyl),Media,Vinyl,Claptone,Fantast,Different,Gatefold,2xLP,2018,-,-,-
+042,Gareth Emery - 100 Reasons To Live (CD),Media,CD,Gareth Emery,100 Reasons To Live,Garuda,Digipak,1xCD,2016,-,-,-
+043,Gareth Emery - Drive (CD),Media,CD,Gareth Emery,Drive,"Onelove, Garuda",Jewel Case,1xCD,2014,-,-,-
+044,Gareth Emery | Ashley Wallbridge - Kingdom United (CD),Media,CD,Gareth Emery | Ashley Wallbridge,Kingdom United,Garuda,Jewel Case,1xCD,2019,-,-,-
+045,Dabin - Wild Youth Deluxe (Vinyl),Media,Vinyl,Dabin,Wild Youth Deluxe,Seeking Blue,Gatefold + Slipcase,2xLP,2021,-,-,-
+046,deadmau5 - > Album Title Goes Here < (Vinyl),Media,Vinyl,deadmau5,> Album Title Goes Here <,"Mau5trap Recordings, EMI, Universal Music Recordings",Gatefold,2xLP,2024,-,-,-
+047,Enrico Sangiuliano - Biomorph (Vinyl),Media,Vinyl,Enrico Sangiuliano,Biomorph,Drumcode,Trifold,2xLP,2018,-,-,-
+048,Flume - Palaces (Vinyl),Media,Vinyl,Flume,Palaces,"Future Classic, Transgressive Records",Standard,1xLP,2022,-,-,-
+049,Flume - Skin (Vinyl),Media,Vinyl,Flume,Skin,Mom + Pop,Gatefold,2xLP,2017,-,-,-
+050,Flux Pavilion - .wav (Vinyl),Media,Vinyl,Flux Pavilion,.wav,Circus Records,Gatefold,2xLP,2021,-,-,-
+051,Gorgon City - Olympia (CD),Media,CD,Gorgon City,Olympia,"Positiva, EMI, Positiva, EMI",Digipak,1xCD,2021,-,-,-
+052,Hardwell - Hardwell Presents Revealed Volume 7 (CD),Media,CD,Hardwell,Hardwell Presents Revealed Volume 7,Cloud 9 Dance,Jewel Case,1xCD,2016,-,-,-
+053,Fred again.. - Ten Days (Vinyl),Media,Vinyl,Fred again..,Ten Days,"Atlantic, Atlantic",Gatefold,1xLP,2025,-,-,-
+054,Fred again.. - USB001 (Vinyl),Media,Vinyl,Fred again..,USB001,Warner Music UK Ltd.,Gatefold,2xLP,2024,-,-,-
+055,Hardwell - Hardwell Presents Revealed Volume 8 (CD),Media,CD,Hardwell,Hardwell Presents Revealed Volume 8,Cloud 9 Dance,Jewel Case,1xCD,2017,-,-,-
+056,Hardwell - The Story Of Hardwell (CD),Media,CD,Hardwell,The Story Of Hardwell,Cloud 9 Dance,Jewel Case,2xCD,2020,-,-,-
+057,Fred again.. | Brian Eno - Secret Life (Vinyl),Media,Vinyl,Fred again.. | Brian Eno,Secret Life,Text Records,Gatefold,1xLP,2023,-,-,-
+058,Hardwell - United We Are (CD),Media,CD,Hardwell,United We Are,"Sony Music, Dance Floor",Digipak,1xCD,2015,-,-,-
+059,Galantis - Pharmacy (Vinyl),Media,Vinyl,Galantis,Pharmacy,"Big Beat, Atlantic, Warner Music",Gatefold,2xLP,2023,-,-,-
+060,Gryffin - Gravity (Vinyl),Media,Vinyl,Gryffin,Gravity,"Darkroom, Geffen Records",Gatefold,2xLP,2020,-,-,-
+061,ILLENIUM - Ascend (CD),Media,CD,ILLENIUM,Ascend,Astralwerks,Digipak,1xCD,2019,-,-,-
+062,Jean-Michel Jarre - Equinoxe Infinity (CD),Media,CD,Jean-Michel Jarre,Equinoxe Infinity,Columbia,Digipak,1xCD,2018,-,-,-
+063,ILLENIUM - Ascend (Vinyl),Media,Vinyl,ILLENIUM,Ascend,Astralwerks,Standard,2xLP,2019,-,-,-
+064,ILLENIUM - Ashes (Vinyl),Media,Vinyl,ILLENIUM,Ashes,"Kasaya Recordings, Seeking Blue",Gatefold,2xLP,2024,-,-,-
+065,ILLENIUM - Odyssey (Vinyl),Media,Vinyl,ILLENIUM,Odyssey,Republic Records,Standard,2xLP,2026,-,-,-
+066,Jean-Michel Jarre - Oxygene Trilogy (CD),Media,CD,Jean-Michel Jarre,Oxygene Trilogy,"Columbia, Sony Music",Digipak,3xCD,2016,-,-,-
+067,Justice - Woman Worldwide (CD),Media,CD,Justice,Woman Worldwide,"Because Music, Ed Banger Records, Genesis",Digipak,2xCD,2018,-,-,-
+068,Kasbo - Places We Don't Know (CD),Media,CD,Kasbo,Places We Don't Know,Counter Records,Digipak,1xCD,2018,-,-,-
+069,ILLENIUM - Fallen Embers (Deluxe Edition) (Vinyl),Media,Vinyl,ILLENIUM,Fallen Embers (Deluxe Edition),Warner Records,Standard,2xLP,2023,-,-,Record Store Day edition
+070,ILLENIUM - ILLENIUM (Vinyl),Media,Vinyl,ILLENIUM,ILLENIUM,Warner Records,Gatefold,2xLP,2023,-,-,-
+071,Jai Wolf - The Cure To Loneliness (Vinyl),Media,Vinyl,Jai Wolf,The Cure To Loneliness,Mom + Pop,Standard,1xLP,2019,-,-,-
+072,Jamie XX - In Waves (Vinyl),Media,Vinyl,Jamie XX,In Waves,Young,Standard,1xLP,2024,-,-,-
+073,John Summit - Comfort In Chaos (Vinyl),Media,Vinyl,John Summit,Comfort In Chaos,"Experts Only, Darkroom",Gatefold,1xLP,2024,-,-,-
+074,Jon Hopkins - Singularity (Vinyl),Media,Vinyl,Jon Hopkins,Singularity,Domino,Gatefold,2xLP,2023,-,-,-
+075,Justice - Hyperdrama (Vinyl),Media,Vinyl,Justice,Hyperdrama,"Because Music, Ed Banger Records, Genesis, Virgin Music",Gatefold,2xLP,2024,-,-,-
+076,Kasbo - The Making Of A Paracosm (CD),Media,CD,Kasbo,The Making Of A Paracosm,Counter Records,Digipak,1xCD,2020,-,-,-
+077,Kygo - Cloud Nine (CD),Media,CD,Kygo,Cloud Nine,"Sony Music, RCA, Ultra Music",Digipak,1xCD,2016,-,-,-
+078,Kygo - Kids In Love (CD),Media,CD,Kygo,Kids In Love,"Sony Music, Ultra Music",Jewel Case,1xCD,2017,-,-,-
+079,Kasbo - Places We Don't Know (Vinyl),Media,Vinyl,Kasbo,Places We Don't Know,Counter Records,Standard,1xLP,2018,-,-,-
+080,Kasbo - The Making Of A Paracosm (Vinyl),Media,Vinyl,Kasbo,The Making Of A Paracosm,Counter Records,Gatefold,2xLP,2020,-,-,-
+081,Lane 8 - Brightest Lights (CD),Media,CD,Lane 8,Brightest Lights,This Never Happened,Digipak,1xCD,2020,-,-,-
+082,Kasbo - The Learning of Urgency (Vinyl),Media,Vinyl,Kasbo,The Learning of Urgency,Foreign Family Collective,Gatefold,1xLP,2024,-,-,-
+083,Lost Frequencies - Less Is More (CD),Media,CD,Lost Frequencies,Less Is More,"Sony Music, Armada",Jewel Case,1xCD,2016,-,-,-
+084,Kygo - Cloud Nine (Vinyl),Media,Vinyl,Kygo,Cloud Nine,"Sony Music, Ultra Music",Gatefold,2xLP,2016,-,-,-
+085,Lane 8 - Brightest Lights (Vinyl),Media,Vinyl,Lane 8,Brightest Lights,This Never Happened,Trifold,2xLP,2025,-,-,-
+086,Lane 8 - Childish (Vinyl),Media,Vinyl,Lane 8,Childish,This Never Happened,Gatefold,2xLP,2024,-,-,-
+087,Lastlings - First Contact (Vinyl),Media,Vinyl,Lastlings,First Contact,Astralwerks,Standard,1xLP,2020,-,-,-
+088,Leaving Laurel - Leaving Laurel (Vinyl),Media,Vinyl,Leaving Laurel,Leaving Laurel,Anjunadeep,Gatefold,2xLP,2021,-,-,-
+089,Madeon - Adventure (CD),Media,CD,Madeon,Adventure,"Sony Music, Columbia",Digipak,1xCD,2015,-,-,-
+090,Mat Zo - Illusion Of Depth (CD),Media,CD,Mat Zo,Illusion Of Depth,Anjunabeats,Digipak,1xCD,2020,-,-,-
+091,Leaving Laurel - When The Quiet Comes (Vinyl),Media,Vinyl,Leaving Laurel,When The Quiet Comes,Anjunadeep,Gatefold,2xLP,2023,-,-,-
+092,Lost Frequencies - Less Is More (Vinyl),Media,Vinyl,Lost Frequencies,Less Is More,"Music On Vinyl, Armada",Standard,2xLP,2024,-,-,-
+093,Lost Souls Of Saturn - Reality (Vinyl),Media,Vinyl,Lost Souls Of Saturn,Reality,"Holoverse Research Labs, NYC",Standard,1xLP,2024,-,-,-
+094,"M83 - Hurry Up, We're Dreaming. (Vinyl)",Media,Vinyl,M83,"Hurry Up, We're Dreaming.",Mute,Standard,2xLP,2020,-,-,-
+095,Nsqk - Roy (CD),Media,CD,Nsqk,Roy,Honey Records,Jewel Case,1xCD,2022,-,-,-
+096,Madeon - Good Faith (Vinyl),Media,Vinyl,Madeon,Good Faith,Columbia,Gatefold + Slipcase,1xLP,2020,-,-,-
+097,Madeon - Adventure (Deluxe) (Vinyl),Media,Vinyl,Madeon,Adventure (Deluxe),Not On Label,Trifold + Slipcase,2xLP,2022,-,-,-
+098,Mat Zo - Illusion Of Depth (Vinyl),Media,Vinyl,Mat Zo,Illusion Of Depth,Anjunabeats,Gatefold,2xLP,2020,-,-,-
+099,MATHAME - MEMO (Vinyl),Media,Vinyl,MATHAME,MEMO,Astralwerks,Standard,2xLP,2023,-,-,-
+100,Monolink - The Beauty Of It All (Vinyl),Media,Vinyl,Monolink,The Beauty Of It All,Embassy One,Gatefold,2xLP,2025,-,-,-
+101,Nils Hoffmann - A Radiant Sign (Vinyl),Media,Vinyl,Nils Hoffmann,A Radiant Sign,Anjunadeep,Gatefold,2xLP,2023,-,-,-
+102,ODESZA - In Return (10 Year Anniversary Edition) (Vinyl),Media,Vinyl,ODESZA,In Return (10 Year Anniversary Edition),"Counter Records, Foreign Family Collective",Gatefold,2xLP,2024,-,-,-
+103,ODESZA - A Moment Apart (Vinyl),Media,Vinyl,ODESZA,A Moment Apart,"Counter Records, Foreign Family Collective",Gatefold,2xLP,2017,-,-,-
+104,ODESZA - Summers Gone (Anniversary Edition) (Vinyl),Media,Vinyl,ODESZA,Summers Gone (Anniversary Edition),Foreign Family Collective,Gatefold,"1xLP + 1x7""",2022,-,-,-
+105,ODESZA - A Moment Apart (CD),Media,CD,ODESZA,A Moment Apart,"Counter Records, Foreign Family Collective",Digipak,1xCD,2017,-,-,-
+106,ODESZA - In Return (CD),Media,CD,ODESZA,In Return,"Counter Records, Ninja Tune",Digipak,1xCD,2014,-,-,-
+107,ODESZA - My Friends Never Die (Vinyl),Media,Vinyl,ODESZA,My Friends Never Die,Foreign Family Collective,Standard,1xLP,2018,-,-,-
+108,ODESZA - The Last Goodbye (CD),Media,CD,ODESZA,The Last Goodbye,"Ninja Tune, Ninja Tune, Foreign Family Collective, Foreign Family Collective",Digipak,1xCD,2022,-,-,-
+109,ODESZA - The Last Goodbye (Vinyl),Media,Vinyl,ODESZA,The Last Goodbye,Ninja Tune,Gatefold,2xLP,2022,-,-,-
+110,Petit Biscuit - Presence (CD),Media,CD,Petit Biscuit,Presence,Petit Biscuit Music,Digipak,1xCD,2017,-,-,-
+111,ODESZA - The Last Goodbye Tour Live (Vinyl),Media,Vinyl,ODESZA,The Last Goodbye Tour Live,Ninja Tune,Trifold,3xLP,2024,-,-,-
+112,ODESZA | Yellow House - Flaws In Our Design (Vinyl),Media,Vinyl,ODESZA | Yellow House,Flaws In Our Design,Ninja Tune,Standard,1xLP,2023,-,-,-
+113,"OTR - Be Quiet, They're Listening (Vinyl)",Media,Vinyl,OTR,"Be Quiet, They're Listening",Astralwerks,Gatefold,1xLP,2023,-,-,-
+114,Porter Robinson - Worlds (CD),Media,CD,Porter Robinson,Worlds,"Astralwerks, Virgin EMI Records",Jewel Case,1xCD,2014,-,-,-
+115,Porter Robinson - Nurture (CD),Media,CD,Porter Robinson,Nurture,Mom + Pop,Digipak,1xCD,2021,-,-,-
+116,San Holo - Bb U Ok? (CD),Media,CD,San Holo,Bb U Ok?,bitbird,Digipak,1xCD,2021,-,-,-
+117,OTR - Lost At Midnight (Vinyl),Media,Vinyl,OTR,Lost At Midnight,Astralwerks | Universal Music,Standard,1xLP,2020,-,-,-
+118,Porter Robinson - Worlds (10th Anniversary Edition) (Vinyl),Media,Vinyl,Porter Robinson,Worlds (10th Anniversary Edition),Astralwerks,Standard,2xLP,2024,-,-,-
+119,Porter Robinson - Worlds (Vinyl),Media,Vinyl,Porter Robinson,Worlds,Astralwerks,Standard,2xLP,2014,-,-,-
+120,Sub Zero Project - Renaissance Of Rave (CD),Media,CD,Sub Zero Project,Renaissance Of Rave,Dirty Workz,Long Digipak + Slipcase,2xCD,2022,Sub Zero Project,-,-
+121,Sub Zero Project - Contagion (CD),Media,CD,Sub Zero Project,Contagion,Dirty Workz,Digipak + Slipcase + Bag,1xCD,2019,Sub Zero Project,-,-
+122,Swedish House Mafia - Until Now (CD),Media,CD,Swedish House Mafia,Until Now,EMI,Jewel Case,1xCD,2012,-,-,-
+123,Porter Robinson - SMILE! :D (Vinyl),Media,Vinyl,Porter Robinson,SMILE! :D,Mom + Pop,Gatefold,2xLP,2024,-,-,-
+124,Porter Robinson - Nurture (Vinyl),Media,Vinyl,Porter Robinson,Nurture,Mom + Pop,Gatefold,2xLP,2021,-,-,-
+125,Third Party - Hope (CD),Media,CD,Third Party,Hope,"ProLogic, Sony Music, Armada",Jewel Case,1xCD,2017,-,-,-
+126,Third Party - Together (CD),Media,CD,Third Party,Together,Release Records,Digipak,1xCD,2019,-,-,-
+127,RAC - Boy (Vinyl),Media,Vinyl,RAC,Boy,Counter Records,Gatefold,2xLP,2020,-,-,-
+128,Rezz - Can You See Me? (Vinyl),Media,Vinyl,Rezz,Can You See Me?,HypnoVizion Records,Standard,1xLP,2024,-,-,-
+129,Tritonal - Painting With Dreams (CD),Media,CD,Tritonal,Painting With Dreams,Enhanced Recordings,Digipak,1xCD,2016,Tritonal,-,-
+130,Rüfüs Du Sol - Surrender (Vinyl),Media,Vinyl,Rüfüs Du Sol,Surrender,"Rose Avenue, Reprise Records",Gatefold,2xLP,2022,-,-,-
+131,Rüfüs Du Sol - Bloom (Vinyl),Media,Vinyl,Rüfüs Du Sol,Bloom,"Sweat It Out!, Leisurely",Standard,2xLP,2022,-,-,-
+132,Said The Sky - Closer to the Sun (Vinyl),Media,Vinyl,Said The Sky,Closer to the Sun,Seeking Blue,Gatefold,1xLP,2025,-,-,-
+133,Tritonal - U & ME (CD),Media,CD,Tritonal,U & ME,Enhanced Recordings,Digipak,1xCD,2019,Tritonal,-,-
+134,Various - Armada 15 Years (CD),Media,CD,Various,Armada 15 Years,Armada Music,Digipak + Slipcase,4xCD,2018,-,-,-
+135,Various - Tomorrowland 2015: The Secret Kingdom Of Melodia (CD),Media,CD,Various,Tomorrowland 2015: The Secret Kingdom Of Melodia,CNR Music Belgium NV,Book,3xCD,2015,-,-,-
+136,Various - Tomorrowland 2016 - The Elixir Of Life (CD),Media,CD,Various,Tomorrowland 2016 - The Elixir Of Life,CNR Music Belgium NV,Book,3xCD,2016,-,-,-
+137,Various - Tomorrowland 2017 - Amicorum Spectaculum (CD),Media,CD,Various,Tomorrowland 2017 - Amicorum Spectaculum,CNR Music Belgium NV,Book,3xCD,2017,-,-,-
+138,San Holo - Bb U Ok? (Vinyl),Media,Vinyl,San Holo,Bb U Ok?,bitbird,Standard,2xLP,2021,-,-,-
+139,Seven Lions - Ophelia Volume II (Vinyl),Media,Vinyl,Seven Lions,Ophelia Volume II,Ophelia,Boxset,2xLP,2021,-,-,-
+140,Skrillex - Quest For Fire (Vinyl),Media,Vinyl,Skrillex,Quest For Fire,"Owsla, Atlantic",Standard,2xLP,2023,-,-,-
+141,Various - Tomorrowland 2018 - The Story Of Planaxis (CD),Media,CD,Various,Tomorrowland 2018 - The Story Of Planaxis,CNR Music Belgium NV,Book,3xCD,2018,-,-,-
+142,Skrillex - Don’t Get Too Close (Vinyl),Media,Vinyl,Skrillex,Don’t Get Too Close,"Owsla, Atlantic",Standard,1xLP,2023,-,-,-
+143,Swedish House Mafia - Paradise Again (Vinyl),Media,Vinyl,Swedish House Mafia,Paradise Again,"Republic Records, Republic Records",Gatefold,2xLP,2023,-,-,-
+144,The Midnight - Monsters (Vinyl),Media,Vinyl,The Midnight,Monsters,Counter Records,Gatefold,2xLP,2024,-,-,-
+145,Various - Tomorrowland - Music Will Unite Us Forever (10 Years Of Madness) (CD),Media,CD,Various,Tomorrowland - Music Will Unite Us Forever (10 Years Of Madness),ID&T,Book,3xCD,2014,-,-,-
+146,The Midnight - Heroes (Vinyl),Media,Vinyl,The Midnight,Heroes,Counter Records,Standard,2xLP,2022,-,-,-
+147,Various - Revealed 5 Year Anniversary (CD),Media,CD,Various,Revealed 5 Year Anniversary,"Revealed Recordings, Cloud 9 Dance",Jewel Case,2xCD,2015,-,-,-
+148,Various - Peaky Blinders (The Official Soundtrack) (CD),Media,CD,Various,Peaky Blinders (The Official Soundtrack),"UMC, UMC",Jewel Case,2xCD,2019,-,-,-
+149,The Midnight - Syndicate (Vinyl),Media,Vinyl,The Midnight,Syndicate,"Ultra Records, Sony Music",Gatefold,2xLP,2025,-,-,-
+150,Tritonal - U & Me (Vinyl),Media,Vinyl,Tritonal,U & Me,Enhanced Recordings,Gatefold,2xLP,2019,Tritonal,-,-
+151,Tritonal - Coalesce (Vinyl),Media,Vinyl,Tritonal,Coalesce,Enhanced Recordings,Gatefold,2xLP,2022,-,-,-
+152,UFO95 - A Brutalist Dystopian Society (Vinyl),Media,Vinyl,UFO95,A Brutalist Dystopian Society,Mord,Standard,2xLP,2024,-,-,-
+153,Various - Tomorrowland 2019 - XV Years (CD),Media,CD,Various,Tomorrowland 2019 - XV Years,WeAreOne.World,Book,5xCD,2019,-,-,-
+154,Vicetone - Legacy (Vinyl),Media,Vinyl,Vicetone,Legacy,Monstercat,Standard,1xLP,2021,Vicetone,-,-
+155,Husman - Rise of the Mad King (USB),Media,USB,Husman,Rise of the Mad King,Armada Digital,Boxset,1xUSB,2019,-,-,Includes art book and thank you card
+156,Hardwell - 2 Years as One (Book),Collectibles,Book,Hardwell,2 Years as One,-,-,-,2016,-,-,"By Joep van Aert
+360 pages"
+157,Porter Robinson - Nurture (Art Book),Collectibles,Book,Porter Robinson,Nurture,-,-,-,-,-,-,-
+158,ODESZA - The Last Goodbye VIP Pin Set,Collectibles,Accessory,ODESZA,-,-,-,-,-,-,-,-
+159,Kygo - World Tour 2025 LED Wristband,Collectibles,Accessory,Kygo,-,-,-,-,2025,-,-,-
+160,Porter Robinson - Pepsi Center WTC Ticket,Collectibles,Pass,Porter Robinson,-,-,-,-,-,-,-,-
+161,Tenampa Recordings Iridescent Sticker,Collectibles,Stationery,-,-,Tenampa Recordings,-,-,-,-,-,-
+162,Tenampa Recordings Jaguar Sticker,Collectibles,Stationery,-,-,Tenampa Recordings,-,-,-,-,-,-
+163,ODESZA - The Last Goodbye Hoodie,Apparel,Hoddie,ODESZA,-,-,-,-,-,-,-,-
+164,Porter Robinson DIY Hoodie,Apparel,Hoddie,Porter Robinson,-,-,-,-,-,-,-,-
+165,Porter Robinson DIY Long Sleeve Shirt,Apparel,Shirt,Porter Robinson,-,-,-,-,-,-,-,-
+166,Porter Robinson DIY Short Sleeve Shirt,Apparel,Shirt,Porter Robinson,-,-,-,-,-,-,-,-

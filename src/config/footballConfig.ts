@@ -27,7 +27,7 @@ const BASE_PATH = import.meta.env.BASE_URL.endsWith('/')
 export const metadata = {
   id: "football",
   title: "Everardo´s Football Collection",
-  description: `Personal football collection showcase featuring apparel, equipment, and memorabilia.`,
+  description: `Personal football collection showcase featuring apparel, equipment, and collectible items.`,
   ogImage: `${BASE_PATH}site/og-image.png`,
   lightAccentColor: "125 85% 32%",
   darkAccentColor: "125 100% 55%",
@@ -62,7 +62,7 @@ export const FIELD_MAP = {
   nameset: "Nameset",
   patch: "Patch",
   packaging: "Packaging",
-  signature: "Signature",
+  signature: "Signed By",
   numbered: "Numbered",
   notes: "Notes",
 } as const;
@@ -129,7 +129,7 @@ export const NAVIGATION_BREADCRUMB = [...NAVIGATION_CONFIG.hierarchy] as string[
 // ==========================================
 // 5. CONFIGURACIÓN DE BREADCRUMBS
 // ==========================================
-export const BREADCRUMB_KEYS = ["entity", "team_type"] as const;
+export const BREADCRUMB_KEYS: readonly string[] = ["entity", "team_type"];
 export const BREADCRUMB_HIDDEN: readonly string[] = ["entity"];
 
 export const breadcrumbConfig: Record<string, string[]> = {
@@ -159,31 +159,33 @@ return last.label;
 };
 
 export const BREADCRUMB_RESOLVER = (context: any): string[] | null => {
-const { item, filtersState } = context;
-const getCompositeKey = (getData: (key: string) => string | undefined) =>
-BREADCRUMB_KEYS.map(key => getData(key)).filter(valid).join(VALUE_SEPARATOR);
+  const { item, filtersState } = context;
+  const getCompositeKey = (getData: (key: string) => string | undefined) =>
+    BREADCRUMB_KEYS.map(key => getData(key)).filter(valid).join(VALUE_SEPARATOR);
+  if (item) {
+    const compositeKey = getCompositeKey((k) => item[k] ?? item[k.charAt(0).toLowerCase() + k.slice(1)]);
+    if (breadcrumbConfig[compositeKey]) return breadcrumbConfig[compositeKey];
+    const firstLevel = item[BREADCRUMB_KEYS[0]];
+    if (breadcrumbConfig[firstLevel]) return breadcrumbConfig[firstLevel];
+  }
 
-if (item) {
-const compositeKey = getCompositeKey((k) => item[k] ?? item[k.charAt(0).toLowerCase() + k.slice(1)]);
-if (breadcrumbConfig[compositeKey]) return breadcrumbConfig[compositeKey];
-return breadcrumbConfig[item[BREADCRUMB_KEYS[0]]] || null;
-}
-if (filtersState) {
-const getFilterVal = (k: string) => filtersState[`nav_${k}`]?.[0] || filtersState[k]?.[0];
-const compositeKey = getCompositeKey(getFilterVal);
-if (breadcrumbConfig[compositeKey]) return breadcrumbConfig[compositeKey];
-const firstKey = getFilterVal(BREADCRUMB_KEYS[0]);
-if (firstKey && breadcrumbConfig[firstKey]) return breadcrumbConfig[firstKey];
-}
-return null;
+  if (filtersState) {
+    const getFilterVal = (k: string) => filtersState[`nav_${k}`]?.[0] || filtersState[k]?.[0];
+    const compositeKey = getCompositeKey(getFilterVal);
+    if (breadcrumbConfig[compositeKey]) return breadcrumbConfig[compositeKey];
+    const firstKey = getFilterVal(BREADCRUMB_KEYS[0]);
+    if (firstKey && breadcrumbConfig[firstKey]) return breadcrumbConfig[firstKey];
+  }
+  return breadcrumbConfig["default"] || null;
 };
+
 
 // ==========================================
 // 6. VISIBILIDAD Y FORMATEO DE CAMPOS
 // ==========================================
 export const VISIBLE_FIELDS = ["product", "team", "season", "style", "release", "competition", "country", "confederation", "technology", "brand", "size", "person", "print", "patch", "packaging", "signature", "numbered"] as const;
 export const SPECIAL_FIELDS = ["notes"] as const;
-export const LINK_FIELDS = ["team", "season", "competition", "country", "confederation", "brand", "person"] as const;
+export const LINK_FIELDS = ["product", "team", "season", "competition", "country", "confederation", "brand", "person"] as const;
 
 export const FIELD_VISIBILITY_RULES: Record<string, (item: CollectionItem, value: string) => boolean> = {
 // Release: (_item, value) => valid(value) && value !== "Regular"
@@ -226,12 +228,12 @@ return { parts, fullLink: false };
 export const STATS_KEYS = ["team_type", "confederation", "country", "competition", "team", "season", "style", "release", "brand", "technology", "person", "size", "details"] as const;
 export const SIDEBAR_KEYS = ["team_type", "confederation", "country", "competition", "team", "season", "style", "release", "brand", "technology", "person", "size", "details"] as const;
 
-export const SEARCH_KEYS = ["displayName", "team", "person", "style", "team_type", "season", "competition", "country", "confederation", "brand", "product", "category", "release", "technology", "collaboration", "print", "patch"] as const;
+export const SEARCH_KEYS = ["displayName", "team", "person", "style", "team_type", "season", "competition", "country", "confederation", "brand", "product", "category", "release", "technology", "collaboration", "print", "patch", "details"] as const;
 export const SUGGESTIONS_KEYS = [
 "team", "person", "style", "team_type", "season",
 "competition", "country", "confederation", "brand",
 "product", "category", "release",
-"technology", "collaboration", "print", "patch",
+"technology", "collaboration", "print", "patch", "details"
 ] as const;
 
 export const CUSTOM_FILTERS: Record<string, CustomFilter> = {
