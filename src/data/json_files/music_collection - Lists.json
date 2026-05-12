@@ -79,18 +79,18 @@
   ],
   "Packaging": [
     "-",
-    "Standard",
-    "Gatefold",
-    "Gatefold + Slipcase",
-    "Trifold",
-    "Trifold + Slipcase",
+    "Standard Jacket",
+    "Gatefold Jacket",
+    "Gatefold Jacket + Slipcase",
+    "Trifold Jacket",
+    "Trifold Jacket + Slipcase",
     "Boxset",
     "Jewel Case",
     "Digipak",
     "Digipak + Slipcase",
     "Digipak + Slipcase + Bag",
     "Long Digipak + Slipcase",
-    "Book"
+    "Book-Style Case"
   ],
   "Order": [
     "000",
@@ -98,12 +98,7 @@
     "010",
     "015",
     "020",
-    "025",
-    "030",
-    "035",
-    "040",
-    "050",
-    "055"
+    "025"
   ],
   "Category": [
     "-",
@@ -113,17 +108,15 @@
   ],
   "Product": [
     "-",
-    "Vinyl",
-    "CD",
-    "USB",
+    "Music Release",
     "Book",
     "Accessory",
     "Stationery",
-    "Pass",
+    "Ticket",
     "Hoddie",
     "Shirt"
   ],
-  "Format": [
+  "Configuration": [
     "-",
     "1xUSB",
     "1xLP",
@@ -178,5 +171,13 @@
     "Sub Zero Project",
     "Tritonal",
     "Vicetone"
+  ],
+  "Format": [
+    "-",
+    "Vinyl",
+    "CD",
+    "USB",
+    "Paperback",
+    "Hardcover"
   ]
 }

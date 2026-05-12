@@ -123,13 +123,6 @@ export function createMapItem(FIELD_MAP: Record<string, string>, imageFolder?: s
       img.fileName.toLowerCase().startsWith("placeholder.")
     )?.url;
 
-    // Log para detectar si se están mezclando
-    if (itemImages.length > 0 && imageFolder === "football") {
-       // Si estamos en football y detectamos una ruta que dice "music", avisar
-       const hasWrongImage = itemImages.some(url => url.includes('/music/'));
-       if (hasWrongImage) console.error(`¡ERROR! ID ${id} de Football cargó imágenes de Music`);
-    }
-
     return { 
       ...fields, 
       id, 

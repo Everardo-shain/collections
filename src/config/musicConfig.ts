@@ -31,8 +31,8 @@ export const metadata = {
   title: "Everardo´s Music Collection",
   description: `Personal music collection showcase featuring records, apparel, and memorabilia.`,
   ogImage: `${BASE_PATH}site/og-image.png`,
-  lightAccentColor: "209.277 92% 35%",
-  darkAccentColor: "189.084 100% 51%",
+  lightAccentColor: "221 83% 45%",
+  darkAccentColor: "200 95% 60%",
   logo: `${BASE_PATH}site/music-logo.svg`,
   favIcon: `${BASE_PATH}site/favicon.png`,
   itemCount: rawData.length,
@@ -45,10 +45,11 @@ export const FIELD_MAP = {
   displayName: "Display Name",
   category: "Category",
   product: "Product",
+  format: "Format",
   artist: "Artist",
   title: "Title",
   label: "Label",
-  format: "Format",
+  configuration: "Configuration",
   packaging: "Packaging",
   year: "Year",
   signature: "Signed By",
@@ -165,17 +166,17 @@ export const BREADCRUMB_RESOLVER = (context: any): string[] | null => {
 // ==========================================
 // 6. VISIBILIDAD Y FORMATEO DE CAMPOS
 // ==========================================
-export const VISIBLE_FIELDS = ["product", "artist", "title", "label", "format", "year", "signature", "numbered"] as const;
+export const VISIBLE_FIELDS = ["format", "artist", "title", "label", "configuration", "year", "signature", "numbered"] as const;
 export const SPECIAL_FIELDS = ["notes"] as const;
-export const LINK_FIELDS = ["product", "artist", "label", "year"] as const;
+export const LINK_FIELDS = ["format", "artist", "label", "year"] as const;
 
 export const FIELD_VISIBILITY_RULES: Record<string, (item: CollectionItem, value: string) => boolean> = {
 // Release: (_item, value) => valid(value) && value !== "Regular"
 };
 
 export const FIELD_COMBINATIONS: Record<string, (item: CollectionItem, value: string) => CombinationResult> = {
-format: (item, value) => {
-const parts: CombinationPart[] = [{ text: value, fieldKey: "format" }];
+configuration: (item, value) => {
+const parts: CombinationPart[] = [{ text: value, fieldKey: "configuration" }];
 if (valid(item.packaging)) {
 parts.push({ text: " (" }, { text: item.packaging, fieldKey: "packaging" },{ text: ")" });
 }
@@ -186,12 +187,12 @@ return { parts, fullLink: false };
 // ==========================================
 // 7. BÚSQUEDA Y FILTROS (SIDEBAR/STATS)
 // ==========================================
-export const STATS_KEYS = ["artist", "format", "packaging", "year", "details"] as const;
-export const SIDEBAR_KEYS = ["artist", "format", "packaging", "year", "details"] as const;
+export const STATS_KEYS = [ "format", "artist","configuration","packaging", "year", "details"] as const;
+export const SIDEBAR_KEYS = [ "format", "artist","configuration","packaging", "year", "details"] as const;
 
-export const SEARCH_KEYS = ["displayName", "category", "product", "artist", "title", "label", "format", "packaging", "year", "signature", "details"] as const;
+export const SEARCH_KEYS = ["displayName", "category", "product", "artist", "title", "label", "format", "packaging", "year", "signature", "details","configuration"] as const;
 export const SUGGESTIONS_KEYS = [
-"category", "product", "artist", "title", "label", "format", "packaging", "year", "signature", "details"
+"category", "product", "artist", "title", "label", "format", "packaging", "year", "signature", "details","configuration"
 ] as const;
 
 export const CUSTOM_FILTERS: Record<string, CustomFilter> = {
