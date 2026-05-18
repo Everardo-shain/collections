@@ -81,7 +81,7 @@ export function FilterSidebar({
   stickyOffset,
 }: FilterSidebarProps) {
   const { config } = useCollection();
-  const { FIELD_MAP, CUSTOM_FILTERS} = config;
+  const { FIELD_MAP, CUSTOM_FILTERS, getIndex, listsData } = config;
 
   const getFilterLabel = (key: string) => {
     if (CUSTOM_FILTERS[key]) return CUSTOM_FILTERS[key].label;
@@ -108,7 +108,7 @@ export function FilterSidebar({
 
   const isDesktop = typeof window !== 'undefined' && window.innerWidth >= 1024;
 
-return (
+  return (
     <>
       {isOpen && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[60] lg:hidden" onClick={onClose} />
@@ -141,7 +141,6 @@ return (
           </div>
 
           {!hasVisibleFilters ? (
-            // ... mismo estado vacío ...
             <div className="mt-4 p-4 border border-dashed border-muted rounded-xl bg-muted/20">
               <p className="text-xs text-muted-foreground text-center italic leading-relaxed">
                 No additional filters available for these results.
@@ -149,17 +148,31 @@ return (
             </div>
           ) : (
             filterKeys.map(key => {
-              // ... lógica de renderizado de FilterSection (sin cambios) ...
               const options = filterOptions[key] || [];
               const selected = selectedFilters[key] || [];
-              if (options.length === 0 && selected.length === 0) return null;
-              const label = getFilterLabel(key);
               
+              if (options.length === 0 && selected.length === 0) return null;
+              
+              const label = getFilterLabel(key);
+              const customConfig = CUSTOM_FILTERS[key];
+              const fieldKeyForOrder = (customConfig?.filter as string) || key;
+
+              let sortedOptions = [...options];
+
+              if (listsData) {
+                sortedOptions.sort((a, b) => {
+                  const posA = getIndex(a.value, fieldKeyForOrder);
+                  const posB = getIndex(b.value, fieldKeyForOrder);
+                  if (posA === posB) return b.count - a.count;
+                  return posA - posB;
+                });
+              }
+
               return (
                 <FilterSection
                   key={key}
                   label={label}
-                  options={options}
+                  options={sortedOptions}
                   selected={selected}
                   onToggle={(value) => onToggleFilter(key, value)}
                 />

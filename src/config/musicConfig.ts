@@ -49,11 +49,15 @@ export const FIELD_MAP = {
   artist: "Artist",
   title: "Title",
   label: "Label",
+  genre: "Genre",
+  year: "Year",
+  style: "Style",
+  color: "Color",
   configuration: "Configuration",
   packaging: "Packaging",
-  year: "Year",
-  signature: "Signed By",
+  signedBy: "Signed By",
   numbered: "Numbered",
+  discogs: "Discogs",
   notes: "Notes",
 } as const;
 
@@ -61,7 +65,7 @@ export const FIELD_MAP = {
 // 2. CONSTANTES DE FORMATO Y VALIDACIÓN
 // ==========================================
 export const VALUE_SEPARATOR = " | ";
-export const NO_SPLIT_FIELDS = ["displayName", "id"];
+export const NO_SPLIT_FIELDS = ["displayName", "id", "notes"];
 
 /** Define qué valores se consideran "vacíos" o "inválidos" para esta colección */
 export function valid(value?: string | null): boolean {
@@ -166,9 +170,9 @@ export const BREADCRUMB_RESOLVER = (context: any): string[] | null => {
 // ==========================================
 // 6. VISIBILIDAD Y FORMATEO DE CAMPOS
 // ==========================================
-export const VISIBLE_FIELDS = ["format", "artist", "title", "label", "configuration", "year", "signature", "numbered"] as const;
+export const VISIBLE_FIELDS = ["product", "format", "artist", "title", "label", "genre", "year", "style", "color", "configuration", "packaging", "signedBy", "numbered", "discogs"] as const;
 export const SPECIAL_FIELDS = ["notes"] as const;
-export const LINK_FIELDS = ["format", "artist", "label", "year"] as const;
+export const LINK_FIELDS = ["product", "format", "artist", "label", "genre", "year", "style", "color", "configuration", "packaging"] as const;
 
 export const FIELD_VISIBILITY_RULES: Record<string, (item: CollectionItem, value: string) => boolean> = {
 // Release: (_item, value) => valid(value) && value !== "Regular"
@@ -187,12 +191,12 @@ return { parts, fullLink: false };
 // ==========================================
 // 7. BÚSQUEDA Y FILTROS (SIDEBAR/STATS)
 // ==========================================
-export const STATS_KEYS = [ "format", "artist","configuration","packaging", "year", "details"] as const;
-export const SIDEBAR_KEYS = [ "format", "artist","configuration","packaging", "year", "details"] as const;
+export const STATS_KEYS = ["format", "artist", "label", "genre", "year", "style", "color", "configuration", "packaging", "details"] as const;
+export const SIDEBAR_KEYS = ["format", "artist", "label", "genre", "year", "style", "color", "configuration", "packaging", "details"] as const;
 
-export const SEARCH_KEYS = ["displayName", "category", "product", "artist", "title", "label", "format", "packaging", "year", "signature", "details","configuration"] as const;
+export const SEARCH_KEYS = ["displayName", "category", "product", "format", "artist", "title", "label", "genre", "year", "style", "color", "configuration", "packaging", "details"] as const;
 export const SUGGESTIONS_KEYS = [
-"category", "product", "artist", "title", "label", "format", "packaging", "year", "signature", "details","configuration"
+"category", "product", "format", "artist", "title", "label", "genre", "year", "style", "color", "configuration", "packaging", "details"
 ] as const;
 
 export const CUSTOM_FILTERS: Record<string, CustomFilter> = {
@@ -201,7 +205,7 @@ label: "Details",
 filter: "id" as any,
 getValues: (item) => {
 const activeDetails: string[] = [];
-if (valid(item.signature)) activeDetails.push("Signed");
+if (valid(item.signedBy)) activeDetails.push("Signed");
 if (valid(item.numbered)) activeDetails.push("Numbered");
 return activeDetails;
 },
