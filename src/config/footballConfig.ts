@@ -222,6 +222,19 @@ return { parts, fullLink: false };
 },
 };
 
+export const formatIfLink = (text: string) => {
+  if (typeof text === 'string' && (text.startsWith('http://') || text.startsWith('https://'))) {
+    try {
+      const url = new URL(text);
+      if (url.hostname.includes('footballkitarchive.com')) return 'View on Football Kit Archive';
+      return `Visit ${url.hostname.replace('www.', '')}`;
+    } catch {
+      return 'Open Link';
+    }
+  }
+  return text;
+};
+
 // ==========================================
 // 7. BÚSQUEDA Y FILTROS (SIDEBAR/STATS)
 // ==========================================

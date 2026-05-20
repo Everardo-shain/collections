@@ -50,7 +50,7 @@ export const FIELD_MAP = {
   title: "Title",
   label: "Label",
   genre: "Genre",
-  year: "Year",
+  date: "Release Date",
   style: "Style",
   color: "Color",
   configuration: "Configuration",
@@ -93,22 +93,26 @@ const defaultCompare = (a: CollectionItem, b: CollectionItem) => a.id.localeComp
 export const SORT_CONFIG: Record<SortOption, SortConfig> = {
   default: { label: 'Default', compare: defaultCompare },
   newest: {
-    label: 'Year Newest',
+    label: 'Newest Release',
     compare: (a, b) => {
-      const posA = getIndex(a.year, 'year');
-      const posB = getIndex(b.year, 'year');
-      if (posA === Infinity || posB === Infinity) return posA - posB;
-      const diff = posA - posB;
+      // Manejo de casos vacíos o indefinidos (enviarlos al final)
+      if (!a.date) return 1;
+      if (!b.date) return -1;
+      
+      // Para "Newest", comparamos B contra A (orden descendiente: 2026 antes que 2024)
+      const diff = b.date.localeCompare(a.date);
       return diff !== 0 ? diff : defaultCompare(a, b);
     },
   },
   oldest: {
-    label: 'Year Oldest',
+    label: 'Oldest Release',
     compare: (a, b) => {
-      const posA = getIndex(a.year, 'year');
-      const posB = getIndex(b.year, 'year');
-      if (posA === Infinity || posB === Infinity) return posA - posB;
-      const diff = posB - posA;
+      // Manejo de casos vacíos o indefinidos (enviarlos al final)
+      if (!a.date) return 1;
+      if (!b.date) return -1;
+
+      // Para "Oldest", comparamos A contra B (orden ascendiente: 2024 antes que 2026)
+      const diff = a.date.localeCompare(b.date);
       return diff !== 0 ? diff : defaultCompare(a, b);
     },
   },
@@ -127,7 +131,7 @@ export const BREADCRUMB_KEYS: readonly string[] = [];
 export const BREADCRUMB_HIDDEN: readonly string[] = [];
 
 export const breadcrumbConfig: Record<string, string[]> = {
-  "default": ["label", "artist", "year"],
+  "default": ["label", "artist", "format"],
 };
 
 export const BREADCRUMB_LABELS: Record<string, Record<string, string>> = {
@@ -137,10 +141,10 @@ export const BREADCRUMB_LABELS: Record<string, Record<string, string>> = {
 };
 
 export const TITLE_FORMATTERS: Record<string, (last: any, all: any[], compositeKey?: string) => string> = {
-year: (last, all) => {
+format: (last, all) => {
 if (all.length > 1) {
 const penultimate = all[all.length - 2];
-return `${last.label} ${penultimate.label}`;
+return `${penultimate.label} ${last.label}`;
 }
 return last.label;
 },
@@ -170,9 +174,9 @@ export const BREADCRUMB_RESOLVER = (context: any): string[] | null => {
 // ==========================================
 // 6. VISIBILIDAD Y FORMATEO DE CAMPOS
 // ==========================================
-export const VISIBLE_FIELDS = ["product", "format", "artist", "title", "label", "genre", "year", "style", "color", "configuration", "packaging", "signedBy", "numbered", "discogs"] as const;
+export const VISIBLE_FIELDS = ["product", "format", "artist", "title", "label", "genre", "date", "style", "color", "configuration", "signedBy", "numbered", "discogs"] as const;
 export const SPECIAL_FIELDS = ["notes"] as const;
-export const LINK_FIELDS = ["product", "format", "artist", "label", "genre", "year", "style", "color", "configuration", "packaging"] as const;
+export const LINK_FIELDS = ["product", "format", "artist", "label", "genre", "style", "packaging"] as const;
 
 export const FIELD_VISIBILITY_RULES: Record<string, (item: CollectionItem, value: string) => boolean> = {
 // Release: (_item, value) => valid(value) && value !== "Regular"
@@ -188,15 +192,30 @@ return { parts, fullLink: false };
 },
 };
 
+
+export const formatIfLink = (text: string) => {
+  if (typeof text === 'string' && (text.startsWith('http://') || text.startsWith('https://'))) {
+    try {
+      const url = new URL(text);
+      if (url.hostname.includes('discogs.com')) return 'View on Discogs';
+      if (url.hostname.includes('spotify.com')) return 'Listen on Spotify';
+      return `Visit ${url.hostname.replace('www.', '')}`;
+    } catch {
+      return 'Open Link';
+    }
+  }
+  return text;
+};
+
 // ==========================================
 // 7. BÚSQUEDA Y FILTROS (SIDEBAR/STATS)
 // ==========================================
-export const STATS_KEYS = ["format", "artist", "label", "genre", "year", "style", "color", "configuration", "packaging", "details"] as const;
-export const SIDEBAR_KEYS = ["format", "artist", "label", "genre", "year", "style", "color", "configuration", "packaging", "details"] as const;
+export const STATS_KEYS = ["format", "artist", "label", "genre", "style", "color", "configuration", "packaging", "details"] as const;
+export const SIDEBAR_KEYS = ["format", "artist", "label", "genre", "style", "color", "configuration", "packaging", "details"] as const;
 
-export const SEARCH_KEYS = ["displayName", "category", "product", "format", "artist", "title", "label", "genre", "year", "style", "color", "configuration", "packaging", "details"] as const;
+export const SEARCH_KEYS = ["displayName", "category", "product", "format", "artist", "title", "label", "genre", "date", "style", "color", "configuration", "packaging", "details"] as const;
 export const SUGGESTIONS_KEYS = [
-"category", "product", "format", "artist", "title", "label", "genre", "year", "style", "color", "configuration", "packaging", "details"
+"category", "product", "format", "artist", "title", "label", "genre", "date", "style", "color", "configuration", "packaging", "details"
 ] as const;
 
 export const CUSTOM_FILTERS: Record<string, CustomFilter> = {

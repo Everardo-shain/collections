@@ -28,7 +28,7 @@ export function CollectionBreadcrumb({
     BREADCRUMB_HIDDEN = [],
     FIELD_MAP = {},
     valid,
-    NO_SPLIT_FIELDS, 
+    NO_SPLIT_FIELDS = [], 
     formatDisplayValue,
     VALUE_SEPARATOR,  
   } = config;

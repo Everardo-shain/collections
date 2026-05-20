@@ -1,6 +1,6 @@
 import React, { useState, useMemo, useRef, useEffect, useCallback } from 'react';
 import { useParams, Link, useLocation } from 'react-router-dom';
-import { ArrowLeft, ChevronDown, ChevronUp, ChevronLeft, ChevronRight } from 'lucide-react';
+import { ArrowLeft, ChevronDown, ChevronUp, ChevronLeft, ChevronRight, ExternalLink } from 'lucide-react';
 import { ImageLightbox } from '@/components/collection/ImageLightbox';
 import { CollectionNavbar } from '@/components/collection/CollectionNavbar';
 import { CollectionBreadcrumb } from '@/components/collection/CollectionBreadcrumb';
@@ -28,7 +28,8 @@ export default function ItemDetail() {
     metadata,
     valid,
     VALUE_SEPARATOR,
-    NO_SPLIT_FIELDS
+    NO_SPLIT_FIELDS = [],
+    formatIfLink,
   } = config;
 
   const returnPath = useMemo(() => {
@@ -103,34 +104,48 @@ export default function ItemDetail() {
    * Separa el texto visual del valor real del filtro.
    */
   const renderLinkOrText = (displayText: string, filterValue: string, fieldKey: string, isLinkable: boolean) => {
+    const isExternalUrl = typeof displayText === 'string' && (displayText.startsWith('http://') || displayText.startsWith('https://'));
+    const cleanText = formatIfLink(displayText);
+
+    if (isExternalUrl) {
+      return (
+        <a
+          href={displayText}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1 underline underline-offset-4 decoration-primary decoration-1 hover:text-primary transition-colors break-all text-right"
+        >
+          <span>{cleanText}</span>
+          <ExternalLink className="w-3 h-3 opacity-60 shrink-0" />
+        </a>
+      );
+    }
+
     if (NO_SPLIT_FIELDS.includes(fieldKey)) {
       return isLinkable ? (
         <Link
           to={`${baseHref}?nav_${fieldKey.toLowerCase()}=${encodeURIComponent(filterValue)}`}
-          state={{ customLabel: displayText, filterKey: fieldKey.toLowerCase() }}
-          className="underline underline-offset-4 decoration-primary decoration-1 hover:text-primary transition-colors break-words"
+          state={{ customLabel: cleanText, filterKey: fieldKey.toLowerCase() }}
+          className="underline underline-offset-4 decoration-primary decoration-1 hover:text-primary transition-colors break-all"
         >
-          {displayText}
+          {cleanText}
         </Link>
       ) : (
-        // Usamos white-space: pre para que los espacios manuales se respeten
-        <span className="whitespace-pre break-words text-foreground">{displayText}</span>
+        <span className="whitespace-pre-line break-all text-foreground">{cleanText}</span>
       );
     }
 
-    // IMPORTANTE: Solo hacemos split si el separador existe de verdad en el texto
-    // Si no, devolvemos el bloque entero para no romper espacios de combinaciones
     if (!displayText.includes(VALUE_SEPARATOR)) {
       return isLinkable ? (
         <Link
           to={`${baseHref}?nav_${fieldKey.toLowerCase()}=${encodeURIComponent(filterValue)}`}
-          state={{ customLabel: displayText, filterKey: fieldKey.toLowerCase() }}
-          className="underline underline-offset-4 decoration-primary decoration-1 hover:text-primary transition-colors break-words"
+          state={{ customLabel: cleanText, filterKey: fieldKey.toLowerCase() }}
+          className="underline underline-offset-4 decoration-primary decoration-1 hover:text-primary transition-colors break-all"
         >
-          {displayText}
+          {cleanText}
         </Link>
       ) : (
-        <span className="whitespace-pre break-words text-foreground">{displayText}</span>
+        <span className="whitespace-pre-line break-all text-foreground">{cleanText}</span>
       );
     }
 
@@ -140,24 +155,36 @@ export default function ItemDetail() {
     return visualParts.map((partText, idx) => {
       const isLast = idx === visualParts.length - 1;
       const partFilterValue = filterParts[idx] || partText;
+      const partIsExternal = typeof partText === 'string' && (partText.startsWith('http://') || partText.startsWith('https://'));
+      const cleanPartText = formatIfLink(partText);
 
-      const element = isLinkable ? (
+      const element = partIsExternal ? (
+        <a
+          href={partText}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-1 underline underline-offset-4 decoration-primary decoration-1 hover:text-primary transition-colors break-all"
+        >
+          <span>{cleanPartText}</span>
+          <ExternalLink className="w-3 h-3 opacity-60 shrink-0" />
+        </a>
+      ) : isLinkable ? (
         <Link
           key={idx}
           to={`${baseHref}?nav_${fieldKey.toLowerCase()}=${encodeURIComponent(partFilterValue)}`}
-          state={{ customLabel: partText, filterKey: fieldKey.toLowerCase() }}
-          className="underline underline-offset-4 decoration-primary decoration-1 hover:text-primary transition-colors break-words"
+          state={{ customLabel: cleanPartText, filterKey: fieldKey.toLowerCase() }}
+          className="underline underline-offset-4 decoration-primary decoration-1 hover:text-primary transition-colors break-all"
         >
-          {partText}
+          {cleanPartText}
         </Link>
       ) : (
-        <span key={idx} className="whitespace-pre break-words text-foreground">
-          {partText}
+        <span key={idx} className="whitespace-pre-line break-all text-foreground">
+          {cleanPartText}
         </span>
       );
 
       return (
-        <span key={idx} className="inline-flex items-center">
+        <span key={idx} className="inline-flex items-center max-w-full">
           {element}
           {!isLast && <span className="mx-1.5 text-muted-foreground/50 select-none">·</span>}
         </span>
@@ -171,15 +198,14 @@ export default function ItemDetail() {
     if (fullLink) {
       const fullDisplayText = parts.map(p => p.text).join('');
       return (
-        <div className="flex flex-wrap justify-end w-full text-right">
+        <div className="flex flex-wrap justify-end w-full text-right break-all">
           {renderLinkOrText(fullDisplayText, rawValue, camelKey, true)}
         </div>
       );
     }
 
     return (
-      // Quitamos inline-flex para evitar que se colapsen los espacios entre spans
-      <span className="flex flex-wrap justify-end w-full text-right items-center">
+      <span className="flex flex-wrap justify-end w-full text-right items-center break-all gap-y-1">
         {parts.map((part, idx) => {
           const isLinkable = part.fieldKey && (LINK_FIELDS as readonly string[]).includes(part.fieldKey);
           const partRawValue = part.fieldKey ? (item[part.fieldKey as keyof CollectionItem] as string) : part.text;
@@ -324,8 +350,8 @@ export default function ItemDetail() {
               </div>
             </div>
 
-            <div className="lg:col-span-5 flex flex-col pt-2">
-              <h1 className="text-3xl md:text-4xl font-bold mb-8 tracking-tight">{item.displayName}</h1>
+            <div className="lg:col-span-5 flex flex-col pt-2 min-w-0">
+              <h1 className="text-3xl md:text-4xl font-bold mb-8 tracking-tight break-all">{item.displayName}</h1>
               
               <div className="border-t border-border divide-y divide-border grid grid-cols-[auto_1fr]">
                 {Object.entries(FIELD_MAP).map(([camelKey, label]) => {
@@ -342,7 +368,7 @@ export default function ItemDetail() {
                       <span className="flex items-center text-[10px] font-black text-foreground uppercase tracking-[0.25em] py-2 pr-8 shrink-0 border-b border-border">
                         {label as string}
                       </span>
-                      <div className="text-sm text-right text-foreground flex-1 min-w-0 flex justify-end items-center py-2 border-b border-border">
+                      <div className="text-sm text-right text-foreground flex-1 min-w-0 flex justify-end items-center py-2 border-b border-border break-all">
                         {renderValueParts(camelKey, rawValue, combination)}
                       </div>
                     </div>
@@ -357,7 +383,7 @@ export default function ItemDetail() {
                   
                   return valid(safe) && (
                     <div key={f} className="py-6 w-full min-w-0"> 
-                      <p className="text-sm italic text-foreground whitespace-pre-line leading-relaxed break-words">
+                      <p className="text-sm italic text-foreground whitespace-pre-line leading-relaxed break-all">
                         {safe}
                       </p>
                     </div>

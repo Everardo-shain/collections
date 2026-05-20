@@ -28,7 +28,8 @@ export function StatsView({
     CUSTOM_FILTERS, 
     FIELD_MAP, 
     valid, 
-    VALUE_SEPARATOR 
+    VALUE_SEPARATOR,
+    NO_SPLIT_FIELDS = [] // <-- 1. Extraemos NO_SPLIT_FIELDS del config
   } = config;
 
   // --- HELPERS INTERNOS ---
@@ -47,8 +48,13 @@ export function StatsView({
     const value = typeof raw === 'string' ? raw : '';
     if (!valid(value)) return [];
     
+    // <-- 2. Verificamos si la clave no debe dividirse
+    if (NO_SPLIT_FIELDS.includes(key)) {
+      return [value.trim()].filter(Boolean);
+    }
+    
     return value.split(VALUE_SEPARATOR).map(v => v.trim()).filter(Boolean);
-  }, [CUSTOM_FILTERS, valid, VALUE_SEPARATOR]);
+  }, [CUSTOM_FILTERS, valid, VALUE_SEPARATOR, NO_SPLIT_FIELDS]); // <-- 3. Añadimos NO_SPLIT_FIELDS a las dependencias
 
   // Formatea el label según el FIELD_MAP de la colección
   const formatLabel = useCallback((key: string) => {

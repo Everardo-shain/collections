@@ -22,22 +22,37 @@ export function useFilters() {
     FIELD_MAP,
     valid,
     VALUE_SEPARATOR,
+    NO_SPLIT_FIELDS = [], // <-- Añadido aquí
   } = config;
 
   const searchQuery = searchParams.get("q") || "";
 
   // --- HELPERS DINÁMICOS (Acceden a las reglas de la colección actual) ---
   
-  const getArrayParam = useCallback((params: URLSearchParams, key: string): string[] => {
-    const val = params.get(key);
+  // Modificado: Ahora recibe 'fieldKey' para saber si ignorar el split
+  const getArrayParam = useCallback((params: URLSearchParams, paramKey: string, fieldKey: string): string[] => {
+    const val = params.get(paramKey);
     if (!val) return [];
+    
+    // Si el campo está protegido contra divisiones, devolvemos todo el valor intacto
+    if (NO_SPLIT_FIELDS.includes(fieldKey)) {
+      return [val.trim()];
+    }
+    
     return val.split(VALUE_SEPARATOR).map(v => v.trim()).filter(Boolean);
-  }, [VALUE_SEPARATOR]);
+  }, [VALUE_SEPARATOR, NO_SPLIT_FIELDS]);
 
-  const getItemValues = useCallback((value: string): string[] => {
+  // Modificado: Ahora recibe 'key'
+  const getItemValues = useCallback((value: string, key: string): string[] => {
     if (!valid(value)) return [];
+    
+    // Si el campo está protegido, devolvemos el string crudo en un array de 1 elemento
+    if (NO_SPLIT_FIELDS.includes(key)) {
+      return [value.trim()];
+    }
+    
     return value.split(VALUE_SEPARATOR).map(v => v.trim());
-  }, [valid, VALUE_SEPARATOR]);
+  }, [valid, VALUE_SEPARATOR, NO_SPLIT_FIELDS]);
 
   const getValue = useCallback((item: CollectionItem, key: string): string => {
     let value = item[key];
@@ -48,10 +63,11 @@ export function useFilters() {
     return typeof value === "string" ? value : "";
   }, []);
 
-  const matchField = useCallback((itemValue: string, filters: string[]): boolean => {
+  // Modificado: Ahora recibe 'key' y se lo pasa a getItemValues
+  const matchField = useCallback((itemValue: string, filters: string[], key: string): boolean => {
     if (!filters.length) return true;
     if (!itemValue) return false;
-    const values = getItemValues(itemValue).map(v => v.toLowerCase());
+    const values = getItemValues(itemValue, key).map(v => v.toLowerCase());
     return filters.some(f => values.includes(f.toLowerCase()));
   }, [getItemValues]);
 
@@ -67,7 +83,8 @@ export function useFilters() {
     Array.from(searchParams.keys()).forEach(paramKey => {
       if (paramKey.startsWith('nav_') || paramKey.startsWith('attr_')) {
         const pureKey = paramKey.replace('nav_', '').replace('attr_', '');
-        const val = getArrayParam(searchParams, paramKey);
+        // Pasamos pureKey para identificar si aplica NO_SPLIT_FIELDS
+        const val = getArrayParam(searchParams, paramKey, pureKey);
         if (val.length > 0) {
           state[pureKey] = Array.from(new Set([...(state[pureKey] || []), ...val]));
         }
@@ -80,7 +97,8 @@ export function useFilters() {
     const state: Record<string, string[]> = {};
     SIDEBAR_KEYS.forEach(key => {
       const norm = normalizeKey(key);
-      const val = getArrayParam(searchParams, norm);
+      // Pasamos el key original
+      const val = getArrayParam(searchParams, norm, key);
       if (val.length > 0) state[norm] = val;
     });
     return state;
@@ -109,7 +127,8 @@ export function useFilters() {
         if (!selectedValues.length) return true;
         const custom = CUSTOM_FILTERS[k];
         if (custom) return selectedValues.some(v => custom.getValues(item, custom).includes(v));
-        return matchField(getValue(item, k), selectedValues);
+        // Pasamos 'k' a matchField
+        return matchField(getValue(item, k), selectedValues, k);
       });
     });
   }, [collectionItems, combinedState, searchQuery, SEARCH_KEYS, CUSTOM_FILTERS, matchField, getValue]);
@@ -129,7 +148,8 @@ export function useFilters() {
           if (!isMatch(itemSearchText, searchWords)) return false;
         }
         
-        const matchesNav = Object.entries(navState).every(([k, v]) => matchField(getValue(item, k), v));
+        // Pasamos 'k' a matchField
+        const matchesNav = Object.entries(navState).every(([k, v]) => matchField(getValue(item, k), v, k));
         if (!matchesNav) return false;
 
         return SIDEBAR_KEYS.every(sideKey => {
@@ -139,13 +159,15 @@ export function useFilters() {
           if (!selected.length) return true;
           const sideCustom = CUSTOM_FILTERS[sideKey];
           if (sideCustom) return selected.some(v => sideCustom.getValues(item, sideCustom).includes(v));
-          return matchField(getValue(item, sKeyNorm), selected);
+          // Pasamos 'sideKey' a matchField
+          return matchField(getValue(item, sKeyNorm), selected, sideKey);
         });
       });
 
       const counts: Record<string, number> = {};
       itemsForThisSection.forEach(item => {
-        const vals = custom ? custom.getValues(item, custom) : getItemValues(getValue(item, key));
+        // Pasamos 'key' a getItemValues
+        const vals = custom ? custom.getValues(item, custom) : getItemValues(getValue(item, key), key);
         if (vals.length > 0) vals.forEach(v => { if (v) counts[v] = (counts[v] || 0) + 1; });
       });
 
@@ -178,9 +200,11 @@ export function useFilters() {
   const toggleFilter = (key: string, value: string) => {
     const newParams = new URLSearchParams(searchParams);
     const normKey = normalizeKey(key);
-    const current = getArrayParam(searchParams, normKey);
+    // Pasamos 'key'
+    const current = getArrayParam(searchParams, normKey, key);
     const next = current.includes(value) ? current.filter(v => v !== value) : [...current, value];
     
+    // Al hacer 'join' de un array de 1 elemento (por NO_SPLIT_FIELDS), se queda intacto.
     if (next.length) newParams.set(normKey, next.join(VALUE_SEPARATOR));
     else newParams.delete(normKey);
     
@@ -192,7 +216,8 @@ export function useFilters() {
       const p = new URLSearchParams(prev);
       const normKey = normalizeKey(key);
       if (!value) { p.delete(normKey); return p; }
-      const current = getArrayParam(p, normKey);
+      // Pasamos 'key'
+      const current = getArrayParam(p, normKey, key);
       const next = current.filter(v => v !== value);
       next.length ? p.set(normKey, next.join(VALUE_SEPARATOR)) : p.delete(normKey);
       return p;

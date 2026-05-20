@@ -29,6 +29,7 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
     SUGGESTIONS_KEYS = [],
     NAVIGATION_CONFIG = { hierarchy: ["parent", "child"] },
     VALUE_SEPARATOR = " | ",
+    NO_SPLIT_FIELDS = [], // <-- 1. Extraemos NO_SPLIT_FIELDS
     valid = (v: any) => !!v && v !== "-"
   } = (config || {}) as any;
 
@@ -133,7 +134,11 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
       SUGGESTIONS_KEYS.forEach((fieldKey: string) => {
         const rawValue = item[fieldKey];
         if (typeof rawValue === 'string' && valid(rawValue)) {
-          const individualValues = rawValue.split(VALUE_SEPARATOR).map(v => v.trim()).filter(Boolean);
+          // <-- 2. Verificamos si NO_SPLIT_FIELDS incluye el fieldKey actual
+          const individualValues = NO_SPLIT_FIELDS.includes(fieldKey) 
+            ? [rawValue.trim()].filter(Boolean)
+            : rawValue.split(VALUE_SEPARATOR).map(v => v.trim()).filter(Boolean);
+            
           individualValues.forEach((val: string) => {
             const valClean = cleanText(val);
             const dedupeKey = `${fieldKey}:${valClean}`;
@@ -155,7 +160,11 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
       SEARCH_KEYS.forEach((fieldKey: string) => {
         const rawValue = item[fieldKey];
         if (typeof rawValue === 'string' && valid(rawValue)) {
-          const vals = rawValue.split(VALUE_SEPARATOR).map(v => cleanText(v.trim()));
+          // <-- 3. Aplicamos la misma lógica para evitar dividir strings de la búsqueda
+          const vals = NO_SPLIT_FIELDS.includes(fieldKey)
+            ? [cleanText(rawValue.trim())]
+            : rawValue.split(VALUE_SEPARATOR).map(v => cleanText(v.trim()));
+
           if (vals.includes(queryClean)) score += 10;
           else if (isMatch(rawValue, searchWords)) score += 5;
         }
@@ -171,7 +180,7 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
       suggestions: [...exactMatches, ...fuzzyMatches].slice(0, 5), 
       items: itemMatches.sort((a, b) => b._searchScore - a._searchScore).slice(0, 5) 
     });
-  }, [debouncedSearch, allCollectionItems, SEARCH_KEYS, SUGGESTIONS_KEYS, VALUE_SEPARATOR, valid, isHome]);
+  }, [debouncedSearch, allCollectionItems, SEARCH_KEYS, SUGGESTIONS_KEYS, VALUE_SEPARATOR, NO_SPLIT_FIELDS, valid, isHome]); // <-- 4. Añadimos NO_SPLIT_FIELDS a las dependencias
 
   const isHidden = scrollDir === "down" && scrollY > 100 && !mobileOpen && !searchOpen && !isHome;
 
