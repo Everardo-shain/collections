@@ -3,7 +3,8 @@ import { Link, useLocation } from "react-router-dom";
 import React from "react";
 import { 
   getDynamicValue, 
-  CollectionItem, 
+  CollectionItem,
+  shouldNoSplit, 
 } from "@/config";
 import { useCollection } from "@/hooks/useCollection";
 
@@ -28,7 +29,7 @@ export function CollectionBreadcrumb({
     BREADCRUMB_HIDDEN = [],
     FIELD_MAP = {},
     valid,
-    NO_SPLIT_FIELDS = [], 
+    SPLIT_FIELDS = { mode: 'exclude', fields: [] },
     formatDisplayValue,
     VALUE_SEPARATOR,  
   } = config;
@@ -153,8 +154,8 @@ export function CollectionBreadcrumb({
     const rawValue = crumb.label;
     const isAttribute = crumb.isAttribute;
 
-    // 4. Renderizado de Links y Labels
-    if (NO_SPLIT_FIELDS.includes(fieldKey) || !rawValue.includes(VALUE_SEPARATOR)) {
+    // ✨ Aplicamos el nuevo helper aquí también
+    if (shouldNoSplit(fieldKey, SPLIT_FIELDS) || !rawValue.includes(VALUE_SEPARATOR)) {
       const display = getFinalLabel(fieldKey, rawValue, isAttribute);
       const linkParams = new URLSearchParams(crumb.prevParams);
       const prefix = isAttribute ? 'attr_' : 'nav_';

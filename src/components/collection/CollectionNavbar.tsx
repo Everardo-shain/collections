@@ -8,7 +8,7 @@ import { useScrollDirection } from '@/hooks/useScrollDirection';
 import { useDebounce } from '@/hooks/useDebounce';
 import { cn } from '@/lib/utils';
 import { SmartTitle } from '@/components/SmartTitle';
-import { isMatch, cleanText, normalizeKey } from "@/utils/collectionUtils";
+import { isMatch, cleanText, normalizeKey, shouldNoSplit} from "@/utils/collectionUtils";
 import { useCollection } from '@/hooks/useCollection';
 
 export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups?: NavGroup[], isHome?: boolean }) {
@@ -29,7 +29,7 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
     SUGGESTIONS_KEYS = [],
     NAVIGATION_CONFIG = { hierarchy: ["parent", "child"] },
     VALUE_SEPARATOR = " | ",
-    NO_SPLIT_FIELDS = [], // <-- 1. Extraemos NO_SPLIT_FIELDS
+    SPLIT_FIELDS = { mode: 'exclude', fields: [] },
     valid = (v: any) => !!v && v !== "-"
   } = (config || {}) as any;
 
@@ -134,10 +134,10 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
       SUGGESTIONS_KEYS.forEach((fieldKey: string) => {
         const rawValue = item[fieldKey];
         if (typeof rawValue === 'string' && valid(rawValue)) {
-          // <-- 2. Verificamos si NO_SPLIT_FIELDS incluye el fieldKey actual
-          const individualValues = NO_SPLIT_FIELDS.includes(fieldKey) 
-            ? [rawValue.trim()].filter(Boolean)
-            : rawValue.split(VALUE_SEPARATOR).map(v => v.trim()).filter(Boolean);
+        // Usamos nuestro helper para verificar si NO se debe separar
+        const individualValues = shouldNoSplit(fieldKey, SPLIT_FIELDS) 
+          ? [rawValue.trim()].filter(Boolean)
+          : rawValue.split(VALUE_SEPARATOR).map(v => v.trim()).filter(Boolean);
             
           individualValues.forEach((val: string) => {
             const valClean = cleanText(val);
@@ -161,7 +161,8 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
         const rawValue = item[fieldKey];
         if (typeof rawValue === 'string' && valid(rawValue)) {
           // <-- 3. Aplicamos la misma lógica para evitar dividir strings de la búsqueda
-          const vals = NO_SPLIT_FIELDS.includes(fieldKey)
+          // Usamos nuestro helper también aquí
+          const vals = shouldNoSplit(fieldKey, SPLIT_FIELDS)
             ? [cleanText(rawValue.trim())]
             : rawValue.split(VALUE_SEPARATOR).map(v => cleanText(v.trim()));
 
@@ -180,7 +181,7 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
       suggestions: [...exactMatches, ...fuzzyMatches].slice(0, 5), 
       items: itemMatches.sort((a, b) => b._searchScore - a._searchScore).slice(0, 5) 
     });
-  }, [debouncedSearch, allCollectionItems, SEARCH_KEYS, SUGGESTIONS_KEYS, VALUE_SEPARATOR, NO_SPLIT_FIELDS, valid, isHome]); // <-- 4. Añadimos NO_SPLIT_FIELDS a las dependencias
+  }, [debouncedSearch, allCollectionItems, SEARCH_KEYS, SUGGESTIONS_KEYS, VALUE_SEPARATOR, SPLIT_FIELDS, valid, isHome]); // <-- 4. Añadimos SPLIT_FIELDS a las dependencias
 
   const isHidden = scrollDir === "down" && scrollY > 100 && !mobileOpen && !searchOpen && !isHome;
 

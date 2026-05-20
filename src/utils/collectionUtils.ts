@@ -172,3 +172,25 @@ export function createGenerateNavGroups(hierarchy: readonly string[], getIndex: 
     });
   };
 }
+
+/**
+ * Determina si un campo específico NO debe ser separado
+ */
+export function shouldNoSplit(
+  field: string, 
+  splitConfig: { mode: 'include' | 'exclude'; fields: string[] }
+): boolean {
+  if (!splitConfig) return false; // Por defecto, si no hay config, se separa todo
+  
+  const { mode, fields = [] } = splitConfig;
+
+  if (mode === 'include') {
+    // 'include' -> SOLO estos campos SÍ se separan.
+    // Por lo tanto, si NO está en la lista, NO se debe separar (retorna true).
+    return !fields.includes(field);
+  }
+
+  // 'exclude' -> TODOS los campos se separan, EXCEPTO estos campos.
+  // Por lo tanto, si ESTÁ en la lista, NO se debe separar (retorna true).
+  return fields.includes(field);
+}

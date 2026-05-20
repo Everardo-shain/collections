@@ -14,6 +14,7 @@ import {
   createMapItem,
   SortOption,
   SortConfig,
+  shouldNoSplit,
 } from "@/utils/collectionUtils";
 
 export const rawData = rawDataJson as Record<string, string>[];
@@ -65,7 +66,12 @@ export const FIELD_MAP = {
 // 2. CONSTANTES DE FORMATO Y VALIDACIÓN
 // ==========================================
 export const VALUE_SEPARATOR = " | ";
-export const NO_SPLIT_FIELDS = ["displayName", "id", "notes"];
+export const SPLIT_FIELDS = {
+  // 'include' -> SOLO estos campos SI se separan
+  // 'exclude' -> TODOS los campos se separan, EXCEPTO estos campos
+  mode: 'exclude' as 'include' | 'exclude', 
+  fields: ["displayName", "id", "notes"]
+};
 
 /** Define qué valores se consideran "vacíos" o "inválidos" para esta colección */
 export function valid(value?: string | null): boolean {
@@ -77,7 +83,7 @@ export function valid(value?: string | null): boolean {
 /** Formateador visual para Breadcrumbs y Títulos */
 export function formatDisplayValue(key: string, value: string): string {
   const lowerKey = key.toLowerCase();
-  if (NO_SPLIT_FIELDS.includes(lowerKey) || !valid(value)) return value;
+  if (shouldNoSplit(lowerKey, SPLIT_FIELDS) || !valid(value)) return value;
   return value
     .split(VALUE_SEPARATOR)
     .map(part => part.trim())

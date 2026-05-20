@@ -6,6 +6,7 @@ import {
   cleanText,
   isMatch,
   CollectionItem,
+  shouldNoSplit,
 } from "@/utils/collectionUtils";
 
 export function useFilters() {
@@ -22,7 +23,7 @@ export function useFilters() {
     FIELD_MAP,
     valid,
     VALUE_SEPARATOR,
-    NO_SPLIT_FIELDS = [], // <-- Añadido aquí
+    SPLIT_FIELDS = { mode: 'exclude', fields: [] },
   } = config;
 
   const searchQuery = searchParams.get("q") || "";
@@ -35,24 +36,24 @@ export function useFilters() {
     if (!val) return [];
     
     // Si el campo está protegido contra divisiones, devolvemos todo el valor intacto
-    if (NO_SPLIT_FIELDS.includes(fieldKey)) {
+    if (shouldNoSplit(fieldKey, SPLIT_FIELDS)) {
       return [val.trim()];
     }
     
     return val.split(VALUE_SEPARATOR).map(v => v.trim()).filter(Boolean);
-  }, [VALUE_SEPARATOR, NO_SPLIT_FIELDS]);
+  }, [VALUE_SEPARATOR, SPLIT_FIELDS]);
 
   // Modificado: Ahora recibe 'key'
   const getItemValues = useCallback((value: string, key: string): string[] => {
     if (!valid(value)) return [];
     
     // Si el campo está protegido, devolvemos el string crudo en un array de 1 elemento
-    if (NO_SPLIT_FIELDS.includes(key)) {
+    if (shouldNoSplit(key, SPLIT_FIELDS)) {
       return [value.trim()];
     }
     
     return value.split(VALUE_SEPARATOR).map(v => v.trim());
-  }, [valid, VALUE_SEPARATOR, NO_SPLIT_FIELDS]);
+  }, [valid, VALUE_SEPARATOR, SPLIT_FIELDS]);
 
   const getValue = useCallback((item: CollectionItem, key: string): string => {
     let value = item[key];
@@ -83,7 +84,7 @@ export function useFilters() {
     Array.from(searchParams.keys()).forEach(paramKey => {
       if (paramKey.startsWith('nav_') || paramKey.startsWith('attr_')) {
         const pureKey = paramKey.replace('nav_', '').replace('attr_', '');
-        // Pasamos pureKey para identificar si aplica NO_SPLIT_FIELDS
+        // Pasamos pureKey para identificar si aplica SPLIT_FIELDS
         const val = getArrayParam(searchParams, paramKey, pureKey);
         if (val.length > 0) {
           state[pureKey] = Array.from(new Set([...(state[pureKey] || []), ...val]));
@@ -204,7 +205,7 @@ export function useFilters() {
     const current = getArrayParam(searchParams, normKey, key);
     const next = current.includes(value) ? current.filter(v => v !== value) : [...current, value];
     
-    // Al hacer 'join' de un array de 1 elemento (por NO_SPLIT_FIELDS), se queda intacto.
+    // Al hacer 'join' de un array de 1 elemento (por SPLIT_FIELDS), se queda intacto.
     if (next.length) newParams.set(normKey, next.join(VALUE_SEPARATOR));
     else newParams.delete(normKey);
     

@@ -8,7 +8,7 @@ import { Helmet } from "react-helmet-async";
 import { cn } from "@/lib/utils";
 import { motion, useMotionValue, animate, AnimatePresence } from 'framer-motion';
 
-import { CollectionItem, SITE_METADATA, CombinationResult} from '@/config';
+import { CollectionItem, SITE_METADATA, CombinationResult, shouldNoSplit} from '@/config';
 import { useCollection } from '@/hooks/useCollection';
 
 export default function ItemDetail() {
@@ -28,7 +28,7 @@ export default function ItemDetail() {
     metadata,
     valid,
     VALUE_SEPARATOR,
-    NO_SPLIT_FIELDS = [],
+    SPLIT_FIELDS = { mode: 'exclude', fields: [] },
     formatIfLink,
   } = config;
 
@@ -121,7 +121,7 @@ export default function ItemDetail() {
       );
     }
 
-    if (NO_SPLIT_FIELDS.includes(fieldKey)) {
+    if (shouldNoSplit(fieldKey, SPLIT_FIELDS)) {
       return isLinkable ? (
         <Link
           to={`${baseHref}?nav_${fieldKey.toLowerCase()}=${encodeURIComponent(filterValue)}`}

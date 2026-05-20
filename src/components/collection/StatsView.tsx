@@ -1,6 +1,6 @@
 import { useMemo, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { CollectionItem, normalizeKey } from '@/utils/collectionUtils'; // Importar de utils
+import { CollectionItem, normalizeKey, shouldNoSplit} from '@/utils/collectionUtils'; // Importar de utils
 import { cn } from '@/lib/utils';
 import { useCollection } from '@/hooks/useCollection';
 
@@ -29,7 +29,7 @@ export function StatsView({
     FIELD_MAP, 
     valid, 
     VALUE_SEPARATOR,
-    NO_SPLIT_FIELDS = [] // <-- 1. Extraemos NO_SPLIT_FIELDS del config
+    SPLIT_FIELDS = { mode: 'exclude', fields: [] },
   } = config;
 
   // --- HELPERS INTERNOS ---
@@ -47,14 +47,13 @@ export function StatsView({
     
     const value = typeof raw === 'string' ? raw : '';
     if (!valid(value)) return [];
-    
-    // <-- 2. Verificamos si la clave no debe dividirse
-    if (NO_SPLIT_FIELDS.includes(key)) {
+
+    if (shouldNoSplit(key, SPLIT_FIELDS)) {
       return [value.trim()].filter(Boolean);
     }
-    
+
     return value.split(VALUE_SEPARATOR).map(v => v.trim()).filter(Boolean);
-  }, [CUSTOM_FILTERS, valid, VALUE_SEPARATOR, NO_SPLIT_FIELDS]); // <-- 3. Añadimos NO_SPLIT_FIELDS a las dependencias
+  }, [CUSTOM_FILTERS, valid, VALUE_SEPARATOR, SPLIT_FIELDS]); // <-- 3. Añadimos SPLIT_FIELDS a las dependencias
 
   // Formatea el label según el FIELD_MAP de la colección
   const formatLabel = useCallback((key: string) => {
