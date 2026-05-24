@@ -38,7 +38,7 @@ export default function Home() {
 
         <main className="flex-1 max-w-[1200px] mx-auto w-full px-4 sm:px-6 lg:px-8 py-14 md:py-20">
           
-{/* SECCIÓN HERO PRINCIPAL */}
+        {/* SECCIÓN HERO PRINCIPAL */}
         <div className="text-center mb-10 md:mb-13">
           <div className="flex flex-col items-center gap-2">
             <SmartTitle 
@@ -46,9 +46,10 @@ export default function Home() {
               logoUrl={SITE_METADATA.logo} 
               height="clamp(3.5rem, 6vw, 8rem)"
               isDark={true} 
-              logoColor="blue"
-              lineColor="blue"
-              textColor="blue"
+              // Envolvemos el valor de la config en hsl()
+              logoColor={`hsl(${isDarkMode ? SITE_METADATA.darkAccentColor : SITE_METADATA.lightAccentColor})`}
+              lineColor={`hsl(${isDarkMode ? SITE_METADATA.darkAccentColor : SITE_METADATA.lightAccentColor})`}
+              textColor={`hsl(${isDarkMode ? SITE_METADATA.darkAccentColor : SITE_METADATA.lightAccentColor})`}
             />
             
             <p className="text-base md:text-lg text-muted-foreground max-w-xl mx-auto whitespace-pre-line leading-relaxed">
@@ -56,6 +57,7 @@ export default function Home() {
             </p>
           </div>
         </div>
+
         {/* GRID DE COLECCIONES */}
         <div className="flex flex-wrap justify-center gap-6">
           {ids.map(id => {
