@@ -27,7 +27,7 @@ export const SITE_METADATA = {
   description: "A curated digital archive of personal collections.",
   author: "Everardo",
   ogImage: `${BASE_PATH}site/og-image.png`,
-  lightAccentColor: "0 100% 50%",
+  lightAccentColor: "1 0% 0%",
   darkAccentColor: "1 0% 100%",
   logo: `${BASE_PATH}site/logo.svg`,
   favIcon: `${BASE_PATH}site/favicon.png`,
