@@ -1,4 +1,5 @@
 import { cn } from '@/lib/utils';
+import { useState, useEffect } from 'react';
 
 interface SmartTitleProps {
   title: string;
@@ -6,10 +7,34 @@ interface SmartTitleProps {
   className?: string;
   isDark?: boolean;
   height?: string;
-  // Nuevos parámetros de color
   logoColor?: string;
   lineColor?: string;
   textColor?: string;
+}
+
+function resolveClamp(value: string): string {
+  const clampMatch = value.match(/^clamp\(\s*([^,]+),\s*([^,]+),\s*([^)]+)\)/);
+  if (!clampMatch) return value;
+
+  const [, minStr, preferredStr, maxStr] = clampMatch;
+
+  const parseRem = (v: string) => parseFloat(v) * 16;
+  const parseVw = (v: string) => (parseFloat(v) / 100) * window.innerWidth;
+  const parsePx = (v: string) => parseFloat(v);
+
+  const parse = (v: string): number => {
+    v = v.trim();
+    if (v.endsWith('rem')) return parseRem(v);
+    if (v.endsWith('vw')) return parseVw(v);
+    if (v.endsWith('px')) return parsePx(v);
+    return parseFloat(v);
+  };
+
+  const min = parse(minStr);
+  const preferred = parse(preferredStr);
+  const max = parse(maxStr);
+  const resolved = Math.min(Math.max(preferred, min), max);
+  return `${resolved}px`;
 }
 
 export function SmartTitle({ 
@@ -26,10 +51,18 @@ export function SmartTitle({
   const firstWord = words.length >= 2 ? words[0] : '';
   const restOfTitle = words.length >= 2 ? words.slice(1).join(' ') : title;
 
+  const [resolvedHeight, setResolvedHeight] = useState(() => resolveClamp(height));
+
+  useEffect(() => {
+    const update = () => setResolvedHeight(resolveClamp(height));
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
+  }, [height]);
+
   const containerStyle = {
-    '--title-height': height,
-    height: 'var(--title-height)',
-    gap: 'calc(var(--title-height) * 0.12)'
+    '--title-height': resolvedHeight,
+    height: resolvedHeight,
+    gap: `calc(${resolvedHeight} * 0.12)`
   } as React.CSSProperties;
 
   return (

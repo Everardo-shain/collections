@@ -44,11 +44,11 @@ export default function Home() {
             <SmartTitle 
               title={SITE_METADATA.title} 
               logoUrl={SITE_METADATA.logo} 
-              height="clamp(1.5rem, 4vw, 2rem)" 
+              height="clamp(3.5rem, 6vw, 8rem)"
               isDark={true} 
-              logoColor="hsl(var(--accent-color))"
-              lineColor="hsl(var(--accent-color))"
-              textColor="hsl(var(--accent-color))"
+              logoColor={`hsl(${isDarkMode ? SITE_METADATA.darkAccentColor : SITE_METADATA.lightAccentColor})`}
+              lineColor={`hsl(${isDarkMode ? SITE_METADATA.darkAccentColor : SITE_METADATA.lightAccentColor})`}
+              textColor={`hsl(${isDarkMode ? SITE_METADATA.darkAccentColor : SITE_METADATA.lightAccentColor})`}
             />
             
             <p className="text-base md:text-lg text-muted-foreground max-w-xl mx-auto whitespace-pre-line leading-relaxed">
