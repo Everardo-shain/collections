@@ -27,6 +27,7 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
     mapItem = (i: any) => i,
     SEARCH_KEYS = [],
     SUGGESTIONS_KEYS = [],
+    CUSTOM_FILTERS = {},
     NAVIGATION_CONFIG = { hierarchy: ["parent", "child"] },
     valid = (v: any) => !!v && v !== "-"
   } = (config || {}) as any;
@@ -112,7 +113,6 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
   }, []);
 
   // --- LÓGICA DE BÚSQUEDA PREDICTIVA ---
-// --- LÓGICA DE BÚSQUEDA PREDICTIVA ---
   useEffect(() => {
     const queryRaw = debouncedSearch.trim();
     if (queryRaw.length < 2 || isHome) {
@@ -128,46 +128,66 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
     const seenSuggestions = new Set<string>();
     const seenItemIds = new Set();
 
-    // Extraemos la configuración multiplexada
     const { SEPARATORS_CONFIG = [] } = config || {};
 
     allCollectionItems.forEach((item: any) => {
-      // 1. Procesar Sugerencias (Filtros por Atributos)
+      // 1. Procesar Sugerencias (Filtros por Atributos y Custom Filters)
       SUGGESTIONS_KEYS.forEach((fieldKey: string) => {
-        const rawValue = item[fieldKey];
-        if (typeof rawValue === 'string' && valid(rawValue)) {
-          
-          // ✨ El motor divide usando secuencialmente todos tus separadores activos para este campo
-          const individualValues = splitValue(fieldKey, rawValue, SEPARATORS_CONFIG);
-            
-          individualValues.forEach((val: string) => {
-            const valClean = cleanText(val);
-            const dedupeKey = `${fieldKey}:${valClean}`;
-            if (seenSuggestions.has(dedupeKey)) return;
+        let individualValues: string[] = [];
 
-            if (isMatch(val, searchWords)) {
-              const displayField = fieldKey.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-              const suggestionData = { field: displayField, value: val, rawKey: fieldKey };
-              if (valClean === queryClean) exactMatches.push(suggestionData);
-              else fuzzyMatches.push(suggestionData);
-              seenSuggestions.add(dedupeKey);
-            }
-          });
+        // ✨ Si es un filtro personalizado, ejecutamos su lógica para extraer los valores
+        if (CUSTOM_FILTERS[fieldKey] && typeof CUSTOM_FILTERS[fieldKey].getValues === 'function') {
+          const customValues = CUSTOM_FILTERS[fieldKey].getValues(item);
+          if (Array.isArray(customValues)) {
+            individualValues = customValues;
+          }
+        } 
+        // Si es un campo normal, lo leemos directo del item y aplicamos los separadores
+        else {
+          const rawValue = item[fieldKey];
+          if (typeof rawValue === 'string' && valid(rawValue)) {
+            individualValues = splitValue(fieldKey, rawValue, SEPARATORS_CONFIG);
+          }
         }
+
+        // Procesar los valores extraídos
+        individualValues.forEach((val: string) => {
+          const valClean = cleanText(val);
+          const dedupeKey = `${fieldKey}:${valClean}`;
+          if (seenSuggestions.has(dedupeKey)) return;
+
+          if (isMatch(val, searchWords)) {
+            const displayField = CUSTOM_FILTERS[fieldKey]?.label || fieldKey.split('_').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+            const suggestionData = { field: displayField, value: val, rawKey: fieldKey };
+            if (valClean === queryClean) exactMatches.push(suggestionData);
+            else fuzzyMatches.push(suggestionData);
+            seenSuggestions.add(dedupeKey);
+          }
+        });
       });
 
-      // 2. Procesar Items Directos
+      // 2. Procesar Items Directos (Top Results)
       let score = 0;
       SEARCH_KEYS.forEach((fieldKey: string) => {
-        const rawValue = item[fieldKey];
-        if (typeof rawValue === 'string' && valid(rawValue)) {
-          
-          // ✨ Aplicamos el motor también aquí para limpiar los términos antes del score
-          const fragments = splitValue(fieldKey, rawValue, SEPARATORS_CONFIG);
-          const vals = fragments.map(v => cleanText(v));
+        
+        // ✨ Mismo tratamiento para los resultados principales
+        if (CUSTOM_FILTERS[fieldKey] && typeof CUSTOM_FILTERS[fieldKey].getValues === 'function') {
+          const customValues = CUSTOM_FILTERS[fieldKey].getValues(item) || [];
+          const customRawString = customValues.join(" "); // Unimos para la búsqueda difusa
+          const valsClean = customValues.map((v: string) => cleanText(v));
 
-          if (vals.includes(queryClean)) score += 10;
-          else if (isMatch(rawValue, searchWords)) score += 5;
+          if (valsClean.includes(queryClean)) score += 10;
+          else if (isMatch(customRawString, searchWords)) score += 5;
+        } 
+        else {
+          const rawValue = item[fieldKey];
+          if (typeof rawValue === 'string' && valid(rawValue)) {
+            const fragments = splitValue(fieldKey, rawValue, SEPARATORS_CONFIG);
+            const vals = fragments.map((v: string) => cleanText(v));
+
+            if (vals.includes(queryClean)) score += 10;
+            else if (isMatch(rawValue, searchWords)) score += 5;
+          }
         }
       });
 
@@ -181,7 +201,6 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
       suggestions: [...exactMatches, ...fuzzyMatches].slice(0, 5), 
       items: itemMatches.sort((a, b) => b._searchScore - a._searchScore).slice(0, 5) 
     });
-    // Cambiado: Ahora dependemos de config de forma segura en lugar de las variables sueltas
   }, [debouncedSearch, allCollectionItems, SEARCH_KEYS, SUGGESTIONS_KEYS, config, valid, isHome]);
 
   const isHidden = scrollDir === "down" && scrollY > 100 && !mobileOpen && !searchOpen && !isHome;
