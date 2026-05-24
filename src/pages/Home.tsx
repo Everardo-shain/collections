@@ -46,9 +46,9 @@ export default function Home() {
               logoUrl={SITE_METADATA.logo} 
               height="clamp(3.5rem, 6vw, 8rem)"
               isDark={true} 
-              logoColor="red"
-              lineColor="red"
-              textColor="red"
+              logoColor="blue"
+              lineColor="blue"
+              textColor="blue"
             />
             
             <p className="text-base md:text-lg text-muted-foreground max-w-xl mx-auto whitespace-pre-line leading-relaxed">

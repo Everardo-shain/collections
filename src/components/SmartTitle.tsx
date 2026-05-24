@@ -83,7 +83,7 @@ export function SmartTitle({
             WebkitMaskImage: `url(${logoUrl})`,
             maskRepeat: 'no-repeat', WebkitMaskRepeat: 'no-repeat',
             maskPosition: 'center', WebkitMaskPosition: 'center',
-            maskSize: 'contain', WebkitMaskSize: 'contain',
+            maskSize: 'cover', WebkitMaskSize: 'cover',
           }}
         />
       )}
