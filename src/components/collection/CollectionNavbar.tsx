@@ -8,7 +8,7 @@ import { useScrollDirection } from '@/hooks/useScrollDirection';
 import { useDebounce } from '@/hooks/useDebounce';
 import { cn } from '@/lib/utils';
 import { SmartTitle } from '@/components/SmartTitle';
-import { isMatch, cleanText, normalizeKey, shouldNoSplit} from "@/utils/collectionUtils";
+import { isMatch, cleanText, normalizeKey, splitValue} from "@/utils/collectionUtils";
 import { useCollection } from '@/hooks/useCollection';
 
 export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups?: NavGroup[], isHome?: boolean }) {
@@ -28,8 +28,6 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
     SEARCH_KEYS = [],
     SUGGESTIONS_KEYS = [],
     NAVIGATION_CONFIG = { hierarchy: ["parent", "child"] },
-    VALUE_SEPARATOR = " | ",
-    SPLIT_FIELDS = { mode: 'exclude', fields: [] },
     valid = (v: any) => !!v && v !== "-"
   } = (config || {}) as any;
 
@@ -114,6 +112,7 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
   }, []);
 
   // --- LÓGICA DE BÚSQUEDA PREDICTIVA ---
+// --- LÓGICA DE BÚSQUEDA PREDICTIVA ---
   useEffect(() => {
     const queryRaw = debouncedSearch.trim();
     if (queryRaw.length < 2 || isHome) {
@@ -129,15 +128,17 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
     const seenSuggestions = new Set<string>();
     const seenItemIds = new Set();
 
+    // Extraemos la configuración multiplexada
+    const { SEPARATORS_CONFIG = [] } = config || {};
+
     allCollectionItems.forEach((item: any) => {
       // 1. Procesar Sugerencias (Filtros por Atributos)
       SUGGESTIONS_KEYS.forEach((fieldKey: string) => {
         const rawValue = item[fieldKey];
         if (typeof rawValue === 'string' && valid(rawValue)) {
-        // Usamos nuestro helper para verificar si NO se debe separar
-        const individualValues = shouldNoSplit(fieldKey, SPLIT_FIELDS) 
-          ? [rawValue.trim()].filter(Boolean)
-          : rawValue.split(VALUE_SEPARATOR).map(v => v.trim()).filter(Boolean);
+          
+          // ✨ El motor divide usando secuencialmente todos tus separadores activos para este campo
+          const individualValues = splitValue(fieldKey, rawValue, SEPARATORS_CONFIG);
             
           individualValues.forEach((val: string) => {
             const valClean = cleanText(val);
@@ -160,11 +161,10 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
       SEARCH_KEYS.forEach((fieldKey: string) => {
         const rawValue = item[fieldKey];
         if (typeof rawValue === 'string' && valid(rawValue)) {
-          // <-- 3. Aplicamos la misma lógica para evitar dividir strings de la búsqueda
-          // Usamos nuestro helper también aquí
-          const vals = shouldNoSplit(fieldKey, SPLIT_FIELDS)
-            ? [cleanText(rawValue.trim())]
-            : rawValue.split(VALUE_SEPARATOR).map(v => cleanText(v.trim()));
+          
+          // ✨ Aplicamos el motor también aquí para limpiar los términos antes del score
+          const fragments = splitValue(fieldKey, rawValue, SEPARATORS_CONFIG);
+          const vals = fragments.map(v => cleanText(v));
 
           if (vals.includes(queryClean)) score += 10;
           else if (isMatch(rawValue, searchWords)) score += 5;
@@ -181,7 +181,8 @@ export function CollectionNavbar({ navGroups = [], isHome = false }: { navGroups
       suggestions: [...exactMatches, ...fuzzyMatches].slice(0, 5), 
       items: itemMatches.sort((a, b) => b._searchScore - a._searchScore).slice(0, 5) 
     });
-  }, [debouncedSearch, allCollectionItems, SEARCH_KEYS, SUGGESTIONS_KEYS, VALUE_SEPARATOR, SPLIT_FIELDS, valid, isHome]); // <-- 4. Añadimos SPLIT_FIELDS a las dependencias
+    // Cambiado: Ahora dependemos de config de forma segura en lugar de las variables sueltas
+  }, [debouncedSearch, allCollectionItems, SEARCH_KEYS, SUGGESTIONS_KEYS, config, valid, isHome]);
 
   const isHidden = scrollDir === "down" && scrollY > 100 && !mobileOpen && !searchOpen && !isHome;
 

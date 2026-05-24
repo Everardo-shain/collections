@@ -1,10 +1,9 @@
 import { ChevronRight, Home } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
-import React from "react";
 import { 
   getDynamicValue, 
   CollectionItem,
-  shouldNoSplit, 
+  shouldSplitForConfig, // 👈 Añadimos esta importación desde tu archivo de utilidades
 } from "@/config";
 import { useCollection } from "@/hooks/useCollection";
 
@@ -29,9 +28,7 @@ export function CollectionBreadcrumb({
     BREADCRUMB_HIDDEN = [],
     FIELD_MAP = {},
     valid,
-    SPLIT_FIELDS = { mode: 'exclude', fields: [] },
     formatDisplayValue,
-    VALUE_SEPARATOR,  
   } = config;
   const baseHref = `/view/${collectionId}`;
 
@@ -129,7 +126,7 @@ export function CollectionBreadcrumb({
     // 2. Casos especiales de texto plano
     if (crumb.key === "search" || crumb.key === "all") return crumb.label;
 
-    // 3. PRIORIDAD: State con label personalizado (tu corrección)
+    // 3. PRIORIDAD: State con label personalizado
     if (state?.customLabel && state?.filterKey === crumb.key) {
       return (isLast && !item) ? (
         <span className="text-primary font-medium">{state.customLabel}</span>
@@ -140,62 +137,94 @@ export function CollectionBreadcrumb({
       );
     }
 
-    // Helper para decidir si mostrar "Campo: Valor" o solo "Valor"
-    const getFinalLabel = (key: string, value: string, isAttr?: boolean) => {
-      const displayValue = formatDisplayValue ? formatDisplayValue(key, value) : value;
-      if (isAttr) {
-        const fieldName = (FIELD_MAP as any)[key] || key.charAt(0).toUpperCase() + key.slice(1);
-        return `${fieldName}: ${displayValue}`;
-      }
-      return displayValue;
-    };
-
     const fieldKey = crumb.originalKey; 
     const rawValue = crumb.label;
     const isAttribute = crumb.isAttribute;
 
-    // ✨ Aplicamos el nuevo helper aquí también
-    if (shouldNoSplit(fieldKey, SPLIT_FIELDS) || !rawValue.includes(VALUE_SEPARATOR)) {
-      const display = getFinalLabel(fieldKey, rawValue, isAttribute);
-      const linkParams = new URLSearchParams(crumb.prevParams);
-      const prefix = isAttribute ? 'attr_' : 'nav_';
-      linkParams.set(`${prefix}${crumb.key}`, rawValue);
+    // 🚀 Extraemos la configuración de separadores
+    const { SEPARATORS_CONFIG = [] } = config;
 
-      return (!isLast || item) ? (
-        <Link to={`${baseHref}?${linkParams.toString()}`} className="hover:text-primary transition-colors">
-          {display}
-        </Link>
-      ) : (
-        <span className="text-primary font-medium">{display}</span>
-      );
-    }
+    // Generamos el prefijo estático de Atributo una sola vez (evita duplicados visuales en los sub-chips)
+    const attrPrefix = isAttribute 
+      ? `${(FIELD_MAP as any)[fieldKey] || fieldKey.charAt(0).toUpperCase() + fieldKey.slice(1)}: ` 
+      : "";
 
-    // 5. Soporte para múltiples valores (ej. Mexico | USA)
-    const parts = rawValue.split(VALUE_SEPARATOR).map(p => p.trim()).filter(Boolean);
+    // 🎯 MOTOR DE SEGMENTACIÓN ESTRUCTURAL SECUENCIAL PARA BREADCRUMBS
+    let structuralParts = [{ text: rawValue, filter: rawValue, isSeparator: false }];
 
+    (SEPARATORS_CONFIG || []).forEach(({ separator, replacementSymbol, splitFields }) => {
+      if (shouldSplitForConfig(fieldKey, splitFields)) {
+        const nextParts: typeof structuralParts = [];
+
+        structuralParts.forEach(part => {
+          if (part.isSeparator) {
+            nextParts.push(part);
+            return;
+          }
+
+          const textTokens = part.text.split(separator);
+          const filterTokens = part.filter.split(separator);
+
+          textTokens.forEach((token, idx) => {
+            nextParts.push({ 
+              text: token.trim(), 
+              filter: (filterTokens[idx] || token).trim(), 
+              isSeparator: false 
+            });
+
+            if (idx < textTokens.length - 1) {
+              nextParts.push({ 
+                text: replacementSymbol, 
+                filter: separator, 
+                isSeparator: true 
+              });
+            }
+          });
+        });
+
+        structuralParts = nextParts.filter(p => p.isSeparator || p.text !== "");
+      }
+    });
+
+    // 🎨 Renderizado de la estructura secuencial integrada en línea
     return (
-      <div className="flex items-center">
-        {parts.map((part, idx) => {
-          const display = getFinalLabel(fieldKey, part, isAttribute);
+      <span className="inline-flex items-center flex-wrap max-w-full">
+        {attrPrefix && <span className="mr-1 opacity-75 select-none">{attrPrefix}</span>}
+        
+        {structuralParts.map((part, idx) => {
+          // Si el nodo es un separador visual legítimo heredado de su propia regla
+          if (part.isSeparator) {
+            return (
+              <span 
+                key={idx} 
+                className={`text-muted-foreground/70 select-none flex-shrink-0 ${
+                  part.text.trim() === ',' ? "mr-1.5" : "mx-1.5"
+                }`}
+              >
+                {part.text.trim()}
+              </span>
+            );
+          }
+
+          // Si el nodo es texto cliqueable/enlazable
+          const display = formatDisplayValue ? formatDisplayValue(fieldKey, part.text) : part.text;
           const linkParams = new URLSearchParams(crumb.prevParams);
           const prefix = isAttribute ? 'attr_' : 'nav_';
-          linkParams.set(`${prefix}${crumb.key}`, part);
-          const isLastPart = idx === parts.length - 1;
+          linkParams.set(`${prefix}${crumb.key}`, part.filter);
 
-          return (
-            <React.Fragment key={idx}>
-              {(!isLast || item) ? (
-                <Link to={`${baseHref}?${linkParams.toString()}`} className="hover:text-primary transition-colors">
-                  {display}
-                </Link>
-              ) : (
-                <span className="text-primary font-medium">{display}</span>
-              )}
-              {!isLastPart && <span className="mx-1.5 opacity-40 text-muted-foreground">·</span>}
-            </React.Fragment>
+          return (!isLast || item) ? (
+            <Link 
+              key={idx} 
+              to={`${baseHref}?${linkParams.toString()}`} 
+              className="hover:text-primary transition-colors hover:underline"
+            >
+              {display}
+            </Link>
+          ) : (
+            <span key={idx} className="text-primary font-medium">{display}</span>
           );
         })}
-      </div>
+      </span>
     );
   };
 

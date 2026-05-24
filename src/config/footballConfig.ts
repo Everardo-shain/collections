@@ -13,7 +13,8 @@ import {
   createMapItem,
   SortOption,
   SortConfig,
-  shouldNoSplit,
+  replaceSeparators,
+  SeparatorConfig,
 } from "@/utils/collectionUtils";
 
 export const rawData = rawDataJson as Record<string, string>[];
@@ -71,14 +72,16 @@ export const FIELD_MAP = {
 // ==========================================
 // 2. CONSTANTES DE FORMATO Y VALIDACIÓN
 // ==========================================
-export const VALUE_SEPARATOR = " | ";
-
-export const SPLIT_FIELDS = {
-  // 'include' -> SOLO estos campos SI se separan
-  // 'exclude' -> TODOS los campos se separan, EXCEPTO estos campos
-  mode: 'exclude' as 'include' | 'exclude', 
-  fields: ["displayName", "id", "notes"]
-};
+export const SEPARATORS_CONFIG: SeparatorConfig[] = [
+  {
+    separator: " | ",
+    replacementSymbol: " • ",
+    splitFields: {
+      mode: 'exclude',
+      fields: ["displayName", "id", "notes"] // Estos NO se separan con " | "
+    }
+  },
+];
 
 /** Define qué valores se consideran "vacíos" o "inválidos" para esta colección */
 export function valid(value?: string | null): boolean {
@@ -89,13 +92,8 @@ export function valid(value?: string | null): boolean {
 
 /** Formateador visual para Breadcrumbs y Títulos */
 export function formatDisplayValue(key: string, value: string): string {
-  const lowerKey = key.toLowerCase();
-  if (shouldNoSplit(lowerKey, SPLIT_FIELDS) || !valid(value)) return value;
-  return value
-    .split(VALUE_SEPARATOR)
-    .map(part => part.trim())
-    .filter(Boolean)
-    .join(" · ");
+  if (!valid(value)) return value;
+  return replaceSeparators(key, value, SEPARATORS_CONFIG);
 }
 
 // ==========================================
@@ -167,19 +165,23 @@ return last.label;
 
 export const BREADCRUMB_RESOLVER = (context: any): string[] | null => {
   const { item, filtersState } = context;
-  const getCompositeKey = (getData: (key: string) => string | undefined) =>
-    BREADCRUMB_KEYS.map(key => getData(key)).filter(valid).join(VALUE_SEPARATOR);
+  const getCompositeKeys = (getData: (key: string) => string | undefined): string[] => {
+    const activeValues = BREADCRUMB_KEYS.map(key => getData(key)).filter(valid);
+    if (!activeValues.length) return [];
+    return SEPARATORS_CONFIG.map(cfg => activeValues.join(cfg.separator));
+  };
   if (item) {
-    const compositeKey = getCompositeKey((k) => item[k] ?? item[k.charAt(0).toLowerCase() + k.slice(1)]);
-    if (breadcrumbConfig[compositeKey]) return breadcrumbConfig[compositeKey];
+    const compositeKeys = getCompositeKeys((k) => item[k] ?? item[k.charAt(0).toLowerCase() + k.slice(1)]);
+    const matchedKey = compositeKeys.find(key => breadcrumbConfig[key]);
+    if (matchedKey) return breadcrumbConfig[matchedKey];
     const firstLevel = item[BREADCRUMB_KEYS[0]];
     if (breadcrumbConfig[firstLevel]) return breadcrumbConfig[firstLevel];
   }
-
   if (filtersState) {
     const getFilterVal = (k: string) => filtersState[`nav_${k}`]?.[0] || filtersState[k]?.[0];
-    const compositeKey = getCompositeKey(getFilterVal);
-    if (breadcrumbConfig[compositeKey]) return breadcrumbConfig[compositeKey];
+    const compositeKeys = getCompositeKeys(getFilterVal);
+    const matchedKey = compositeKeys.find(key => breadcrumbConfig[key]);
+    if (matchedKey) return breadcrumbConfig[matchedKey];
     const firstKey = getFilterVal(BREADCRUMB_KEYS[0]);
     if (firstKey && breadcrumbConfig[firstKey]) return breadcrumbConfig[firstKey];
   }

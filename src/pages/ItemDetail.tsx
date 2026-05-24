@@ -8,8 +8,10 @@ import { Helmet } from "react-helmet-async";
 import { cn } from "@/lib/utils";
 import { motion, useMotionValue, animate, AnimatePresence } from 'framer-motion';
 
-import { CollectionItem, SITE_METADATA, CombinationResult, shouldNoSplit} from '@/config';
+import { CollectionItem, SITE_METADATA, CombinationResult } from '@/config';
 import { useCollection } from '@/hooks/useCollection';
+// 🚀 Traemos splitValue y la función que evalúa dinámicamente las reglas de tu config
+import { shouldSplitForConfig } from '@/utils/collectionUtils';
 
 export default function ItemDetail() {
   const { id } = useParams<{ id: string }>();
@@ -27,9 +29,8 @@ export default function ItemDetail() {
     generateNavGroups,
     metadata,
     valid,
-    VALUE_SEPARATOR,
-    SPLIT_FIELDS = { mode: 'exclude', fields: [] },
     formatIfLink,
+    SEPARATORS_CONFIG = []
   } = config;
 
   const returnPath = useMemo(() => {
@@ -100,115 +101,157 @@ export default function ItemDetail() {
   };
 
   /**
-   * Nueva lógica de renderizado:
-   * Separa el texto visual del valor real del filtro.
+   * Nueva lógica de renderizado adaptada al motor multi-separador.
+   * Separa el texto visual del valor real del filtro usando las reglas dinámicas.
    */
-  const renderLinkOrText = (displayText: string, filterValue: string, fieldKey: string, isLinkable: boolean) => {
-    const isExternalUrl = typeof displayText === 'string' && (displayText.startsWith('http://') || displayText.startsWith('https://'));
-    const cleanText = formatIfLink(displayText);
+/**
+ * Nueva lógica de renderizado adaptada al motor multiplexor multi-separador.
+ * Preserva la identidad visual de cada separador individualmente en cadenas complejas.
+ */
+const renderLinkOrText = (displayText: string, filterValue: string, fieldKey: string, isLinkable: boolean) => {
+  const isExternalUrl = typeof displayText === 'string' && (displayText.startsWith('http://') || displayText.startsWith('https://'));
+  const cleanText = formatIfLink(displayText);
 
-    if (isExternalUrl) {
+  if (isExternalUrl) {
+    return (
+      <a
+        href={displayText}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="inline-flex items-center gap-1 underline underline-offset-4 decoration-primary decoration-1 hover:text-primary transition-colors  text-right"
+      >
+        <span>{cleanText}</span>
+        <ExternalLink className="w-3 h-3 opacity-60 shrink-0" />
+      </a>
+    );
+  }
+
+  // 🎯 MOTOR DE SEGMENTACIÓN ESTRUCTURAL SECUENCIAL
+  // Empezamos con el bloque completo de texto sin procesar
+  let structuralParts = [{ text: displayText, filter: filterValue, isSeparator: false }];
+
+  // Evaluamos cada regla de tu SEPARATORS_CONFIG de forma iterativa y ordenada
+  (SEPARATORS_CONFIG || []).forEach(({ separator, replacementSymbol, splitFields }) => {
+    if (shouldSplitForConfig(fieldKey, splitFields)) {
+      const nextParts: typeof structuralParts = [];
+
+      structuralParts.forEach(part => {
+        // Si este fragmento ya es un nodo separador de una iteración anterior, lo preservamos intacto
+        if (part.isSeparator) {
+          nextParts.push(part);
+          return;
+        }
+
+        // Si es texto plano, lo dividimos usando el separador actual
+        const textTokens = part.text.split(separator);
+        const filterTokens = part.filter.split(separator);
+
+        textTokens.forEach((token, idx) => {
+          nextParts.push({ 
+            text: token.trim(), 
+            filter: (filterTokens[idx] || token).trim(), 
+            isSeparator: false 
+          });
+
+          // Inyectamos el símbolo visual correspondiente únicamente en las uniones de ESTA regla
+          if (idx < textTokens.length - 1) {
+            nextParts.push({ 
+              text: replacementSymbol, 
+              filter: separator, 
+              isSeparator: true 
+            });
+          }
+        });
+      });
+
+      // Limpiamos tokens vacíos residuales pero manteniendo los separadores legítimos
+      structuralParts = nextParts.filter(p => p.isSeparator || p.text !== "");
+    }
+  });
+
+  // Renderizamos de forma plana y secuencial respetando el origen de cada token
+  return structuralParts.map((part, idx) => {
+    if (part.isSeparator) {
+      return (
+        <span 
+          key={idx} 
+          className={cn(
+            "text-muted-foreground select-none flex-shrink-0",
+            part.text.trim() === ',' ? "mr-1.5" : "mx-1.5"
+          )}
+        >
+          {part.text.trim()}
+        </span>
+      );
+    }
+
+    const cleanPartText = formatIfLink(part.text);
+    const partIsExternal = typeof part.text === 'string' && (part.text.startsWith('http://') || part.text.startsWith('https://'));
+
+    if (partIsExternal) {
       return (
         <a
-          href={displayText}
+          key={idx}
+          href={part.text}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-1 underline underline-offset-4 decoration-primary decoration-1 hover:text-primary transition-colors break-all text-right"
-        >
-          <span>{cleanText}</span>
-          <ExternalLink className="w-3 h-3 opacity-60 shrink-0" />
-        </a>
-      );
-    }
-
-    if (shouldNoSplit(fieldKey, SPLIT_FIELDS)) {
-      return isLinkable ? (
-        <Link
-          to={`${baseHref}?nav_${fieldKey.toLowerCase()}=${encodeURIComponent(filterValue)}`}
-          state={{ customLabel: cleanText, filterKey: fieldKey.toLowerCase() }}
-          className="underline underline-offset-4 decoration-primary decoration-1 hover:text-primary transition-colors break-all"
-        >
-          {cleanText}
-        </Link>
-      ) : (
-        <span className="whitespace-pre-line break-all text-foreground">{cleanText}</span>
-      );
-    }
-
-    if (!displayText.includes(VALUE_SEPARATOR)) {
-      return isLinkable ? (
-        <Link
-          to={`${baseHref}?nav_${fieldKey.toLowerCase()}=${encodeURIComponent(filterValue)}`}
-          state={{ customLabel: cleanText, filterKey: fieldKey.toLowerCase() }}
-          className="underline underline-offset-4 decoration-primary decoration-1 hover:text-primary transition-colors break-all"
-        >
-          {cleanText}
-        </Link>
-      ) : (
-        <span className="whitespace-pre-line break-all text-foreground">{cleanText}</span>
-      );
-    }
-
-    const visualParts = displayText.split(VALUE_SEPARATOR).map(p => p.trim()).filter(Boolean);
-    const filterParts = filterValue.split(VALUE_SEPARATOR).map(p => p.trim()).filter(Boolean);
-
-    return visualParts.map((partText, idx) => {
-      const isLast = idx === visualParts.length - 1;
-      const partFilterValue = filterParts[idx] || partText;
-      const partIsExternal = typeof partText === 'string' && (partText.startsWith('http://') || partText.startsWith('https://'));
-      const cleanPartText = formatIfLink(partText);
-
-      const element = partIsExternal ? (
-        <a
-          href={partText}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-1 underline underline-offset-4 decoration-primary decoration-1 hover:text-primary transition-colors break-all"
+          className="inline-flex items-center gap-1 underline underline-offset-4 decoration-primary decoration-1 hover:text-primary transition-colors "
         >
           <span>{cleanPartText}</span>
           <ExternalLink className="w-3 h-3 opacity-60 shrink-0" />
         </a>
-      ) : isLinkable ? (
+      );
+    }
+
+    return isLinkable ? (
         <Link
           key={idx}
-          to={`${baseHref}?nav_${fieldKey.toLowerCase()}=${encodeURIComponent(partFilterValue)}`}
+          to={`${baseHref}?nav_${fieldKey.toLowerCase()}=${encodeURIComponent(part.filter)}`}
           state={{ customLabel: cleanPartText, filterKey: fieldKey.toLowerCase() }}
-          className="underline underline-offset-4 decoration-primary decoration-1 hover:text-primary transition-colors break-all"
+          className="underline underline-offset-4 decoration-primary decoration-1 hover:text-primary transition-colors"
         >
           {cleanPartText}
         </Link>
       ) : (
-        <span key={idx} className="whitespace-pre-line break-all text-foreground">
+        // 🚀 CAMBIO: Usamos whitespace-pre-wrap en lugar de pre-line
+        <span key={idx} className="whitespace-pre-wrap text-foreground">
           {cleanPartText}
-        </span>
-      );
-
-      return (
-        <span key={idx} className="inline-flex items-center max-w-full">
-          {element}
-          {!isLast && <span className="mx-1.5 text-muted-foreground/50 select-none">·</span>}
         </span>
       );
     });
   };
 
-  const renderValueParts = (camelKey: string, rawValue: string, combination: CombinationResult) => {
+const renderValueParts = (camelKey: string, rawValue: string, combination: CombinationResult) => {
     const { parts, fullLink } = combination;
 
     if (fullLink) {
       const fullDisplayText = parts.map(p => p.text).join('');
       return (
-        <div className="flex flex-wrap justify-end w-full text-right break-all">
+        <div className="flex flex-wrap justify-end w-full text-right">
           {renderLinkOrText(fullDisplayText, rawValue, camelKey, true)}
         </div>
       );
     }
 
     return (
-      <span className="flex flex-wrap justify-end w-full text-right items-center break-all gap-y-1">
+      <span className="flex flex-wrap justify-end w-full text-right items-center gap-y-1">
         {parts.map((part, idx) => {
-          const isLinkable = part.fieldKey && (LINK_FIELDS as readonly string[]).includes(part.fieldKey);
-          const partRawValue = part.fieldKey ? (item[part.fieldKey as keyof CollectionItem] as string) : part.text;
+          // 🚀 INTERVENCIÓN: Si NO tiene fieldKey, sabemos que es solo un conector visual (ej: " x " o " - ")
+          // Lo dibujamos directo con `whitespace-pre` para forzar que el espacio exista.
+          if (!part.fieldKey) {
+            return (
+              <span 
+                key={idx} 
+                className="whitespace-pre text-foreground select-none flex-shrink-0"
+              >
+                {part.text}
+              </span>
+            );
+          }
+
+          // Si sí tiene fieldKey, es un valor de la base de datos real
+          const isLinkable = (LINK_FIELDS as readonly string[]).includes(part.fieldKey);
+          const partRawValue = item[part.fieldKey as keyof CollectionItem] as string;
           
           return (
             <React.Fragment key={idx}>
@@ -284,7 +327,7 @@ export default function ItemDetail() {
                         onClick={() => scrollThumbs('down')}
                         className="absolute bottom-0 left-0 right-0 flex justify-center py-4 z-20 text-primary hover:scale-110 transition-transform bg-gradient-to-t from-background via-background/80 to-transparent"
                       >
-                        <ChevronDown className="w-6 h-6 stroke-[3px] animate-bounce" />
+                        <ChevronDown className="w-6 h-6 stroke-[3px]" />
                       </motion.button>
                     )}
                   </AnimatePresence>
@@ -351,7 +394,7 @@ export default function ItemDetail() {
             </div>
 
             <div className="lg:col-span-5 flex flex-col pt-2 min-w-0">
-              <h1 className="text-3xl md:text-4xl font-bold mb-8 tracking-tight break-all">{item.displayName}</h1>
+              <h1 className="text-3xl md:text-4xl font-bold mb-8 tracking-tight ">{item.displayName}</h1>
               
               <div className="border-t border-border divide-y divide-border grid grid-cols-[auto_1fr]">
                 {Object.entries(FIELD_MAP).map(([camelKey, label]) => {
@@ -368,7 +411,7 @@ export default function ItemDetail() {
                       <span className="flex items-center text-[10px] font-black text-foreground uppercase tracking-[0.25em] py-2 pr-8 shrink-0 border-b border-border">
                         {label as string}
                       </span>
-                      <div className="text-sm text-right text-foreground flex-1 min-w-0 flex justify-end items-center py-2 border-b border-border break-all">
+                      <div className="text-sm text-right text-foreground flex-1 min-w-0 flex justify-end items-center py-2 border-b border-border ">
                         {renderValueParts(camelKey, rawValue, combination)}
                       </div>
                     </div>
@@ -383,7 +426,7 @@ export default function ItemDetail() {
                   
                   return valid(safe) && (
                     <div key={f} className="py-6 w-full min-w-0"> 
-                      <p className="text-sm italic text-foreground whitespace-pre-line leading-relaxed break-all">
+                      <p className="text-sm italic text-foreground whitespace-pre-line leading-relaxed ">
                         {safe}
                       </p>
                     </div>

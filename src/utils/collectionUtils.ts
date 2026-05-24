@@ -21,6 +21,14 @@ export type NavChild = { label: string } & Record<string, string>;
 export type NavGroup = { label: string; children: NavChild[] };
 export type SortOption = 'default' | 'newest' | 'oldest';
 export interface SortConfig { label: string; compare: (a: CollectionItem, b: CollectionItem) => number; }
+export interface SeparatorConfig {
+  separator: string;
+  replacementSymbol: string;
+  splitFields: {
+    mode: 'include' | 'exclude';
+    fields: readonly string[]; // o string[] si no usas 'as const'
+  };
+}
 
 // ==========================================
 // HELPERS DE STRING / VALIDACIÓN (Se mantienen igual)
@@ -72,9 +80,6 @@ export const isMatch = (itemValue: string, search: string | string[]): boolean =
 // FACTORIES (MOTOR DINÁMICO)
 // ==========================================
 
-// ==========================================
-// FACTORIES (MOTOR DINÁMICO)
-// ==========================================
 
 // 1. Cargamos todas las imágenes
 const allImagesRaw = import.meta.glob("@/assets/images/**/*.{jpg,jpeg,png,webp,svg}", { eager: true, import: 'default' });
@@ -173,24 +178,93 @@ export function createGenerateNavGroups(hierarchy: readonly string[], getIndex: 
   };
 }
 
-/**
- * Determina si un campo específico NO debe ser separado
- */
-export function shouldNoSplit(
+export function shouldSplitForConfig(
   field: string, 
-  splitConfig: { mode: 'include' | 'exclude'; fields: string[] }
+  splitFieldsConfig: { mode: 'include' | 'exclude'; fields: readonly string[] }
 ): boolean {
-  if (!splitConfig) return false; // Por defecto, si no hay config, se separa todo
-  
-  const { mode, fields = [] } = splitConfig;
+  // Aseguramos un fallback por si splitFieldsConfig viene incompleto
+  const { mode, fields = [] } = splitFieldsConfig || {};
+  const fieldsLower = fields.map(f => f.toLowerCase());
+  const currentFieldLower = field.toLowerCase();
 
   if (mode === 'include') {
-    // 'include' -> SOLO estos campos SÍ se separan.
-    // Por lo tanto, si NO está en la lista, NO se debe separar (retorna true).
-    return !fields.includes(field);
+    return fieldsLower.includes(currentFieldLower); // 'include' -> SÓLO estos campos SÍ se separan
+  }
+  return !fieldsLower.includes(currentFieldLower); // 'exclude' -> TODOS se separan EXCEPTO estos
+}
+
+export function splitValue(field: string, rawValue: unknown, separatorsConfig: SeparatorConfig[] = []): string[] {
+  if (typeof rawValue !== 'string' || !rawValue.trim()) return [];
+  
+  let results: string[] = [rawValue.trim()];
+
+  // Iteramos sobre cada configuración de separador
+  (separatorsConfig || []).forEach(({ separator, splitFields }) => {
+    // Si para este campo SÍ se debe aplicar este separador específico...
+    if (shouldSplitForConfig(field, splitFields)) {
+      const nextResults: string[] = [];
+      
+      results.forEach(subValue => {
+        // Dividimos los fragmentos que llevamos acumulados
+        const tokens = subValue.split(separator).map(v => v.trim()).filter(Boolean);
+        nextResults.push(...tokens);
+      });
+      
+      results = nextResults;
+    }
+  });
+
+  return results;
+}
+
+/**
+ * Une un array de valores en un único string utilizando el formato nativo
+ * de los separadores definidos en el config, sin valores amarrados en código.
+ */
+/**
+ * Une un array de valores en un único string utilizando el formato nativo
+ * de los separadores definidos en tu separatorsConfig real.
+ */
+export function joinValues(
+  fieldKey: string, 
+  values: string[], 
+  separatorsConfig: any[] // O SeparatorConfig[] si tienes el tipo a la mano
+): string {
+  if (!values || values.length === 0) return "";
+
+  // 🛡️ Si no es un array válido, unimos con un espacio por seguridad
+  if (!Array.isArray(separatorsConfig) || separatorsConfig.length === 0) {
+    return values.join(" ");
   }
 
-  // 'exclude' -> TODOS los campos se separan, EXCEPTO estos campos.
-  // Por lo tanto, si ESTÁ en la lista, NO se debe separar (retorna true).
-  return fields.includes(field);
+  // 🎯 Buscamos el PRIMER separador que aplique legítimamente para este campo
+  const activeRule = separatorsConfig.find(({ splitFields }) => 
+    shouldSplitForConfig(fieldKey, splitFields)
+  );
+
+  // Si este campo requiere separador, usamos el que tiene configurado
+  if (activeRule && activeRule.separator) {
+    const mainSeparator = activeRule.separator; // Ej: ',' o '/' o '·'
+    
+    // Regla estética de espacios dinámicos
+    const glue = mainSeparator === ',' ? ', ' : ` ${mainSeparator} `;
+    return values.join(glue);
+  }
+
+  // Si el campo no aplica para ningún separador (está protegido/excluido), unimos con un espacio
+  return values.join(" ");
+}
+
+export function replaceSeparators(field: string, rawValue: string, separatorsConfig: SeparatorConfig[] = []): string {
+  if (!rawValue) return "";
+  let formatted = rawValue;
+
+  (separatorsConfig || []).forEach(({ separator, replacementSymbol, splitFields }) => {
+    if (shouldSplitForConfig(field, splitFields)) {
+      // Reemplazamos todas las ocurrencias de ese separador por su símbolo visual de reemplazo
+      formatted = formatted.split(separator).join(replacementSymbol);
+    }
+  });
+
+  return formatted;
 }

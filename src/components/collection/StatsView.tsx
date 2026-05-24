@@ -1,6 +1,6 @@
 import { useMemo, useEffect, useCallback } from 'react';
 import { useSearchParams } from 'react-router-dom';
-import { CollectionItem, normalizeKey, shouldNoSplit} from '@/utils/collectionUtils'; // Importar de utils
+import { CollectionItem, normalizeKey, splitValue} from '@/utils/collectionUtils'; // Importar de utils
 import { cn } from '@/lib/utils';
 import { useCollection } from '@/hooks/useCollection';
 
@@ -28,13 +28,11 @@ export function StatsView({
     CUSTOM_FILTERS, 
     FIELD_MAP, 
     valid, 
-    VALUE_SEPARATOR,
-    SPLIT_FIELDS = { mode: 'exclude', fields: [] },
   } = config;
 
   // --- HELPERS INTERNOS ---
   
-  // Obtiene los valores de un item considerando filtros personalizados y separadores dinámicos
+// Obtiene los valores de un item considerando filtros personalizados y separadores dinámicos
   const getItemValuesForKey = useCallback((item: CollectionItem, key: string): string[] => {
     const custom = CUSTOM_FILTERS[key];
     if (custom) return custom.getValues(item, custom).filter(Boolean);
@@ -48,12 +46,10 @@ export function StatsView({
     const value = typeof raw === 'string' ? raw : '';
     if (!valid(value)) return [];
 
-    if (shouldNoSplit(key, SPLIT_FIELDS)) {
-      return [value.trim()].filter(Boolean);
-    }
-
-    return value.split(VALUE_SEPARATOR).map(v => v.trim()).filter(Boolean);
-  }, [CUSTOM_FILTERS, valid, VALUE_SEPARATOR, SPLIT_FIELDS]); // <-- 3. Añadimos SPLIT_FIELDS a las dependencias
+    // 🚀 El motor se encarga de aplicar de forma secuencial todos tus separadores configurados
+    const { SEPARATORS_CONFIG = [] } = config;
+    return splitValue(key, value, SEPARATORS_CONFIG);
+  }, [CUSTOM_FILTERS, valid, config]);
 
   // Formatea el label según el FIELD_MAP de la colección
   const formatLabel = useCallback((key: string) => {
@@ -101,7 +97,7 @@ export function StatsView({
 
   const total = items.length;
 
-  // Manejo de clic en fila para filtrar y volver al Grid
+// Manejo de clic en fila para filtrar y volver al Grid
   const handleRowClick = (value: string) => {
     if (!activeTable) return;
 
@@ -110,10 +106,16 @@ export function StatsView({
     const newParams = new URLSearchParams(searchParams);
     const filterKey = normalizeKey(activeTable);
     
-    const existingValues = newParams.get(filterKey)?.split(VALUE_SEPARATOR) || [];
+    // 🎨 Buscamos el separador correspondiente a esta sección para reconstruir la URL
+    const { SEPARATORS_CONFIG = [] } = config;
+    const systemSeparator = SEPARATORS_CONFIG[0]?.separator || " | ";
+
+    // Hacemos el split usando el separador dinámico del sistema para no duplicar valores
+    const existingValues = newParams.get(filterKey)?.split(systemSeparator).map(v => v.trim()).filter(Boolean) || [];
+    
     if (!existingValues.includes(value)) {
       const updatedValues = [...existingValues, value];
-      newParams.set(filterKey, updatedValues.join(VALUE_SEPARATOR));
+      newParams.set(filterKey, updatedValues.join(systemSeparator));
     }
 
     newParams.delete('view'); 

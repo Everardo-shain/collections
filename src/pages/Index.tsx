@@ -10,7 +10,7 @@ import { useFilters } from '@/hooks/useFilters';
 import { useCollection } from '@/hooks/useCollection';
 import { useScrollDirection } from '@/hooks/useScrollDirection';
 import { useElementSize } from '@/hooks/useElementSize';
-import { SITE_METADATA, SortOption } from '@/config';
+import { SITE_METADATA, SortOption,joinValues } from '@/config';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import { cn } from '@/lib/utils';
 import { Helmet } from 'react-helmet-async';
@@ -65,7 +65,7 @@ const Index = () => {
     metadata, 
     valid, 
     formatDisplayValue, 
-    VALUE_SEPARATOR
+    SEPARATORS_CONFIG = []
   } = config;
 
   const allFilters = useFilters();
@@ -114,10 +114,13 @@ const getPageTitle = () => {
       return searchParams.get(`nav_${lowerK}`) || searchParams.get(`attr_${lowerK}`) || null;
     };
 
-    const compositeKey = safeKeys
+    const rawValues = safeKeys
       .map(k => getParamVal(k))
-      .filter(v => v !== null && valid(v))
-      .join(VALUE_SEPARATOR);
+      .filter((v): v is string => v !== null && valid(v));
+
+    // 🎯 Usamos el primer key válido de los safeKeys para determinar las reglas de unión
+    const primaryKey = safeKeys[0] || "";
+    const compositeKey = joinValues(primaryKey, rawValues, SEPARATORS_CONFIG);
 
     const activeHierarchy = BREADCRUMB_RESOLVER({ filtersState: navState }) || NAVIGATION_BREADCRUMB;
     const hierarchyKeysLower = activeHierarchy.map(k => k.toLowerCase());
