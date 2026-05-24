@@ -41,25 +41,15 @@ export default function Home() {
 {/* SECCIÓN HERO PRINCIPAL */}
         <div className="text-center mb-10 md:mb-13">
           <div className="flex flex-col items-center gap-2">
-            {(() => {
-              // Extraemos el color activo
-              const rawColor = isDarkMode ? SITE_METADATA.darkAccentColor : SITE_METADATA.lightAccentColor;
-              // Reemplazamos los espacios por comas para compatibilidad total: "125, 85%, 32%"
-              const safeColorString = rawColor.replace(/\s+/g, ', ');
-              const safeHsl = `hsl(${safeColorString})`;
-
-              return (
-                <SmartTitle 
-                  title={SITE_METADATA.title} 
-                  logoUrl={SITE_METADATA.logo} 
-                  height="clamp(3.5rem, 6vw, 8rem)"
-                  isDark={true} 
-                  logoColor={safeHsl}
-                  lineColor={safeHsl}
-                  textColor={safeHsl}
-                />
-              );
-            })()}
+            <SmartTitle 
+              title={SITE_METADATA.title} 
+              logoUrl={SITE_METADATA.logo} 
+              height="clamp(3.5rem, 6vw, 8rem)"
+              isDark={true} 
+              logoColor="hsl(var(--accent-color))"
+              lineColor="hsl(var(--accent-color))"
+              textColor="hsl(var(--accent-color))"
+            />
             
             <p className="text-base md:text-lg text-muted-foreground max-w-xl mx-auto whitespace-pre-line leading-relaxed">
               {SITE_METADATA.description}
