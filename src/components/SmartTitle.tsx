@@ -72,18 +72,13 @@ export function SmartTitle({
     >
       {/* 1. LOGO */}
       {logoUrl && (
-        <div 
-          className={cn(
-            "aspect-square shrink-0 transition-colors duration-300",
-            !logoColor && (isDark ? "bg-primary" : "bg-primary-foreground")
-          )}
+        <img
+          src={logoUrl}
           style={{
-            backgroundColor: logoColor,
-            maskImage: `url(${logoUrl})`,
-            WebkitMaskImage: `url(${logoUrl})`,
-            maskRepeat: 'no-repeat', WebkitMaskRepeat: 'no-repeat',
-            maskPosition: 'center', WebkitMaskPosition: 'center',
-            maskSize: 'cover', WebkitMaskSize: 'cover',
+            height: resolvedHeight,
+            width: resolvedHeight,
+            objectFit: 'contain',
+            filter: logoColor ? `drop-shadow(0 0 0 ${logoColor})` : undefined,
           }}
         />
       )}
