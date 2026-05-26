@@ -22,3 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Carpetas temporales de imágenes en HD
+backoffice/raw-images/
