@@ -42,6 +42,7 @@
     "HUM",
     "INH",
     "JOH",
+    "JOR",
     "KAP",
     "KEU",
     "COQ",
@@ -174,6 +175,7 @@
     "Switzerland",
     "Tottenham Hotspur",
     "Union Berlin",
+    "Uruguay",
     "USA",
     "Venezia FC",
     "Wales",
@@ -181,6 +183,7 @@
     "Wrexham"
   ],
   "Season": [
+    "2026-27",
     "2026",
     "2025-26",
     "Clausura 2025",
@@ -221,6 +224,7 @@
     "2010-11",
     "Apertura 2010",
     "2010",
+    "2006",
     "2005-06",
     "2002",
     "Invierno 2001",
@@ -230,11 +234,13 @@
     "1996",
     "1995-96",
     "1994-95",
+    "1994",
     "1966-67",
     "1913",
     "-"
   ],
   "Year": [
+    "2026",
     "2026",
     "2025",
     "2025",
@@ -275,6 +281,7 @@
     "2010",
     "2010",
     "2010",
+    "2006",
     "2005",
     "2002",
     "2001",
@@ -284,11 +291,13 @@
     "1996",
     "1995",
     "1994",
+    "1994",
     "1966",
     "1913",
     "0000"
   ],
   "Type": [
+    "04",
     "01",
     "04",
     "02",
@@ -329,6 +338,7 @@
     "04",
     "03",
     "01",
+    "01",
     "04",
     "01",
     "03",
@@ -338,6 +348,7 @@
     "01",
     "04",
     "04",
+    "01",
     "04",
     "01",
     "00"
@@ -348,6 +359,7 @@
     "Away",
     "Third",
     "Fourth",
+    "Fifth",
     "Cup Home",
     "Cup Away",
     "Cup Third",
@@ -454,6 +466,7 @@
     "Sweden",
     "Switzerland",
     "Turkey",
+    "Uruguay",
     "USA",
     "Wales"
   ],
@@ -490,6 +503,7 @@
     "Hummel",
     "In-House",
     "Johnnie Walker",
+    "Jordan",
     "Kappa",
     "Keuka",
     "Le Coq Sportif",
@@ -508,8 +522,10 @@
   "Collaboration": [
     "-",
     "Antonio Marras",
+    "Bob Marley",
     "KidSuper",
     "Off-White",
+    "Someone Somewhere",
     "Studio Sgura",
     "Tomorrowland",
     "Y-3"

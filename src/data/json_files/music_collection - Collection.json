@@ -3650,5 +3650,27 @@
     "Numbered": "-",
     "Discogs": "-",
     "Notes": "Designed by me, manufacted by laTostadora.com"
+  },
+  {
+    "ID": "005-FRED-53994-005-000",
+    "Display Name": "Fred again.. — USB002 [Black Vinyl]",
+    "Display Style (Auxiliar)": "Black",
+    "Category": "Media",
+    "Product": "Music Release",
+    "Format": "Vinyl",
+    "Variant": "000",
+    "Artist": "Fred again..",
+    "Title": "USB002",
+    "Label": "Warner Music",
+    "Genre": "Electronic",
+    "Release Date": "2025-12-15",
+    "Style": "Opaque",
+    "Color": "Black",
+    "Configuration": "2xLP",
+    "Packaging": "Gatefold Jacket",
+    "Signed By": "-",
+    "Numbered": "-",
+    "Discogs": "https://www.discogs.com/release/35891722-Fred-again-USB002",
+    "Notes": "-"
   }
 ]

@@ -58,6 +58,6 @@ The system is powered by a central `config.ts` file. New collections can be adde
 
 Run the following commands:
 
-* **Update collection data:** npm run csv-collections football
+* **Update collection data:** npm run csv-collection football
 * **Update collection list:** npm run csv-lists football
 * **Process raw images:** npm run images:optimize
